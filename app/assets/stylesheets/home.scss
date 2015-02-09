@@ -1,0 +1,18 @@
+// Place all the styles related to the home controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.page {
+	width: 900px;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: #F6F5F2;
+}
+
+#newsTab, #home, #donated {
+	float: left;
+}
+
+#donations, #menu, #donate {
+	float: right;
+}
