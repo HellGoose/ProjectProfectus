@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Profectus</title>
+   <%= javascript_include_tag "facebookLogin.js", "data-turbolinks-track" => true  %>
+</head>
+<body>
+
+   <section class="page">
+      <a type="button" class="btn btn-default" role="button" id="home" href="#">Profectus<a>
+
+      <div class="btn-group" role="group" id="menu" aria-label"...">
+         <a type="button" class="btn btn-default" role="button">Projects</a>
+         <a type="button" class="btn btn-default" role="button">About</a>
+         <div class="btn-group">
+            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" id="name">
+               Login
+               <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+               <li><button class="btn btn-default" role="button" id="facebookLogin">Login using Facebook</button></li>
+               <li><button class="btn btn-default" role="button" id="googleLogin">Login using Google</a></li>
+               <li><button class="btn btn-default" role="button" id="account">Account</a></li>
+               <li class="divider"></li>
+      	      <li><button class="btn btn-default" role="button" id="logout">Logout</button></li>
+   		   </ul>
+         </div>
+	   </div>
+
+      <%= image_tag "banner.png" %>
+
+      <div id="newsTab">
+         <ul class="nav nav-tabs">
+            <li class="active"><a href="#info-tab" data-toggle="tab">Top Projects<i class="fa"></i></a></li>
+            <li><a href="#address-tab" data-toggle="tab">News<i class="fa"></i></a></li>
+         </ul>
+      </div>
+
+      <div id="donations">
+         <p id="donated">Donated so far: 54974$</p>
+         <a type="button" class="btn btn-default" id="donate">1UP</a>
+      </div>
+   </section>
+
+</body>
+</html>
