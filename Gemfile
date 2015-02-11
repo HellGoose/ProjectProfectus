@@ -9,6 +9,8 @@ gem 'mysql2'
 gem 'sass-rails', '~> 5.0'
 # Use Bootstrap for stylesheets
 gem 'bootstrap-sass', '~> 3.3.3'
+# Use Omniauth for Facebook Login
+gem 'omniauth-facebook', '~> 1.4.1'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .coffee assets and views
