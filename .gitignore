@@ -12,3 +12,6 @@
 !/log/.keep
 /tmp
 .DS_Store
+
+#Ignore Ruby Suff
+Gemfile.lock

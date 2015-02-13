@@ -17,3 +17,22 @@
 // "bootstrap-sprockets" must be imported before "bootstrap" and "bootstrap/variables"
 @import "bootstrap-sprockets";
 @import "bootstrap";
+
+.page {
+	width: 900px;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: #F6F5F2;
+}
+
+#menu {
+	float: right;
+}
+
+#home {
+	float: left;
+}
+
+#menubar {
+	height: 50px;
+}
