@@ -9,30 +9,32 @@
 <body>
 
 	<section class="page">
-		<a type="button" class="btn btn-default" role="button" id="home" href="/">Profectus<a>
+		<div id="menubar">
+			<a type="button" class="btn btn-default" role="button" id="home" href="/">Profectus<a>
 
-		<div class="btn-group" role="group" id="menu" aria-label"...">
-			<a href="/projects/categories#show" type="button" class="btn btn-default" role="button">Projects</a>
-			<a type="button" class="btn btn-default" role="button">About</a>
-			<div class="btn-group">
-				<% if current_user %>
-					<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" id="name">
-						<%= current_user.name %>
-						<span class="caret"></span>
-					</button>
-            	<% else %>
-					<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" id="name">
-						Login
-						<span class="caret"></span>
-					</button>
-				<% end %>
-				<ul class="dropdown-menu" role="menu">
-					<li><%= link_to "Login using Facebook", "/auth/facebook", id: "facebook_login", role: "menuitem" %></li>
-					<li><%= link_to "Login using Google", "/auth/google", id: "google_login", role: "menuitem" %></li>
-					<li><%= link_to "Account", "/users/user", id: "account", role: "menuitem" %></li>
-					<li class="divider"></li>
-					<li><%= link_to "Logout", "signout", id: "logout", role: "menuitem" %></li>
-				</ul>
+			<div class="btn-group" role="group" id="menu" aria-label"...">
+				<a href="/projects/categories#show" type="button" class="btn btn-default" role="button">Projects</a>
+				<a type="button" class="btn btn-default" role="button">About</a>
+				<div class="btn-group">
+					<% if current_user %>
+						<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" id="name">
+							<%= current_user.name %>
+							<span class="caret"></span>
+						</button>
+            		<% else %>
+						<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" id="name">
+							Login
+							<span class="caret"></span>
+						</button>
+					<% end %>
+					<ul class="dropdown-menu" role="menu">
+						<li><%= link_to "Login using Facebook", "/auth/facebook", id: "facebook_login", role: "menuitem" %></li>
+						<li><%= link_to "Login using Google", "/auth/google", id: "google_login", role: "menuitem" %></li>
+						<li><%= link_to "Account", "/users/user", id: "account", role: "menuitem" %></li>
+						<li class="divider"></li>
+						<li><%= link_to "Logout", "signout", id: "logout", role: "menuitem" %></li>
+					</ul>
+				</div>
 			</div>
 		</div>
 
