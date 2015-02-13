@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150211125932) do
+ActiveRecord::Schema.define(version: 20150210142834) do
 
   create_table "iterations", force: :cascade do |t|
     t.date     "startDate"
@@ -31,7 +31,6 @@ ActiveRecord::Schema.define(version: 20150211125932) do
     t.boolean  "isGettingFunded", limit: 1
     t.datetime "created_at",                    null: false
     t.datetime "updated_at",                    null: false
-    t.string   "title",           limit: 255
   end
 
   create_table "users", force: :cascade do |t|
