@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(version: 20150210142834) do
   end
 
   create_table "projects", force: :cascade do |t|
+    t.string   "title",           limit: 255
     t.text     "content",         limit: 65535
     t.text     "tags",            limit: 65535
     t.boolean  "flagged",         limit: 1
