@@ -2,10 +2,16 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-#newsTab, #home, #donated {
+#banner {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	height: 300px;
+}
+
+#newsTab, #donated {
 	float: left;
 }
 
-#donations, #menu, #donate {
+#donations, #donate {
 	float: right;
 }
