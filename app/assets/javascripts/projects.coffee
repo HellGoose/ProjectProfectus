@@ -1,8 +1,7 @@
 # Place all the behaviors and hooks related to the matching controller here.
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
-<<<<<<< HEAD
-=======
+
 
 addNewProjectButton = ->
   btn = document.createElement('a')
@@ -16,4 +15,4 @@ addNewProjectButton = ->
   return
 
 addNewProjectButton()
->>>>>>> 6ba1baa58ca6d0860568b7ff18c774e69ee5d920
+
