@@ -9,7 +9,7 @@ addNewProjectButton = ->
   btn.className = 'btn btn-default'
   btn.data-role = 'button'
   btn.innerHTML = 'New Project'
-  btn.href = 'projects#new'
+  btn.href = '/projects/new'
   menu = document.getElementById('menu')
   menu.insertBefore btn, menu.childNodes[0]
   return

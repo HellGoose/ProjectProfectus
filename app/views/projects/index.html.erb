@@ -18,7 +18,17 @@
 	</div>
 
 	<div id="projects">
-
+		<% @projects.each do |p| %>
+		<div class="project">
+			<%= link_to "", "/projects/" + p.id.to_s, class: "project_link" %>
+			<div>
+				<div class="image_container">
+					<%= image_tag p.logoLink, class: "logo" %>
+				</div>
+				<p><%= p.description %></p>
+			</div>
+		</div>
+		<% end %>
 	</div>
 
 </body>
