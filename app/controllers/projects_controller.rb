@@ -4,7 +4,11 @@ class ProjectsController < ApplicationController
   # GET /projects
   # GET /projects.json
   def index
-    @projects = Project.all
+    page = 1;
+    projectsPerPage = 10;
+    first = (page - 1) * projectsPerPage;
+    filteredProjects = Project.select("title, description, voteCount, logoLink").where("").order("voteCount DESC");
+    @projects = filteredProjects.last(filteredProjects.size() - first).first(projectsPerPage);
   end
 
   # GET /projects/1
