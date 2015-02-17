@@ -2,8 +2,7 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
-
-addNewProjectButton = ->
+createNewProjectButton = ->
   listElement = document.createElement('li')
   linkElement = document.createElement('a')
   listElement.appendChild linkElement
@@ -15,6 +14,4 @@ addNewProjectButton = ->
   menu.insertBefore listElement, menu.childNodes[0]
   return
 
-window.onload = ->
-  addNewProjectButton()
-  return
+createNewProjectButton()
