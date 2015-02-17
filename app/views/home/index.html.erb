@@ -1,23 +1,23 @@
-<!DOCTYPE html>
-<html>
-<head>
-   <title>Profectus</title>
-</head>
-<body>
+<div class="col-xs-12">
+   <%= image_tag "banner.png", id: "banner", class: "center-block img-responsive" %>
+</div>
 
-   <%= image_tag "banner.png", id: "banner" %>
+<div class="col-xs-3" id="newsTab">
+   <ul class="nav nav-tabs">
+      <li class="active"><a href="#info-tab" data-toggle="tab">Top Projects<i class="fa"></i></a></li>
+      <li><a href="#address-tab" data-toggle="tab">News<i class="fa"></i></a></li>
+   </ul>
+</div>
 
-   <div id="newsTab">
-      <ul class="nav nav-tabs">
-         <li class="active"><a href="#info-tab" data-toggle="tab">Top Projects<i class="fa"></i></a></li>
-         <li><a href="#address-tab" data-toggle="tab">News<i class="fa"></i></a></li>
-      </ul>
-   </div>
+<div class="col-xs-9" id="donations">
+   <p id="donated">Donated so far: <span id="donationAmount">54974</span>$</p>
+   <a type="button" class="btn btn-default" id="donate">1UP</a>
+</div>
 
-   <div id="donations">
-      <p id="donated">Donated so far: 54974$</p>
-      <a type="button" class="btn btn-default" id="donate">1UP</a>
-   </div>
-
-</body>
-</html>
+<script>
+// For fun :)
+document.getElementById("donate").addEventListener("click", function(){
+	var prevDonationAmount = document.getElementById("donationAmount").innerHTML;
+	document.getElementById("donationAmount").innerHTML = Number(prevDonationAmount) + 5;
+});
+</script>
