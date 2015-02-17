@@ -1,36 +1,26 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Profectus</title>
-	<%= javascript_include_tag 'projects' %>
-</head>
-<body>
-
-	<div id="categories">
-
-	</div>
-
+<div id="categories">
+	
+</div>
+<div class="col-xs-3">
 	<div id="search">
-		<form action="">
-			<input type="text" name="searchText">
-			<input type="submit" value="Search">
-		</form>
+	<form action="">
+		<input type="text" name="searchText">
+		<input type="submit" value="Search">
+	</form>
 	</div>
+</div>
 
-	<div id="projects">
-		<% @projects.each do |p| %>
-		<div class="project">
-			<%= link_to "", "/projects/" + p.id.to_s, class: "project_link" %>
-			<div>
-				<div class="image_container">
-					<%= image_tag p.logoLink, class: "logo" %>
-				</div>
-				<h3><%= p.title %></h3>
-				<p><%= p.description %></p>
+<div class="col-xs-9" id="projects">
+	<% @projects.each do |p| %>
+	<div class="project">
+		<%= link_to "", "/projects/" + p.id.to_s, class: "project_link" %>
+		<div>
+			<div class="image_container">
+				<%= image_tag p.logoLink, class: "logo img-responsive" %>
 			</div>
+			<h3><%= p.title %></h3>
+			<p><%= p.description %></p>
 		</div>
-		<% end %>
 	</div>
-
-</body>
-</html>
+	<% end %>
+</div>
