@@ -7,7 +7,7 @@ class ProjectsController < ApplicationController
     page = 1;
     projectsPerPage = 10;
     first = (page - 1) * projectsPerPage;
-    filteredProjects = Project.select("title, description, voteCount, logoLink").where("").order("voteCount DESC");
+    filteredProjects = Project.select("id, title, description, voteCount, logoLink").where("").order("voteCount DESC");
     @projects = filteredProjects.last(filteredProjects.size() - first).first(projectsPerPage);
   end
 
