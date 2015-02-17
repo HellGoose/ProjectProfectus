@@ -4,15 +4,17 @@
 
 
 addNewProjectButton = ->
-  btn = document.createElement('a')
-  btn.type = 'button'
-  btn.className = 'btn btn-default'
-  btn.data-role = 'button'
-  btn.innerHTML = 'New Project'
-  btn.href = '/projects/new'
+  listElement = document.createElement('li')
+  linkElement = document.createElement('a')
+  listElement.appendChild linkElement
+
+  linkElement.innerHTML = 'New Project'
+  linkElement.href = '/projects/new'
+
   menu = document.getElementById('menu')
-  menu.insertBefore btn, menu.childNodes[0]
+  menu.insertBefore listElement, menu.childNodes[0]
   return
 
-addNewProjectButton()
-
+window.onload = ->
+  addNewProjectButton()
+  return
