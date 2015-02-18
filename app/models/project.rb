@@ -4,6 +4,7 @@ class Project < ActiveRecord::Base
 
 	#Relations
 	has_many :iterations
+	belongs_to :user
 
 	#Sets default values
 	after_initialize :init
