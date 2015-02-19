@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150216130733) do
+ActiveRecord::Schema.define(version: 20150218103230) do
 
   create_table "iterations", force: :cascade do |t|
     t.date     "startDate"
@@ -33,7 +33,10 @@ ActiveRecord::Schema.define(version: 20150216130733) do
     t.datetime "updated_at",                    null: false
     t.string   "title",           limit: 255
     t.text     "description",     limit: 65535
+    t.integer  "user_id",         limit: 4
   end
+
+  add_index "projects", ["user_id"], name: "index_projects_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "name",                   limit: 255

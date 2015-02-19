@@ -38,7 +38,9 @@ class ProjectsController < ApplicationController
   # POST /projects
   # POST /projects.json
   def create
+    print project_params
     @project = Project.new(project_params)
+    @project.user_id = session[:user_id]
 
     respond_to do |format|
       if @project.save
@@ -84,6 +86,7 @@ class ProjectsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def project_params
       #params[:project]
-      params.require(:project).permit( :title, :content, :tags, :logoLink)
+      params.require(:project).permit( :title, :description, :content, :tags, :logoLink,
+                    :voteCount, :finalVoteCount, :flagged, :isGettingFunded, :user_id)
     end
 end
