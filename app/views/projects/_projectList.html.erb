@@ -1,0 +1,17 @@
+<% first = (page.to_i - 1) * projectsPerPage.to_i %>
+<% last = (@projects.size() - first)%>
+<% if last <= 0 %>
+	<% last = 0 %>
+<% end %>
+<% @projects.last(last).first(projectsPerPage.to_i).each do |p| %>
+	<div class="project">
+		<%= link_to "", "/projects/" + p.id.to_s, class: "project_link" %>
+		<div>
+			<div class="image_container">
+				<%= image_tag p.logoLink, class: "logo img-responsive" %>
+			</div>
+			<h3><%= p.title %></h3>
+			<p><%= p.description %></p>
+		</div>
+	</div>
+<% end %>
