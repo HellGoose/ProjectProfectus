@@ -4,11 +4,21 @@ class ProjectsController < ApplicationController
   # GET /projects
   # GET /projects.json
   def index
-    page = 1;
-    projectsPerPage = 10;
-    first = (page - 1) * projectsPerPage;
-    filteredProjects = Project.select("id, title, description, voteCount, logoLink").where("").order("voteCount DESC");
-    @projects = filteredProjects.last(filteredProjects.size() - first).first(projectsPerPage);
+    @projects = Project.all
+  end
+
+  def prev
+    @projects = Project.all
+    respond_to do |format|
+      format.js { render partial: 'projectList', locals: { page: 1, projectsPerPage: 5 } }
+    end
+  end
+
+  def next
+    @projects = Project.all
+    respond_to do |format|
+      format.js { render partial: 'projectList', locals: { page: 2, projectsPerPage: 5 } }
+    end
   end
 
   # GET /projects/1

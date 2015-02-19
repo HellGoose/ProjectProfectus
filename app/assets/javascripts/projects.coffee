@@ -2,7 +2,7 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
-createNewProjectButton = ->
+addNewProjectButton = ->
   listElement = document.createElement('li')
   linkElement = document.createElement('a')
   listElement.appendChild linkElement
@@ -14,4 +14,25 @@ createNewProjectButton = ->
   menu.insertBefore listElement, menu.childNodes[0]
   return
 
-createNewProjectButton()
+$(document).ready ->
+  addNewProjectButton()
+  $('#next').click ->
+    $('#projects').load '/projects/next'
+    return
+  $('#prev').click ->
+    $('#projects').load '/projects/prev'
+    return
+  return
+
+
+window.onkeyup = (e) ->
+  key = if e.keyCode then e.keyCode else e.which
+  switch key
+    when 39
+      $('#projects').load '/projects/next'
+    when 37
+      $('#projects').load '/projects/prev'
+    else
+      console.log 'Key: ' + key
+      break
+  return
