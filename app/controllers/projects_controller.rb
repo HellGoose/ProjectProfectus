@@ -33,12 +33,14 @@ class ProjectsController < ApplicationController
 
   # GET /projects/1/edit
   def edit
+    if !isProjectOwner
+      redirect_to @project
+    end
   end
 
   # POST /projects
   # POST /projects.json
   def create
-    print project_params
     @project = Project.new(project_params)
     @project.user_id = session[:user_id]
 
@@ -57,7 +59,7 @@ class ProjectsController < ApplicationController
   # PATCH/PUT /projects/1.json
   def update
     respond_to do |format|
-      if @project.user_id == session[:user_id] && @project.update(project_params)
+      if isProjectOwner && @project.update(project_params)
         format.html { redirect_to @project, notice: 'Project was successfully updated.' }
         format.json { render :show, status: :ok, location: @project }
       else
@@ -85,8 +87,11 @@ class ProjectsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def project_params
-      #params[:project]
       params.require(:project).permit( :title, :description, :content, :tags, :logoLink,
-                    :voteCount, :finalVoteCount, :flagged, :isGettingFunded, :user_id)
+                    :voteCount, :finalVoteCount, :flagged, :isGettingFunded)
+    end
+
+    def isProjectOwner
+      @project.user_id == session[:user_id]
     end
 end
