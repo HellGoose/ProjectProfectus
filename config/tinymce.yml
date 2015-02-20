@@ -1,0 +1,4 @@
+plugins:
+  - image
+  - link
+  - media

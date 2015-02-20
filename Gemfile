@@ -15,6 +15,8 @@ gem 'omniauth-facebook', '~> 1.4.1'
 gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.1.0'
+# Use TinyMCE for HTML-supported editor
+gem 'tinymce-rails'
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 
