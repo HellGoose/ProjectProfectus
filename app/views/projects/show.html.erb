@@ -1,7 +1,10 @@
 <p id="notice"><%= notice %></p>
 
-<%= link_to 'Edit', edit_project_path(@project) %> |
-<%= link_to 'Delete', @project, method: :delete, data: {confirm: "Are you sure?"} %> |
+<%#Display Edit and Delete iff projectCreator = currentUser%>
+<% if @project.user_id == session[:user_id]%>
+  <%=  link_to 'Edit |', edit_project_path(@project)%> 
+  <%= link_to 'Delete |', @project, method: :delete, data: {confirm: "Are you sure?"} %>
+<% end %>
 <%= link_to 'Back', projects_path %>
 
 <div class="col-xs-12 text-center">
