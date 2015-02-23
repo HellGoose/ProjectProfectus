@@ -7,7 +7,7 @@
 	<%= csrf_meta_tags %>
 </head>
 <body>
-
+<div id="wrap">
 	<nav class="navbar navbar-default navbar-static-top">
 		<div class="container">
 			<!-- Brand and toggle get grouped for better mobile display -->
@@ -50,7 +50,14 @@
 	<div class="container">
 		<%= yield %>
 	</div>
+</div>
 
+	<div id="footer">
+	  <div class="container">
+	    <li class="text-muted"><a href="/about/index">About Us</a></li>
+	    <li class="text-muted"><a href="/about/faq">FAQ</a></li>
+	  </div>
+	</div>
 
-	</body>
-	</html>
+</body>
+</html>

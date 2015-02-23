@@ -18,6 +18,10 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
 
+html, body{ 
+	height:100%;
+}
+
 .page {
 	width: 900px;
 	margin-left: auto;
@@ -35,4 +39,32 @@
 
 #menubar {
 	height: 35px;
+}
+
+/* Wrapper for page content to push down footer */
+#wrap {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  /* Negative indent footer by its height */
+  margin: 0 auto -150px;
+  /* Pad bottom by footer height */
+  padding: 0 0 150px;
+}
+
+/* Set the fixed height of the footer here */
+#footer {
+  height: 150px;
+  background-color: #414141;
+  margin-top:50px;
+  padding-top:20px;
+  padding-bottom:20px;
+}
+
+#footer a, #footer a:hover{
+	background-color: #414141;
+}
+
+#footer ul, #footer li{
+	list-style-type: none;
 }
