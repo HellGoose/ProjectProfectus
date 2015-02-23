@@ -11,17 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150223130314) do
+ActiveRecord::Schema.define(version: 20150223143410) do
 
   create_table "forums", force: :cascade do |t|
     t.integer  "topicCount", limit: 4
     t.integer  "postCount",  limit: 4
-    t.integer  "project_id", limit: 4
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
   end
-
-  add_index "forums", ["project_id"], name: "index_forums_on_project_id", using: :btree
 
   create_table "post_comments", id: false, force: :cascade do |t|
     t.integer "post_id", limit: 4, null: false
@@ -67,8 +64,10 @@ ActiveRecord::Schema.define(version: 20150223130314) do
     t.string   "title",       limit: 255
     t.text     "description", limit: 65535
     t.integer  "user_id",     limit: 4
+    t.integer  "forum_id",    limit: 4
   end
 
+  add_index "projects", ["forum_id"], name: "index_projects_on_forum_id", using: :btree
   add_index "projects", ["user_id"], name: "index_projects_on_user_id", using: :btree
 
   create_table "topic_votes", id: false, force: :cascade do |t|
