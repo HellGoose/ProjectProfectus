@@ -2,13 +2,13 @@
 
 <%#Display Edit and Delete iff projectCreator = currentUser%>
 <% if @project.user_id == session[:user_id]%>
-  <%=  link_to 'Edit |', edit_project_path(@project)%> 
-  <%= link_to 'Delete |', @project, method: :delete, data: {confirm: "Are you sure?"} %>
+<%=  link_to 'Edit |', edit_project_path(@project)%> 
+<%= link_to 'Delete |', @project, method: :delete, data: {confirm: "Are you sure?"} %>
 <% end %>
 <%= link_to 'Back', projects_path %>
 
 <div class="col-xs-12 text-center">
-	<h3><%= @project.title %></h3>
+  <h3><%= @project.title %></h3>
 </div>
 
 <div class="col-sm-6">
@@ -18,20 +18,21 @@
 	<%= @project.description %>
 	<p>Votes: <%= @project.voteCount %></p>
 	<p>Made by: <%= @project.user.name %></p>
+  <%= button_to "Vote", action: "vote" %>
 </div>
 
 <div class="col-xs-12">
 	<ul class="nav nav-tabs">
-      <li class="active"><a href="#description-tab" data-toggle="tab">Description<i class="fa"></i></a></li>
-      <li><a href="#discussion-tab" data-toggle="tab">Discussion<i class="fa"></i></a></li>
-   </ul>
-   <div id="my-tab-content" class="tab-content">
-        <div class="tab-pane active" id="description-tab">
-            <%= sanitize @project.content, :tags => %w(a b i strong em p param h1 h2 h3 h4 h5 h6 br hr ul li img iframe) %>
-        </div>
-        <div class="tab-pane" id="discussion-tab">
-            <h1>Orange</h1>
-            <p>orange orange orange orange orange</p>
-        </div>
+    <li class="active"><a href="#description-tab" data-toggle="tab">Description<i class="fa"></i></a></li>
+    <li><a href="#discussion-tab" data-toggle="tab">Discussion<i class="fa"></i></a></li>
+  </ul>
+  <div id="my-tab-content" class="tab-content">
+    <div class="tab-pane active" id="description-tab">
+      <%= sanitize @project.content, :tags => %w(a b i strong em p param h1 h2 h3 h4 h5 h6 br hr ul li img iframe) %>
     </div>
+    <div class="tab-pane" id="discussion-tab">
+      <h1>Orange</h1>
+      <p>orange orange orange orange orange</p>
+    </div>
+  </div>
 </div>

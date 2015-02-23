@@ -17,6 +17,12 @@ class ProjectsController < ApplicationController
     end
   end
 
+  def vote
+    set_project
+    vote_project
+    render :show
+  end
+
   # GET /projects/1
   # GET /projects/1.json
   def show
@@ -76,6 +82,10 @@ class ProjectsController < ApplicationController
   end
 
   private
+    def vote_project
+      @project.voteCount += 1
+      @project.save
+    end
     # Use callbacks to share common setup or constraints between actions.
     def set_project
       @project = Project.find(params[:id])
