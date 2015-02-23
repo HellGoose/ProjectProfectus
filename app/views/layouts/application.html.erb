@@ -21,32 +21,35 @@
 					<a class="navbar-brand" href="/">Profectus</a>
 				</div>
 
-				<!-- Collect the nav links, forms, and other content for toggling -->
-				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-					<ul class="nav navbar-nav navbar-right" id="menu">
-						<li><a href="/projects">Projects</a></li>
-						<li><a href="/about/index">About</a></li>
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav navbar-right" id="menu">
+					<li><a href="/projects">Projects</a></li>
+					<li><a href="/about/index">About</a></li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+						<% if current_user %>
+						<%= current_user.name %>
+						<% else %>
+						Login
+						<% end %>
+						<span class="caret"></span></a>
+						<ul class="dropdown-menu" role="menu">
 							<% if current_user %>
-							<%= current_user.name %>
+							<li><%= link_to "Account", user_path(current_user), id: "account", role: "menuitem" %></li>
+							<li class="divider"></li>
+							<li><%= link_to "Logout", "/signout", id: "logout", role: "menuitem" %></li>
+							
 							<% else %>
-							Login
+							<li><%= link_to "Login using Facebook", "/auth/facebook", id: "facebook_login", role: "menuitem" %></li>
+							<li><%= link_to "Login using Google", "/auth/google", id: "google_login", role: "menuitem" %></li>
 							<% end %>
-							<span class="caret"></span></a>
-							<ul class="dropdown-menu" role="menu">
-								<li><%= link_to "Login using Facebook", "/auth/facebook", id: "facebook_login", role: "menuitem" %></li>
-								<li><%= link_to "Login using Google", "/auth/google", id: "google_login", role: "menuitem" %></li>
-								<li><%= link_to "Account", "/users/user", id: "account", role: "menuitem" %></li>
-								<li class="divider"></li>
-								<li><%= link_to "Logout", "/signout", id: "logout", role: "menuitem" %></li>
-							</ul>
-						</li>
-					</ul>
-				</div><!-- /.navbar-collapse -->
-			</div><!-- /.container-fluid -->
-		</nav>
-
+						</ul>
+					</li>
+				</ul>
+			</div><!-- /.navbar-collapse -->
+		</div><!-- /.container-fluid -->
+	</nav>
 		<div class="container">
 			<%= yield %>
 		</div>

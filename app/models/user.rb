@@ -2,12 +2,12 @@ class User < ActiveRecord::Base
 	#Required fields:
 	validates :name, :provider, :uid, 
 	:oauth_token, :oauth_token_expires_at, 
-	:role , presence: true
+	:role, presence: true
 
 	#Relations:
 	has_many :projects
-	has_and_belongs_to_many :project_votes, class_name: "Project"
-	has_and_belongs_to_many :project_reviews, class_name: "Project"
+	has_and_belongs_to_many :projects, join_table: "project_votes"
+	has_and_belongs_to_many :projects, join_table: "project_reviews"
 
 	#Authentication
 	def self.from_omniauth(auth)

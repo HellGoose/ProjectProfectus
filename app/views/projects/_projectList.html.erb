@@ -4,7 +4,7 @@
 	<% last = 0 %>
 <% end %>
 <% @projects.last(last).first(projectsPerPage.to_i).each do |p| %>
-	<div class="col-md-3 project">
+	<div class="col-xs-3 project">
 		<%= link_to "", "/projects/" + p.id.to_s, class: "project_link" %>
 		<div>
 			<h4><%= p.title %></h4>

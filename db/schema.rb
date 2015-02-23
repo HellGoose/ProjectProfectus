@@ -11,7 +11,37 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150223094857) do
+ActiveRecord::Schema.define(version: 20150223143410) do
+
+  create_table "forums", force: :cascade do |t|
+    t.integer  "topicCount", limit: 4
+    t.integer  "postCount",  limit: 4
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
+
+  create_table "post_comments", id: false, force: :cascade do |t|
+    t.integer "post_id", limit: 4, null: false
+  end
+
+  create_table "post_votes", id: false, force: :cascade do |t|
+    t.integer "post_id", limit: 4, null: false
+    t.integer "user_id", limit: 4, null: false
+  end
+
+  create_table "posts", force: :cascade do |t|
+    t.text     "content",    limit: 65535
+    t.datetime "date"
+    t.integer  "upvotes",    limit: 4
+    t.integer  "downvotes",  limit: 4
+    t.integer  "topic_id",   limit: 4
+    t.integer  "user_id",    limit: 4
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
+
+  add_index "posts", ["topic_id"], name: "index_posts_on_topic_id", using: :btree
+  add_index "posts", ["user_id"], name: "index_posts_on_user_id", using: :btree
 
   create_table "project_reviews", id: false, force: :cascade do |t|
     t.integer "product_id", limit: 4, null: false
@@ -34,9 +64,31 @@ ActiveRecord::Schema.define(version: 20150223094857) do
     t.string   "title",       limit: 255
     t.text     "description", limit: 65535
     t.integer  "user_id",     limit: 4
+    t.integer  "forum_id",    limit: 4
   end
 
+  add_index "projects", ["forum_id"], name: "index_projects_on_forum_id", using: :btree
   add_index "projects", ["user_id"], name: "index_projects_on_user_id", using: :btree
+
+  create_table "topic_votes", id: false, force: :cascade do |t|
+    t.integer "topic_id", limit: 4, null: false
+    t.integer "user_id",  limit: 4, null: false
+  end
+
+  create_table "topics", force: :cascade do |t|
+    t.string   "title",      limit: 255
+    t.datetime "date"
+    t.integer  "upvotes",    limit: 4
+    t.integer  "downvotes",  limit: 4
+    t.integer  "postCount",  limit: 4
+    t.integer  "forum_id",   limit: 4
+    t.integer  "user_id",    limit: 4
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  add_index "topics", ["forum_id"], name: "index_topics_on_forum_id", using: :btree
+  add_index "topics", ["user_id"], name: "index_topics_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "name",                   limit: 255
