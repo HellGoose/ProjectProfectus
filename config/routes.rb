@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   get 'signout', to: 'sessions#destroy', as: 'signout'
 
   get '/projects/page/:page/:interval', :to => 'projects#page', :as => :projects_page
-
+  post '/projects/vote/:id', :to => 'projects#vote'
 
     resources :sessions, only: [:create, :destroy]
     resources :projects

@@ -8,10 +8,20 @@
 	height: 300px;
 }
 
-#newsTab, #donated {
+#tabs, #donated {
 	float: left;
 }
 
 #donations, #donate {
 	float: right;
+}
+
+#my-tab-content, #tabs {
+	width: 100%;
+}
+
+#top-tab > h1 {
+	width: 250px;
+	margin-left: auto;
+	margin-right: auto;
 }

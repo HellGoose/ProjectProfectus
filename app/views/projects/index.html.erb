@@ -1,7 +1,7 @@
 <%= javascript_include_tag "projects" %>
 
 <div id="categories">
-	
+
 </div>
 <div class="col-sm-12" id="searchBar">
 	<div id="search">
@@ -15,7 +15,7 @@
 <div id='data' data-page='1' data-interval=<%= @projectsInterval %> data-size=<%= @projects.size() %>></div>
 
 <div class="col-sm-12" id="projects">
-<%= render partial: 'projectList', locals: { page: 1, projectsPerPage: @projectsInterval } %>
+	<%= render partial: 'projectList', locals: { page: 1, projectsPerPage: @projectsInterval } %>
 </div>
 
 <div id="pageSelector">
