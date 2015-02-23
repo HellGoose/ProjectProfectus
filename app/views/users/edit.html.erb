@@ -1,0 +1,41 @@
+<%= form_for(@user) do |f| %>
+  <% if @user.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user profile from being saved:</h2>
+
+      <ul>
+      <% @user.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <form>
+    <div class="form-group">
+      <%= f.label :username %>
+      <%= f.text_field :username, class: "form-control", placeholder: "Enter username" %>
+    </div>
+    <div class="form-group">
+      <%= f.label :email %>
+      <%= f.text_field :email, class: "form-control", placeholder: "Enter email" %>
+    </div>
+    <div class="form-group">
+      <%= f.label :address %>
+      <%= f.text_field :address, class: "form-control", placeholder: "Enter address" %>
+    </div>
+    <div class="form-group">
+      <%= f.label :phone %>
+      <%= f.text_field :phone, class: "form-control tinymce", placeholder: "Enter phone number" %>
+    </div>
+    <div class="form-group">
+      <%= f.label :subscriptionAmount, "Subscription Amount" %>
+      <div class="input-group">
+      	<div class="input-group-addon">$</div>
+      	<%= f.text_field :subscriptionAmount, class: "form-control", placeholder: "Subscribtion amount" %>
+      </div>
+    </div>
+    <%= f.submit class: "btn btn-primary" %>
+  </form>
+
+<% end %>
