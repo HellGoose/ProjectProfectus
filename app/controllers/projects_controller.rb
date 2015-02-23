@@ -5,7 +5,7 @@ class ProjectsController < ApplicationController
   # GET /projects.json
   def index
     @projects = Project.all
-    @projectsInterval = 5
+    @projectsInterval = 8
   end
 
   def page

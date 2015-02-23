@@ -3,7 +3,7 @@
 <div id="categories">
 	
 </div>
-<div class="col-sm-3">
+<div class="col-sm-12" id="searchBar">
 	<div id="search">
 	<form action="">
 		<input type="text" name="searchText">
@@ -14,11 +14,11 @@
 
 <div id='data' data-page='1' data-interval=<%= @projectsInterval %> data-size=<%= @projects.size() %>></div>
 
-<div class="col-sm-9" id="projects">
+<div class="col-sm-12" id="projects">
 <%= render partial: 'projectList', locals: { page: 1, projectsPerPage: @projectsInterval } %>
 </div>
 
 <div id="pageSelector">
-	<span id="prev" class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
-	<span id="next" class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+	<button id="prev" class="glyphicon glyphicon-menu-left" aria-hidden="true"></button>
+	<button id="next" class="glyphicon glyphicon-menu-right" aria-hidden="true"></button>
 </div>
