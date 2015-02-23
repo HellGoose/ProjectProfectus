@@ -21,16 +21,17 @@ nextPage = ->
   page += 1
   if (page >= size / interval + 1)
     page = size / interval + 1
-  $('#projects').load('/projects/page/' + page)
+  $('#projects').load('/projects/page/' + page + '/' + interval)
   data.setAttribute('data-page', page)
   return
 
 prevPage = ->
   page = parseInt(data.getAttribute('data-page'))
+  interval = parseInt(data.getAttribute('data-interval'))
   page -= 1
   if page < 1
     page = 1
-  $('#projects').load('/projects/page/' + page)
+  $('#projects').load('/projects/page/' + page + '/' + interval)
   data.setAttribute('data-page', page)
   return
 

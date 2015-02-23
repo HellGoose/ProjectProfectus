@@ -11,8 +11,9 @@ class ProjectsController < ApplicationController
   def page
     @projects = Project.all
     page = params[:page]
+    interval = params[:interval]
     respond_to do |format|
-      format.js { render partial: 'projectList', locals: { page: page, projectsPerPage: 5 } }
+      format.js { render partial: 'projectList', locals: { page: page, projectsPerPage: interval } }
     end
   end
 
