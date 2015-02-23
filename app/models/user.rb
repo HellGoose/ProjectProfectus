@@ -6,6 +6,8 @@ class User < ActiveRecord::Base
 
 	#Relations:
 	has_many :projects
+	has_and_belongs_to_many :project_votes, class_name: "Project"
+	has_and_belongs_to_many :project_reviews, class_name: "Project"
 
 	#Authentication
 	def self.from_omniauth(auth)

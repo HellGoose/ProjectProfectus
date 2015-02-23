@@ -11,29 +11,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150218103230) do
+ActiveRecord::Schema.define(version: 20150223094857) do
 
-  create_table "iterations", force: :cascade do |t|
-    t.date     "startDate"
-    t.date     "endDate"
-    t.float    "totalAmount", limit: 24
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+  create_table "project_reviews", id: false, force: :cascade do |t|
+    t.integer "product_id", limit: 4, null: false
+    t.integer "user_id",    limit: 4, null: false
+  end
+
+  create_table "project_votes", id: false, force: :cascade do |t|
+    t.integer "product_id", limit: 4, null: false
+    t.integer "user_id",    limit: 4, null: false
   end
 
   create_table "projects", force: :cascade do |t|
-    t.text     "content",         limit: 65535
-    t.text     "tags",            limit: 65535
-    t.boolean  "flagged",         limit: 1
-    t.integer  "voteCount",       limit: 4
-    t.integer  "finalVoteCount",  limit: 4
-    t.string   "logoLink",        limit: 255
-    t.boolean  "isGettingFunded", limit: 1
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
-    t.string   "title",           limit: 255
-    t.text     "description",     limit: 65535
-    t.integer  "user_id",         limit: 4
+    t.text     "content",     limit: 65535
+    t.text     "tags",        limit: 65535
+    t.boolean  "flagged",     limit: 1
+    t.integer  "voteCount",   limit: 4
+    t.string   "logoLink",    limit: 255
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.string   "title",       limit: 255
+    t.text     "description", limit: 65535
+    t.integer  "user_id",     limit: 4
   end
 
   add_index "projects", ["user_id"], name: "index_projects_on_user_id", using: :btree
