@@ -12,8 +12,10 @@
 	</div>
 </div>
 
+<div id='data' data-page='1' data-interval=<%= @projectsInterval %> data-size=<%= @projects.size() %>></div>
+
 <div class="col-sm-9" id="projects">
-<%= render partial: 'projectList', locals: { page: 1, projectsPerPage: 5 } %>
+<%= render partial: 'projectList', locals: { page: 1, projectsPerPage: @projectsInterval } %>
 </div>
 
 <div id="pageSelector">

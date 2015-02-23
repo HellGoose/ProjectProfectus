@@ -5,19 +5,14 @@ class ProjectsController < ApplicationController
   # GET /projects.json
   def index
     @projects = Project.all
+    @projectsInterval = 5
   end
 
-  def prev
+  def page
     @projects = Project.all
+    page = params[:page]
     respond_to do |format|
-      format.js { render partial: 'projectList', locals: { page: 1, projectsPerPage: 5 } }
-    end
-  end
-
-  def next
-    @projects = Project.all
-    respond_to do |format|
-      format.js { render partial: 'projectList', locals: { page: 2, projectsPerPage: 5 } }
+      format.js { render partial: 'projectList', locals: { page: page, projectsPerPage: 5 } }
     end
   end
 
