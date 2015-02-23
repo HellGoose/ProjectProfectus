@@ -2,7 +2,7 @@ class User < ActiveRecord::Base
 	#Required fields:
 	validates :name, :provider, :uid, 
 	:oauth_token, :oauth_token_expires_at, 
-	:role , presence: true
+	:role, presence: true
 
 	#Relations:
 	has_many :projects

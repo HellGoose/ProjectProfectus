@@ -11,6 +11,7 @@ Rails.application.routes.draw do
 
     resources :sessions, only: [:create, :destroy]
     resources :projects
+    resources :users
     resource :home, only: [:show]
 
   # The priority is based upon order of creation: first created -> highest priority.
