@@ -14,24 +14,45 @@ addNewProjectButton = ->
   menu.insertBefore listElement, menu.childNodes[0]
   return
 
-$(document).ready ->
-  addNewProjectButton()
-  $('#next').click ->
-    $('#projects').load '/projects/next'
-    return
-  $('#prev').click ->
-    $('#projects').load '/projects/prev'
-    return
+nextPage = ->
+  page = parseInt(data.getAttribute('data-page'))
+  size = parseInt(data.getAttribute('data-size'))
+  interval = parseInt(data.getAttribute('data-interval'))
+  page += 1
+  if (page >= size / interval + 1)
+    page = size / interval + 1
+  $('#projects').load('/projects/page/' + page + '/' + interval)
+  data.setAttribute('data-page', page)
   return
 
+prevPage = ->
+  page = parseInt(data.getAttribute('data-page'))
+  interval = parseInt(data.getAttribute('data-interval'))
+  page -= 1
+  if page < 1
+    page = 1
+  $('#projects').load('/projects/page/' + page + '/' + interval)
+  data.setAttribute('data-page', page)
+  return
+
+$(document).ready ->
+  addNewProjectButton()
+  data = document.getElementById('data')
+  $('#next').click ->
+    nextPage()
+    return
+  $('#prev').click ->
+    prevPage()
+    return
+  return
 
 window.onkeyup = (e) ->
   key = if e.keyCode then e.keyCode else e.which
   switch key
     when 39
-      $('#projects').load '/projects/next'
+      nextPage()
     when 37
-      $('#projects').load '/projects/prev'
+      prevPage()
     else
       console.log 'Key: ' + key
       break
