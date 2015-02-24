@@ -49,6 +49,8 @@ class ProjectsController < ApplicationController
   def create
     @project = Project.new(project_params)
     @project.user_id = session[:user_id]
+    forum = Forum.create
+    @project.forum_id = forum.id
 
     respond_to do |format|
       if @project.save
