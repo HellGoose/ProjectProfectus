@@ -19,8 +19,8 @@ nextPage = ->
   size = parseInt(data.getAttribute('data-size'))
   interval = parseInt(data.getAttribute('data-interval'))
   page += 1
-  if (page >= size / interval + 1)
-    page = size / interval + 1
+  if (page >= Math.floor(size / interval) + 1)
+    page = Math.floor(size / interval) + 1
   $('#projects').load('/projects/page/' + page + '/' + interval)
   data.setAttribute('data-page', page)
   return

@@ -7,6 +7,16 @@ class ForumsController < ApplicationController
     
   end
 
+  def page
+    id = params[:id]
+    @topics = Forum.find(id).topics
+    page = params[:page]
+    interval = params[:interval]
+    respond_to do |format|
+      format.js { render partial: 'forum', locals: { id: id, page: page, topicsPerPage: interval } }
+    end
+  end
+
   def updateTopicCount
     incrementTopicCount
   end

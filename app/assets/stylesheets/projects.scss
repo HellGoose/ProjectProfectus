@@ -10,8 +10,17 @@
 	background-color: #18c93a;
 }
 
+#search {
+	float: left;
+}
+
 #searchBar {
 	height: 26px;
+	width: 100%;
+}
+
+#filter {
+	float: right;
 }
 
 #pageSelector {
