@@ -30,8 +30,8 @@
 }
 
 .image_container img {
-	width: 100%;
-	height: auto;
+	max-width: 100%;
+	max-height: 100%;
 }
 
 .project_link {
@@ -59,8 +59,8 @@
 
 .project {
 	margin: 10px;
-	border-style: solid;
-	border-width: 2px;
+	border: 1px solid black;
+	border-radius: 10px;
 	min-width: 250px;
 	max-width: 250px;
 	height: 400px;
