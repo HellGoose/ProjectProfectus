@@ -6,9 +6,7 @@ class Project < ActiveRecord::Base
 	#Relations
 	belongs_to :user
 	belongs_to :forum
-	validates_associated :user
-	#has_and_belongs_to_many :user, join_table: "project_reviews"
-	#has_and_belongs_to_many :user, join_table: "project_votes"
+	has_many :votes, class_name: "User", through: "project_votes"
 
 	#Sets default values
 	after_initialize :init
