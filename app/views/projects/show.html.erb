@@ -1,3 +1,5 @@
+<%= javascript_include_tag "topics" %>
+
 <p id="notice"><%= notice %></p>
 
 <%#Display Edit and Delete iff projectCreator = currentUser%>
@@ -21,6 +23,8 @@
   <%= button_to "Vote", action: "vote" %>
 </div>
 
+<div id='data' data-page='1' data-interval=<%= @topicsInterval %> data-size=<%= @topics.size() %> data-forum=<%= @project.forum.id %>></div>
+
 <div class="col-xs-12">
 	<ul class="nav nav-tabs">
     <li class="active"><a href="#description-tab" data-toggle="tab">Description<i class="fa"></i></a></li>
@@ -31,8 +35,13 @@
       <%= sanitize @project.content, :tags => %w(a b i strong em p param h1 h2 h3 h4 h5 h6 br hr ul li img iframe) %>
     </div>
     <div class="tab-pane" id="discussion-tab">
-      <h1>Orange</h1>
-      <p>orange orange orange orange orange</p>
+      <div id="topics">
+        <%= render partial: 'forums/forum', locals: { id: @project.forum.id, page: 1, topicsPerPage: 10 } %>
+      </div>
+      <div id="pageSelector">
+        <button id="prev" class="glyphicon glyphicon-menu-left" aria-hidden="true"></button>
+        <button id="next" class="glyphicon glyphicon-menu-right" aria-hidden="true"></button>
+      </div>
     </div>
   </div>
 </div>
