@@ -6,8 +6,12 @@ class User < ActiveRecord::Base
 
 	#Relations:
 	has_many :projects
-	has_and_belongs_to_many :projects, join_table: "project_votes"
-	has_and_belongs_to_many :projects, join_table: "project_reviews"
+	has_many :posts
+	has_many :topics
+	has_many :projectVotes, class_name: "Project", through: "project_votes"
+	has_many :topicVotes, class_name: "Post", through: "topic_votes"
+	has_many :postVotes, class_name: "Post", through: "post_votes"
+
 
 	#Authentication
 	def self.from_omniauth(auth)

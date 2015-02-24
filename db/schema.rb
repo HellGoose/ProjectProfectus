@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150223143410) do
+ActiveRecord::Schema.define(version: 20150224114200) do
 
   create_table "forums", force: :cascade do |t|
     t.integer  "topicCount", limit: 4
@@ -21,17 +21,28 @@ ActiveRecord::Schema.define(version: 20150223143410) do
   end
 
   create_table "post_comments", id: false, force: :cascade do |t|
-    t.integer "post_id", limit: 4, null: false
+    t.integer "id",         limit: 4
+    t.integer "comment_id", limit: 4
+    t.integer "post_id",    limit: 4
   end
 
-  create_table "post_votes", id: false, force: :cascade do |t|
-    t.integer "post_id", limit: 4, null: false
-    t.integer "user_id", limit: 4, null: false
+  add_index "post_comments", ["comment_id"], name: "index_post_comments_on_comment_id", using: :btree
+  add_index "post_comments", ["id"], name: "index_post_comments_on_id", using: :btree
+  add_index "post_comments", ["post_id"], name: "index_post_comments_on_post_id", using: :btree
+
+  create_table "post_votes", force: :cascade do |t|
+    t.integer  "user_id",    limit: 4
+    t.integer  "post_id",    limit: 4
+    t.boolean  "isDownvote", limit: 1
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
   end
+
+  add_index "post_votes", ["post_id"], name: "index_post_votes_on_post_id", using: :btree
+  add_index "post_votes", ["user_id"], name: "index_post_votes_on_user_id", using: :btree
 
   create_table "posts", force: :cascade do |t|
     t.text     "content",    limit: 65535
-    t.datetime "date"
     t.integer  "upvotes",    limit: 4
     t.integer  "downvotes",  limit: 4
     t.integer  "topic_id",   limit: 4
@@ -43,15 +54,15 @@ ActiveRecord::Schema.define(version: 20150223143410) do
   add_index "posts", ["topic_id"], name: "index_posts_on_topic_id", using: :btree
   add_index "posts", ["user_id"], name: "index_posts_on_user_id", using: :btree
 
-  create_table "project_reviews", id: false, force: :cascade do |t|
-    t.integer "product_id", limit: 4, null: false
-    t.integer "user_id",    limit: 4, null: false
+  create_table "project_votes", force: :cascade do |t|
+    t.integer  "user_id",    limit: 4
+    t.integer  "project_id", limit: 4
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
   end
 
-  create_table "project_votes", id: false, force: :cascade do |t|
-    t.integer "product_id", limit: 4, null: false
-    t.integer "user_id",    limit: 4, null: false
-  end
+  add_index "project_votes", ["project_id"], name: "index_project_votes_on_project_id", using: :btree
+  add_index "project_votes", ["user_id"], name: "index_project_votes_on_user_id", using: :btree
 
   create_table "projects", force: :cascade do |t|
     t.text     "content",     limit: 65535
@@ -70,14 +81,19 @@ ActiveRecord::Schema.define(version: 20150223143410) do
   add_index "projects", ["forum_id"], name: "index_projects_on_forum_id", using: :btree
   add_index "projects", ["user_id"], name: "index_projects_on_user_id", using: :btree
 
-  create_table "topic_votes", id: false, force: :cascade do |t|
-    t.integer "topic_id", limit: 4, null: false
-    t.integer "user_id",  limit: 4, null: false
+  create_table "topic_votes", force: :cascade do |t|
+    t.integer  "user_id",    limit: 4
+    t.integer  "topic_id",   limit: 4
+    t.boolean  "isDownvote", limit: 1
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
   end
+
+  add_index "topic_votes", ["topic_id"], name: "index_topic_votes_on_topic_id", using: :btree
+  add_index "topic_votes", ["user_id"], name: "index_topic_votes_on_user_id", using: :btree
 
   create_table "topics", force: :cascade do |t|
     t.string   "title",      limit: 255
-    t.datetime "date"
     t.integer  "upvotes",    limit: 4
     t.integer  "downvotes",  limit: 4
     t.integer  "postCount",  limit: 4
