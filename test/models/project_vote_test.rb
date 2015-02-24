@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class IterationTest < ActiveSupport::TestCase
+class ProjectVoteTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end
