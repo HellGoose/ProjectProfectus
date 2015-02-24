@@ -26,6 +26,9 @@ class ProjectsController < ApplicationController
   # GET /projects/1
   # GET /projects/1.json
   def show
+    forum = @project.forum
+    @topics = forum.topics
+    @topicsInterval = 10
   end
 
   # GET /projects/new

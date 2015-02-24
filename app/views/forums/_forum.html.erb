@@ -1,0 +1,18 @@
+<% first = (page.to_i - 1) * topicsPerPage.to_i %>
+<% last = (@topics.size() - first) %>
+<% if last <= 0 %>
+	<% last = 0 %>
+<% end %>
+<% @topics.last(last).first(topicsPerPage.to_i).each do |t| %>
+	<div class="col-xs-12 topic">
+		<%= link_to "", "/forum/" + id.to_s + "/" + t.id.to_s, class: "topic_link" %>
+		<div>
+			<p><%= t.upvotes - t.downvotes %></p>
+			<div class="image_container">
+				<%= image_tag t.image, class: "logo img-responsive" %>
+			</div>
+			<h4><%= t.title %></h4>
+			<p><%= t.postCount %></p>
+		</div>
+	</div>
+<% end %>
