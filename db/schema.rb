@@ -11,7 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150224114200) do
+ActiveRecord::Schema.define(version: 20150224125950) do
+
+  create_table "categories", force: :cascade do |t|
+    t.string   "name",       limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
 
   create_table "forums", force: :cascade do |t|
     t.integer  "topicCount", limit: 4
@@ -76,8 +82,10 @@ ActiveRecord::Schema.define(version: 20150224114200) do
     t.text     "description", limit: 65535
     t.integer  "user_id",     limit: 4
     t.integer  "forum_id",    limit: 4
+    t.integer  "category_id", limit: 4
   end
 
+  add_index "projects", ["category_id"], name: "index_projects_on_category_id", using: :btree
   add_index "projects", ["forum_id"], name: "index_projects_on_forum_id", using: :btree
   add_index "projects", ["user_id"], name: "index_projects_on_user_id", using: :btree
 
@@ -99,8 +107,9 @@ ActiveRecord::Schema.define(version: 20150224114200) do
     t.integer  "postCount",  limit: 4
     t.integer  "forum_id",   limit: 4
     t.integer  "user_id",    limit: 4
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+    t.text     "content",    limit: 65535
   end
 
   add_index "topics", ["forum_id"], name: "index_topics_on_forum_id", using: :btree
