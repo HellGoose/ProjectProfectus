@@ -1,6 +1,6 @@
 class Project < ActiveRecord::Base
 	#Required fields
-	validates :title, :description, :user_id, :content, presence: true
+	validates :title, :description, :user_id, :content, :forum_id, :category_id, presence: true
 	validates :description, length: { maximum: 150 }
 
 	#Relations
