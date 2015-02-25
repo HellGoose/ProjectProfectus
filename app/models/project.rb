@@ -1,11 +1,11 @@
 class Project < ActiveRecord::Base
 	#Required fields
-	validates :title, :description, :user_id, :content, presence: true
+	validates :title, :description, :user_id, :content, :forum_id, :category_id, presence: true
 	validates :description, length: { maximum: 150 }
 
 	#Relations
 	belongs_to :user
-	belongs_to :forum
+	belongs_to :forum, :dependent => :destroy
 	belongs_to :category
 	has_many :votes, class_name: "User", through: "project_votes"
 
