@@ -27,7 +27,7 @@ class ProjectsController < ApplicationController
     vote_project
     @topics = @project.forum.topics
     @topicsInterval = 10
-    render :show
+    render nothing: true
   end
 
   # GET /projects/1

@@ -1,0 +1,29 @@
+<%= javascript_include_tag "topics" %>
+<%= javascript_include_tag "forums" %>
+
+<div id='data' data-page='1' data-interval=<%= @postsInterval %> data-size=<%= @posts.size() %> data-forum=<%= @topic.forum_id %>></div>
+
+<div id="topic">
+	<div class="col-xs-12 main_topic">
+		<div class="vote_container2">
+			<button id=<%= @topic.id.to_s %> class="glyphicon glyphicon-menu-up up_vote" aria-hidden="true"></button>
+			<p><span id=<%= "votes#" + @topic.id.to_s %>><%= @topic.upvotes - @topic.downvotes %></span></p>
+			<button id=<%=  @topic.id.to_s %> class="glyphicon glyphicon-menu-down down_vote" aria-hidden="true"></button>
+		</div>
+		<div class="image_container2">
+			<%= image_tag @topic.image, class: "logo img-responsive" %>
+		</div>
+		<h4><%= @topic.title %></h4>
+		<p><%= @topic.content %>
+		<p>Posts: <%= @topic.postCount %></p>
+	</div>
+</div>
+
+<div id="posts">
+	<%= render partial: 'forums/posts', locals: { page: 1, postsPerPage: @postsInterval } %>
+</div>
+
+<div id="pageSelector">
+    <button id="prev" class="glyphicon glyphicon-menu-left" aria-hidden="true"></button>
+    <button id="next" class="glyphicon glyphicon-menu-right" aria-hidden="true"></button>
+</div>

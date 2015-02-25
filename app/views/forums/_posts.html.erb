@@ -1,0 +1,15 @@
+<% first = (page.to_i - 1) * postsPerPage.to_i %>
+<% last = (@posts.size() - first) %>
+<% if last <= 0 %>
+	<% last = 0 %>
+<% end %>
+<% @posts.last(last).first(postsPerPage.to_i).each do |p| %>
+	<div class="col-xs-12 post">
+		<div class="vote_container">
+			<button id=<%= p.id.to_s %> class="glyphicon glyphicon-menu-up up_vote" aria-hidden="true"></button>
+			<p><span id=<%= "votes#" + p.id.to_s %>><%= p.upvotes - p.downvotes %></span></p>
+			<button id=<%=  p.id.to_s %> class="glyphicon glyphicon-menu-down down_vote" aria-hidden="true"></button>
+		</div>
+		<p><%= p.content %></p>
+	</div>
+<% end %>

@@ -1,10 +1,26 @@
 class TopicsController < ApplicationController
-  before_action :set_topics, only: [:show, :edit, :update, :destroy]
+  before_action :set_topic, only: [:show, :edit, :update, :destroy]
 
   # GET /projects
   # GET /projects.json
   def index
     
+  end
+
+  def up
+    forum = Forum.find(params[:forum])
+    topic = forum.topics.find(params[:topic])
+    topic.upvotes += 1
+    topic.save
+    render nothing: true
+  end
+
+  def down
+    forum = Forum.find(params[:forum])
+    topic = forum.topics.find(params[:topic])
+    topic.downvotes += 1
+    topic.save
+    render nothing: true
   end
 
   def updateUpVotes
@@ -18,6 +34,7 @@ class TopicsController < ApplicationController
   # GET /projects/1
   # GET /projects/1.json
   def show
+    @posts = @topic.posts
   end
 
   # GET /projects/new
@@ -53,8 +70,8 @@ class TopicsController < ApplicationController
     end
 
     # Use callbacks to share common setup or constraints between actions.
-    def set_topics
-      @topics = Project.find(params[:id]).forum.topics
+    def set_topic
+      @topic = Forum.find(params[:forum]).topics.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
