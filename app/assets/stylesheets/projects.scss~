@@ -10,11 +10,6 @@
 	background-color: #18c93a;
 }
 
-button {
-	background: linear-gradient(to bottom right, #FFFFFF, #BBBBBB) !important;
-	border-radius: 5px;
-}
-
 #search {
 	float: left;
 }
