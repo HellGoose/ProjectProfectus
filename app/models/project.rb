@@ -5,7 +5,7 @@ class Project < ActiveRecord::Base
 
 	#Relations
 	belongs_to :user
-	belongs_to :forum
+	belongs_to :forum, :dependent => :destroy
 	belongs_to :category
 	has_many :votes, class_name: "User", through: "project_votes"
 

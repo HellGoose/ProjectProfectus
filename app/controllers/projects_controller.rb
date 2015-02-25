@@ -9,7 +9,12 @@ class ProjectsController < ApplicationController
   end
 
   def page
-    @projects = Project.all
+  	if params[:category] != nil
+	  	category = Category.find(params[:category])
+	    @projects = category.projects
+	else
+		@projects = Project.all
+	end
     page = params[:page]
     interval = params[:interval]
     respond_to do |format|
