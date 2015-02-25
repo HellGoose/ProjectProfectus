@@ -2,14 +2,45 @@
 
 <% Category.all.each do |c| %>
 	
+	<script>
+	var buttons;
+	var boop = 0;
+		deg = 0;
+	var nig;
+	var all = document.getElementsByTagName("*");
+	
+	//spinning ting
+	function scoop(){
+		
+		nig = setInterval(function(){
+			for(i = 0; a = all[i]; i++){
+					a.style.transform = "rotatex(" + deg + "deg) " +"rotatey(" + deg + "deg)" ;
+			}
+			deg +=0.1
+		},10);
+	}
+	//spinning ting end
 
+	function test(e){
+		for(i = 1; a = buttons[i]; i++){
+			a.className = "";
+		}
+		e.className = "selected";
+	}
+	window.onload = function(){
+		buttons = document.getElementsByTagName("button");
+	}
+	</script>
 	<div class="col-xs-3 categories">
 		<%#= link_to "", "/projects/" + p.id.to_s, class: "project_link" %>
 		
 		<div>
 		
-			<button type="button"><h4><%= c.name %></h4></button>
-		
+			<button type="button" onclick="test(this)" ><h4><%= c.name %></h4></button>
+			
 		</div>
 	</div>
+	<script>
+	
+	</script>
 <% end %>
