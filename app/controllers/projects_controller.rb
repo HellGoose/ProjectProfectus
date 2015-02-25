@@ -20,12 +20,16 @@ class ProjectsController < ApplicationController
   def vote
     set_project
     vote_project
+    @topics = @project.forum.topics
+    @topicsInterval = 10
     render :show
   end
 
   # GET /projects/1
   # GET /projects/1.json
   def show
+    @topics = @project.forum.topics
+    @topicsInterval = 10
   end
 
   # GET /projects/new
@@ -45,6 +49,8 @@ class ProjectsController < ApplicationController
   def create
     @project = Project.new(project_params)
     @project.user_id = session[:user_id]
+    forum = Forum.create
+    @project.forum_id = forum.id
 
     respond_to do |format|
       if @project.save
