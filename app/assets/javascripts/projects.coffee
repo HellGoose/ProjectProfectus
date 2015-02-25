@@ -18,20 +18,33 @@ nextPage = ->
   page = parseInt(data.getAttribute('data-page'))
   size = parseInt(data.getAttribute('data-size'))
   interval = parseInt(data.getAttribute('data-interval'))
+  category = parseInt(data.getAttribute('data-category'))
   page += 1
   if (page >= Math.floor(size / interval) + 1)
     page = Math.floor(size / interval) + 1
-  $('#projects').load('/projects/page/' + page + '/' + interval)
+  $('#projects').load('/projects/page/' + category + '/' + page + '/' + interval)
   data.setAttribute('data-page', page)
   return
 
 prevPage = ->
   page = parseInt(data.getAttribute('data-page'))
   interval = parseInt(data.getAttribute('data-interval'))
+  category = parseInt(data.getAttribute('data-category'))
   page -= 1
   if page < 1
     page = 1
-  $('#projects').load('/projects/page/' + page + '/' + interval)
+  $('#projects').load('/projects/page/' + category + '/' + page + '/' + interval)
+  data.setAttribute('data-page', page)
+  return
+
+
+reset = ->
+  page = parseInt(data.getAttribute('data-page'))
+  size = parseInt(data.getAttribute('data-size'))
+  interval = parseInt(data.getAttribute('data-interval'))
+  category = parseInt(data.getAttribute('data-category'))
+  page = 1
+  $('#projects').load('/projects/page/' + category + '/' + page + '/' + interval)
   data.setAttribute('data-page', page)
   return
 
@@ -49,6 +62,10 @@ $(document).ready ->
   $('#prev').click ->
     prevPage()
     return
+  $('.catButton').click ->
+    data.setAttribute('data-category', parseInt(@id))
+    reset()
+    return  
   $('#searchButton').click ->
     search()
     return
