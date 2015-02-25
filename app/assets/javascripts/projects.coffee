@@ -35,6 +35,7 @@ prevPage = ->
   data.setAttribute('data-page', page)
   return
 
+
 $(document).ready ->
   addNewProjectButton()
   data = document.getElementById('data')
