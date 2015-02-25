@@ -44,6 +44,9 @@ $(document).ready ->
   $('#prev').click ->
     prevPage()
     return
+  $('#searchButton').click ->
+    console.log document.getElementById('searchText').value
+    return
   return
 
 window.onkeyup = (e) ->
