@@ -18,9 +18,9 @@
 </div>
 <div class="col-sm-6">
 	<%= @project.description %>
-	<p>Votes: <%= @project.voteCount %></p>
+	<p>Votes: <span id="votes"><%= @project.voteCount %></span></p>
 	<p>Made by: <%= @project.user.name %></p>
-  <%= button_to "Vote", action: "vote" %>
+  <button id="voteButton">Vote</button>
 </div>
 
 <div id='data' data-page='1' data-interval=<%= @topicsInterval %> data-size=<%= @topics.size() %> data-forum=<%= @project.forum.id %>></div>
