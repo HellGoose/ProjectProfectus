@@ -49,6 +49,8 @@ class ProjectsController < ApplicationController
   def create
     @project = Project.new(project_params)
     @project.user_id = session[:user_id]
+    forum = Forum.create
+    @project.forum_id = forum.id
 
     respond_to do |format|
       if @project.save
@@ -98,7 +100,7 @@ class ProjectsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def project_params
       params.require(:project).permit( :title, :description, :content, :tags, :logoLink,
-                    :voteCount, :finalVoteCount, :flagged, :isGettingFunded)
+                    :voteCount, :finalVoteCount, :flagged, :isGettingFunded, :category_id)
     end
 
     def isProjectOwner
