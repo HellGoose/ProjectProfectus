@@ -1,14 +1,13 @@
 <%= javascript_include_tag "projects" %>
+<%= stylesheet_link_tag "projects" %>
 
 <div id="categories">
 
 </div>
 <div class="col-sm-12" id="searchBar">
 	<div id="search">
-		<form action="">
-			<input type="text" name="searchText">
-			<input type="submit" value="Search">
-		</form>
+		<input type="text" id="searchText"></input>
+		<button id="searchButton">Search</button>
 	</div>
 	<div id="filter">
 		<select name="filter" id="filter">
