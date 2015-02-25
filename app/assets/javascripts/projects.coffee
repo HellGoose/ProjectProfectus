@@ -35,9 +35,14 @@ prevPage = ->
   data.setAttribute('data-page', page)
   return
 
+search = ->
+  data.setAttribute('data-search', document.getElementById('searchText').value)
+  console.log data.getAttribute('data-search')
+  return
+
 $(document).ready ->
   addNewProjectButton()
-  data = document.getElementById('data')
+  data = $('#data')
   $('#next').click ->
     nextPage()
     return
@@ -45,13 +50,16 @@ $(document).ready ->
     prevPage()
     return
   $('#searchButton').click ->
-    console.log document.getElementById('searchText').value
+    search()
     return
   return
 
 window.onkeyup = (e) ->
   key = if e.keyCode then e.keyCode else e.which
   switch key
+    when 13
+      if $('#searchText').focus
+        search()
     when 39
       nextPage()
     when 37
