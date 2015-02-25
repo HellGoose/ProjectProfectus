@@ -55,7 +55,7 @@ search = ->
 
 $(document).ready ->
   addNewProjectButton()
-  data = $('#data')
+  data = document.getElementById('data')
   $('#next').click ->
     nextPage()
     return
