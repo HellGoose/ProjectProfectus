@@ -6,14 +6,17 @@ Rails.application.routes.draw do
   get 'signout', to: 'sessions#destroy', as: 'signout'
 
   get '/projects/page/:page/:interval', :to => 'projects#page', :as => :projects_page
-  post '/projects/vote/:id', :to => 'projects#vote'
+  post '/projects/:id/vote', :to => 'projects#vote'
 
   get '/forum/:id/page/:page/:interval', :to => 'forums#page'
+  post '/forum/:forum/:topic/up', :to => 'topics#up'
+  post '/forum/:forum/:topic/down', :to => 'topics#down'
+
+  get '/forum/:forum/:id', :to => 'topics#show'
 
     resources :sessions, only: [:create, :destroy]
     resources :projects
     resources :users
-    resources :forums
     resource :home, only: [:show]
 
   # The priority is based upon order of creation: first created -> highest priority.

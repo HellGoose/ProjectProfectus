@@ -1,3 +1,5 @@
+<%= javascript_include_tag "forums" %>
+
 <% first = (page.to_i - 1) * topicsPerPage.to_i %>
 <% last = (@topics.size() - first) %>
 <% if last <= 0 %>
@@ -9,7 +11,7 @@
 		<div>
 			<div class="vote_container">
 				<button id=<%= t.id.to_s %> class="glyphicon glyphicon-menu-up up_vote" aria-hidden="true"></button>
-				<p><%= t.upvotes - t.downvotes %></p>
+				<p><span id=<%= "votes#" + t.id.to_s %>><%= t.upvotes - t.downvotes %></span></p>
 				<button id=<%=  t.id.to_s %> class="glyphicon glyphicon-menu-down down_vote" aria-hidden="true"></button>
 			</div>
 			<div class="image_container">

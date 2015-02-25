@@ -27,6 +27,13 @@ prevPage = ->
 
 $(document).ready ->
   data = document.getElementById('data')
+  $('#voteButton').click ->
+    $.post document.URL + '/vote', (data, status) ->
+      voteSpan = document.getElementById('votes')
+      votes = parseInt(voteSpan.innerHTML)
+      voteSpan.innerHTML = votes + 1
+      return
+    return
   $('#next').click ->
     nextPage()
     return
