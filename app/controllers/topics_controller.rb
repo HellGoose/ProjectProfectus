@@ -56,7 +56,7 @@ class TopicsController < ApplicationController
         format.html { redirect_to forum.project }
       else
         format.html { render :new }
-        format.json { render json: @project.errors, status: :unprocessable_entity }
+        format.json { render json: @topic.errors, status: :unprocessable_entity }
       end
     end
   end
