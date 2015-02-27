@@ -26,6 +26,13 @@
 	min-height: 75px !important;
 }
 
+//Causes the catagory sites with no projects to have a simmilar look to those who have it.
+.noProject {
+	margin-top: 200px;
+	margin-bottom: 200px;
+	text-align: center;
+}
+
 #search {
 	float: left;
 }
