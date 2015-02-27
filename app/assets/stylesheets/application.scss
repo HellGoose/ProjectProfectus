@@ -67,6 +67,7 @@ button {
   height: 150px;
   background-color: #414141;
   margin-top:50px;
+  margin-bottom:-200px; /* This removes the white below the project page. Yes, it does look a bit jahla */
   padding-top:20px;
   padding-bottom:20px;
 }
