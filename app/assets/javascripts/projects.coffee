@@ -69,6 +69,7 @@ $(document).ready ->
     return
   $('.catButton').click ->
     data.setAttribute('data-category', parseInt(@id))
+    data.setAttribute('data-size', parseInt(@name))
     reset()
     return  
   $('#searchButton').click ->
