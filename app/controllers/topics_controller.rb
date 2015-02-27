@@ -53,7 +53,7 @@ class TopicsController < ApplicationController
 
     respond_to do |format|
       if @topic.save
-        format.html { redirect_to @topic }
+        format.html { redirect_to forum.project }
       else
         format.html { render :new }
         format.json { render json: @topic.errors, status: :unprocessable_entity }
