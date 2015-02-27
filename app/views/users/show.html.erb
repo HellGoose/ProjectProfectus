@@ -8,6 +8,6 @@
 <% end %>
 </h3>
 
-<div class="col-sm-6">Profile image here</div>
+<div class="col-sm-6"><%= image_tag @user.image %></div>
 <div class="col-sm-6">User created: <%= @user.created_at.strftime("%B %d, %Y") %></div>
 
