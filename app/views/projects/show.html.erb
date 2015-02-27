@@ -38,7 +38,7 @@
     </div>
     <div class="tab-pane" id="discussion-tab">
       <div id="topics">
-        <%= render partial: 'forums/forum', locals: { id: @project.forum.id, page: 1, topicsPerPage: 10 } %>
+        <%= render partial: 'forums/forum', locals: { id: @project.forum.id, page: 1, topicsPerPage: @topicsInterval } %>
       </div>
       <div id="pageSelector">
         <button id="prev" class="glyphicon glyphicon-menu-left" aria-hidden="true"></button>
