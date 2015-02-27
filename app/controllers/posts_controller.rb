@@ -7,17 +7,21 @@ class PostsController < ApplicationController
     
   end
 
-  def updateUpVotes
-    incrementUpVotes
-  end
-
-  def updateDownVotes
-    incrementDownVotes
-  end
-
   # GET /projects/1
   # GET /projects/1.json
   def show
+  end
+
+  def vote
+    post = Post.find(params[:id])
+    print params[:dir]
+    if params[:dir] == 'up'
+      post.upvotes += 1
+    elsif params[:dir] == 'down'
+      post.downvotes += 1
+    end
+    post.save()
+    render nothing: true
   end
 
   # GET /projects/new
@@ -35,13 +39,14 @@ class PostsController < ApplicationController
   # POST /projects.json
   def create
     @post = Post.new(post_params)
+    @post.user_id = session[:user_id]
+    @topic = Topic.find(@post.topic_id)
 
     respond_to do |format|
       if @post.save
-        format.html { redirect_to @post, notice: 'Post was successfully created.' }
-        format.json { render :show, status: :created, location: @post }
+        format.html { redirect_to @topic }
       else
-        format.html { render :new }
+        format.html { redirect_to @topic }
         format.json { render json: @post.errors, status: :unprocessable_entity }
       end
     end
@@ -72,16 +77,6 @@ class PostsController < ApplicationController
   end
 
   private
-    def incrementUpVotes
-      @post.topicCount += 1
-      @post.save
-    end
-
-    def incrementDownVotes
-      @post.postCount += 1
-      @post.save
-    end
-
     # Use callbacks to share common setup or constraints between actions.
     def set_posts
       @posts = Project.find(params[:id]).forum.topics.posts
@@ -89,7 +84,7 @@ class PostsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def post_params
-      params.require(:post).permit(:content)
+      params.require(:post).permit(:content, :topic_id)
     end
 
     def isPostOwner

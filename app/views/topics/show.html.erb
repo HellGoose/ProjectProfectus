@@ -1,5 +1,4 @@
 <%= javascript_include_tag "topics" %>
-<%= javascript_include_tag "forums" %>
 
 <%= stylesheet_link_tag "posts" %>
 <%= stylesheet_link_tag "projects" %>
@@ -30,3 +29,7 @@
     <button id="prev" class="glyphicon glyphicon-menu-left" aria-hidden="true"></button>
     <button id="next" class="glyphicon glyphicon-menu-right" aria-hidden="true"></button>
 </div>
+
+<div id="post">
+	<%= render partial: 'forums/postForm' %>
+ </div>
