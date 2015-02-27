@@ -21,7 +21,7 @@
 <div id='data' data-page='1' data-interval=<%= @projectsInterval %> data-size=<%= @projects.size() %> data-category="0" data-search=""</div>
 
 <div class="col-sm-12" id="projects">
-	<%= render partial: 'projectList', locals: { page: 1, projectsPerPage: @projectsInterval } %>
+	<%= render partial: 'projectList', locals: { page: 1, projectsPerPage: @projectsInterval} %>
 </div>
 
 <div id="pageSelector">

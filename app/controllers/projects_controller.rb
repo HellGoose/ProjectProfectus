@@ -12,9 +12,10 @@ class ProjectsController < ApplicationController
   	if params[:category].to_i > 0
 	  	category = Category.find(params[:category])
 	    @projects = category.projects
-	  else
+    else
 		  @projects = Project.all
-    end
+	  end
+
     page = params[:page]
     interval = params[:interval]
     respond_to do |format|
