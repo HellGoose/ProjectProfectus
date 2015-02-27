@@ -6,6 +6,8 @@
 #categories {
 	margin-top: 10px;
 	margin-bottom: 10px;
+	padding-top: 35px;
+	padding-left: 30px;
 	height: 300px;
 	background-color: #18c93a;
 }
@@ -17,6 +19,11 @@
 .selected {
 	background: linear-gradient(to bottom right, #AAAAAA, #999999) !important;
 	border-radius: 5px;
+}
+
+.catButton {
+	width: 100px !important;
+	min-height: 75px !important;
 }
 
 #search {
