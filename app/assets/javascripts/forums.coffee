@@ -9,8 +9,8 @@ nextPage = ->
   interval = parseInt(data.getAttribute('data-interval'))
   forum = parseInt(data.getAttribute('data-forum'))
   page += 1
-  if (page >= Math.floor(size / interval) + 1)
-    page = Math.floor(size / interval) + 1
+  if (page > Math.ceil(size / interval))
+    page = Math.ceil(size / interval)
   $('#topics').load('/forum/' + forum + '/page/' + page + '/' + interval)
   data.setAttribute('data-page', page)
   return

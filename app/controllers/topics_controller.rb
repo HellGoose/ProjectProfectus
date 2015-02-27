@@ -28,7 +28,7 @@ class TopicsController < ApplicationController
   # GET /projects/1
   # GET /projects/1.json
   def show
-    @posts = @topic.posts
+    @posts = @topic.posts.order('upvotes - downvotes DESC')
     @post = Post.new
   end
 
@@ -48,7 +48,7 @@ class TopicsController < ApplicationController
 
     respond_to do |format|
       if @topic.save
-        format.html { redirect_to forum.project }
+        format.html { redirect_to @forum.project }
       else
         format.html { render :new }
         format.json { render json: @topic.errors, status: :unprocessable_entity }
