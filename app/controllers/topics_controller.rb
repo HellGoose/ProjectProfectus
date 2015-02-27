@@ -9,11 +9,18 @@ class TopicsController < ApplicationController
 
   def vote
     topic = Topic.find(params[:id])
-    if params[:dir] == 'up'
+    userVote = topic.votes.find_by(user_id: session[:user_id])
+    if (userVote == nil)
+        userVote = topic.votes.create(topic_id: topic.id, user_id: session[:user_id])
+    end
+    if params[:dir] == 'up' and userVote.isDownvote != false
+      userVote.isDownvote = false
       topic.upvotes += 1
-    elsif params[:dir] == 'down'
+    elsif params[:dir] == 'down' and userVote.isDownvote != true
+      userVote.isDownvote = true
       topic.downvotes += 1
     end
+    userVote.save
     topic.save()
     render nothing: true
   end
