@@ -40,7 +40,6 @@ prevPage = ->
 
 reset = ->
   page = parseInt(data.getAttribute('data-page'))
-  size = parseInt(data.getAttribute('data-size'))
   interval = parseInt(data.getAttribute('data-interval'))
   category = parseInt(data.getAttribute('data-category'))
   page = 1
