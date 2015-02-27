@@ -6,7 +6,8 @@ class Topic < ActiveRecord::Base
 	belongs_to :forum
 	belongs_to :user
 	has_many :posts, :dependent => :destroy
-	has_many :votes, class_name: "User", through: "topic_votes"
+	has_many :votes, class_name: "TopicVote", :dependent => :delete_all
+	has_many :usersVoted, class_name: "User", through: "topic_votes"
 
 	#Sets default values
 	after_initialize :init
