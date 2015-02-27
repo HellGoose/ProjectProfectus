@@ -3,10 +3,18 @@
 <% if last <= 0 %>
 	<% last = 0 %>
 <% end %>
+
+<% if @projects.size()==0 %>
+	<div class="noProject">
+		<h3>There appears to be no projects in this category.</h3>
+	</div>
+<% end %>
+
 <% @projects.last(last).first(projectsPerPage.to_i).each do |p| %>
 	<div class="col-xs-3 project">
 		<%= link_to "", "/projects/" + p.id.to_s, class: "project_link" %>
 		<div>
+
 			<h4><%= p.title %></h4>
 			<h5>Votes: <%= p.voteCount %></h5>
 			<div class="image_container">
