@@ -1,4 +1,4 @@
-<%= form_for(@topic) do |f| %>
+<%= form_for(@topic, url: {controller: "topics", action: "create"}) do |f| %>
   <% if @topic.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@topic.errors.count, "error") %> prohibited this topic from being saved:</h2>
@@ -15,6 +15,10 @@
     <div class="form-group">
       <%= f.label :title %>
       <%= f.text_field :title, class: "form-control", placeholder: "Enter title" %>
+    </div>
+    <div class="form-group" style="display: none;">
+      <%= f.label :forum_id %>
+      <%= f.text_field :forum_id, class: "form-control", placeholder: "Enter forum", value: @forum.id %>
     </div>
     <div class="form-group">
       <%= f.label :content %>

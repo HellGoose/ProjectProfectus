@@ -12,7 +12,7 @@ class Topic < ActiveRecord::Base
 	after_initialize :init
 	def init
 		self.postCount ||= 0 if self.has_attribute? :postCount
-		self.upvotes ||= 0 if self.has_attribute? :upVotes
-		self.downvotes ||= 0 if self.has_attribute? :downVotes
+		self.upvotes ||= 0 if self.has_attribute? :upvotes
+		self.downvotes ||= 0 if self.has_attribute? :downvotes
 	end
 end

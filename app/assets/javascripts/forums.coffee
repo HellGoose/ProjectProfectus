@@ -7,24 +7,18 @@ $(document).ready ->
 	buttonUp = document.getElementsByClassName('up_vote')
 	buttonDown = document.getElementsByClassName('down_vote')
 
-	i = 0
-	while i < buttonUp.length
-		button = buttonUp[i]
-		$(button).click ->
-			$.post '/forum/' + forum + '/' + button.id + '/up', (data, status) ->
-				voteNum = document.getElementById('votes#' + button.id)
-				voteNum.innerHTML = parseInt(voteNum.innerHTML) + 1
-				return
+	$('.up_vote').click ->
+		button_id = @id
+		$.post '/forum/' + forum + '/' + button_id + '/up', (data, status) ->
+			voteNum = document.getElementById('votes#' + button_id)
+			voteNum.innerHTML = parseInt(voteNum.innerHTML) + 1
 			return
-		i++
-	i = 0
-	while i < buttonDown.length
-		button = buttonDown[i]
-		$(button).click ->
-			$.post '/forum/' + forum + '/' + button.id + '/down', (data, status) ->
-				voteNum = document.getElementById('votes#' + button.id)
-				voteNum.innerHTML = parseInt(voteNum.innerHTML) - 1
-				return
+		return
+
+	$('.down_vote').click ->
+		button_id = @id
+		$.post '/forum/' + forum + '/' + button_id + '/down', (data, status) ->
+			voteNum = document.getElementById('votes#' + button_id)
+			voteNum.innerHTML = parseInt(voteNum.innerHTML) - 1
 			return
-		i++
-	return
+		return
