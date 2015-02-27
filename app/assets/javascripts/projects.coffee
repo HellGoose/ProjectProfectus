@@ -20,8 +20,8 @@ nextPage = ->
   interval = parseInt(data.getAttribute('data-interval'))
   category = parseInt(data.getAttribute('data-category'))
   page += 1
-  if (page >= Math.floor(size / interval) + 1)
-    page = Math.floor(size / interval) + 1
+  if (page > Math.ceil(size / interval))
+    page = Math.ceil(size / interval)
   $('#projects').load('/projects/page/' + category + '/' + page + '/' + interval)
   data.setAttribute('data-page', page)
   return

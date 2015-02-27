@@ -44,6 +44,8 @@ class PostsController < ApplicationController
 
     respond_to do |format|
       if @post.save
+        @topic.postCount += 1
+        @topic.save
         format.html { redirect_to @topic }
       else
         format.html { redirect_to @topic }
