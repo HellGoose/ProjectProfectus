@@ -8,7 +8,7 @@ class Project < ActiveRecord::Base
 	belongs_to :forum, :dependent => :destroy
 	belongs_to :category
 	has_many :votes, class_name: "ProjectVote", :dependent => :delete_all
-	has_many :usersVoted, class_name: "User", through: "project_votes"
+	has_many :usersVoted, class_name: "User", through: "ProjectVote"
 
 	#Sets default values
 	after_initialize :init

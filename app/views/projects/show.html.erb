@@ -22,7 +22,11 @@
 	<%= @project.description %>
 	<p>Votes: <span id="votes"><%= @project.voteCount %></span></p>
 	<p>Made by: <%= @project.user.name %></p>
-  <button id="voteButton">Vote</button>
+  <% if (@project.votes.where(user_id: session[:user_id]).take == nil) %>
+    <button id="voteButton">Vote</button>
+  <% else %>
+    <p> TommelOpp </p>
+  <% end%>
 </div>
 
 <div id='data' data-page='1' data-interval=<%= @topicsInterval %> data-size=<%= @topics.size() %> data-forum=<%= @project.forum.id %>></div>

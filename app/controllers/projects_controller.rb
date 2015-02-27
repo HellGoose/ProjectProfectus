@@ -23,7 +23,9 @@ class ProjectsController < ApplicationController
   end
 
   def vote
-    vote_project
+  	if (@project.votes.find_by(user_id: session[:user_id]) == nil)
+    	vote_project
+	end
     render nothing: true
   end
 
@@ -37,7 +39,7 @@ class ProjectsController < ApplicationController
 
   # GET /projects/new
   def new
-    @project = Project.new
+   	@project = Project.new
   end
 
   # GET /projects/1/edit
@@ -92,8 +94,9 @@ class ProjectsController < ApplicationController
 
   private
     def vote_project
-      @project.voteCount += 1
-      @project.save
+	    @project.voteCount += 1
+	    @project.votes.create(project_id: @project.id, user_id: session[:user_id])
+	    @project.save
     end
     # Use callbacks to share common setup or constraints between actions.
     def set_project

@@ -56,6 +56,11 @@ search = ->
 $(document).ready ->
   addNewProjectButton()
   data = document.getElementById('data')
+  $('#voteButton').click ->
+    $.post document.URL + '/vote', (data, status) ->
+      tull = 0
+      return
+    return
   $('#next').click ->
     nextPage()
     return
