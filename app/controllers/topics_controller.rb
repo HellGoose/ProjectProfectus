@@ -53,7 +53,7 @@ class TopicsController < ApplicationController
 
     respond_to do |format|
       if @topic.save
-        format.html { redirect_to forum.project }
+        format.html { redirect_to @topic }
       else
         format.html { render :new }
         format.json { render json: @topic.errors, status: :unprocessable_entity }
@@ -79,6 +79,6 @@ class TopicsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def topic_params
-      params.require(:topic).permit(:title, :content, :forum_id)
+      params.require(:topic).permit(:title, :content, :forum_id, :image)
     end
 end

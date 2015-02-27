@@ -5,7 +5,8 @@
 <% if last <= 0 %>
 	<% last = 0 %>
 <% end %>
-<% @topics.last(last).first(topicsPerPage.to_i).each do |t| %>
+<% topicList = @topics.last(last).first(topicsPerPage.to_i) %>
+<% topicList.each do |t| %>
 	<div class="col-xs-12 topic">
 		<%= link_to "", "/forum/" + id.to_s + "/" + t.id.to_s, class: "topic_link" %>
 		<div>

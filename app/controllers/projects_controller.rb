@@ -1,5 +1,5 @@
 class ProjectsController < ApplicationController
-  before_action :set_project, only: [:show, :edit, :update, :destroy]
+  before_action :set_project, only: [:vote, :show, :edit, :update, :destroy]
 
   # GET /projects
   # GET /projects.json
@@ -12,9 +12,9 @@ class ProjectsController < ApplicationController
   	if params[:category].to_i > 0
 	  	category = Category.find(params[:category])
 	    @projects = category.projects
-	else
-		@projects = Project.all
-	end
+	  else
+		  @projects = Project.all
+    end
     page = params[:page]
     interval = params[:interval]
     respond_to do |format|
@@ -23,10 +23,7 @@ class ProjectsController < ApplicationController
   end
 
   def vote
-    set_project
     vote_project
-    @topics = @project.forum.topics
-    @topicsInterval = 10
     render nothing: true
   end
 
@@ -34,7 +31,8 @@ class ProjectsController < ApplicationController
   # GET /projects/1.json
   def show
     @topics = @project.forum.topics
-    @topicsInterval = 10
+    @topics = @topics.order('upvotes - downvotes DESC')
+    @topicsInterval = 2
   end
 
   # GET /projects/new
