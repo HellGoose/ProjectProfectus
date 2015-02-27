@@ -1,4 +1,4 @@
-<%= javascript_include_tag "forums" %>
+<%= javascript_include_tag "topics" %>
 
 <% first = (page.to_i - 1) * topicsPerPage.to_i %>
 <% last = (@topics.size() - first) %>
@@ -19,6 +19,7 @@
 				<%= image_tag t.image, class: "logo img-responsive" %>
 			</div>
 			<h4><%= t.title %></h4>
+			<p>Created by: <%= User.find(t.user_id).name %></p>
 			<p>Posts: <%= t.postCount %></p>
 		</div>
 	</div>
