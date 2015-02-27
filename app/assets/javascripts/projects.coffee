@@ -18,21 +18,39 @@ nextPage = ->
   page = parseInt(data.getAttribute('data-page'))
   size = parseInt(data.getAttribute('data-size'))
   interval = parseInt(data.getAttribute('data-interval'))
+  category = parseInt(data.getAttribute('data-category'))
   page += 1
   if (page >= Math.floor(size / interval) + 1)
     page = Math.floor(size / interval) + 1
-  $('#projects').load('/projects/page/' + page + '/' + interval)
+  $('#projects').load('/projects/page/' + category + '/' + page + '/' + interval)
   data.setAttribute('data-page', page)
   return
 
 prevPage = ->
   page = parseInt(data.getAttribute('data-page'))
   interval = parseInt(data.getAttribute('data-interval'))
+  category = parseInt(data.getAttribute('data-category'))
   page -= 1
   if page < 1
     page = 1
-  $('#projects').load('/projects/page/' + page + '/' + interval)
+  $('#projects').load('/projects/page/' + category + '/' + page + '/' + interval)
   data.setAttribute('data-page', page)
+  return
+
+
+reset = ->
+  page = parseInt(data.getAttribute('data-page'))
+  size = parseInt(data.getAttribute('data-size'))
+  interval = parseInt(data.getAttribute('data-interval'))
+  category = parseInt(data.getAttribute('data-category'))
+  page = 1
+  $('#projects').load('/projects/page/' + category + '/' + page + '/' + interval)
+  data.setAttribute('data-page', page)
+  return
+
+search = ->
+  data.setAttribute('data-search', document.getElementById('searchText').value)
+  console.log data.getAttribute('data-search')
   return
 
 $(document).ready ->
@@ -44,14 +62,21 @@ $(document).ready ->
   $('#prev').click ->
     prevPage()
     return
+  $('.catButton').click ->
+    data.setAttribute('data-category', parseInt(@id))
+    reset()
+    return  
   $('#searchButton').click ->
-    console.log document.getElementById('searchText').value
+    search()
     return
   return
 
 window.onkeyup = (e) ->
   key = if e.keyCode then e.keyCode else e.which
   switch key
+    when 13
+      if $('#searchText').focus
+        search()
     when 39
       nextPage()
     when 37
