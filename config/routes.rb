@@ -9,15 +9,16 @@ Rails.application.routes.draw do
   post '/projects/:id/vote', :to => 'projects#vote'
 
   get '/forum/:id/page/:page/:interval', :to => 'forums#page'
-  post '/forum/:forum/:topic/up', :to => 'topics#up'
-  post '/forum/:forum/:topic/down', :to => 'topics#down'
 
-  get '/forum/:forum/:id', :to => 'topics#show'
+  post '/vote/project/:id/:dir', :to => 'project#vote'
+  post '/vote/post/:id/:dir', :to => 'posts#vote'
+  post '/vote/topic/:id/:dir', :to => 'topics#vote'
 
     resources :sessions, only: [:create, :destroy]
     resources :projects
     resources :users
     resources :topics
+    resources :posts
     resource :home, only: [:show]
 
   # The priority is based upon order of creation: first created -> highest priority.

@@ -8,7 +8,7 @@
 <% topicList = @topics.last(last).first(topicsPerPage.to_i) %>
 <% topicList.each do |t| %>
 	<div class="col-xs-12 topic">
-		<%= link_to "", "/forum/" + id.to_s + "/" + t.id.to_s, class: "topic_link" %>
+		<%= link_to "", t, class: "topic_link" %>
 		<div>
 			<div class="vote_container">
 				<button id=<%= t.id.to_s %> class="glyphicon glyphicon-menu-up up_vote" aria-hidden="true"></button>

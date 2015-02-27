@@ -13,6 +13,7 @@ Rails.application.config.assets.version = '1.0'
 Rails.application.config.assets.precompile += %w( projects.js )
 Rails.application.config.assets.precompile += %w( topics.js )
 Rails.application.config.assets.precompile += %w( forums.js )
+Rails.application.config.assets.precompile += %w( posts.js )
 
 Rails.application.config.assets.precompile += %w( projects.css )
 Rails.application.config.assets.precompile += %w( users.css )

@@ -7,34 +7,22 @@ class TopicsController < ApplicationController
     
   end
 
-  def up
-    forum = Forum.find(params[:forum])
-    topic = forum.topics.find(params[:topic])
-    topic.upvotes += 1
-    topic.save
+  def vote
+    topic = Topic.find(params[:id])
+    if params[:dir] == 'up'
+      topic.upvotes += 1
+    elsif params[:dir] == 'down'
+      topic.downvotes += 1
+    end
+    topic.save()
     render nothing: true
-  end
-
-  def down
-    forum = Forum.find(params[:forum])
-    topic = forum.topics.find(params[:topic])
-    topic.downvotes += 1
-    topic.save
-    render nothing: true
-  end
-
-  def updateUpVotes
-    incrementUpVotes
-  end
-
-  def updateDownVotes
-    incrementDownVotes
   end
 
   # GET /projects/1
   # GET /projects/1.json
   def show
     @posts = @topic.posts
+    @post = Post.new
   end
 
   # GET /projects/new
@@ -62,19 +50,9 @@ class TopicsController < ApplicationController
   end
 
   private
-    def incrementUpVotes
-      @topic.topicCount += 1
-      @topic.save
-    end
-
-    def incrementDownVotes
-      @topic.postCount += 1
-      @topic.save
-    end
-
     # Use callbacks to share common setup or constraints between actions.
     def set_topic
-      @topic = Forum.find(params[:forum]).topics.find(params[:id])
+      @topic = Topic.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
