@@ -60,3 +60,11 @@
 .topic_link:hover {
 	color: #363632;
 }
+
+.up_vote[disabled]{
+	color: green;
+}
+
+.down_vote[disabled]{
+	color:red;
+}
