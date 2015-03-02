@@ -20,8 +20,9 @@ nextPage = ->
   interval = parseInt(data.getAttribute('data-interval'))
   category = parseInt(data.getAttribute('data-category'))
   page += 1
-  if (page > Math.ceil(size / interval))
+  if (page > Math.ceil(size / interval)-1)
     page = Math.ceil(size / interval)
+    $('#next').attr('disabled', true)
   $('#projects').load('/projects/page/' + category + '/' + page + '/' + interval)
   data.setAttribute('data-page', page)
   return
@@ -31,8 +32,9 @@ prevPage = ->
   interval = parseInt(data.getAttribute('data-interval'))
   category = parseInt(data.getAttribute('data-category'))
   page -= 1
-  if page < 1
+  if page < 2
     page = 1
+    $('#prev').attr('disabled', true)
   $('#projects').load('/projects/page/' + category + '/' + page + '/' + interval)
   data.setAttribute('data-page', page)
   return
@@ -50,16 +52,24 @@ reset = ->
 search = ->
   data.setAttribute('data-search', document.getElementById('searchText').value)
   console.log data.getAttribute('data-search')
+  
   return
 
 $(document).ready ->
   addNewProjectButton()
   data = document.getElementById('data')
+
+  page = parseInt(data.getAttribute('data-page'))
+  if page == 1
+    $('#prev').attr('disabled', true)
+
   $('#next').click ->
     nextPage()
+    $('#prev').attr('disabled', false)
     return
   $('#prev').click ->
     prevPage()
+    $('#next').attr('disabled', false)
     return
   $('.catButton').click ->
     data.setAttribute('data-category', parseInt(@id))
