@@ -3,6 +3,9 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 $(document).ready ->
+	data = document.getElementById('data')
+	topic = data.getAttribute('data-topic')
+
 	$('.post_up_vote').click ->
 		button_id = @id
 		$.post '/vote/post/' + button_id + '/up', (data, status) ->
@@ -17,4 +20,9 @@ $(document).ready ->
 			voteNum = document.getElementById('votes#' + button_id)
 			voteNum.innerHTML = parseInt(voteNum.innerHTML) - 1
 			return
+		return
+
+	$('.answer').click ->
+		button_id = @id
+		$('#answer' + button_id).load('/posts/answer/' + topic + '/' + button_id)
 		return

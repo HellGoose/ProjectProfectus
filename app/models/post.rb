@@ -5,7 +5,12 @@ class Post < ActiveRecord::Base
 	#Relations
 	belongs_to :user
 	belongs_to :topic
-	has_and_belongs_to_many :comments, class_name: "Post", join_table: "post_comments", :dependent => :destroy
+	has_and_belongs_to_many :comments, 
+		class_name: "Post", 
+		join_table: "post_comments", 
+		foreign_key: "post_id",
+		association_foreign_key: "comment_id", 
+		:dependent => :destroy
 	has_many :votes, class_name: "PostVote", :dependent => :delete_all
 	has_many :usersVoted, class_name: "User", through: "post_votes"
 

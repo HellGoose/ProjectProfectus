@@ -7,6 +7,13 @@
 			<p><span id=<%= "votes#" + p.id.to_s %>><%= p.upvotes - p.downvotes %></span></p>
 			<button id=<%=  p.id.to_s %> class="glyphicon glyphicon-menu-down post_down_vote" aria-hidden="true"></button>
 		</div>
-		<p><%= p.content %></p>
+		<p class="user"><%= User.find(p.user_id).name + " - " + p.created_at.to_s %></p>
+		<p class="content"><%= p.content %></p>
+		<div class="bar">
+			<a class="answer" id="<%= p.id.to_s %>">Answer</a>
+		</div>
+		<div class="answer_div" id="<%= "answer" + p.id.to_s %>">
+
+		</div>
 	</div>
 <% end %>
