@@ -16,6 +16,7 @@
 	background: linear-gradient(to bottom right, #FFFFFF, #BBBBBB) !important;
 	border-radius: 5px;
 }
+
 .selected {
 	background: linear-gradient(to bottom right, #AAAAAA, #999999) !important;
 	border-radius: 5px;
@@ -53,6 +54,12 @@
 	left: 50%;
 	margin-left: -42px;
 }
+
+//Makes disabled buttons 50% transgendered
+#pageSelector button:disabled{
+	opacity: .5;
+}
+
 
 .image_container {
 	width: 200px;
