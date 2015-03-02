@@ -1,6 +1,7 @@
 <%= javascript_include_tag "posts" %>
 
 <% @posts.each do |p| %>
+	<% next if p.isComment? %>
 	<div class="col-xs-12 post">
 		<div class="vote_container">
 			<button id=<%= p.id.to_s %> class="glyphicon glyphicon-menu-up post_up_vote" aria-hidden="true"></button>

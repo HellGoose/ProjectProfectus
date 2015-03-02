@@ -57,11 +57,12 @@ class PostsController < ApplicationController
     @post = Post.new(content: post_params[:content], topic_id: post_params[:topic_id])
     @post.user_id = session[:user_id]
     @topic = Topic.find(@post.topic_id)
-    @op = Post.find(post_params[:post_id])
 
-    if (@op != nil)
+    if (post_params[:post_id] != nil)
+      @op = Post.find(post_params[:post_id])
       @op.comments << @post
       @op.save
+      @post.isComment = true
     end
 
     respond_to do |format|
