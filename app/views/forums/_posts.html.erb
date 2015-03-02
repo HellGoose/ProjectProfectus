@@ -1,11 +1,9 @@
-<%= javascript_include_tag "posts" %>
-
 <% @posts.each do |p| %>
 	<% next if p.isComment? %>
 	<div class="col-xs-12 post">
 		<div class="vote_container">
 			<button id=<%= p.id.to_s %> class="glyphicon glyphicon-menu-up post_up_vote" aria-hidden="true"></button>
-			<p><span id=<%= "votes#" + p.id.to_s %>><%= p.upvotes - p.downvotes %></span></p>
+			<p><span id=<%= "post_votes#" + p.id.to_s %>><%= p.upvotes - p.downvotes %></span></p>
 			<button id=<%=  p.id.to_s %> class="glyphicon glyphicon-menu-down post_down_vote" aria-hidden="true"></button>
 		</div>
 		<p class="user"><%= User.find(p.user_id).name + " - " + p.created_at.to_s %></p>
