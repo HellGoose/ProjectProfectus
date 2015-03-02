@@ -3,7 +3,7 @@
 <%= stylesheet_link_tag "posts" %>
 <%= stylesheet_link_tag "projects" %>
 
-<div id='data' data-page='1' data-interval=<%= @postsInterval %> data-size=<%= @posts.size() %> data-forum=<%= @topic.forum_id %>></div>
+<div id='data' data-page='1' data-interval=<%= @postsInterval %> data-size=<%= @posts.size() %> data-topic=<%= @topic.id %>></div>
 
 <div id="topic">
 	<div class="col-xs-12 main_topic">
