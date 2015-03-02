@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150224141148) do
+ActiveRecord::Schema.define(version: 20150302121203) do
 
   create_table "categories", force: :cascade do |t|
     t.string   "name",       limit: 255
@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(version: 20150224141148) do
   end
 
   create_table "post_comments", id: false, force: :cascade do |t|
-    t.integer "id",         limit: 4
+    t.integer "id",         limit: 4, null: false
     t.integer "comment_id", limit: 4
     t.integer "post_id",    limit: 4
   end
@@ -55,6 +55,7 @@ ActiveRecord::Schema.define(version: 20150224141148) do
     t.integer  "user_id",    limit: 4
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
+    t.boolean  "isComment",  limit: 1
   end
 
   add_index "posts", ["topic_id"], name: "index_posts_on_topic_id", using: :btree
@@ -72,7 +73,6 @@ ActiveRecord::Schema.define(version: 20150224141148) do
 
   create_table "projects", force: :cascade do |t|
     t.text     "content",     limit: 65535
-    t.text     "tags",        limit: 65535
     t.boolean  "flagged",     limit: 1
     t.integer  "voteCount",   limit: 4
     t.string   "logoLink",    limit: 255

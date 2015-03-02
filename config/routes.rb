@@ -14,6 +14,8 @@ Rails.application.routes.draw do
   post '/vote/post/:id/:dir', :to => 'posts#vote'
   post '/vote/topic/:id/:dir', :to => 'topics#vote'
 
+  get '/posts/answer/:topic_id/:post_id', :to => 'posts#answer'
+
     resources :sessions, only: [:create, :destroy]
     resources :projects
     resources :users

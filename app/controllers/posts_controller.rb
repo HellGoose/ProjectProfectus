@@ -12,14 +12,29 @@ class PostsController < ApplicationController
   def show
   end
 
+  def answer
+    @post = Post.new
+    @topic = Topic.find(params[:topic_id])
+    @op = Post.find(params[:post_id])
+    respond_to do |format|
+      format.js { render partial: 'forums/postForm' }
+    end
+  end
+
   def vote
     post = Post.find(params[:id])
-    print params[:dir]
-    if params[:dir] == 'up'
+    userVote = post.votes.find_by(user_id: session[:user_id])
+    if (userVote == nil)
+        userVote = post.votes.create(post_id: post.id, user_id: session[:user_id])
+    end
+    if params[:dir] == 'up' and userVote.isDownvote != false
+      userVote.isDownvote = false
       post.upvotes += 1
-    elsif params[:dir] == 'down'
+    elsif params[:dir] == 'down' and userVote.isDownvote != true
+      userVote.isDownvote = true
       post.downvotes += 1
     end
+    userVote.save()
     post.save()
     render nothing: true
   end
@@ -27,6 +42,7 @@ class PostsController < ApplicationController
   # GET /projects/new
   def new
     @post = Post.new
+    @op = nil
   end
 
   def edit
@@ -38,9 +54,15 @@ class PostsController < ApplicationController
   # POST /projects
   # POST /projects.json
   def create
-    @post = Post.new(post_params)
+    @post = Post.new(content: post_params[:content], topic_id: post_params[:topic_id])
     @post.user_id = session[:user_id]
     @topic = Topic.find(@post.topic_id)
+    @op = Post.find(post_params[:post_id])
+
+    if (@op != nil)
+      @op.comments << @post
+      @op.save
+    end
 
     respond_to do |format|
       if @post.save
@@ -86,7 +108,7 @@ class PostsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def post_params
-      params.require(:post).permit(:content, :topic_id)
+      params.require(:post).permit(:content, :topic_id, :post_id)
     end
 
     def isPostOwner
