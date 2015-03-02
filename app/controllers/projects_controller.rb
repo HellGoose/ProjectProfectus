@@ -4,16 +4,16 @@ class ProjectsController < ApplicationController
   # GET /projects
   # GET /projects.json
   def index
-    @projects = Project.all
+    @projects = Project.all.order('voteCount DESC')
     @projectsInterval = 8
   end
 
   def page
   	if params[:category].to_i > 0
 	  	category = Category.find(params[:category])
-	    @projects = category.projects
+	    @projects = category.projects.order('voteCount DESC')
     else
-		  @projects = Project.all
+		  @projects = Project.all.order('voteCount DESC')
 	  end
 
     page = params[:page]
