@@ -19,5 +19,6 @@ class Post < ActiveRecord::Base
 	def init
 		self.upvotes ||= 0 if self.has_attribute? :upvotes
 		self.downvotes ||= 0 if self.has_attribute? :downvotes
+		self.isComment = false if (self.has_attribute? :isComment) && self.isComment.nil?
 	end
 end
