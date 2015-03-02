@@ -2,9 +2,11 @@
 	<% next if p.isComment? %>
 	<div class="col-xs-12 post">
 		<div class="vote_container">
-			<button id=<%= p.id.to_s %> class="glyphicon glyphicon-menu-up post_up_vote" aria-hidden="true"></button>
+			<button id=<%= p.id.to_s %> class="glyphicon glyphicon-menu-up post_up_vote" aria-hidden="true"
+			<% if !p.votes.find_by(user_id: session[:user_id], post_id: p.id).isDownvote%>disabled<%end%>></button>
 			<p><span id=<%= "post_votes#" + p.id.to_s %>><%= p.upvotes - p.downvotes %></span></p>
-			<button id=<%=  p.id.to_s %> class="glyphicon glyphicon-menu-down post_down_vote" aria-hidden="true"></button>
+			<button id=<%=  p.id.to_s %> class="glyphicon glyphicon-menu-down post_down_vote" aria-hidden="true"
+			<% if p.votes.find_by(user_id: session[:user_id], post_id: p.id).isDownvote%>disabled<%end%>></button>
 		</div>
 		<p class="user"><%= User.find(p.user_id).name + " - " + p.created_at.to_s %></p>
 		<p class="content"><%= p.content %></p>

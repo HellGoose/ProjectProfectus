@@ -43,3 +43,19 @@
 	max-width: 100%;
 	max-height: 100%;
 }
+
+.post_up_vote[disabled]{
+	color: green;
+}
+
+.post_down_vote[disabled]{
+	color:red;
+}
+
+.up_vote[disabled]{
+	color: green;
+}
+
+.down_vote[disabled]{
+	color:red;
+}

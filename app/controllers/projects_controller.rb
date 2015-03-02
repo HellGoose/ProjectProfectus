@@ -25,7 +25,7 @@ class ProjectsController < ApplicationController
 
   def vote
     if (@project.votes.find_by(user_id: session[:user_id]) == nil)
-     vote_project
+      vote_project
     else
       removeVote
     end
