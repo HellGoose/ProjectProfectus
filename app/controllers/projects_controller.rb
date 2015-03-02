@@ -1,5 +1,5 @@
 class ProjectsController < ApplicationController
-  before_action :set_project, only: [:vote, :show, :edit, :update, :destroy]
+  before_action :set_project, only: [:removeVote, :vote, :show, :edit, :update, :destroy]
 
   # GET /projects
   # GET /projects.json
@@ -24,9 +24,11 @@ class ProjectsController < ApplicationController
   end
 
   def vote
-  	if (@project.votes.find_by(user_id: session[:user_id]) == nil)
-    	vote_project
-	end
+    if (@project.votes.find_by(user_id: session[:user_id]) == nil)
+     vote_project
+    else
+      removeVote
+    end
     render nothing: true
   end
 
@@ -99,6 +101,13 @@ class ProjectsController < ApplicationController
 	    @project.votes.create(project_id: @project.id, user_id: session[:user_id])
 	    @project.save
     end
+
+    def removeVote
+      @project.votes.find_by(user_id: session[:user_id]).delete
+      @project.voteCount -= 1
+      @project.save
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_project
       @project = Project.find(params[:id])
