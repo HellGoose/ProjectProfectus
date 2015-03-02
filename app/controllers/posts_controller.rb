@@ -14,12 +14,18 @@ class PostsController < ApplicationController
 
   def vote
     post = Post.find(params[:id])
-    print params[:dir]
-    if params[:dir] == 'up'
+    userVote = post.votes.find_by(user_id: session[:user_id])
+    if (userVote == nil)
+        userVote = post.votes.create(post_id: post.id, user_id: session[:user_id])
+    end
+    if params[:dir] == 'up' and userVote.isDownvote != false
+      userVote.isDownvote = false
       post.upvotes += 1
-    elsif params[:dir] == 'down'
+    elsif params[:dir] == 'down' and userVote.isDownvote != true
+      userVote.isDownvote = true
       post.downvotes += 1
     end
+    userVote.save()
     post.save()
     render nothing: true
   end
