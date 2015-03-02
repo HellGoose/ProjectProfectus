@@ -9,6 +9,8 @@ $(document).ready ->
 	$('.post_up_vote').click ->
 		button_id = @id
 		$.post '/vote/post/' + button_id + '/up', (data, status) ->
+			$('.post_up_vote').attr('disabled', true)
+      		$('.post_down_vote').attr('disabled', false)
 			voteNum = document.getElementById('votes#' + button_id)
 			voteNum.innerHTML = parseInt(voteNum.innerHTML) + 1
 			return
@@ -17,6 +19,8 @@ $(document).ready ->
 	$('.post_down_vote').click ->
 		button_id = @id
 		$.post '/vote/post/' + button_id + '/down', (data, status) ->
+			$('.post_down_vote').attr('disabled', true)
+      		$('.post_up_vote').attr('disabled', false)
 			voteNum = document.getElementById('votes#' + button_id)
 			voteNum.innerHTML = parseInt(voteNum.innerHTML) - 1
 			return
