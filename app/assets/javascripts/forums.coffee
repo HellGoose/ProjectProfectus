@@ -32,7 +32,13 @@ $(document).ready ->
     $.post document.URL + '/vote', (data, status) ->
       voteSpan = document.getElementById('votes')
       votes = parseInt(voteSpan.innerHTML)
-      voteSpan.innerHTML = votes + 1
+
+      if $('#voteButton').html() == 'Vote'
+        $('#voteButton').html('Unvote')
+        voteSpan.innerHTML = votes + 1
+      else
+        $('#voteButton').html('Vote')
+        voteSpan.innerHTML = votes - 1
       return
     return
   $('#next').click ->
