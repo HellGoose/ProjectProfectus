@@ -44,9 +44,15 @@ reset = ->
   page = parseInt(data.getAttribute('data-page'))
   interval = parseInt(data.getAttribute('data-interval'))
   category = parseInt(data.getAttribute('data-category'))
+  size = parseInt(data.getAttribute('data-size'))
   page = 1
+  if size <= interval
+    $('#next').attr('disabled', true)
+  else
+    $('#next').attr('disabled', false)
   $('#projects').load('/projects/page/' + category + '/' + page + '/' + interval)
   data.setAttribute('data-page', page)
+  $('.catButton').attr('style', 'color: black')
   return
 
 search = ->
@@ -60,8 +66,14 @@ $(document).ready ->
   data = document.getElementById('data')
 
   page = parseInt(data.getAttribute('data-page'))
+  size = parseInt(data.getAttribute('data-size'))
+  interval = parseInt(data.getAttribute('data-interval'))
+  
   if page == 1
     $('#prev').attr('disabled', true)
+
+  if size <= interval
+    $('#next').attr('disabled', true)
 
   $('#next').click ->
     nextPage()
@@ -75,6 +87,7 @@ $(document).ready ->
     data.setAttribute('data-category', parseInt(@id))
     data.setAttribute('data-size', parseInt(@name))
     reset()
+    $('#'+@id+'.catButton').attr('style', 'color: gray')
     return  
   $('#searchButton').click ->
     search()
