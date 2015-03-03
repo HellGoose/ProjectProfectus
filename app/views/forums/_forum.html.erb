@@ -11,12 +11,23 @@
 		<%= link_to "", t, class: "topic_link" %>
 		<div>
 			<div class="vote_container">
+				<% userVote = t.votes.find_by(user_id: session[:user_id], topic_id: t.id) %>
+
 				<button id=<%= t.id.to_s %> class="glyphicon glyphicon-menu-up up_vote" aria-hidden="true"
-				<% if !t.votes.find_by(user_id: session[:user_id], topic_id: t.id).isDownvote%>disabled<%end%>></button>
+					<% if userVote != nil and !userVote.isDownvote%>
+						disabled
+					<%end%>>
+				</button>
+
 				<p><span id=<%= "votes#" + t.id.to_s %>><%= t.upvotes - t.downvotes %></span></p>
+
 				<button id=<%=  t.id.to_s %> class="glyphicon glyphicon-menu-down down_vote" aria-hidden="true"
-				<% if t.votes.find_by(user_id: session[:user_id], topic_id: t.id).isDownvote%>disabled<%end%>></button>
+					<% if userVote != nil and userVote.isDownvote%>
+						disabled
+					<%end%>>
+				</button>
 			</div>
+			
 			<div class="image_container">
 				<%= image_tag t.image, class: "logo img-responsive" %>
 			</div>

@@ -9,11 +9,21 @@
 <div id="topic">
 	<div class="col-xs-12 main_topic">
 		<div class="vote_container">
+			<% userVote = @topic.votes.find_by(user_id: session[:user_id], topic_id: @topic.id) %>
+			
 			<button id=<%= @topic.id.to_s %> class="glyphicon glyphicon-menu-up up_vote" aria-hidden="true" 
-				<% if !@topic.votes.find_by(user_id: session[:user_id], topic_id: @topic.id).isDownvote%>disabled<%end%>></button>
+				<% if userVote != nil and !userVote.isDownvote%>
+					disabled
+				<%end%>>
+			</button>
+
 			<p><span id=<%= "votes#" + @topic.id.to_s %>><%= @topic.upvotes - @topic.downvotes %></span></p>
+
 			<button id=<%=  @topic.id.to_s %> class="glyphicon glyphicon-menu-down down_vote" aria-hidden="true"
-			<%if @topic.votes.find_by(user_id: session[:user_id], topic_id: @topic.id).isDownvote%>disabled<%end%>></button>
+				<% if userVote != nil and userVote.isDownvote%>
+					disabled
+				<%end%>>
+			</button>
 		</div>
 		<div class="image_container">
 			<%= image_tag @topic.image, class: "logo img-responsive" %>
