@@ -1,15 +1,10 @@
 class PostsController < ApplicationController
-  before_action :set_posts, only: [:show, :edit, :update, :destroy]
+  before_action :set_post, only: [:edit, :update, :destroy]
 
   # GET /projects
   # GET /projects.json
   def index
     
-  end
-
-  # GET /projects/1
-  # GET /projects/1.json
-  def show
   end
 
   def answer
@@ -80,9 +75,10 @@ class PostsController < ApplicationController
   # PATCH/PUT /projects/1
   # PATCH/PUT /projects/1.json
   def update
+    topic = Topic.find(@post.topic_id)
     respond_to do |format|
       if isPostOwner && @post.update(post_params)
-        format.html { redirect_to @post, notice: 'Post was successfully updated.' }
+        format.html { redirect_to topic, notice: 'Post was successfully updated.' }
         format.json { render :show, status: :ok, location: @post }
       else
         format.html { render :edit }
@@ -94,17 +90,22 @@ class PostsController < ApplicationController
   # DELETE /projects/1
   # DELETE /projects/1.json
   def destroy
-    @post.destroy
+   topic = Topic.find(@post.topic_id)
     respond_to do |format|
-      format.html { redirect_to topics_url, notice: 'Post was successfully deleted.' }
-      format.json { head :no_content }
+      if isPostOwner && @post.destroy
+        format.html { redirect_to topic, notice: 'Post was successfully destroyed.' }
+        format.json { head :no_content }
+      else
+        format.html { redirect_to topic, notice: 'You cannot delete this post.' }
+        format.json { head :no_content }
+      end
     end
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_posts
-      @posts = Project.find(params[:id]).forum.topics.posts
+    def set_post
+      @post = Post.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

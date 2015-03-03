@@ -59,3 +59,24 @@
 .down_vote[disabled]{
 	color:red;
 }
+
+.text_container .edit {
+	float: right;
+	position: relative;
+	top: -20px;
+}
+
+h1, h2, h3, h4 {
+	margin: 0;
+	margin-top: 5px;
+}
+
+.text_container #created_by {
+	margin-top: -5px;
+}
+
+.bar {
+	position: relative;
+	left: -10px;
+	bottom: -20px;
+}

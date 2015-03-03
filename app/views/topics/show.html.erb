@@ -25,12 +25,22 @@
 				<%end%>>
 			</button>
 		</div>
+
 		<div class="image_container">
 			<%= image_tag @topic.image, class: "logo img-responsive" %>
 		</div>
-		<h4><%= @topic.title %></h4>
-		<p><%= @topic.content %>
-		<p>Posts: <%= @topic.postCount %></p>
+
+		<div class="text_container">
+			<h3><%= @topic.title %></h4>
+			<div class="edit">
+				<% if @topic.user_id == session[:user_id]%>
+					<%= link_to 'Edit |', edit_topic_path(@topic)%> 
+					<%= link_to 'Delete', @topic, method: :delete, data: {confirm: "Are you sure?"} %>
+				<% end %>
+			</div>
+			<p id="created_by"><%= User.find(@topic.user_id).name + " - " + @topic.created_at.to_s %></p>
+			<%= @topic.content %>
+		</div>
 	</div>
 </div>
 

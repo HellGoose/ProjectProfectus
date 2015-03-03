@@ -19,6 +19,7 @@
 <div class="col-sm-6">
 	<%= image_tag @project.logoLink, class: "logo img-responsive" %>
 </div>
+
 <div class="col-sm-6">
 	<%= @project.description %>
 	<p>Votes: <span id="votes"><%= @project.voteCount %></span></p>
@@ -40,18 +41,22 @@
     <li class="active"><a href="#description-tab" data-toggle="tab">Description<i class="fa"></i></a></li>
     <li><a href="#discussion-tab" data-toggle="tab">Discussion<i class="fa"></i></a></li>
   </ul>
+
   <div id="my-tab-content" class="tab-content">
     <div class="tab-pane active" id="description-tab">
       <%= sanitize @project.content, :tags => %w(a b i strong em p param h1 h2 h3 h4 h5 h6 br hr ul li img iframe) %>
     </div>
+
     <div class="tab-pane" id="discussion-tab">
       <div id="topics">
         <%= render partial: 'forums/forum', locals: { id: @project.forum.id, page: 1, topicsPerPage: @topicsInterval } %>
       </div>
+
       <div id="pageSelector">
         <button id="prev" class="glyphicon glyphicon-menu-left" aria-hidden="true"></button>
         <button id="next" class="glyphicon glyphicon-menu-right" aria-hidden="true"></button>
       </div>
+
       <div id="createTopic">
         <%= link_to "Create Topic", controller: "topics", action: "new", forum: @project.forum.id %>
       </div>
