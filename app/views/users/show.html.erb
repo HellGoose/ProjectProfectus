@@ -1,13 +1,29 @@
 <%= stylesheet_link_tag "users" %>
 
 <h1>Profile</h1>
-<h3>
-<%= @user.name %>
-<% if @user.id == session[:user_id]%>
-<%= link_to "edit", edit_user_path(@user) %>
-<% end %>
-</h3>
 
-<div class="col-sm-6"><%= image_tag @user.image %></div>
-<div class="col-sm-6">User created: <%= @user.created_at.strftime("%B %d, %Y") %></div>
+<div class="col-sm-4">
+	<% if !@user.image || @user.image == '' %>
+		<%= image_tag getFacebookPicURL, class: "img-responsive img-thumbnail" %>
+	<% else %>
+		<%= image_tag @user.image, class: "img-responsive img-thumbnail" %>
+	<% end %>
+</div>
+<div class="col-sm-8">
+	<h3 class="name-header">
+		<%= @user.name %>
+		<% if @user.id == session[:user_id]%>
+		<%= link_to "edit", edit_user_path(@user) %>
+		<% end %>
+	</h3>
+	User created: <%= @user.created_at.strftime("%B %d, %Y") %><br />
+	Nickname: <%= if @user.username then @user.username end %><br />
+	Email: <%= if @user.email then @user.email end %><br />
+	Address: <%= if @user.address then @user.address end %><br />
+	Phone: <%= if @user.phone then @user.phone end %><br />
+	Location: <%= if @user.location then @user.location end %><br />
+	Number of Projects: <%= @user.projects.count %><br />
+	Number of Forum Topics: <%= @user.topics.count %><br />
+	Number of Forum Posts: <%= @user.posts.count %>
+</div>
 

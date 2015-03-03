@@ -21,14 +21,8 @@ class User < ActiveRecord::Base
 		where(provider: auth.provider, uid: auth.uid).first_or_initialize do |user|
 			user.provider = auth.provider
 			user.uid = auth.uid
-			if auth['info']
-				user.name = auth['info']['name'] || ""
-				user.email = auth['info']['email'] || ""
-				user.address = auth['info']['address'] || ""
-				user.phone = auth['info']['phone'] || ""
-				user.image = auth['info']['image'] || ""
-				user.location = auth['info']['location'] || ""
-			end
+			user.name = auth.info.name
+			user.email = auth.info.email
 			user.oauth_token = auth.credentials.token
 			user.oauth_token_expires_at = Time.at(auth.credentials.expires_at)
 			user.role = 0
