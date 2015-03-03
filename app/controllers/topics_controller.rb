@@ -25,6 +25,9 @@ class TopicsController < ApplicationController
     render nothing: true
   end
 
+  def edit
+  end
+
   # GET /projects/1
   # GET /projects/1.json
   def show
@@ -36,6 +39,31 @@ class TopicsController < ApplicationController
   def new
     @topic = Topic.new
     @forum = Forum.find(params[:forum])
+  end
+
+  def update
+    respond_to do |format|
+      if isTopicOwner && @topic.update(topic_params)
+        format.html { redirect_to @topic, notice: 'Topic was successfully updated.' }
+        format.json { render :show, status: :ok, location: @topic }
+      else
+        format.html { render :edit }
+        format.json { render json: @topic.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def destroy
+    project = Project.find_by forum_id: @topic.forum_id
+    respond_to do |format|
+      if isTopicOwner && @topic.destroy
+        format.html { redirect_to project, notice: 'Topic was successfully destroyed.' }
+        format.json { head :no_content }
+      else
+        format.html { redirect_to @topic, notice: 'You cannot delete this project.' }
+        format.json { head :no_content }
+      end
+    end
   end
 
   # POST /projects
@@ -65,5 +93,9 @@ class TopicsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def topic_params
       params.require(:topic).permit(:title, :content, :forum_id, :image)
+    end
+
+    def isTopicOwner
+      @topic.user_id == session[:user_id]
     end
 end

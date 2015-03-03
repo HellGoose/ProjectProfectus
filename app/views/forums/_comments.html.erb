@@ -18,16 +18,27 @@
 			</button>
 		</div>
 
-		<p class="user"><%= User.find(p.user_id).name + " - " + p.created_at.to_s %></p>
-		<p class="content"><%= p.content %></p>
-		<div class="bar">
-			<a class="answer" id="<%= p.id.to_s %>">Answer</a>
+		<div class="text_container">
+			<p class="user"><%= User.find(p.user_id).name + " - " + p.created_at.to_s %></p>
+
+			<div class="edit">
+				<% if p.user_id == session[:user_id]%>
+					<%= link_to 'Edit |', edit_post_path(p)%> 
+					<%= link_to 'Delete', p, method: :delete, data: {confirm: "Are you sure?"} %>
+				<% end %>
+			</div>
+
+			<p class="content"><%= p.content %></p>
+
+			<div class="bar">
+				<a class="btn answer" id="<%= p.id.to_s %>">Reply</a>
+			</div>
 		</div>
+
+		<div class="answer_div" id="<%= "answer" + p.id.to_s %>"></div>
+
 		<div id="comments">
 			<%= render partial: 'forums/comments', locals: { comments: p.comments } %>
-		</div>
-		<div class="answer_div" id="<%= "answer" + p.id.to_s %>">
-
-		</div>
+		</div>		
 	</div>
 <% end %>

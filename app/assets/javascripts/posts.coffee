@@ -28,5 +28,9 @@ $(document).ready ->
 
 	$('.answer').click ->
 		button_id = @id
-		$('#answer' + button_id).load('/posts/answer/' + topic + '/' + button_id)
+		console.log $('#answer' + button_id).html()
+		if $('#answer' + button_id).html() != ""
+			$('#answer' + button_id).html("")
+		else
+			$('#answer' + button_id).load('/posts/answer/' + topic + '/' + button_id)
 		return
