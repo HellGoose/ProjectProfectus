@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
+  helper_method :getFacebookPicURL
 
   def index
 
@@ -34,13 +35,17 @@ class UsersController < ApplicationController
     end
   end
 
+  def getFacebookPicURL
+    "http://graph.facebook.com/" + @user.uid + "/picture?type=large"
+  end
+
   private
   	 def set_user
       @user = User.find(params[:id])
     end
 
     def user_params
-      params.require(:user).permit(:username, :email, :address, :phone, :subscriptionAmount)
+      params.require(:user).permit(:username, :email, :image, :address, :phone, :subscriptionAmount)
     end
 
     def isCurrentUser
