@@ -23,6 +23,8 @@ nextPage = ->
   if (page > Math.ceil(size / interval)-1)
     page = Math.ceil(size / interval)
     $('#next').attr('disabled', true)
+  else
+    $('#prev').attr('disabled', false)
   $('#projects').load('/projects/page/' + category + '/' + page + '/' + interval)
   data.setAttribute('data-page', page)
   return
@@ -35,6 +37,8 @@ prevPage = ->
   if page < 2
     page = 1
     $('#prev').attr('disabled', true)
+  else
+    $('#next').attr('disabled', false)
   $('#projects').load('/projects/page/' + category + '/' + page + '/' + interval)
   data.setAttribute('data-page', page)
   return
@@ -71,17 +75,14 @@ $(document).ready ->
   
   if page == 1
     $('#prev').attr('disabled', true)
-
   if size <= interval
     $('#next').attr('disabled', true)
 
   $('#next').click ->
     nextPage()
-    $('#prev').attr('disabled', false)
     return
   $('#prev').click ->
     prevPage()
-    $('#next').attr('disabled', false)
     return
   $('.catButton').click ->
     data.setAttribute('data-category', parseInt(@id))
