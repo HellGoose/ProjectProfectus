@@ -33,7 +33,7 @@
 			</div>
 			<h4><%= t.title %></h4>
 			<p>Created by: <%= User.find(t.user_id).name %></p>
-			<p>Posts: <%= t.postCount %></p>
+			<p>Posts: <%= t.posts.size %></p>
 		</div>
 	</div>
 <% end %>
