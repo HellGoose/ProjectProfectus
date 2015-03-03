@@ -28,7 +28,6 @@ $(document).ready ->
 
 	$('.answer').click ->
 		button_id = @id
-		console.log $('#answer' + button_id).html()
 		if $('#answer' + button_id).html() != ""
 			$('#answer' + button_id).html("")
 		else
