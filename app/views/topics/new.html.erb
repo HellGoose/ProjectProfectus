@@ -1,3 +1,8 @@
-<div id="topicForm">
-    <%= render partial: 'forums/topicForm' %>
-</div>
+<%= stylesheet_link_tag "topics" %>
+
+<%= link_to 'Back', Project.find_by(forum_id: @forum.id) %> |
+<%= link_to 'All Projects', projects_path %>
+
+<h1>Creating Topic</h1>
+
+<%= render 'forums/topicForm' %>
