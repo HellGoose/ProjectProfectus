@@ -15,10 +15,10 @@ class TopicsController < ApplicationController
     end
     if params[:dir] == 'up' and userVote.isDownvote != false
       userVote.isDownvote = false
-      topic.upvotes += 1
+      topic.voteCount += 1
     elsif params[:dir] == 'down' and userVote.isDownvote != true
       userVote.isDownvote = true
-      topic.downvotes += 1
+      topic.voteCount -= 1
     end
     userVote.save
     topic.save()
@@ -31,7 +31,7 @@ class TopicsController < ApplicationController
   # GET /projects/1
   # GET /projects/1.json
   def show
-    @posts = @topic.posts.order('upvotes - downvotes DESC')
+    @posts = @topic.posts.order('voteCount DESC')
     @post = Post.new
   end
 

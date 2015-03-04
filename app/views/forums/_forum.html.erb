@@ -19,7 +19,7 @@
 					<%end%>>
 				</button>
 
-				<p><span id=<%= "votes#" + t.id.to_s %>><%= t.upvotes - t.downvotes %></span></p>
+				<p><span id=<%= "votes#" + t.id.to_s %>><%= t.voteCount %></span></p>
 
 				<button id=<%=  t.id.to_s %> class="glyphicon glyphicon-menu-down down_vote" aria-hidden="true"
 					<% if userVote != nil and userVote.isDownvote%>

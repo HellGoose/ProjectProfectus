@@ -24,10 +24,10 @@ class PostsController < ApplicationController
     end
     if params[:dir] == 'up' and userVote.isDownvote != false
       userVote.isDownvote = false
-      post.upvotes += 1
+      post.voteCount += 1
     elsif params[:dir] == 'down' and userVote.isDownvote != true
       userVote.isDownvote = true
-      post.downvotes += 1
+      post.voteCount -= 1
     end
     userVote.save()
     post.save()
@@ -62,7 +62,6 @@ class PostsController < ApplicationController
 
     respond_to do |format|
       if @post.save
-        @topic.postCount += 1
         @topic.save
         format.html { redirect_to @topic }
       else
