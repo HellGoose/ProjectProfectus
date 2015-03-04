@@ -2,6 +2,12 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
+disable = (btn)->
+  btn.attr('disabled', true)
+
+enable = (btn)->
+  btn.attr('disabled', false)
+
 addNewProjectButton = ->
   listElement = document.createElement('li')
   linkElement = document.createElement('a')
@@ -19,12 +25,15 @@ nextPage = ->
   size = parseInt(data.getAttribute('data-size'))
   interval = parseInt(data.getAttribute('data-interval'))
   category = parseInt(data.getAttribute('data-category'))
-  page += 1
-  if (page > Math.ceil(size / interval)-1)
-    page = Math.ceil(size / interval)
-    $('#next').attr('disabled', true)
+  
+  if page < (Math.ceil(size/interval))
+    page += 1
+    enable($('#prev'))
+    if page == Math.ceil(size/interval)
+      disable($('#next'))
   else
-    $('#prev').attr('disabled', false)
+    disable($('#next'))
+
   $('#projects').load('/projects/page/' + category + '/' + page + '/' + interval)
   data.setAttribute('data-page', page)
   return
@@ -33,12 +42,16 @@ prevPage = ->
   page = parseInt(data.getAttribute('data-page'))
   interval = parseInt(data.getAttribute('data-interval'))
   category = parseInt(data.getAttribute('data-category'))
-  page -= 1
-  if page < 2
-    page = 1
-    $('#prev').attr('disabled', true)
+  if page > 1
+    page -= 1
+    enable($('#next'))
+    if page == 1
+      disable($('#prev'))
   else
-    $('#next').attr('disabled', false)
+    disable($('#prev'))
+    if size > interval
+      enable($('#next'))
+
   $('#projects').load('/projects/page/' + category + '/' + page + '/' + interval)
   data.setAttribute('data-page', page)
   return
@@ -50,10 +63,11 @@ reset = ->
   category = parseInt(data.getAttribute('data-category'))
   size = parseInt(data.getAttribute('data-size'))
   page = 1
+  disable($('#prev'))
   if size <= interval
-    $('#next').attr('disabled', true)
+    disable($('#next'))
   else
-    $('#next').attr('disabled', false)
+    enable($('#next'))
   $('#projects').load('/projects/page/' + category + '/' + page + '/' + interval)
   data.setAttribute('data-page', page)
   $('.catButton').attr('style', 'color: black')
@@ -72,11 +86,11 @@ $(document).ready ->
   page = parseInt(data.getAttribute('data-page'))
   size = parseInt(data.getAttribute('data-size'))
   interval = parseInt(data.getAttribute('data-interval'))
-  
+
   if page == 1
-    $('#prev').attr('disabled', true)
+    disable($('#prev'))
   if size <= interval
-    $('#next').attr('disabled', true)
+    disable($('#next'))
 
   $('#next').click ->
     nextPage()
@@ -102,9 +116,9 @@ window.onkeyup = (e) ->
       if $('#searchText').focus
         search()
     when 39
-      nextPage()
+      $('#next').click()
     when 37
-      prevPage()
+      $('#prev').click()
     else
       console.log 'Key: ' + key
       break
