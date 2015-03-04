@@ -22,7 +22,7 @@
 				<%end%>>
 			</button>
 
-			<p><span id=<%= "votes#" + @topic.id.to_s %>><%= @topic.upvotes - @topic.downvotes %></span></p>
+			<p><span id=<%= "votes_" + @topic.id.to_s %>><%= @topic.voteCount %></span></p>
 
 			<button id=<%=  @topic.id.to_s %> class="glyphicon glyphicon-menu-down down_vote" aria-hidden="true"
 				<% if userVote != nil and userVote.isDownvote%>
@@ -50,9 +50,9 @@
 </div>
 
 <div id="posts">
-	<%= render partial: 'forums/posts', locals: { page: 1, postsPerPage: @postsInterval } %>
+	<%= render partial: 'posts/posts', locals: { page: 1, postsPerPage: @postsInterval } %>
 </div>
 
 <div id="post">
-	<%= render partial: 'forums/postForm' %>
+	<%= render partial: 'posts/postForm' %>
  </div>

@@ -4,41 +4,35 @@
 
 
 nextPage = ->
-  page = parseInt(data.getAttribute('data-page'))
-  size = parseInt(data.getAttribute('data-size'))
-  interval = parseInt(data.getAttribute('data-interval'))
-  forum = parseInt(data.getAttribute('data-forum'))
-  page += 1
+  page = $('#data').data('page') + 1
+  size = $('#data').data('size')
+  interval = $('#data').data('interval')
   if (page > Math.ceil(size / interval))
     page = Math.ceil(size / interval)
-  $('#topics').load('/forum/' + forum + '/page/' + page + '/' + interval)
-  data.setAttribute('data-page', page)
+  $('#topics').load('/topics/' + $('#data').data('forum') + '/page/' + page + '/' + interval)
+  $('#data').data('page', page)
   return
 
 prevPage = ->
-  page = parseInt(data.getAttribute('data-page'))
-  interval = parseInt(data.getAttribute('data-interval'))
-  forum = parseInt(data.getAttribute('data-forum'))
-  page -= 1
+  page = $('#data').data('page') - 1
+  size = $('#data').data('size')
+  interval = $('#data').data('interval')
   if page < 1
     page = 1
-  $('#topics').load('/forum/' + forum + '/page/' + page + '/' + interval)
-  data.setAttribute('data-page', page)
+  $('#topics').load('/topics/' + $('#data').data('forum') + '/page/' + page + '/' + interval)
+  $('#data').data('page', page)
   return
 
 $(document).ready ->
-  data = document.getElementById('data')
+  $('#menu').prepend('<li><a href="/projects/new">New Project</a></li>')
   $('#voteButton').click ->
     $.post document.URL + '/vote', (data, status) ->
-      voteSpan = document.getElementById('votes')
-      votes = parseInt(voteSpan.innerHTML)
-
       if $('#voteButton').html() == 'Vote'
         $('#voteButton').html('Unvote')
-        voteSpan.innerHTML = votes + 1
+        $('#votes').html(parseInt($('#votes').html()) + 1)
       else
         $('#voteButton').html('Vote')
-        voteSpan.innerHTML = votes - 1
+        $('#votes').html(parseInt($('#votes').html()) - 1)
       return
     return
   $('#next').click ->
@@ -53,9 +47,9 @@ window.onkeyup = (e) ->
   key = if e.keyCode then e.keyCode else e.which
   switch key
     when 39
-      nextPage()
+      $('#next').click()
     when 37
-      prevPage()
+      $('#prev').click()
     else
       console.log 'Key: ' + key
       break

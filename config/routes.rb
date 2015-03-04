@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   get '/projects/page/:category/:page/:interval', :to => 'projects#page', :as => :projects_page
   post '/projects/:id/vote', :to => 'projects#vote'
 
-  get '/forum/:id/page/:page/:interval', :to => 'forums#page'
+  get '/topics/:id/page/:page/:interval', :to => 'topics#page'
 
   post '/vote/project/:id/:dir', :to => 'project#vote'
   post '/vote/post/:id/:dir', :to => 'posts#vote'

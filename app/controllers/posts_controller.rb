@@ -12,7 +12,7 @@ class PostsController < ApplicationController
     @topic = Topic.find(params[:topic_id])
     @op = Post.find(params[:post_id])
     respond_to do |format|
-      format.js { render partial: 'forums/postForm' }
+      format.js { render partial: 'posts/postForm' }
     end
   end
 
@@ -20,18 +20,27 @@ class PostsController < ApplicationController
     post = Post.find(params[:id])
     userVote = post.votes.find_by(user_id: session[:user_id])
     if (userVote == nil)
-        userVote = post.votes.create(post_id: post.id, user_id: session[:user_id])
-    end
-    if params[:dir] == 'up' and userVote.isDownvote != false
-      userVote.isDownvote = false
-      post.upvotes += 1
-    elsif params[:dir] == 'down' and userVote.isDownvote != true
-      userVote.isDownvote = true
-      post.downvotes += 1
+      userVote = post.votes.create(post_id: post.id, user_id: session[:user_id])
+      if params[:dir] == 'up'
+        post.voteCount += 1
+      elsif params[:dir] == 'down'
+        post.voteCount -= 1
+      end        
+    else
+      if params[:dir] == 'up' and userVote.isDownvote != false
+        userVote.isDownvote = false
+        post.voteCount += 2
+      elsif params[:dir] == 'down' and userVote.isDownvote != true
+        userVote.isDownvote = true
+        post.voteCount -= 2
+      end
     end
     userVote.save()
     post.save()
-    render nothing: true
+    respond_to do |format|
+      msg = { :status => "ok", :message => post.voteCount }
+      format.json  { render :json => msg }
+    end
   end
 
   # GET /projects/new
@@ -62,7 +71,6 @@ class PostsController < ApplicationController
 
     respond_to do |format|
       if @post.save
-        @topic.postCount += 1
         @topic.save
         format.html { redirect_to @topic }
       else

@@ -7,22 +7,41 @@ class TopicsController < ApplicationController
     
   end
 
+  def page
+    id = params[:id]
+    @topics = Forum.find(id).topics.order('voteCount DESC')
+    page = params[:page]
+    interval = params[:interval]
+    respond_to do |format|
+      format.js { render partial: 'topics', locals: { id: id, page: page, topicsPerPage: interval } }
+    end
+  end
+
   def vote
     topic = Topic.find(params[:id])
     userVote = topic.votes.find_by(user_id: session[:user_id])
     if (userVote == nil)
-        userVote = topic.votes.create(topic_id: topic.id, user_id: session[:user_id])
-    end
-    if params[:dir] == 'up' and userVote.isDownvote != false
-      userVote.isDownvote = false
-      topic.upvotes += 1
-    elsif params[:dir] == 'down' and userVote.isDownvote != true
-      userVote.isDownvote = true
-      topic.downvotes += 1
+      userVote = topic.votes.create(topic_id: topic.id, user_id: session[:user_id])
+      if params[:dir] == 'up'
+        topic.voteCount += 1
+      elsif params[:dir] == 'down'
+        topic.voteCount -= 1
+      end        
+    else
+      if params[:dir] == 'up' and userVote.isDownvote != false
+        userVote.isDownvote = false
+        topic.voteCount += 2
+      elsif params[:dir] == 'down' and userVote.isDownvote != true
+        userVote.isDownvote = true
+        topic.voteCount -= 2
+      end
     end
     userVote.save
     topic.save()
-    render nothing: true
+    respond_to do |format|
+      msg = { :status => "ok", :message => topic.voteCount }
+      format.json  { render :json => msg }
+    end
   end
 
   def edit
@@ -31,7 +50,7 @@ class TopicsController < ApplicationController
   # GET /projects/1
   # GET /projects/1.json
   def show
-    @posts = @topic.posts.order('upvotes - downvotes DESC')
+    @posts = @topic.posts.order('voteCount DESC')
     @post = Post.new
   end
 
