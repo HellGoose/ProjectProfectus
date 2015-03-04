@@ -3,9 +3,6 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 $(document).ready ->
-	data = document.getElementById('data')
-	topic = data.getAttribute('data-topic')
-
 	$('.post_up_vote').click ->
 		button_id = @id
 		$.post '/vote/post/' + button_id + '/up', (data, status) ->
@@ -29,5 +26,5 @@ $(document).ready ->
 		if $('#answer' + button_id).html() != ""
 			$('#answer' + button_id).html("")
 		else
-			$('#answer' + button_id).load('/posts/answer/' + topic + '/' + button_id)
+			$('#answer' + button_id).load('/posts/answer/' + $('#data').data('topic') + '/' + button_id)
 		return

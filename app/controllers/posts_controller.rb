@@ -12,7 +12,7 @@ class PostsController < ApplicationController
     @topic = Topic.find(params[:topic_id])
     @op = Post.find(params[:post_id])
     respond_to do |format|
-      format.js { render partial: 'forums/postForm' }
+      format.js { render partial: 'posts/postForm' }
     end
   end
 

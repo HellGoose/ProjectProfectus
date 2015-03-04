@@ -39,7 +39,7 @@
 		<div class="answer_div" id="<%= "answer" + p.id.to_s %>"></div>
 
 		<div id="comments">
-			<%= render partial: 'forums/comments', locals: { comments: p.comments } %>
+			<%= render partial: 'posts/comments', locals: { comments: p.comments } %>
 		</div>
 	</div>
 <% end %>
