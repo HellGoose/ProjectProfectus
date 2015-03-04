@@ -21,4 +21,13 @@ class Post < ActiveRecord::Base
 		self.downvotes ||= 0 if self.has_attribute? :downvotes
 		self.isComment = false if (self.has_attribute? :isComment) && self.isComment.nil?
 	end
+
+	before_destroy :destroyComments
+	def destroyComments
+		self.comments.each do |c|
+			if !c.destroy
+				c.delete
+			end
+		end
+	end
 end
