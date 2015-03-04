@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150304102913) do
+ActiveRecord::Schema.define(version: 20150304132401) do
 
   create_table "categories", force: :cascade do |t|
     t.string   "name",       limit: 255
@@ -69,17 +69,18 @@ ActiveRecord::Schema.define(version: 20150304102913) do
   add_index "project_votes", ["user_id"], name: "index_project_votes_on_user_id", using: :btree
 
   create_table "projects", force: :cascade do |t|
-    t.text     "content",     limit: 65535
-    t.boolean  "flagged",     limit: 1
-    t.integer  "voteCount",   limit: 4
-    t.string   "logoLink",    limit: 255
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
-    t.string   "title",       limit: 255
-    t.text     "description", limit: 65535
-    t.integer  "user_id",     limit: 4
-    t.integer  "forum_id",    limit: 4
-    t.integer  "category_id", limit: 4
+    t.text     "content",        limit: 65535
+    t.boolean  "flagged",        limit: 1
+    t.integer  "voteCount",      limit: 4
+    t.string   "logoLink",       limit: 255
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.string   "title",          limit: 255
+    t.text     "description",    limit: 65535
+    t.integer  "user_id",        limit: 4
+    t.integer  "forum_id",       limit: 4
+    t.integer  "category_id",    limit: 4
+    t.float    "donationAmount", limit: 24
   end
 
   add_index "projects", ["category_id"], name: "index_projects_on_category_id", using: :btree
