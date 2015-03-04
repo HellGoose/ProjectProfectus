@@ -28,13 +28,13 @@
   <% if (@project.votes.where(user_id: session[:user_id]).take == nil) 
     voteName = "Vote"
   else
-    voteName = "UnVote"
+    voteName = "Unvote"
   end%>
   
   <button id="voteButton"><%= voteName%></button>
 </div>
 
-<div id='data' data-page='1' data-interval=<%= @topicsInterval %> data-size=<%= @topics.size() %> data-forum=<%= @project.forum.id %>></div>
+<div id='data' data-page=1 data-interval=<%= @topicsInterval %> data-size=<%= @topics.size() %> data-forum=<%= @project.forum.id %>></div>
 
 <div class="col-xs-12">
 	<ul class="nav nav-tabs">
@@ -49,7 +49,7 @@
 
     <div class="tab-pane" id="discussion-tab">
       <div id="topics">
-        <%= render partial: 'forums/forum', locals: { id: @project.forum.id, page: 1, topicsPerPage: @topicsInterval } %>
+        <%= render partial: 'topics/topics', locals: { id: @project.forum.id, page: 1, topicsPerPage: @topicsInterval } %>
       </div>
 
       <div id="pageSelector">

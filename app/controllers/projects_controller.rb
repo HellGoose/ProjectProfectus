@@ -37,7 +37,7 @@ class ProjectsController < ApplicationController
   def show
     @topics = @project.forum.topics
     @topics = @topics.order('voteCount DESC')
-    @topicsInterval = 5
+    @topicsInterval = 2
   end
 
   # GET /projects/new
