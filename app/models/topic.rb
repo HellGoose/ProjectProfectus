@@ -12,8 +12,6 @@ class Topic < ActiveRecord::Base
 	#Sets default values
 	after_initialize :init
 	def init
-		self.postCount ||= 0 if self.has_attribute? :postCount
-		self.upvotes ||= 0 if self.has_attribute? :upvotes
-		self.downvotes ||= 0 if self.has_attribute? :downvotes
+		self.voteCount ||= 0 if self.has_attribute? :voteCount
 	end
 end
