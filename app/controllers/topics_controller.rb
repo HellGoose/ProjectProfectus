@@ -15,10 +15,10 @@ class TopicsController < ApplicationController
     end
     if params[:dir] == 'up' and userVote.isDownvote != false
       userVote.isDownvote = false
-      topic.upvotes += 1
+      topic.voteCount += 1
     elsif params[:dir] == 'down' and userVote.isDownvote != true
       userVote.isDownvote = true
-      topic.downvotes += 1
+      topic.voteCount -= 1
     end
     userVote.save
     topic.save()

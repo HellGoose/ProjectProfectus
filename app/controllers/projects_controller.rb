@@ -36,7 +36,7 @@ class ProjectsController < ApplicationController
   # GET /projects/1.json
   def show
     @topics = @project.forum.topics
-    @topics = @topics.order('upvotes - downvotes DESC')
+    @topics = @topics.order('voteCount DESC')
     @topicsInterval = 5
   end
 
