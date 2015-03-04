@@ -4,6 +4,11 @@
 <%= stylesheet_link_tag "posts" %>
 <%= stylesheet_link_tag "projects" %>
 
+<p id="notice"><%= notice %></p>
+
+<%= link_to 'Back', Project.find_by(forum_id: @topic.forum_id) %> |
+<%= link_to 'All Projects', projects_path %>
+
 <div id='data' data-page='1' data-interval=<%= @postsInterval %> data-size=<%= @posts.size() %> data-topic=<%= @topic.id %>></div>
 
 <div id="topic">
