@@ -9,7 +9,7 @@
 				<%end%>>
 			</button>
 
-			<p><span id=<%= "post_votes#" + p.id.to_s %>><%= p.voteCount %></span></p>
+			<p><span id=<%= "post_votes_" + p.id.to_s %>><%= p.voteCount %></span></p>
 
 			<button id=<%=  p.id.to_s %> class="glyphicon glyphicon-menu-down post_down_vote" aria-hidden="true"
 				<% if userVote != nil and userVote.isDownvote%>

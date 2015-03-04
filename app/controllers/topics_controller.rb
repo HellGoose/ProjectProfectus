@@ -11,18 +11,27 @@ class TopicsController < ApplicationController
     topic = Topic.find(params[:id])
     userVote = topic.votes.find_by(user_id: session[:user_id])
     if (userVote == nil)
-        userVote = topic.votes.create(topic_id: topic.id, user_id: session[:user_id])
-    end
-    if params[:dir] == 'up' and userVote.isDownvote != false
-      userVote.isDownvote = false
-      topic.voteCount += 1
-    elsif params[:dir] == 'down' and userVote.isDownvote != true
-      userVote.isDownvote = true
-      topic.voteCount -= 1
+      userVote = topic.votes.create(topic_id: topic.id, user_id: session[:user_id])
+      if params[:dir] == 'up'
+        topic.voteCount += 1
+      elsif params[:dir] == 'down'
+        topic.voteCount -= 1
+      end        
+    else
+      if params[:dir] == 'up' and userVote.isDownvote != false
+        userVote.isDownvote = false
+        topic.voteCount += 2
+      elsif params[:dir] == 'down' and userVote.isDownvote != true
+        userVote.isDownvote = true
+        topic.voteCount -= 2
+      end
     end
     userVote.save
     topic.save()
-    render nothing: true
+    respond_to do |format|
+      msg = { :status => "ok", :message => topic.voteCount }
+      format.json  { render :json => msg }
+    end
   end
 
   def edit
