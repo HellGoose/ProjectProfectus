@@ -9,7 +9,7 @@ class ForumsController < ApplicationController
 
   def page
     id = params[:id]
-    @topics = Forum.find(id).topics.order('upvotes - downvotes DESC')
+    @topics = Forum.find(id).topics.order('voteCount DESC')
     page = params[:page]
     interval = params[:interval]
     respond_to do |format|

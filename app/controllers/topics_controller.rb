@@ -31,7 +31,7 @@ class TopicsController < ApplicationController
   # GET /projects/1
   # GET /projects/1.json
   def show
-    @posts = @topic.posts.order('upvotes - downvotes DESC')
+    @posts = @topic.posts.order('voteCount DESC')
     @post = Post.new
   end
 

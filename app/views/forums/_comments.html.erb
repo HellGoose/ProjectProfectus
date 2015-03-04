@@ -1,4 +1,4 @@
-<% comments.order('upvotes - downvotes DESC').each do |p| %>
+<% comments.order('voteCount DESC').each do |p| %>
 	<div class="col-xs-12 post">
 		<div class="vote_container">
 			<% userVote = p.votes.find_by(user_id: session[:user_id], post_id: p.id) %>
