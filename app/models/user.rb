@@ -8,12 +8,14 @@ class User < ActiveRecord::Base
 	has_many :projects
 	has_many :posts
 	has_many :topics
+	has_many :projectDonations, class_name: "ProjectDonation"
 	has_many :projectVotes, class_name: "ProjectVote"
 	has_many :topicVotes, class_name: "TopicVote"
 	has_many :postVotes, class_name: "PostVote"
-	has_many :projectsVoted, class_name: "Project", through: "project_votes"
-	has_many :topicsVoted, class_name: "Post", through: "topic_votes"
-	has_many :postsVoted, class_name: "Post", through: "post_votes"
+	has_many :projectsVoted, class_name: "Project", through: "ProjectVote"
+	has_many :topicsVoted, class_name: "Post", through: "TopicVote"
+	has_many :postsVoted, class_name: "Post", through: "PostVote"
+	has_many :projectDonated, class_name: "Project", through: "ProjectDonation"
 
 
 	#Authentication

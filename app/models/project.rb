@@ -7,13 +7,18 @@ class Project < ActiveRecord::Base
 	belongs_to :user
 	belongs_to :forum, :dependent => :destroy
 	belongs_to :category
+
+	#Need to refund as well as delete donations.
+	has_many :donations, class_name: "ProjectDonation", :dependent => :delete_all
 	has_many :votes, class_name: "ProjectVote", :dependent => :delete_all
 	has_many :usersVoted, class_name: "User", through: "ProjectVote"
+	has_many :usersDonated, class_name: "User", through: "ProjectDonation"
 
 	#Sets default values
 	after_initialize :init
 	def init
 		self.flagged = false if (self.has_attribute? :flagged) && self.flagged.nil?
 		self.voteCount ||= 0 if self.has_attribute? :voteCount
+		self.donationAmount ||= 0 if self.has_attribute? :donationAmount
 	end
 end

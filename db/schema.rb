@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150304132401) do
+ActiveRecord::Schema.define(version: 20150304144317) do
 
   create_table "categories", force: :cascade do |t|
     t.string   "name",       limit: 255
@@ -23,6 +23,17 @@ ActiveRecord::Schema.define(version: 20150304132401) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  create_table "project_donations", force: :cascade do |t|
+    t.float    "amount",     limit: 24
+    t.integer  "user_id",    limit: 4
+    t.integer  "project_id", limit: 4
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+  end
+
+  add_index "project_donations", ["project_id"], name: "index_porject_donations_on_project_id", using: :btree
+  add_index "project_donations", ["user_id"], name: "index_porject_donations_on_user_id", using: :btree
 
   create_table "post_comments", id: false, force: :cascade do |t|
     t.integer "id",         limit: 4, null: false
