@@ -1,5 +1,5 @@
 class ProjectsController < ApplicationController
-  before_action :set_project, only: [:vote, :show, :edit, :update, :destroy]
+  before_action :set_project, only: [:donate, :vote, :show, :edit, :update, :destroy]
 
   # GET /projects
   # GET /projects.json
@@ -29,7 +29,15 @@ class ProjectsController < ApplicationController
     else
       removeVote
     end
-    render nothing: true
+    respond_to do |format|
+        msg = { :status => "ok", :message => @project.voteCount}
+        format.json  { render :json => msg }
+    end
+  end
+
+  def donate
+    amount = 5
+    updateDonationAmount(amount)
   end
 
   # GET /projects/1
@@ -96,6 +104,10 @@ class ProjectsController < ApplicationController
   end
 
   private
+    def updateDonationAmount(amount)
+      @project.donationAmount += amount
+      @project.save
+    end
     def vote_project
 	    @project.voteCount += 1
 	    @project.votes.create(project_id: @project.id, user_id: session[:user_id])

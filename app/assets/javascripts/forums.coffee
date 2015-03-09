@@ -29,10 +29,10 @@ $(document).ready ->
     $.post document.URL + '/vote', (data, status) ->
       if $('#voteButton').html() == 'Vote'
         $('#voteButton').html('Unvote')
-        $('#votes').html(parseInt($('#votes').html()) + 1)
+        $('#votes').html(data.message)
       else
         $('#voteButton').html('Vote')
-        $('#votes').html(parseInt($('#votes').html()) - 1)
+        $('#votes').html(data.message)
       return
     return
   $('#next').click ->

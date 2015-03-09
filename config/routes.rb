@@ -14,6 +14,8 @@ Rails.application.routes.draw do
   post '/vote/post/:id/:dir', :to => 'posts#vote'
   post '/vote/topic/:id/:dir', :to => 'topics#vote'
 
+  post '/donate', :to => 'home#donate'
+
   get '/posts/answer/:topic_id/:post_id', :to => 'posts#answer'
 
     resources :sessions, only: [:create, :destroy]
@@ -21,7 +23,7 @@ Rails.application.routes.draw do
     resources :users
     resources :topics
     resources :posts
-    resource :home, only: [:show]
+    resource :home, only: [:show, :donate]
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
