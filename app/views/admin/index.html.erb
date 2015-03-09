@@ -1,0 +1,17 @@
+<%= javascript_include_tag "admin" %>
+<%= stylesheet_link_tag "admin" %>
+
+<nav class="navbar navbar-default">
+	<div class="collapse navbar-collapse">
+		<ul class="nav navbar-nav navbar-center">
+			<li><a id="news" href="#">News</a></li>
+			<li><a id="projects" href="#">Flagged Projects</a></li>
+			<li><a id="users" href="#">Flagged Users</a></li>
+			<li><a id="mods" href="#">Moderator Center</a></li>
+		</ul>
+	</div>
+</nav>
+
+<div id="content">
+	<%= render partial: 'news/news' %>
+</div>

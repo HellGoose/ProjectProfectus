@@ -36,6 +36,10 @@
 						<span class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu">
 							<% if current_user %>
+								<% if current_user.role == 2 %>
+									<li><%= link_to "Admin", "/admin/", id: "admin", role: "menuitem" %></li>
+									<li class="divider"></li>
+								<% end %>
 							<li><%= link_to "Account", user_path(current_user), id: "account", role: "menuitem" %></li>
 							<li class="divider"></li>
 							<li><%= link_to "Logout", "/signout", id: "logout", role: "menuitem" %></li>
