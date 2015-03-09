@@ -35,6 +35,8 @@ $(document).ready ->
         $('#votes').html(data.message)
       return
     return
+  $('#donateButton').click ->
+    $.post document.URL + '/donate'
   $('#next').click ->
     nextPage()
     return

@@ -1,0 +1,10 @@
+<% @all_news.each do |p| %>
+	<div class="col-xs-12 news">
+		<div class="text_container">
+			<h2 class="title"><%= p.title %></h2>
+			<p class="content"><%= p.content %></p>
+		</div>
+	</div>
+<% end %>
+
+<%= render partial: 'news/newsForm' %>

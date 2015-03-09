@@ -18,12 +18,19 @@ Rails.application.routes.draw do
 
   get '/posts/answer/:topic_id/:post_id', :to => 'posts#answer'
 
+  get '/admin/news', :to => 'admin#news'
+  get '/admin/users', :to => 'admin#users'
+  get '/admin/projects', :to => 'admin#projects'
+  get '/admin/mods', :to => 'admin#mods'
+
     resources :sessions, only: [:create, :destroy]
     resources :projects
     resources :users
     resources :topics
     resources :posts
     resource :home, only: [:show, :donate]
+    resources :admin, only: [:index]
+    resources :news
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
