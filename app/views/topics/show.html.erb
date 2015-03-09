@@ -44,7 +44,7 @@
 				<% end %>
 			</div>
 			<p id="created_by"><%= User.find(@topic.user_id).name + " - " + @topic.created_at.to_s %></p>
-			<%= @topic.content %>
+			<%= sanitize @topic.content, :tags => %w(a b i strong em p param h1 h2 h3 h4 h5 h6 br hr ul li img iframe) %>
 		</div>
 	</div>
 </div>
