@@ -7,12 +7,14 @@ Rails.application.routes.draw do
 
   get '/projects/page/:category/:page/:interval', :to => 'projects#page', :as => :projects_page
   post '/projects/:id/vote', :to => 'projects#vote'
+  post '/projects/:id/donate', :to => 'projects#donate'
 
   get '/topics/:id/page/:page/:interval', :to => 'topics#page'
 
-  post '/vote/project/:id/:dir', :to => 'project#vote'
   post '/vote/post/:id/:dir', :to => 'posts#vote'
   post '/vote/topic/:id/:dir', :to => 'topics#vote'
+
+  post '/donate', :to => 'home#donate'
 
   get '/posts/answer/:topic_id/:post_id', :to => 'posts#answer'
 
@@ -26,9 +28,9 @@ Rails.application.routes.draw do
     resources :users
     resources :topics
     resources :posts
+    resource :home, only: [:show, :donate]
     resources :admin, only: [:index]
     resources :news
-    resource :home, only: [:show]
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

@@ -29,10 +29,15 @@ $(document).ready ->
     $.post document.URL + '/vote', (data, status) ->
       if $('#voteButton').html() == 'Vote'
         $('#voteButton').html('Unvote')
-        $('#votes').html(parseInt($('#votes').html()) + 1)
+        $('#votes').html(data.message)
       else
         $('#voteButton').html('Vote')
-        $('#votes').html(parseInt($('#votes').html()) - 1)
+        $('#votes').html(data.message)
+      return
+    return
+  $('#donateButton').click ->
+    $.post document.URL + '/donate', (data, status) ->
+      $('#donationAmount').html(data.message)
       return
     return
   $('#next').click ->

@@ -1,12 +1,14 @@
 <%= stylesheet_link_tag "home" %>
 <%= stylesheet_link_tag "projects" %>
 
+<%= javascript_include_tag "home" %>
+
 <div class="col-xs-12">
 	<%= image_tag "banner.png", id: "banner", class: "center-block img-responsive" %>
 </div>
 
 <div class="col-xs-9" id="donations">
-	<p id="donated">Donated so far: <span id="donationAmount">54974</span>$</p>
+	<p id="donated">Donated so far: <span id="donationAmount"><%= @mainPot.amount %></span>$</p>
 	<a type="button" class="btn btn-default" id="donate">1UP</a>
 </div>
 
@@ -27,11 +29,3 @@
 		</div>
 	</div>
 </div>
-
-<script>
-// For fun :)
-document.getElementById("donate").addEventListener("click", function(){
-	var prevDonationAmount = document.getElementById("donationAmount").innerHTML;
-	document.getElementById("donationAmount").innerHTML = Number(prevDonationAmount) + 5;
-});
-</script>

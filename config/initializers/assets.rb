@@ -14,6 +14,7 @@ Rails.application.config.assets.precompile += %w( projects.js )
 Rails.application.config.assets.precompile += %w( topics.js )
 Rails.application.config.assets.precompile += %w( forums.js )
 Rails.application.config.assets.precompile += %w( posts.js )
+Rails.application.config.assets.precompile += %w( home.js )
 Rails.application.config.assets.precompile += %w( admin.js )
 
 Rails.application.config.assets.precompile += %w( projects.css )

@@ -32,6 +32,8 @@
   end%>
   
   <button id="voteButton"><%= voteName%></button>
+  <p>Donated: <span id='donationAmount'><%= @project.donationAmount %></span> $</p> 
+  <button id="donateButton">Donate</button>
 </div>
 
 <div id='data' data-page=1 data-interval=<%= @topicsInterval %> data-size=<%= @topics.size() %> data-forum=<%= @project.forum.id %>></div>
