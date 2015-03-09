@@ -7,10 +7,10 @@ Rails.application.routes.draw do
 
   get '/projects/page/:category/:page/:interval', :to => 'projects#page', :as => :projects_page
   post '/projects/:id/vote', :to => 'projects#vote'
+  post '/projects/:id/donate', :to => 'projects#donate'
 
   get '/topics/:id/page/:page/:interval', :to => 'topics#page'
 
-  post '/vote/project/:id/:dir', :to => 'project#vote'
   post '/vote/post/:id/:dir', :to => 'posts#vote'
   post '/vote/topic/:id/:dir', :to => 'topics#vote'
 

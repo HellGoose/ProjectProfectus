@@ -38,6 +38,10 @@ class ProjectsController < ApplicationController
   def donate
     amount = 5
     updateDonationAmount(amount)
+    respond_to do |format|
+        msg = { :status => "ok", :message => @project.donationAmount}
+        format.json  { render :json => msg }
+    end
   end
 
   # GET /projects/1

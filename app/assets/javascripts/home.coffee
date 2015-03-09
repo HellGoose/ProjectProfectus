@@ -6,3 +6,6 @@ $(document).ready ->
 	$('#donate').click ->
 		$.post '/donate', (data, status) ->
 			$('#donationAmount').html(data.message)
+			return
+		return
+	return
