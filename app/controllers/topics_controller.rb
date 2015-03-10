@@ -45,6 +45,9 @@ class TopicsController < ApplicationController
   end
 
   def edit
+    if !isTopicOwner && !isAdmin
+      redirect_to @topic
+    end
   end
 
   # GET /projects/1
@@ -62,7 +65,7 @@ class TopicsController < ApplicationController
 
   def update
     respond_to do |format|
-      if isTopicOwner && @topic.update(topic_params)
+      if (isTopicOwner || isAdmin) && @topic.update(topic_params)
         format.html { redirect_to @topic, notice: 'Topic was successfully updated.' }
         format.json { render :show, status: :ok, location: @topic }
       else

@@ -1,0 +1,28 @@
+<% @flagged.each do |f| %>
+	<div class="col-xs-12 flagged_project">
+		<%= link_to "", "/projects/" + f.id.to_s, class: "project_link" %>
+
+		<div class="edit">
+			<%= link_to 'Edit |', edit_project_path(f) %> 
+			<%= link_to 'Delete', f, method: :delete, data: {confirm: "Are you sure?"} %>
+			</br>
+			<a type="button" class="btn btn-default clear" id=<%= f.id %>>Clear Flag</a>
+		</div>
+
+		<div class="text_container">
+			<h2 class="title"><%= f.title %></h2>
+
+			<p class="user"><%= User.find(f.user_id).name + " - " + f.created_at.to_s %></p>			
+
+			<h5>Votes: <%= f.voteCount %></h5>
+			<h5>Donated: <%= f.donationAmount %></h5>
+		</div>
+	</div>
+<% end %>
+
+<script>
+$('.clear').click(function() {
+	var button_id = this.id;
+	$.post('/projects/' + button_id + '/flag/remove', function(data, status) {});
+});
+</script>

@@ -7,6 +7,7 @@ Rails.application.routes.draw do
 
   get '/projects/page/:category/:page/:interval', :to => 'projects#page', :as => :projects_page
   post '/projects/:id/vote', :to => 'projects#vote'
+  post '/projects/:id/flag/:type', :to => 'projects#flag'
   post '/projects/:id/donate/:amount', :to => 'projects#donate'
 
   get '/topics/:id/page/:page/:interval', :to => 'topics#page'
@@ -27,7 +28,7 @@ Rails.application.routes.draw do
 
     resources :sessions, only: [:create, :destroy]
     resources :projects
-    resources :users
+    resources :users, only: [:edit, :update, :show]
     resources :topics
     resources :posts
     resources :home, only: [:show, :donate]

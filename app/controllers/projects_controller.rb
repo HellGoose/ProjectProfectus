@@ -1,11 +1,19 @@
 class ProjectsController < ApplicationController
-  before_action :set_project, only: [:donate, :vote, :show, :edit, :update, :destroy]
+  before_action :set_project, only: [:flag, :donate, :vote, :show, :edit, :update, :destroy]
 
   # GET /projects
   # GET /projects.json
   def index
     @projects = Project.all.order('voteCount DESC')
     @projectsInterval = 8
+  end
+
+  def flag
+    if params[:type] == 'remove'
+      @project.flagged = 0
+      @project.save
+    end
+    render nothing: true
   end
 
   def page
@@ -62,7 +70,7 @@ class ProjectsController < ApplicationController
 
   # GET /projects/1/edit
   def edit
-    if !isProjectOwner
+    if !isProjectOwner && !isAdmin
       redirect_to @project
     end
   end
@@ -90,7 +98,7 @@ class ProjectsController < ApplicationController
   # PATCH/PUT /projects/1.json
   def update
     respond_to do |format|
-      if isProjectOwner && @project.update(project_params)
+      if (isProjectOwner || isAdmin) && @project.update(project_params)
         format.html { redirect_to @project, notice: 'Project was successfully updated.' }
         format.json { render :show, status: :ok, location: @project }
       else
