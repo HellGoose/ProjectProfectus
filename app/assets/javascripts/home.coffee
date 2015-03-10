@@ -4,7 +4,7 @@
 
 $(document).ready ->
 	$('#donate').click ->
-		$.post '/donate', (data, status) ->
+		$.post '/donate/5', (data, status) ->
 			$('#donationAmount').html(data.message)
 			return
 		return

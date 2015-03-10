@@ -36,7 +36,7 @@ $(document).ready ->
       return
     return
   $('#donateButton').click ->
-    $.post document.URL + '/donate', (data, status) ->
+    $.post document.URL + '/donate/5', (data, status) ->
       $('#donationAmount').html(data.message)
       return
     return

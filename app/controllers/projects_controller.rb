@@ -30,17 +30,20 @@ class ProjectsController < ApplicationController
       removeVote
     end
     respond_to do |format|
-        msg = { :status => "ok", :message => @project.voteCount}
+        msg = { :status => 'ok', :message => @project.voteCount}
         format.json  { render :json => msg }
     end
   end
 
   def donate
-    amount = 5
-    updateDonationAmount(amount)
+    amount = Integer(params[:amount])
     respond_to do |format|
-        msg = { :status => "ok", :message => @project.donationAmount}
-        format.json  { render :json => msg }
+      if updateDonationAmount(amount)
+        msg = { :status => 'ok', :message => @project.donationAmount}
+      else
+        msg = { :status => 'Not enough cash', :message => @project.donationAmount}
+      end
+      format.json  { render :json => msg }
     end
   end
 
@@ -109,8 +112,17 @@ class ProjectsController < ApplicationController
 
   private
     def updateDonationAmount(amount)
-      @project.donationAmount += amount
-      @project.save
+      user = User.find(session[:user_id])
+      if user.money - amount >= 0
+        user.money -= amount
+        user.save
+        @project.donations.create(project_id: @project.id, user_id: session[:user_id], amount: amount)
+        @project.donationAmount += amount
+        @project.save
+        true
+      else
+        false
+      end
     end
     def vote_project
 	    @project.voteCount += 1

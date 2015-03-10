@@ -30,13 +30,23 @@ class UsersController < ApplicationController
   def destroy
     @user.destroy
     respond_to do |format|
-      format.html { redirect_to "/signout", notice: 'User was deleted.' }
+      format.html { redirect_to '/signout', notice: 'User was deleted.' }
       format.json { head :no_content }
     end
   end
 
   def getFacebookPicURL
-    "http://graph.facebook.com/" + @user.uid + "/picture?type=large"
+    'http://graph.facebook.com/' + @user.uid + '/picture?type=large'
+  end
+
+  def updateMoney(amount)
+    if self.money + amount >= 0
+      self.money += amount
+      self.save
+      true
+    else
+      false
+    end
   end
 
   private
