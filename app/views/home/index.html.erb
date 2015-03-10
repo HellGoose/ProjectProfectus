@@ -3,17 +3,16 @@
 
 <%= javascript_include_tag "home" %>
 
-<div class="col-xs-12">
-	<%= image_tag "banner.png", id: "banner", class: "center-block img-responsive" %>
+<div class="header">
+	<div class="text-center">
+		<p class="header-brand-text">Welcome to Profectus</p>
+		<p class="header-donate-text">Donated so far: <span id="donationAmount"><%= @mainPot.amount %></span>$</p>
+		<button type="button" class="btn btn-success" id="donate">1UP</button>
+	</div>
 </div>
 
-<div class="col-xs-9" id="donations">
-	<p id="donated">Donated so far: <span id="donationAmount"><%= @mainPot.amount %></span>$</p>
-	<a type="button" class="btn btn-default" id="donate">1UP</a>
-</div>
-
-<div class="col-xs-3" id="tabs">
-	<ul class="nav nav-tabs">
+<div id="tabs">
+	<ul class="nav nav-pills">
 		<li class="active"><a href="#top-tab" data-toggle="tab">Top Projects<i class="fa"></i></a></li>
 		<li><a href="#news-tab" data-toggle="tab">News<i class="fa"></i></a></li>
 	</ul>

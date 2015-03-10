@@ -2,26 +2,22 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-#banner {
-	margin-top: 10px;
-	margin-bottom: 10px;
-	height: 300px;
+.header {
+	margin-top: 20px;
+	margin-bottom: 60px;
 }
 
-#tabs, #donated {
-	float: left;
+.header-brand-text {
+	font-size: 60px;
+	text-align: center;
 }
 
-#donations, #donate {
-	float: right;
+.header-donate-text {
+	font-size: 40px;
+	text-align: center;
 }
 
-#my-tab-content, #tabs {
-	width: 100%;
-}
-
-.news {
-	margin: 10px;
-	border: 1px solid black;
-	width: 100%;
+#donate {
+	width: 200px;
+	height: 50px;
 }

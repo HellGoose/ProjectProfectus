@@ -23,7 +23,7 @@
 <div class="col-sm-6">
 	<%= @project.description %>
 	<p>Votes: <span id="votes"><%= @project.voteCount %></span></p>
-	<p>Made by: <%= @project.user.name %></p>
+	<p>Made by: <%= link_to @project.user.name, @project.user %></p>
 
   <% if (@project.votes.where(user_id: session[:user_id]).take == nil) 
     voteName = "Vote"
@@ -31,21 +31,21 @@
     voteName = "Unvote"
   end%>
   
-  <button id="voteButton"><%= voteName%></button>
+  <button class="btn btn-primary"id="voteButton"><%= voteName%></button>
   <p>Donated: <span id='donationAmount'><%= @project.donationAmount %></span> $</p> 
-  <button id="donateButton">Donate</button>
+  <button class="btn btn-success" id="donateButton">Donate</button>
 </div>
 
 <div id='data' data-page=1 data-interval=<%= @topicsInterval %> data-size=<%= @topics.size() %> data-forum=<%= @project.forum.id %>></div>
 
-<div class="col-xs-12">
+<div class="col-xs-12 top-buffer">
 	<ul class="nav nav-tabs">
     <li class="active"><a href="#description-tab" data-toggle="tab">Description<i class="fa"></i></a></li>
     <li><a href="#discussion-tab" data-toggle="tab">Discussion<i class="fa"></i></a></li>
   </ul>
 
-  <div id="my-tab-content" class="tab-content">
-    <div class="tab-pane active" id="description-tab">
+  <div id="my-tab-content" class="tab-content border-around">
+    <div class="tab-pane active top-buffer" id="description-tab">
       <%= sanitize @project.content, :tags => %w(a b i strong em p param h1 h2 h3 h4 h5 h6 br hr ul li img iframe) %>
     </div>
 

@@ -9,10 +9,10 @@ class Project < ActiveRecord::Base
 	belongs_to :category
 
 	#Need to refund as well as delete donations.
-	has_many :donations, class_name: "ProjectDonation", :dependent => :delete_all
-	has_many :votes, class_name: "ProjectVote", :dependent => :delete_all
-	has_many :usersVoted, class_name: "User", through: "ProjectVote"
-	has_many :usersDonated, class_name: "User", through: "ProjectDonation"
+	has_many :donations, class_name: 'ProjectDonation', :dependent => :delete_all
+	has_many :votes, class_name: 'ProjectVote', :dependent => :delete_all
+	has_many :usersVoted, class_name: 'User', through: 'ProjectVote'
+	has_many :usersDonated, class_name: 'User', through: 'ProjectDonation'
 
 	#Sets default values
 	after_initialize :init
@@ -20,5 +20,14 @@ class Project < ActiveRecord::Base
 		self.flagged = false if (self.has_attribute? :flagged) && self.flagged.nil?
 		self.voteCount ||= 0 if self.has_attribute? :voteCount
 		self.donationAmount ||= 0 if self.has_attribute? :donationAmount
+	end
+
+	before_destroy :refund
+	def refund
+		self.donations.each do |d|
+			user = d.user
+			user.money += d.amount
+			user.save
+		end
 	end
 end
