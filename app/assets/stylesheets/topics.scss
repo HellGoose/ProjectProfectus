@@ -3,10 +3,10 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 .topic {
-	margin: 10px;
+	margin-bottom: 10px;
 	border: 1px solid black;
 	width: 100%;
-	height: 100px;
+	min-height: 100px;
 }
 
 .vote_container {
