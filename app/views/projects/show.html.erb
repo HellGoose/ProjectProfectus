@@ -6,9 +6,9 @@
 <p id="notice"><%= notice %></p>
 
 <%#Display Edit and Delete iff projectCreator = currentUser%>
-<% if @project.user_id == session[:user_id]%>
-<%=  link_to 'Edit |', edit_project_path(@project)%> 
-<%= link_to 'Delete |', @project, method: :delete, data: {confirm: "Are you sure?"} %>
+<% if @project.user_id == session[:user_id] || isAdmin %>
+  <%=  link_to 'Edit |', edit_project_path(@project)%> 
+  <%= link_to 'Delete |', @project, method: :delete, data: {confirm: "Are you sure?"} %>
 <% end %>
 <%= link_to 'Back', projects_path %>
 

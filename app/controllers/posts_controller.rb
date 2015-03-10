@@ -7,6 +7,9 @@ class PostsController < ApplicationController
     
   end
 
+  def show
+  end
+
   def answer
     @post = Post.new
     @topic = Topic.find(params[:topic_id])
@@ -50,8 +53,8 @@ class PostsController < ApplicationController
   end
 
   def edit
-    if !isPostOwner
-      redirect_to @post
+    if !isPostOwner && !isAdmin
+      redirect_to Topic.find(@post.topic_id)
     end
   end
 
@@ -85,7 +88,7 @@ class PostsController < ApplicationController
   def update
     topic = Topic.find(@post.topic_id)
     respond_to do |format|
-      if isPostOwner && @post.update(post_params)
+      if (isPostOwner || isAdmin) && @post.update(post_params)
         format.html { redirect_to topic, notice: 'Post was successfully updated.' }
         format.json { render :show, status: :ok, location: @post }
       else
