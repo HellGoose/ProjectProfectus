@@ -7,14 +7,14 @@ Rails.application.routes.draw do
 
   get '/projects/page/:category/:page/:interval', :to => 'projects#page', :as => :projects_page
   post '/projects/:id/vote', :to => 'projects#vote'
-  post '/projects/:id/donate', :to => 'projects#donate'
+  post '/projects/:id/donate/:amount', :to => 'projects#donate'
 
   get '/topics/:id/page/:page/:interval', :to => 'topics#page'
 
   post '/vote/post/:id/:dir', :to => 'posts#vote'
   post '/vote/topic/:id/:dir', :to => 'topics#vote'
 
-  post '/donate', :to => 'home#donate'
+  post '/donate/:amount', :to => 'home#donate'
 
   get '/posts/answer/:topic_id/:post_id', :to => 'posts#answer'
 
@@ -23,12 +23,14 @@ Rails.application.routes.draw do
   get '/admin/projects', :to => 'admin#projects'
   get '/admin/mods', :to => 'admin#mods'
 
+  post '/users/:id/addMoney/:amount', :to => 'users#addMoney'
+
     resources :sessions, only: [:create, :destroy]
     resources :projects
     resources :users
     resources :topics
     resources :posts
-    resource :home, only: [:show, :donate]
+    resources :home, only: [:show, :donate]
     resources :admin, only: [:index]
     resources :news
 

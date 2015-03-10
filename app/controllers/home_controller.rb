@@ -8,11 +8,19 @@ class HomeController < ApplicationController
 
 	def donate
 		pot = MainPot.find(1)
-		pot.amount += 5
-		pot.save
+		user = User.find(session[:user_id])
+		amount = Integer(params[:amount])
 		respond_to do |format|
-      		msg = { :status => "ok", :message => pot.amount }
-      		format.json  { render :json => msg }
+			if user.money - amount >= 0
+		        user.money -= amount
+		        user.save
+				pot.amount += amount
+				pot.save
+	      		msg = { :status => "ok", :message => pot.amount }
+	      	else
+	      		msg = { :status => 'Not enough money', :message => pot.amount}
+	      	end
+	      	format.json  { render :json => msg }
     	end
 	end
 end

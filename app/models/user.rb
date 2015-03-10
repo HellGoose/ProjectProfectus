@@ -32,4 +32,10 @@ class User < ActiveRecord::Base
 			user.save!
 		end
 	end
+
+	after_initialize :init
+	def init
+		self.subscriptionAmount ||= 0 if self.has_attribute? :donationAmount
+		self.money ||= 0 if self.has_attribute? :money
+	end
 end
