@@ -54,7 +54,7 @@ reset = ->
     $('#next').attr('disabled', false)
   $('#projects').load('/projects/page/' + category + '/' + page + '/' + interval)
   $('#data').data('page', page)
-  $('.catButton').attr('style', 'color: black')
+  $('.catButton').attr('style', 'color: white')
   return
 
 $(document).ready ->
@@ -80,7 +80,7 @@ $(document).ready ->
     $('#data').data('category', @id)
     $('#data').data('size', @name)
     reset()
-    $('#'+@id+'.catButton').attr('style', 'color: gray')
+    $('#'+@id+'.catButton').attr('style', 'color: black')
     return
 
   $('#searchButton').click ->

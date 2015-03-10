@@ -3,30 +3,29 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 
+.top-buffer {
+	margin-top: 20px;
+}
+
+.border-around {
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    padding: 10px;
+}
+
 #categories {
 	margin-top: 10px;
 	margin-bottom: 10px;
 	padding-top: 35px;
 	padding-left: 30px;
-	height: 300px;
-	background-color: #18c93a;
-}
-
-.categories button {
-	background: linear-gradient(to bottom right, #FFFFFF, #BBBBBB);
-	border-radius: 5px;
-}
-
-
-
-.selected {
-	background: linear-gradient(to bottom right, #AAAAAA, #999999);
-	border-radius: 5px;
+	height: 180px;
 }
 
 .catButton {
-	width: 100px !important;
-	min-height: 75px !important;
+	width: 120px !important;
+	min-height: 50px !important;
+	margin-bottom: 10px;
 }
 
 //Causes the catagory sites with no projects to have a simmilar look to those who have it.
@@ -36,17 +35,14 @@
 	text-align: center;
 }
 
-#search {
-	float: left;
-}
-
 #searchBar {
-	height: 26px;
+	height: 30px;
 	width: 100%;
+	margin: 20px;
 }
 
 #filter {
-	float: right;
+	width: 140px;
 }
 
 #pageSelector {
@@ -100,7 +96,8 @@
 
 .project {
 	margin: 10px;
-	border: 1px solid black;
+	background-color: #fcfcfc;
+	border: 1px solid #ddd;
 	border-radius: 10px;
 	min-width: 250px;
 	max-width: 250px;
