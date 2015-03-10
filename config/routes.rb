@@ -23,12 +23,14 @@ Rails.application.routes.draw do
   get '/admin/projects', :to => 'admin#projects'
   get '/admin/mods', :to => 'admin#mods'
 
+  post '/users/:id/addMoney/:amount', :to => 'users#addMoney'
+
     resources :sessions, only: [:create, :destroy]
     resources :projects
     resources :users
     resources :topics
     resources :posts
-    resource :home, only: [:show, :donate]
+    resources :home, only: [:show, :donate]
     resources :admin, only: [:index]
     resources :news
 

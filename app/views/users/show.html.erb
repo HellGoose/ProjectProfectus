@@ -1,4 +1,5 @@
 <%= stylesheet_link_tag "users" %>
+<%= javascript_include_tag "users" %>
 
 <p id="notice"><%= notice %></p>
 
@@ -27,6 +28,8 @@
 	Number of Projects: <%= @user.projects.count %><br />
 	Number of Forum Topics: <%= @user.topics.count %><br />
 	Number of Forum Posts: <%= @user.posts.count %><br/>
-	Money: <%= @user.money %> $
+	Money: <span id="money"><%= @user.money %></span> $<br/>
+	<input type="text" id="addMoneyAmount">
+	<button id="addMoney">Add Funds</button>
 </div>
 

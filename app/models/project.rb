@@ -24,5 +24,10 @@ class Project < ActiveRecord::Base
 
 	before_destroy :refund
 	def refund
+		self.donations.each do |d|
+			user = d.user
+			user.money += d.amount
+			user.save
+		end
 	end
 end
