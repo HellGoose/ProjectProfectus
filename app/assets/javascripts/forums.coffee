@@ -30,9 +30,7 @@ changePage = (dir) ->
   $('#data').data('page', page)
   return
 
-$(document).ready ->
-  $('#menu').prepend('<li><a href="/projects/new">New Project</a></li>')
-  
+$(document).ready ->  
   $('#voteButton').click ->
     $.post document.URL + '/vote', (data, status) ->
       if $('#voteButton').html() == 'Vote'
