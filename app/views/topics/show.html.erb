@@ -38,7 +38,7 @@
 		<div class="text_container">
 			<h3><%= @topic.title %></h4>
 			<div class="edit">
-				<% if @topic.user_id == session[:user_id]%>
+				<% if @topic.user_id == session[:user_id] || isAdmin %>
 					<%= link_to 'Edit |', edit_topic_path(@topic)%> 
 					<%= link_to 'Delete', @topic, method: :delete, data: {confirm: "Are you sure?"} %>
 				<% end %>

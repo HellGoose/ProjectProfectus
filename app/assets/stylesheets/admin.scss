@@ -8,8 +8,53 @@
 	left: 50%;
 }
 
-.news {
+.flagged_project {
 	margin: 10px;
 	border: 1px solid black;
 	width: 100%;
+}
+
+.project_link {
+	position: absolute;
+	width: 90%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	text-decoration: none; 
+    z-index: 1;
+    opacity: 0;
+}
+
+.edit {
+	float: right;
+}
+
+.news {
+	margin: 10px;
+	width: 100%;
+}
+
+.news .text_container {
+	margin-right: auto;
+	margin-left: auto;
+	background-color: #fcfcfc;
+	border: 1px solid #ddd;
+	border-radius: 10px;
+	width: 425px;
+}
+
+.news .text_container .edit {
+	margin-top: 5px;
+	margin-right: 5px;
+	float: right;
+	position: absolute;
+	left: 700px;
+}
+
+.news .text_container h2, .news .text_container h5 {
+	text-align: center;
+}
+
+.news .text_container p {
+	word-wrap: break-word;
 }
