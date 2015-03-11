@@ -14,20 +14,24 @@ class Project < ActiveRecord::Base
 	has_many :usersVoted, class_name: 'User', through: 'ProjectVote'
 	has_many :usersDonated, class_name: 'User', through: 'ProjectDonation'
 
-	#Sets default values
+	#Callbacks
+	before_destroy :refund, prepend: true
 	after_initialize :init
-	def init
-		self.flagged = false if (self.has_attribute? :flagged) && self.flagged.nil?
-		self.voteCount ||= 0 if self.has_attribute? :voteCount
-		self.donationAmount ||= 0 if self.has_attribute? :donationAmount
-	end
 
-	before_destroy :refund
-	def refund
-		self.donations.each do |d|
-			user = d.user
-			user.money += d.amount
-			user.save
+	private
+		#Sets default values
+		def init
+			self.flagged = false if (self.has_attribute? :flagged) && self.flagged.nil?
+			self.voteCount ||= 0 if self.has_attribute? :voteCount
+			self.donationAmount ||= 0 if self.has_attribute? :donationAmount
 		end
-	end
+
+		#Refund all donations to the respective user
+		def refund
+			self.donations.each do |d|
+				user = d.user
+				user.money += d.amount
+				user.save
+			end
+		end
 end
