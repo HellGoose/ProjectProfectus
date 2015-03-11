@@ -14,18 +14,24 @@
 <div id="topic">
 	<div class="col-xs-12 main_topic">
 		<div class="vote_container">
-			<% userVote = @topic.votes.find_by(user_id: session[:user_id], topic_id: @topic.id) %>
+			<% userVote = @topic.votes.find_by(user_id: session[:user_id], topic_id: @topic.id)
+
+			opacity = 1
+			if !session[:user_id]
+				opacity = 0.5
+			end %>
 			
-			<button id=<%= @topic.id.to_s %> class="glyphicon glyphicon-menu-up up_vote" aria-hidden="true" 
-				<% if userVote != nil and !userVote.isDownvote%>
-					disabled
+			<button id=<%= @topic.id.to_s %> class="glyphicon glyphicon-menu-up up_vote" aria-hidden="true" style="opacity:<%= opacity %>" 
+				<% if !session[:user_id] or (userVote != nil and !userVote.isDownvote)%>
+					disabled 
 				<%end%>>
+
 			</button>
 
 			<p><span id=<%= "votes_" + @topic.id.to_s %>><%= @topic.voteCount %></span></p>
 
-			<button id=<%=  @topic.id.to_s %> class="glyphicon glyphicon-menu-down down_vote" aria-hidden="true"
-				<% if userVote != nil and userVote.isDownvote%>
+			<button id=<%=  @topic.id.to_s %> class="glyphicon glyphicon-menu-down down_vote" aria-hidden="true" style="opacity:<%= opacity %>" 
+				<% if !session[:user_id] or (userVote != nil and userVote.isDownvote)%>
 					disabled
 				<%end%>>
 			</button>

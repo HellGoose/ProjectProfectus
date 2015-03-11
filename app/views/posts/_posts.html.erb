@@ -2,18 +2,23 @@
 	<% next if p.isComment? %>
 	<div class="col-xs-12 post">
 		<div class="vote_container">
-			<% userVote = p.votes.find_by(user_id: session[:user_id], post_id: p.id) %>
+			<% userVote = p.votes.find_by(user_id: session[:user_id], post_id: p.id)
 
-			<button id=<%= p.id.to_s %> class="glyphicon glyphicon-menu-up post_up_vote" aria-hidden="true"
-				<% if userVote != nil and !userVote.isDownvote%>
+			opacity = 1
+			if !session[:user_id]
+				opacity = 0.5
+			end %>
+
+			<button id=<%= p.id.to_s %> class="glyphicon glyphicon-menu-up post_up_vote" aria-hidden="true" style="opacity:<%= opacity %>" 
+				<% if !session[:user_id] or (userVote != nil and !userVote.isDownvote)%>
 					disabled
 				<%end%>>
 			</button>
 
 			<p><span id=<%= "post_votes_" + p.id.to_s %>><%= p.voteCount %></span></p>
 
-			<button id=<%=  p.id.to_s %> class="glyphicon glyphicon-menu-down post_down_vote" aria-hidden="true"
-				<% if userVote != nil and userVote.isDownvote%>
+			<button id=<%=  p.id.to_s %> class="glyphicon glyphicon-menu-down post_down_vote" aria-hidden="true" style="opacity:<%= opacity %>" 
+				<% if !session[:user_id] or (userVote != nil and userVote.isDownvote)%>
 					disabled
 				<%end%>>
 			</button>
@@ -32,7 +37,9 @@
 			<p class="content"><%= p.content %></p>
 
 			<div class="bar">
-				<a class="btn answer" id="<%= p.id.to_s %>">Reply</a>
+				<% if session[:user_id] %>
+					<a class="btn answer" id="<%= p.id.to_s %>">Reply</a>
+				<% end %>
 			</div>
 		</div>
 

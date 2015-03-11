@@ -7,6 +7,10 @@ class ApplicationController < ActionController::Base
   end
 
   def isAdmin
-  	current_user.role > 1
+  	if current_user != nil
+  		current_user.role > 1
+  	else
+  		false
+  	end
   end
 end

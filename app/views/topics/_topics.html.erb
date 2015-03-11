@@ -11,18 +11,23 @@
 		<%= link_to "", t, class: "topic_link" %>
 		<div>
 			<div class="vote_container">
-				<% userVote = t.votes.find_by(user_id: session[:user_id], topic_id: t.id) %>
+				<% userVote = t.votes.find_by(user_id: session[:user_id], topic_id: t.id)
 
-				<button id=<%= t.id.to_s %> class="glyphicon glyphicon-menu-up up_vote" aria-hidden="true"
-					<% if userVote != nil and !userVote.isDownvote%>
+				opacity = 1
+				if !session[:user_id]
+					opacity = 0.5
+				end %>
+
+				<button id=<%= t.id.to_s %> class="glyphicon glyphicon-menu-up up_vote" aria-hidden="true" style="opacity:<%= opacity %>" 
+					<% if !session[:user_id] or (userVote != nil and !userVote.isDownvote)%>
 						disabled
 					<%end%>>
 				</button>
 
 				<p><span id=<%= "votes_" + t.id.to_s %>><%= t.voteCount %></span></p>
 
-				<button id=<%=  t.id.to_s %> class="glyphicon glyphicon-menu-down down_vote" aria-hidden="true"
-					<% if userVote != nil and userVote.isDownvote%>
+				<button id=<%=  t.id.to_s %> class="glyphicon glyphicon-menu-down down_vote" aria-hidden="true" style="opacity:<%= opacity %>" 
+					<% if !session[:user_id] or (userVote != nil and userVote.isDownvote)%>
 						disabled
 					<%end%>>
 				</button>
