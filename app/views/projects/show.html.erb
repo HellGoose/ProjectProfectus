@@ -25,16 +25,23 @@
 	<p>Votes: <span id="votes"><%= @project.voteCount %></span></p>
 	<p>Made by: <%= link_to @project.user.name, @project.user %></p>
 
-  <% if (@project.votes.where(user_id: session[:user_id]).take == nil) 
+  <% opacity = 1
+  disabled = false
+  if !session[:user_id]
+    opacity = 0.5
+    disabled = true
+  end
+  if !session[:user_id] or @project.votes.where(user_id: session[:user_id]).take == nil 
     voteName = "Vote"
   else
     voteName = "Unvote"
-  end%>
-  
-  <button class="btn btn-primary"id="voteButton"><%= voteName%></button>
+  end %>
+
+  <button class="btn btn-primary"id="voteButton"style="opacity:<%= opacity %>"disabled="<%= disabled %>"><%= voteName%></button>
+
   <p>Donated: <span id='donationAmount'><%= @project.donationAmount %></span> $</p>
-  <input type="text" id="donateField">
-  <button class="btn btn-success" id="donateButton">Donate</button>
+  <input type="text" id="donateField"style="opacity:<%= opacity %>"disabled="<%= disabled %>">
+  <button class="btn btn-success" id="donateButton"style="opacity:<%= opacity %>"disabled="<%= disabled %>">Donate</button>
 </div>
 
 <div id='data' data-page=1 data-interval=<%= @topicsInterval %> data-size=<%= @topics.size() %> data-forum=<%= @project.forum.id %>></div>
@@ -60,9 +67,12 @@
         <button id="next" class="glyphicon glyphicon-menu-right" aria-hidden="true"></button>
       </div>
 
+      
       <div id="createTopic">
-        <%= link_to "Create Topic", controller: "topics", action: "new", forum: @project.forum.id %>
-      </div>
+        <% if session[:user_id] %>
+          <%= link_to "Create Topic", controller: "topics", action: "new", forum: @project.forum.id %>
+        <% end %>
+      </div> 
     </div>
   </div>
 </div>
