@@ -21,11 +21,11 @@
 <div id='data' data-page=1 data-interval=<%= @projectsInterval %> data-size=<%= @projects.size() %> data-category="0" data-search=""
 </div>
 
-<div class="col-sm-12" id="projects">
+<div class="col-sm-12 text-center" id="projects">
 	<%= render partial: 'projectList', locals: { page: 1, projectsPerPage: @projectsInterval} %>
 </div>
 
-<div id="pageSelector" >
+<div class="text-center" id="pageSelector">
 	<button id="prev" class="glyphicon glyphicon-menu-left" aria-hidden="true"></button>
 	<button id="next" class="glyphicon glyphicon-menu-right" aria-hidden="true"></button>
 </div>

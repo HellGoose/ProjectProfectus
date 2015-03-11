@@ -1,19 +1,10 @@
 <%= stylesheet_link_tag "news" %>
 
-<% @all_news.each do |n| %>
-	<div class="col-xs-12 news">
-		<div class="text_container">
-			<h2 class="title"><%= n.title %></h2>
-			<h5 class="created"><%= n.created_at %></h5>
-			
-			<div class="content">
-				<%= sanitize n.content, :tags => %w(a b i strong em p param h1 h2 h3 h4 h5 h6 br hr ul li img iframe) %>
-			</div>
-		</div>
-	</div>
-<% end %>
+<div class="text-center">
+	<%= render partial: 'front_news' %>
+</div>
 
-<div id="pageSelector" >
+<div class="text-center" >
 	<button id="prev" class="glyphicon glyphicon-menu-left" aria-hidden="true"></button>
 	<button id="next" class="glyphicon glyphicon-menu-right" aria-hidden="true"></button>
 </div>

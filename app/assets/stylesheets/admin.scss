@@ -30,8 +30,8 @@
 }
 
 .news {
-	margin: 10px;
-	width: 100%;
+	margin-top: 10px;
+	margin-bottom: 10px;
 }
 
 .news .text_container {
@@ -49,10 +49,6 @@
 	float: right;
 	position: absolute;
 	left: 700px;
-}
-
-.news .text_container h2, .news .text_container h5 {
-	text-align: center;
 }
 
 .news .text_container p {
