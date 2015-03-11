@@ -4,7 +4,6 @@
 
 $(document).ready ->
 	$('#news').click ->
-		tinymce.editors = []
 		$('#content').load('/admin/news')
 		return
 	$('#users').click ->
