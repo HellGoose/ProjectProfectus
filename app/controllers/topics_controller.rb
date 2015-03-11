@@ -18,29 +18,31 @@ class TopicsController < ApplicationController
   end
 
   def vote
-    topic = Topic.find(params[:id])
-    userVote = topic.votes.find_by(user_id: session[:user_id])
-    if (userVote == nil)
-      userVote = topic.votes.create(topic_id: topic.id, user_id: session[:user_id])
-      if params[:dir] == 'up'
-        topic.voteCount += 1
-      elsif params[:dir] == 'down'
-        topic.voteCount -= 1
-      end        
-    else
-      if params[:dir] == 'up' and userVote.isDownvote != false
-        userVote.isDownvote = false
-        topic.voteCount += 2
-      elsif params[:dir] == 'down' and userVote.isDownvote != true
-        userVote.isDownvote = true
-        topic.voteCount -= 2
+    if current_user
+      topic = Topic.find(params[:id])
+      userVote = topic.votes.find_by(user_id: session[:user_id])
+      if (userVote == nil)
+        userVote = topic.votes.create(topic_id: topic.id, user_id: session[:user_id])
+        if params[:dir] == 'up'
+          topic.voteCount += 1
+        elsif params[:dir] == 'down'
+          topic.voteCount -= 1
+        end        
+      else
+        if params[:dir] == 'up' and userVote.isDownvote != false
+          userVote.isDownvote = false
+          topic.voteCount += 2
+        elsif params[:dir] == 'down' and userVote.isDownvote != true
+          userVote.isDownvote = true
+          topic.voteCount -= 2
+        end
       end
-    end
-    userVote.save
-    topic.save()
-    respond_to do |format|
-      msg = { :status => "ok", :message => topic.voteCount }
-      format.json  { render :json => msg }
+      userVote.save
+      topic.save()
+      respond_to do |format|
+        msg = { :status => "ok", :message => topic.voteCount }
+        format.json  { render :json => msg }
+      end
     end
   end
 
@@ -59,8 +61,10 @@ class TopicsController < ApplicationController
 
   # GET /projects/new
   def new
-    @topic = Topic.new
-    @forum = Forum.find(params[:forum])
+    if current_user
+      @topic = Topic.new
+      @forum = Forum.find(params[:forum])
+    end
   end
 
   def update
@@ -91,17 +95,19 @@ class TopicsController < ApplicationController
   # POST /projects
   # POST /projects.json
   def create
-    @topic = Topic.new(topic_params)
-    @topic.user_id = session[:user_id]
+    if current_user
+      @topic = Topic.new(topic_params)
+      @topic.user_id = session[:user_id]
 
-    @forum = Forum.find(@topic.forum_id)
+      @forum = Forum.find(@topic.forum_id)
 
-    respond_to do |format|
-      if @topic.save
-        format.html { redirect_to @forum.project }
-      else
-        format.html { render :new }
-        format.json { render json: @topic.errors, status: :unprocessable_entity }
+      respond_to do |format|
+        if @topic.save
+          format.html { redirect_to @forum.project }
+        else
+          format.html { render :new }
+          format.json { render json: @topic.errors, status: :unprocessable_entity }
+        end
       end
     end
   end
