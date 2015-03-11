@@ -6,7 +6,6 @@ changePage = (dir) ->
   page = $('#data').data('page')
   size = $('#data').data('size')
   interval = $('#data').data('interval')
-  category = $('#data').data('category')
 
   if (dir == '>')
     if page < (Math.ceil(size/interval))
@@ -26,22 +25,12 @@ changePage = (dir) ->
       $('#prev').attr('disabled', true)
       if size > interval
         $('#next').attr('disabled', false)
-  else
-    page = 1
-    $('#prev').attr('disabled', true)
-    if size <= interval
-      $('#next').attr('disabled', true)
-    else
-      $('#next').attr('disabled', false)
-    $('.catButton').attr('style', 'color: white')
 
-  $('#projects').load('/projects/page/' + category + '/' + page + '/' + interval)
+  $('#news_container').load('/news/page/' + page + '/' + interval)
   $('#data').data('page', page)
   return
 
 $(document).ready ->
-  $('#menu').prepend('<li><a href="/projects/new">New Project</a></li>')
-
   page = $('#data').data('page')
   size = $('#data').data('size')
   interval = $('#data').data('interval')
@@ -57,25 +46,11 @@ $(document).ready ->
   $('#prev').click ->
     changePage('<')
     return
-
-  $('.catButton').click ->
-    $('#data').data('category', @id)
-    $('#data').data('size', @name)
-    changePage('reset')
-    $('#'+@id+'.catButton').attr('style', 'color: black')
-    return
-
-  $('#searchButton').click ->
-    $('#data').data('search', $('#searchText').val())
-    return
   return
 
 window.onkeyup = (e) ->
   key = if e.keyCode then e.keyCode else e.which
   switch key
-    when 13
-      if $('#searchText').focus
-        search()
     when 39
       $('#next').click()
     when 37
