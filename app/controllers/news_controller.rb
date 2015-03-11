@@ -5,13 +5,17 @@ class NewsController < ApplicationController
 		@news = News.new(news_params)
 
 		respond_to do |format|
-			if @news.save
+			if isAdmin && @news.save
 				format.html { redirect_to '/admin/' }
 			else
 				format.html { render :new }
 				format.json { render json: @news.errors, status: :unprocessable_entity }
 			end
 		end
+	end
+
+	def index
+		@all_news = News.order("created_at DESC")
 	end
 
 	def show
@@ -33,10 +37,13 @@ class NewsController < ApplicationController
 	end
 
 	def destroy
-		@news.destroy
 		respond_to do |format|
-			format.html { redirect_to '/admin/', notice: 'News was successfully destroyed.' }
-			format.json { head :no_content }
+			if isAdmin && @news.destroy
+				format.html { redirect_to '/admin/', notice: 'News was successfully destroyed.' }
+				format.json { head :no_content }
+			else
+				format.html { redirect_to '/' }
+			end
 		end
     end
 

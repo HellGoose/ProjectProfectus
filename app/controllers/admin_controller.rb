@@ -43,6 +43,6 @@ class AdminController < ApplicationController
   private
   	def set_news
   		@news = News.new
-  		@all_news = News.all
+  		@all_news = News.order("created_at DESC")
   	end
 end
