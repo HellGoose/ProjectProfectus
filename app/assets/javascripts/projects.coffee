@@ -40,8 +40,6 @@ changePage = (dir) ->
   return
 
 $(document).ready ->
-  $('#menu').prepend('<li><a href="/projects/new">New Project</a></li>')
-
   page = $('#data').data('page')
   size = $('#data').data('size')
   interval = $('#data').data('interval')

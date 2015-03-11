@@ -24,6 +24,9 @@
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav navbar-right" id="menu">
+					<% if current_user %>
+						<li><a href="/projects/new">New Project</a></li>
+					<% end %>
 					<li class="<%= 'active' if params[:controller] == 'projects' %>"><a href="/projects">Projects</a></li>
 					<li class="<%= 'active' if params[:controller] == 'about' %>"><a href="/about/index">About</a></li>
 					<li class="dropdown <%= 'active' if params[:controller] == 'users' %>">
