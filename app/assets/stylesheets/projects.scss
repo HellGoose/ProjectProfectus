@@ -45,19 +45,10 @@
 	width: 140px;
 }
 
-#pageSelector {
-	height: 40px;
-	width: 84px;
-	position: relative;
-	left: 50%;
-	margin-left: -42px;
-}
-
 //Makes disabled buttons 50% transgendered
 #pageSelector button:disabled{
 	opacity: .5;
 }
-
 
 .image_container {
 	width: 200px;
@@ -92,6 +83,11 @@
 
 .project_link:hover {
 	color: #363632;
+}
+
+#projects {
+	margin: 14px;
+	margin-top: 5px;
 }
 
 .project {

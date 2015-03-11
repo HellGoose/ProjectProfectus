@@ -2,9 +2,13 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+#pageSelector button:disabled{
+	opacity: .5;
+}
+
 .news {
-	margin: 10px;
-	width: 100%;
+	margin-top: 10px;
+	margin-bottom: 10px;
 }
 
 .news .text_container {
@@ -16,18 +20,6 @@
 	width: 425px;
 }
 
-.news .text_container h2, .news .text_container h5 {
-	text-align: center;
-}
-
 .news .text_container p {
 	word-wrap: break-word;
-}
-
-#pageSelector {
-	height: 40px;
-	width: 84px;
-	position: relative;
-	left: 50%;
-	margin-left: -42px;
 }

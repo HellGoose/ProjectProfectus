@@ -26,22 +26,30 @@
 	<p>Made by: <%= link_to @project.user.name, @project.user %></p>
 
   <% opacity = 1
-  disabled = false
+  disabled = ""
   if !session[:user_id]
     opacity = 0.5
-    disabled = true
+    disabled = "disabled"
   end
   if !session[:user_id] or @project.votes.where(user_id: session[:user_id]).take == nil 
     voteName = "Vote"
   else
     voteName = "Unvote"
   end %>
-
-  <button class="btn btn-primary"id="voteButton"style="opacity:<%= opacity %>"disabled="<%= disabled %>"><%= voteName%></button>
-
+  
+  <button class="btn btn-primary"id="voteButton"style="opacity:<%= opacity %>"<%=disabled%>><%= voteName%></button><br /><br />
   <p>Donated: <span id='donationAmount'><%= @project.donationAmount %></span> $</p>
-  <input type="text" id="donateField"style="opacity:<%= opacity %>"disabled="<%= disabled %>">
-  <button class="btn btn-success" id="donateButton"style="opacity:<%= opacity %>"disabled="<%= disabled %>">Donate</button>
+  <form class="form-inline">
+    <div class="form-group">
+      <label class="sr-only" for="exampleInputAmount">Amount (in dollars)</label>
+      <div class="input-group">
+        <div class="input-group-addon">$</div>
+        <input type="text" class="form-control" id="donateField" placeholder="Amount"style="opacity:<%= opacity %>"<%=disabled%>>
+        <div class="input-group-addon">.00</div>
+      </div>
+    </div>
+    <button class="btn btn-success" id="donateButton"style="opacity:<%= opacity %>"<%=disabled%>>Donate</button>
+  </form>
 </div>
 
 <div id='data' data-page=1 data-interval=<%= @topicsInterval %> data-size=<%= @topics.size() %> data-forum=<%= @project.forum.id %>></div>
@@ -62,7 +70,7 @@
         <%= render partial: 'topics/topics', locals: { id: @project.forum.id, page: 1, topicsPerPage: @topicsInterval } %>
       </div>
 
-      <div id="pageSelector">
+      <div class="text-center" id="pageSelector">
         <button id="prev" class="glyphicon glyphicon-menu-left" aria-hidden="true"></button>
         <button id="next" class="glyphicon glyphicon-menu-right" aria-hidden="true"></button>
       </div>

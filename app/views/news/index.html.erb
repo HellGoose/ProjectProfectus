@@ -1,19 +1,14 @@
 <%= stylesheet_link_tag "news" %>
 
-<% @all_news.each do |n| %>
-	<div class="col-xs-12 news">
-		<div class="text_container">
-			<h2 class="title"><%= n.title %></h2>
-			<h5 class="created"><%= n.created_at %></h5>
-			
-			<div class="content">
-				<%= sanitize n.content, :tags => %w(a b i strong em p param h1 h2 h3 h4 h5 h6 br hr ul li img iframe) %>
-			</div>
-		</div>
-	</div>
-<% end %>
+<%= javascript_include_tag "news" %>
 
-<div id="pageSelector" >
+<div id='data' data-page=1 data-interval=<%= @newsInterval %> data-size=<%= @all_news.size() %>></div>
+
+<div class="text-center" id="news_container">
+	<%= render partial: 'front_news', locals: { page: 1, newsPerPage: 5 } %>
+</div>
+
+<div class="text-center" id="pageSelector" >
 	<button id="prev" class="glyphicon glyphicon-menu-left" aria-hidden="true"></button>
 	<button id="next" class="glyphicon glyphicon-menu-right" aria-hidden="true"></button>
 </div>
