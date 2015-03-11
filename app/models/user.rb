@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
 	has_many :projects
 	has_many :posts
 	has_many :topics
-	has_many :projectDonations, class_name: "ProjectDonation"
+	has_many :donations, class_name: "ProjectDonation"
 	has_many :projectVotes, class_name: "ProjectVote"
 	has_many :topicVotes, class_name: "TopicVote"
 	has_many :postVotes, class_name: "PostVote"
