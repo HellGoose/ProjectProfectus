@@ -23,7 +23,8 @@
 }
 
 .news {
-	margin: 10px;
+	margin-top: 10px;
+	margin-bottom: 10px;
 	width: 100%;
 }
 
@@ -36,16 +37,6 @@
 	width: 425px;
 }
 
-.news .text_container h2, .news .text_container h5 {
-	text-align: center;
-}
-
 .news .text_container p {
 	word-wrap: break-word;
-}
-
-#more_news {
-	position: relative;
-	left: 50%;
-	margin-left: -38px;
 }
