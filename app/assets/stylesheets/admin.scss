@@ -8,7 +8,7 @@
 	left: 50%;
 }
 
-.news, .flagged_project {
+.flagged_project {
 	margin: 10px;
 	border: 1px solid black;
 	width: 100%;
@@ -27,4 +27,34 @@
 
 .edit {
 	float: right;
+}
+
+.news {
+	margin: 10px;
+	width: 100%;
+}
+
+.news .text_container {
+	margin-right: auto;
+	margin-left: auto;
+	background-color: #fcfcfc;
+	border: 1px solid #ddd;
+	border-radius: 10px;
+	width: 425px;
+}
+
+.news .text_container .edit {
+	margin-top: 5px;
+	margin-right: 5px;
+	float: right;
+	position: absolute;
+	left: 700px;
+}
+
+.news .text_container h2, .news .text_container h5 {
+	text-align: center;
+}
+
+.news .text_container p {
+	word-wrap: break-word;
 }

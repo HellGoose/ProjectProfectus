@@ -1,8 +1,12 @@
-<% @all_news.each do |p| %>
+<% @all_news.each do |n| %>
 	<div class="col-xs-12 news">
 		<div class="text_container">
-			<h2 class="title"><%= p.title %></h2>
-			<p class="content"><%= p.content %></p>
+			<h2 class="title"><%= n.title %></h2>
+			<h5 class="created"><%= n.created_at %></h5>
+			
+			<div class="content">
+				<%= sanitize n.content, :tags => %w(a b i strong em p param h1 h2 h3 h4 h5 h6 br hr ul li img iframe) %>
+			</div>
 		</div>
 	</div>
 <% end %>
