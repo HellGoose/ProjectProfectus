@@ -28,7 +28,7 @@
 		<div class="tab-pane" id="news-tab">
 			<div class="text-center">
 				<h1>Latest News</h1>
-				<%= render partial: 'news/front_news' %>
+				<%= render partial: 'news/front_news', locals: { page: 1, newsPerPage: 5 } %>
 				<a href="/news/" id="more_news" class="btn btn-primary text-center">Show more</a>
 			</div>
 		</div>
