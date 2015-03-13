@@ -64,6 +64,7 @@ class TopicsController < ApplicationController
     if current_user
       @topic = Topic.new
       @forum = Forum.find(params[:forum])
+      session[:return_to] = request.referer
     end
   end
 
@@ -83,7 +84,7 @@ class TopicsController < ApplicationController
     project = Project.find_by forum_id: @topic.forum_id
     respond_to do |format|
       if isTopicOwner && @topic.destroy
-        format.html { redirect_to project, notice: 'Topic was successfully destroyed.' }
+        format.html { redirect_to project, notice: 'Topic was successfully destroyed.'}
         format.json { head :no_content }
       else
         format.html { redirect_to @topic, notice: 'You cannot delete this project.' }
@@ -103,7 +104,7 @@ class TopicsController < ApplicationController
 
       respond_to do |format|
         if @topic.save
-          format.html { redirect_to @forum.project }
+          format.html { redirect_to session.delete(:return_to)}
         else
           format.html { render :new }
           format.json { render json: @topic.errors, status: :unprocessable_entity }
