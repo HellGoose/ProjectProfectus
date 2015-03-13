@@ -84,7 +84,7 @@ class TopicsController < ApplicationController
     project = Project.find_by forum_id: @topic.forum_id
     respond_to do |format|
       if isTopicOwner && @topic.destroy
-        format.html { redirect_to project_path, notice: 'Topic was successfully destroyed.'}
+        format.html { redirect_to project, notice: 'Topic was successfully destroyed.'git}
         format.json { head :no_content }
       else
         format.html { redirect_to @topic, notice: 'You cannot delete this project.' }
