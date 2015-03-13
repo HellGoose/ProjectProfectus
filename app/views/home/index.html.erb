@@ -7,7 +7,12 @@
 	<div class="text-center">
 		<p class="header-brand-text">Welcome to Profectus</p>
 		<p class="header-donate-text">Donated so far: <span id="donationAmount"><%= @mainPot.amount %></span>$</p>
-		<button type="button" class="btn btn-success" id="donate">1UP</button>
+		<% disabled = "" 
+		if !current_user
+			disabled = "disabled"
+		end%>
+
+		<button type="button" class="btn btn-success" id="donate" <%= disabled %>>1UP</button>
 	</div>
 </div>
 

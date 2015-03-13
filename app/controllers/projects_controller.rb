@@ -9,11 +9,13 @@ class ProjectsController < ApplicationController
   end
 
   def flag
-    if params[:type] == 'remove'
-      @project.flagged = 0
-      @project.save
+    if current_user
+      if params[:type] == 'remove'
+        @project.flagged = 0
+        @project.save
+      end
+      render nothing: true
     end
-    render nothing: true
   end
 
   def page
@@ -32,26 +34,30 @@ class ProjectsController < ApplicationController
   end
 
   def vote
-    if (@project.votes.find_by(user_id: session[:user_id]) == nil)
-      vote_project
-    else
-      removeVote
-    end
-    respond_to do |format|
-        msg = { :status => 'ok', :message => @project.voteCount}
-        format.json  { render :json => msg }
+    if current_user
+      if (@project.votes.find_by(user_id: session[:user_id]) == nil)
+        vote_project
+      else
+        removeVote
+      end
+      respond_to do |format|
+          msg = { :status => 'ok', :message => @project.voteCount}
+          format.json  { render :json => msg }
+      end
     end
   end
 
   def donate
-    amount = Integer(params[:amount])
-    respond_to do |format|
-      if updateDonationAmount(amount)
-        msg = { :status => 'ok', :message => @project.donationAmount}
-      else
-        msg = { :status => 'Not enough cash', :message => @project.donationAmount}
+    if current_user
+      amount = Integer(params[:amount])
+      respond_to do |format|
+        if updateDonationAmount(amount)
+          msg = { :status => 'ok', :message => @project.donationAmount}
+        else
+          msg = { :status => 'Not enough cash', :message => @project.donationAmount}
+        end
+        format.json  { render :json => msg }
       end
-      format.json  { render :json => msg }
     end
   end
 
@@ -65,7 +71,9 @@ class ProjectsController < ApplicationController
 
   # GET /projects/new
   def new
-   	@project = Project.new
+    if current_user
+     	@project = Project.new
+     end
   end
 
   # GET /projects/1/edit
@@ -78,18 +86,20 @@ class ProjectsController < ApplicationController
   # POST /projects
   # POST /projects.json
   def create
-    @project = Project.new(project_params)
-    @project.user_id = session[:user_id]
-    forum = Forum.create
-    @project.forum_id = forum.id
+    if current_user
+      @project = Project.new(project_params)
+      @project.user_id = session[:user_id]
+      forum = Forum.create
+      @project.forum_id = forum.id
 
-    respond_to do |format|
-      if @project.save
-        format.html { redirect_to @project, notice: 'Project was successfully created.' }
-        format.json { render :show, status: :created, location: @project }
-      else
-        format.html { render :new }
-        format.json { render json: @project.errors, status: :unprocessable_entity }
+      respond_to do |format|
+        if @project.save
+          format.html { redirect_to @project, notice: 'Project was successfully created.' }
+          format.json { render :show, status: :created, location: @project }
+        else
+          format.html { render :new }
+          format.json { render json: @project.errors, status: :unprocessable_entity }
+        end
       end
     end
   end
@@ -111,10 +121,12 @@ class ProjectsController < ApplicationController
   # DELETE /projects/1
   # DELETE /projects/1.json
   def destroy
-    @project.destroy
-    respond_to do |format|
-      format.html { redirect_to projects_url, notice: 'Project was successfully destroyed.' }
-      format.json { head :no_content }
+    if isProjectOwner
+      @project.destroy
+      respond_to do |format|
+        format.html { redirect_to projects_url, notice: 'Project was successfully destroyed.' }
+        format.json { head :no_content }
+      end
     end
   end
 

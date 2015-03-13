@@ -11,45 +11,51 @@ class PostsController < ApplicationController
   end
 
   def answer
-    @post = Post.new
-    @topic = Topic.find(params[:topic_id])
-    @op = Post.find(params[:post_id])
-    respond_to do |format|
-      format.js { render partial: 'posts/postForm' }
+    if current_user
+      @post = Post.new
+      @topic = Topic.find(params[:topic_id])
+      @op = Post.find(params[:post_id])
+      respond_to do |format|
+        format.js { render partial: 'posts/postForm' }
+      end
     end
   end
 
   def vote
-    post = Post.find(params[:id])
-    userVote = post.votes.find_by(user_id: session[:user_id])
-    if (userVote == nil)
-      userVote = post.votes.create(post_id: post.id, user_id: session[:user_id])
-      if params[:dir] == 'up'
-        post.voteCount += 1
-      elsif params[:dir] == 'down'
-        post.voteCount -= 1
-      end        
-    else
-      if params[:dir] == 'up' and userVote.isDownvote != false
-        userVote.isDownvote = false
-        post.voteCount += 2
-      elsif params[:dir] == 'down' and userVote.isDownvote != true
-        userVote.isDownvote = true
-        post.voteCount -= 2
+    if current_user
+      post = Post.find(params[:id])
+      userVote = post.votes.find_by(user_id: session[:user_id])
+      if (userVote == nil)
+        userVote = post.votes.create(post_id: post.id, user_id: session[:user_id])
+        if params[:dir] == 'up'
+          post.voteCount += 1
+        elsif params[:dir] == 'down'
+          post.voteCount -= 1
+        end        
+      else
+        if params[:dir] == 'up' and userVote.isDownvote != false
+          userVote.isDownvote = false
+          post.voteCount += 2
+        elsif params[:dir] == 'down' and userVote.isDownvote != true
+          userVote.isDownvote = true
+          post.voteCount -= 2
+        end
       end
-    end
-    userVote.save()
-    post.save()
-    respond_to do |format|
-      msg = { :status => "ok", :message => post.voteCount }
-      format.json  { render :json => msg }
+      userVote.save()
+      post.save()
+      respond_to do |format|
+        msg = { :status => "ok", :message => post.voteCount }
+        format.json  { render :json => msg }
+      end
     end
   end
 
   # GET /projects/new
   def new
-    @post = Post.new
-    @op = nil
+    if current_user
+      @post = Post.new
+      @op = nil
+    end
   end
 
   def edit
@@ -61,24 +67,26 @@ class PostsController < ApplicationController
   # POST /projects
   # POST /projects.json
   def create
-    @post = Post.new(content: post_params[:content], topic_id: post_params[:topic_id])
-    @post.user_id = session[:user_id]
-    @topic = Topic.find(@post.topic_id)
+    if current_user
+      @post = Post.new(content: post_params[:content], topic_id: post_params[:topic_id])
+      @post.user_id = session[:user_id]
+      @topic = Topic.find(@post.topic_id)
 
-    if (post_params[:post_id] != nil)
-      @op = Post.find(post_params[:post_id])
-      @op.comments << @post
-      @op.save
-      @post.isComment = true
-    end
+      if (post_params[:post_id] != nil)
+        @op = Post.find(post_params[:post_id])
+        @op.comments << @post
+        @op.save
+        @post.isComment = true
+      end
 
-    respond_to do |format|
-      if @post.save
-        @topic.save
-        format.html { redirect_to @topic }
-      else
-        format.html { redirect_to @topic }
-        format.json { render json: @post.errors, status: :unprocessable_entity }
+      respond_to do |format|
+        if @post.save
+          @topic.save
+          format.html { redirect_to @topic }
+        else
+          format.html { redirect_to @topic }
+          format.json { render json: @post.errors, status: :unprocessable_entity }
+        end
       end
     end
   end
