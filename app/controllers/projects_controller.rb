@@ -67,6 +67,7 @@ class ProjectsController < ApplicationController
     @topics = @project.forum.topics
     @topics = @topics.order('voteCount DESC')
     @topicsInterval = 5
+    @tab = params[:tab]
   end
 
   # GET /projects/new
