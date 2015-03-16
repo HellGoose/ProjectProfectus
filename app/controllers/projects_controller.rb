@@ -13,6 +13,9 @@ class ProjectsController < ApplicationController
       if params[:type] == 'remove'
         @project.flagged = 0
         @project.save
+      elsif params[:type] == 'add'
+        @project.flagged = 1
+        @project.save
       end
       render nothing: true
     end

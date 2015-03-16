@@ -41,6 +41,10 @@ $(document).ready ->
         $('#votes').html(data.message)
       return
     return
+  $('#flagButton').click ->
+    $.post document.URL + '/flag/add', (data, status) ->
+      return
+    return
 
   $('#donateButton').click ->
     amount = $('#donateField').val()
