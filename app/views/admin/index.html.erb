@@ -28,9 +28,11 @@
 				<div class="news_container">
 					<%= render partial: 'news/news', locals: { page: 1, newsPerPage: @newsInterval }  %>
 				</div>
-				<div class="text-center">
-					<a class="btn btn-primary" id="more_news">Show More</a>
-				</div>
+				<% if @all_news.size > @newsInterval %>
+					<div class="text-center">
+						<a class="btn btn-primary" id="more_news">Show More</a>
+					</div>
+				<% end %>
 			</div>
 		</div>
 		<div class="tab-pane" id="flagged_projects-tab">
