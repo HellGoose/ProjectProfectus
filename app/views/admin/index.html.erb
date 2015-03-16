@@ -3,17 +3,40 @@
 
 <p id="notice"><%= notice %></p>
 
-<nav class="navbar navbar-default">
-	<div class="collapse navbar-collapse">
-		<ul class="nav navbar-nav navbar-center">
-			<li><a id="news" href="#">News</a></li>
-			<li><a id="projects" href="#">Flagged Projects</a></li>
-			<li><a id="users" href="#">Flagged Users</a></li>
-			<li><a id="mods" href="#">Moderator Center</a></li>
-		</ul>
-	</div>
-</nav>
+<div id='news' data-page=1 data-interval=<%= @newsInterval %> data-size=<%= @all_news.size %>></div>
 
-<div id="content">
-	<%= render partial: 'news/news' %>
+<div id="tabs">
+	<nav class="navbar navbar-default">
+		<div class="collapse navbar-collapse">
+			<ul class="nav navbar-nav navbar-center">
+				<li class="active"><a href="#news-tab" data-toggle="tab">News<i class="fa"></i></a></li>
+				<li><a href="#flagged_projects-tab" data-toggle="tab">Flagged Projects<i class="fa"></i></a></li>
+				<li><a href="#flagged_users-tab" data-toggle="tab">Flagged Users<i class="fa"></i></a></li>
+				<li><a href="#moderator-tab" data-toggle="tab">Moderator Center<i class="fa"></i></a></li>
+			</ul>
+		</div>
+	</nav>
+	<div id="my-tab-content" class="tab-content">
+		<div class="tab-pane active" id="news-tab">
+			<div class="content">
+				<div class="text-center">
+					<a class="btn btn-primary" id="post_news">Post News</a>
+				</div>
+				<div id="news_form">
+					<%= render partial: 'news/newsForm' %>
+				</div>
+				<div class="news_container">
+					<%= render partial: 'news/news', locals: { page: 1, newsPerPage: @newsInterval }  %>
+				</div>
+				<div class="text-center">
+					<a class="btn btn-primary" id="more_news">Show More</a>
+				</div>
+			</div>
+		</div>
+		<div class="tab-pane" id="flagged_projects-tab">
+			<div class="content">
+				<%= render partial: 'projects/flagged_projects' %>
+			</div>
+		</div>
+	</div>
 </div>

@@ -1,5 +1,11 @@
 <div class="text-center">
-<% @all_news.each do |n| %>
+<% first = (page.to_i - 1) * newsPerPage.to_i %>
+<% last = (@all_news.size() - first)%>
+<% if last <= 0 %>
+	<% last = 0 %>
+<% end %>
+
+<% @all_news.last(last).first(newsPerPage.to_i).each do |n| %>
 	<div class="col-xs-12 news">
 		<div class="text_container">
 			<div class="edit">
@@ -19,5 +25,3 @@
 	</div>
 <% end %>
 </div>
-
-<%= render partial: 'news/newsForm' %>

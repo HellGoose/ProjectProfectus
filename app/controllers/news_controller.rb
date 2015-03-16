@@ -14,18 +14,23 @@ class NewsController < ApplicationController
 		end
 	end
 
+	def form
+		@news = News.new
+		respond_to do |format|
+	      format.js { render partial: 'newsForm' }
+	    end
+	end
+
 	def page
 	    @all_news = News.order("created_at DESC")
 	    page = params[:page]
 	    interval = params[:interval]
 	    respond_to do |format|
-	      format.js { render partial: 'front_news', locals: { page: page, newsPerPage: interval } }
+	      format.js { render partial: 'news', locals: { page: page, newsPerPage: interval } }
 	    end
 	  end
 
 	def index
-		@all_news = News.order("created_at DESC")
-		@newsInterval = 5
 	end
 
 	def show

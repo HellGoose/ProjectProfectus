@@ -3,6 +3,8 @@
 
 <%= javascript_include_tag "home" %>
 
+<div id='news' data-page=1 data-interval=<%= @newsInterval %> data-size=<%= @all_news.size %>></div>
+
 <div class="header">
 	<div class="text-center">
 		<p class="header-brand-text">Welcome to Profectus</p>
@@ -33,8 +35,12 @@
 		<div class="tab-pane" id="news-tab">
 			<div class="text-center">
 				<h1>Latest News</h1>
-				<%= render partial: 'news/front_news', locals: { page: 1, newsPerPage: 5 } %>
-				<a href="/news/" id="more_news" class="btn btn-primary text-center">Show more</a>
+			</div>
+			<div class="news_container">
+				<%= render partial: 'news/news', locals: { page: 1, newsPerPage: @newsInterval }  %>
+			</div>
+			<div class="text-center">
+				<a class="btn btn-primary" id="more_news">Show More</a>
 			</div>
 		</div>
 	</div>
