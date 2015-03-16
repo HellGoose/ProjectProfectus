@@ -3,7 +3,8 @@ class HomeController < ApplicationController
 		filteredProjects = Project.select("id, title, description, voteCount, logoLink").where("").order("voteCount DESC");
 		@projects = filteredProjects.first(8);
 		@mainPot = MainPot.find(1)
-		@all_news = News.order("created_at DESC").first(10)
+		@all_news = News.order("created_at DESC")
+		@newsInterval = 5
 	end
 
 	def donate

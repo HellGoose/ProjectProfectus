@@ -27,6 +27,7 @@ Rails.application.routes.draw do
   post '/users/:id/addMoney/:amount', :to => 'users#addMoney'
 
   get '/news/page/:page/:interval', :to => 'news#page'
+  get '/news/form/', :to => 'news#form'
 
     resources :sessions, only: [:create, :destroy]
     resources :projects

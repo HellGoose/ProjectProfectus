@@ -25,7 +25,6 @@
 .news {
 	margin-top: 10px;
 	margin-bottom: 10px;
-	width: 100%;
 }
 
 .news .text_container {
@@ -35,6 +34,14 @@
 	border: 1px solid #ddd;
 	border-radius: 10px;
 	width: 425px;
+}
+
+.news .text_container .edit {
+	margin-top: 5px;
+	margin-right: 5px;
+	float: right;
+	position: absolute;
+	left: 700px;
 }
 
 .news .text_container p {
