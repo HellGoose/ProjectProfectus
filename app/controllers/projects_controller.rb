@@ -136,10 +136,9 @@ class ProjectsController < ApplicationController
 
   private
     def updateDonationAmount(amount)
-      user = User.find(session[:user_id])
-      if user.money - amount >= 0
-        user.money -= amount
-        user.save
+      if current_user.money - amount >= 0
+        current_user.money -= amount
+        current_user.save
         @project.donations.create(project_id: @project.id, user_id: session[:user_id], amount: amount)
         @project.donationAmount += amount
         @project.save
