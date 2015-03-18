@@ -38,7 +38,7 @@
   end %>
   
   <button class="btn btn-primary"id="voteButton"style="opacity:<%= opacity %>"<%=disabled%>><%= voteName%></button>
-  <button class="btn btn-primary" id="flagButton">Flag</button>
+  <button class="btn btn-primary" id="flagButton"style="opacity:<%= opacity %>"<%=disabled%>>Flag</button>
   <p>Donated: <span id='donationAmount'><%= @project.donationAmount %></span> $</p>
   <form class="form-inline">
     <div class="form-group">
