@@ -6,7 +6,7 @@
 			<%= link_to 'Edit |', edit_project_path(f) %> 
 			<%= link_to 'Delete', f, method: :delete, data: {confirm: "Are you sure?"} %>
 			</br>
-			<button href="." class="btn btn-primary clear" id=<%= f.id %>>Clear Flag</button>
+			<button class="btn btn-primary clear" id=<%= f.id %>>Clear Flag</button>
 		</div>
 
 		<div class="text_container">
@@ -23,6 +23,11 @@
 <script>
 $('.clear').click(function() {
 	var button_id = this.id;
-	$.post('/projects/' + button_id + '/flag/remove', function(data, status) {});
+	var button = this;
+	$.post('/projects/' + button_id + '/flag/remove', function(data, status) {
+		if (status == 'success') {
+			$(button).parent().parent().remove()
+		}
+	});
 });
 </script>

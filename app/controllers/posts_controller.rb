@@ -16,7 +16,8 @@ class PostsController < ApplicationController
       @topic = Topic.find(params[:topic_id])
       @op = Post.find(params[:post_id])
       respond_to do |format|
-        format.js { render partial: 'posts/postForm' }
+        if current_user
+          format.js { render partial: 'posts/postForm' }
       end
     end
   end
