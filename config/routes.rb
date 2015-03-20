@@ -19,15 +19,12 @@ Rails.application.routes.draw do
 
   get '/posts/answer/:topic_id/:post_id', :to => 'posts#answer'
 
-  get '/admin/news', :to => 'admin#news'
-  get '/admin/users', :to => 'admin#users'
-  get '/admin/projects', :to => 'admin#projects'
-  get '/admin/mods', :to => 'admin#mods'
-
   post '/users/:id/addMoney/:amount', :to => 'users#addMoney'
 
   get '/news/page/:page/:interval', :to => 'news#page'
   get '/news/form/', :to => 'news#form'
+
+  get '/topics/:id/posts/page/:page/:interval', :to => 'posts#page'
 
     resources :sessions, only: [:create, :destroy]
     resources :projects

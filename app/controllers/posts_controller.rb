@@ -10,14 +10,22 @@ class PostsController < ApplicationController
   def show
   end
 
+  def page
+    @posts = Topic.find(params[:id]).posts.where("isComment = 0").order("voteCount DESC")
+    page = params[:page]
+    interval = params[:interval]
+    respond_to do |format|
+      format.js { render partial: 'posts', locals: { page: page, postsPerPage: interval } }
+    end
+  end
+
   def answer
     if current_user
       @post = Post.new
       @topic = Topic.find(params[:topic_id])
       @op = Post.find(params[:post_id])
       respond_to do |format|
-        if current_user
-          format.js { render partial: 'posts/postForm' }
+        format.js { render partial: 'posts/postForm' }
       end
     end
   end
@@ -110,7 +118,7 @@ class PostsController < ApplicationController
   # DELETE /projects/1
   # DELETE /projects/1.json
   def destroy
-   topic = Topic.find(@post.topic_id)
+    topic = Topic.find(@post.topic_id)
     respond_to do |format|
       if isPostOwner && @post.destroy
         format.html { redirect_to topic, notice: 'Post was successfully destroyed.' }

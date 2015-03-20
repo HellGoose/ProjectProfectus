@@ -1,4 +1,10 @@
-<% comments.order('voteCount DESC').each do |p| %>
+<% first = (page.to_i - 1) * postsPerPage.to_i %>
+<% last = (comments.size() - first)%>
+<% if last <= 0 %>
+	<% last = 0 %>
+<% end %>
+
+<% comments.order('voteCount DESC').last(last).first(postsPerPage.to_i).each do |p| %>
 	<div class="col-xs-12 post">
 		<div class="vote_container">
 			<% userVote = p.votes.find_by(user_id: session[:user_id], post_id: p.id)
@@ -45,7 +51,13 @@
 		<div class="answer_div" id="<%= "answer" + p.id.to_s %>"></div>
 
 		<div id="comments">
-			<%= render partial: 'posts/comments', locals: { comments: p.comments } %>
-		</div>		
+			<%= render partial: 'posts/comments', locals: { page: 1, postsPerPage: postsPerPage, comments: p.comments } %>
+		</div>
+
+		<% if p.comments.size > postsPerPage.to_i %>
+			<div class="text-center">
+				<a class="btn btn-default more_comments" id="<%= p.id.to_s %>">Show More</a>
+			</div>
+		<% end %>
 	</div>
 <% end %>

@@ -12,6 +12,7 @@ $(document).ready ->
 		interval = $('#news').data('interval')
 		size = $('#news').data('size')
 		$($('<div class="news_container">').load('/news/page/' + page + '/' + interval)).insertAfter('.news_container')
+		
 		$('#news').data('page', page)
 		if page >= (Math.ceil(size/interval))
 			$('#more_news').hide()

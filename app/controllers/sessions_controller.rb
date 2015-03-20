@@ -3,7 +3,7 @@ class SessionsController < ApplicationController
     user = User.from_omniauth(env["omniauth.auth"])
     session[:user_id] = user.id
     session[:return_to] ||= request.referer
-    redirect_to session.delete(:return_to)
+    redirect_to root_path
   end
 
   def destroy
