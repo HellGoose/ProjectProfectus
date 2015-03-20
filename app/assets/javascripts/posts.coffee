@@ -28,3 +28,14 @@ $(document).ready ->
 		else
 			$('#answer' + button_id).load('/posts/answer/' + $('#data').data('topic') + '/' + button_id)
 		return
+
+	$('#more_posts').click ->
+		page = $('#data').data('page') + 1
+		interval = $('#data').data('interval')
+		size = $('#data').data('size')
+		topic = $('#data').data('topic')
+		$($('<div class="posts">').load('/topics/' + topic + '/posts/page/' + page + '/' + interval)).insertAfter('.posts')
+		$('#data').data('page', page)
+		if page >= (Math.ceil(size/interval))
+			$('#more_posts').hide()
+		return
