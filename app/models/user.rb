@@ -16,6 +16,7 @@ class User < ActiveRecord::Base
 	has_many :topicsVoted, class_name: "Post", through: "TopicVote"
 	has_many :postsVoted, class_name: "Post", through: "PostVote"
 	has_many :projectDonated, class_name: "Project", through: "ProjectDonation"
+	has_and_belongs_to_many :projectsFlagged, class_name: "Project", join_table: "flaggedProjects"
 
 
 	#Authentication
