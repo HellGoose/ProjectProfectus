@@ -54,6 +54,8 @@
 			<%= render partial: 'posts/comments', locals: { page: 1, postsPerPage: postsPerPage, comments: p.comments } %>
 		</div>
 
+		<div class="data" id="<%= p.id.to_s %>" data-page='1' data-size=<%= p.comments.size %>></div>
+
 		<% if p.comments.size > postsPerPage.to_i %>
 			<div class="text-center">
 				<a class="btn btn-default more_comments" id="<%= p.id.to_s %>">Show More</a>

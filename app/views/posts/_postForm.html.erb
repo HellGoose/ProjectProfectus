@@ -31,15 +31,9 @@
     <%= f.submit class: "btn btn-primary" %>
 
     <% if @op != nil %>
-      <a onClick="cancel()" class="btn btn-default">Cancel</a>
+      <a class="btn btn-default cancel">Cancel</a>
     <% end %>
 
   </form>
 
 <% end %>
-
-<script>
-function cancel() {
-  $('.answer_div').html("");
-}
-</script>

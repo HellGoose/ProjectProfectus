@@ -25,6 +25,7 @@ Rails.application.routes.draw do
   get '/news/form/', :to => 'news#form'
 
   get '/topics/:id/posts/page/:page/:interval', :to => 'posts#page'
+  get '/posts/:id/comments/page/:page/:interval', :to => 'posts#commentPage'
 
     resources :sessions, only: [:create, :destroy]
     resources :projects

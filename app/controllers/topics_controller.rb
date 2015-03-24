@@ -57,7 +57,7 @@ class TopicsController < ApplicationController
   def show
     @posts = @topic.posts.where('isComment = 0').order('voteCount DESC')
     @post = Post.new
-    @postsInterval = 2
+    @postsInterval = 10
   end
 
   # GET /projects/new
