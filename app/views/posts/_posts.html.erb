@@ -50,9 +50,11 @@
 
 		<div class="answer_div" id="<%= "answer" + p.id.to_s %>"></div>
 
-		<div id="comments">
+		<div class="comments">
 			<%= render partial: 'posts/comments', locals: { page: 1, postsPerPage: postsPerPage, comments: p.comments } %>
 		</div>
+
+		<div class="data" id="<%= p.id.to_s %>" data-page='1' data-size=<%= p.comments.size %>></div>
 
 		<% if p.comments.size > postsPerPage.to_i %>
 			<div class="text-center">

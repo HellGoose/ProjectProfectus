@@ -3,7 +3,7 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 $(document).ready ->
-	$('.post_up_vote').click ->
+	$('body').on 'click', '.post_up_vote', ->
 		button_id = @id
 		$.post '/vote/post/' + button_id + '/up', (data, status) ->
 			$('#'+button_id+'.post_down_vote').attr('disabled', false)
@@ -12,7 +12,7 @@ $(document).ready ->
 			return
 		return
 
-	$('.post_down_vote').click ->
+	$('body').on 'click', '.post_down_vote', ->
 		button_id = @id
 		$.post '/vote/post/' + button_id + '/down', (data, status) ->
 			$('#'+button_id+'.post_down_vote').attr('disabled', true)
@@ -21,7 +21,7 @@ $(document).ready ->
 			return
 		return
 
-	$('.answer').click ->
+	$('body').on 'click', '.answer', ->
 		button_id = @id
 		if $('#answer' + button_id).html() != ""
 			$('#answer' + button_id).html("")
@@ -29,7 +29,7 @@ $(document).ready ->
 			$('#answer' + button_id).load('/posts/answer/' + $('#data').data('topic') + '/' + button_id)
 		return
 
-	$('#more_posts').click ->
+	$('body').on 'click', '#more_posts', ->
 		page = $('#data').data('page') + 1
 		interval = $('#data').data('interval')
 		size = $('#data').data('size')
@@ -38,4 +38,20 @@ $(document).ready ->
 		$('#data').data('page', page)
 		if page >= (Math.ceil(size/interval))
 			$('#more_posts').hide()
+		return
+
+	$('body').on 'click', '.more_comments', ->
+		button_id = @id
+		page = $('#' + button_id + '.data').data('page') + 1
+		interval = $('#data').data('interval')
+		size = $('#' + button_id + '.data').data('size')
+		topic = $('#data').data('topic')
+		$($('<div class="comments">').load('/posts/' + button_id + '/comments/page/' + page + '/' + interval)).insertBefore $(this).parent()
+		$('#' + button_id + '.data').data 'page', page
+		if page >= Math.ceil(size / interval)
+			$(this).hide()
+		return
+
+	$('body').on 'click', '.cancel', ->
+		$('.answer_div').html("")
 		return

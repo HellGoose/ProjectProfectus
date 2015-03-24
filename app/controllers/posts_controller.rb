@@ -10,6 +10,15 @@ class PostsController < ApplicationController
   def show
   end
 
+  def commentPage
+    comments = Post.find(params[:id]).comments.order("voteCount DESC")
+    page = params[:page]
+    interval = params[:interval]
+    respond_to do |format|
+      format.js { render partial: 'posts/comments', locals: { page: page, postsPerPage: interval, comments: comments } }
+    end
+  end
+
   def page
     @posts = Topic.find(params[:id]).posts.where("isComment = 0").order("voteCount DESC")
     page = params[:page]

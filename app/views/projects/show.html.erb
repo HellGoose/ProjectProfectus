@@ -51,6 +51,9 @@
     </div>
     <a class="btn btn-success" id="donateButton"style="opacity:<%= opacity %>"<%=disabled%>>Donate</a>
   </form>
+  <div id="social_media">
+    <%= social_share_button_tag(@project.title, :popup => "true", :image => @project.logoLink, desc: @project.description) %>
+  </div>
 </div>
 
 <div id='data' data-page=1 data-interval=<%= @topicsInterval %> data-size=<%= @topics.size() %> data-forum=<%= @project.forum.id %>></div>
