@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150407111432) do
+ActiveRecord::Schema.define(version: 20150324125257) do
 
   create_table "badges", force: :cascade do |t|
     t.string   "name",        limit: 255
@@ -132,7 +132,6 @@ ActiveRecord::Schema.define(version: 20150407111432) do
     t.float    "donationAmount", limit: 24
     t.integer  "flagCount",      limit: 4
     t.integer  "badgeCount",     limit: 4
-    t.integer  "flagged",        limit: 4
   end
 
   add_index "projects", ["category_id"], name: "index_projects_on_category_id", using: :btree
