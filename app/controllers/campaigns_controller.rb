@@ -84,7 +84,7 @@ class CampaignsController < ApplicationController
       		userVote.save
       		@campaign.save
       		respond_to do |format|
-        		msg = { :status => "ok", :message => @campaign.voteCount }
+        		msg = { :status => 'ok', :message => @campaign.voteCount }
         		format.json  { render :json => msg }
       		end
     	end
