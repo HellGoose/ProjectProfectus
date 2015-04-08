@@ -1,2 +1,0 @@
-# ProjectProfectus
-Kake er godt!

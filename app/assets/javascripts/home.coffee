@@ -12,9 +12,4 @@ $(document).ready ->
 		if page >= (Math.ceil(size/interval))
 			$('#more_news').hide()
 		return
-	$('#donate').click ->
-		$.post '/donate/5', (data, status) ->
-			$('#donationAmount').html(data.message)
-			return
-		return
 	return
