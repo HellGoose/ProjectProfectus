@@ -11,10 +11,11 @@ class Campaign < ActiveRecord::Base
 
 	#Callbacks
 	after_initialize :init
-	
+
 	private
 		#Sets default values
 		def init
+			self.image ||= "" if self.has_attribute? :image
 			self.title ||= "" if self.has_attribute? :title
 			self.description ||= "" if self.has_attribute? :description
 			self.voteCount ||= 0 if self.has_attribute? :voteCount
