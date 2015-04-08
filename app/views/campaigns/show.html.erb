@@ -49,6 +49,7 @@
 				<% end %>
 			</div>
 			<p id="created_by"><%= User.find(@campaign.user_id).name + " - " + @campaign.created_at.to_s %></p>
+			<P><%= @campaign.description %></p>
 		</div>
 	</div>
 </div>

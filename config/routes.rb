@@ -5,15 +5,18 @@ Rails.application.routes.draw do
 	get 'auth/failure', to: redirect('/')
 	get 'signout', to: 'sessions#destroy', as: 'signout'
 
-  get '/posts/answer/:campaign_id/:post_id', :to => 'posts#answer'
-  get '/campaigns/:id/posts/page/:page/:interval', :to => 'posts#page'
-  get '/posts/:id/comments/page/:page/:interval', :to => 'posts#commentPage'
+	get '/posts/answer/:campaign_id/:post_id', :to => 'posts#answer'
+	get '/campaigns/:id/posts/page/:page/:interval', :to => 'posts#page'
+	get '/posts/:id/comments/page/:page/:interval', :to => 'posts#commentPage'
 
-
+  post '/vote/post/:id/:dir', :to => 'posts#vote'
+  post '/vote/campaign/:id/:dir', :to => 'campaigns#vote'
 
 	root 'home#index'
 
-  resources :posts
+	resources :news
+	resources :admin, only: [:index]
+	resources :posts
 	resources :campaigns
 	resources :users, only: [:edit, :update, :show]
 
