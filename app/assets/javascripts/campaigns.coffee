@@ -84,7 +84,7 @@ $(document).ready ->
       $('#votes_' + button_id).html(data.message)
       return
     return
-return
+
 
 window.onkeyup = (e) ->
   key = if e.keyCode then e.keyCode else e.which
@@ -100,3 +100,4 @@ window.onkeyup = (e) ->
       console.log 'Key: ' + key
       break
   return
+return
