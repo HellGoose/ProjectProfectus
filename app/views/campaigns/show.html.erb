@@ -48,9 +48,15 @@
 					<%= link_to "Delete", @campaign, method: :delete, data: {confirm: "Are you sure?"} %>
 				<% end %>
 			</div>
-			<p id="created_by"><%= User.find(@campaign.user_id).name + " - " + @campaign.created_at.to_s %></p>
+			<p id="created_by"><%= link_to User.find(@campaign.user_id).name,
+								user_path(User.find(@campaign.user_id))%>
+								<%=  " - " + @campaign.created_at.to_s %>
+			</p>
 			<P><%= @campaign.description %></p>
 			<p><%= link_to "Go to Campaign Site", @campaign.link, class: "btn btn-primary"%></p>
+			<div id="social_media">
+    			<%= social_share_button_tag(@campaign.title, :popup => "true", :image => @campaign.image, desc: @campaign.description) %>
+  			</div>
 		</div>
 	</div>
 </div>

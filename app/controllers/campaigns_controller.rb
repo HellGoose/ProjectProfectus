@@ -6,21 +6,6 @@ class CampaignsController < ApplicationController
 		@campaignsInterval = 8
 	end
 
-	def page
-  		if params[:category].to_i > 0
-	  		category = Category.find(params[:category])
-	    	@campaigns = category.campaigns.order('voteCount DESC')
-    	else
-		 	@campaigns = Campaign.all.order('voteCount DESC')
-	  	end
-
-    	page = params[:page]
-    	interval = params[:interval]
-    	respond_to do |format|
-    		format.js { render partial: 'campaignList', locals: { page: page, campaignsPerPage: interval } }
-    	end
-  	end
-
 	def new
 		@campaign = Campaign.new
 	end
@@ -104,6 +89,20 @@ class CampaignsController < ApplicationController
       		end
     	end
   	end
+
+  def page
+    if params[:category].to_i > 0
+      category = Category.find(params[:category])
+      @campaigns = category.campaigns.order('voteCount DESC')
+    else
+      @campaigns = Campaign.all.order('voteCount DESC')
+    end
+    page = params[:page]
+    interval = params[:interval]
+    respond_to do |format|
+      format.js { render partial: 'campaignList', locals: { page: page, campaignsPerPage: interval } }
+    end
+  end
 
 	private
 		def isCampaignOwner
