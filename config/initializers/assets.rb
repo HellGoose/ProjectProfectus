@@ -13,5 +13,7 @@ Rails.application.config.assets.version = '1.0'
 Rails.application.config.assets.precompile += %w( about.css )
 Rails.application.config.assets.precompile += %w( campaigns.css )
 Rails.application.config.assets.precompile += %w( users.css )
+Rails.application.config.assets.precompile += %w( home.css )
 
 Rails.application.config.assets.precompile += %w( campaigns.js )
+Rails.application.config.assets.precompile += %w( home.js )
