@@ -1,9 +1,0 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
-one:
-  topicCount: 1
-  postCount: 1
-
-two:
-  topicCount: 1
-  postCount: 1

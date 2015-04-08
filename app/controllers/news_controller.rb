@@ -1,5 +1,5 @@
 class NewsController < ApplicationController
-	before_action :set_news, only: [:show, :edit, :update, :destroy]
+	before_action :set_news, only: [:edit, :update, :destroy]
 
 	def create
 		@news = News.new(news_params)
@@ -29,12 +29,6 @@ class NewsController < ApplicationController
 	      format.js { render partial: 'news', locals: { page: page, newsPerPage: interval } }
 	    end
 	  end
-
-	def index
-	end
-
-	def show
-	end
 
 	def edit
 	end

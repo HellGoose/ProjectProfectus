@@ -1,0 +1,31 @@
+<%= javascript_include_tag "campaigns" %>
+<%= stylesheet_link_tag "campaigns" %>
+
+<div id="categories">
+	<%= render partial: 'categories'%>
+</div>
+
+<div id="searchBar">
+	<div class="col-xs-6" id="search">
+		<input type="text" id="searchText"></input>
+		<button id="searchButton">Search</button>
+	</div>
+	<div class="col-xs-6 pull-right" id="filter">
+		<select name="filter" id="filter">
+			<option value="1">Votes</option>
+			<option value="2">Name</option>
+		</select>
+	</div>
+</div>
+
+<div id='data' data-page=1 data-interval=<%= @campaignsInterval %> data-size=<%= @campaigns.size() %> data-category="0" data-search=""
+</div>
+
+<div class="col-sm-12 text-center" id="campaigns">
+	<%= render partial: 'campaignList', locals: { page: 1, campaignsPerPage: @campaignsInterval } %>
+</div>
+
+<div class="text-center" id="pageSelector">
+	<button id="prev" class="glyphicon glyphicon-menu-left" aria-hidden="true"></button>
+	<button id="next" class="glyphicon glyphicon-menu-right" aria-hidden="true"></button>
+</div>

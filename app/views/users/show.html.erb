@@ -1,5 +1,4 @@
 <%= stylesheet_link_tag "users" %>
-<%= javascript_include_tag "users" %>
 
 <p id="notice"><%= notice %></p>
 
@@ -15,8 +14,8 @@
 <div class="col-sm-8">
 	<h3 class="name-header">
 		<%= @user.name %>
-		<% if @user.id == session[:user_id]%>
-		<%= link_to "edit", edit_user_path(@user) %>
+		<% if @user == current_user %>
+			<%= link_to "edit", edit_user_path(@user) %>
 		<% end %>
 	</h3>
 	User created: <%= @user.created_at.strftime("%B %d, %Y") %><br />
@@ -25,16 +24,8 @@
 	Address: <%= if @user.address then @user.address end %><br />
 	Phone: <%= if @user.phone then @user.phone end %><br />
 	Location: <%= if @user.location then @user.location end %><br />
-	Number of Projects: <%= @user.projects.count %><br />
-	Number of Forum Topics: <%= @user.topics.count %><br />
+	Number of Campaigns: <%= @user.campaigns.count %><br />
 	Number of Forum Posts: <%= @user.posts.count %><br/>
-	Money: <span id="money"><%= @user.money %></span> $<br/>
-	<% if @user.id == session[:user_id] %>
-	<input type="text" id="addMoneyAmount">
-	<button id="addMoney">Add Money</button><br/>
-	<% end %>
-	Money Donated: <%= @user.donations.sum(:amount) %> $<br/>
-	Number of Donations: <%= @user.donations.count %><br/>
 
 </div>
 

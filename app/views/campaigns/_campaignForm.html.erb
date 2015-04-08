@@ -1,0 +1,35 @@
+<%= form_for(@campaign) do |f| %>
+  <% if @campaign.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@campaign.errors.count, "error") %> prohibited this campaign from being saved:</h2>
+
+      <ul>
+      <% @campaign.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <form>
+    <div class="form-group">
+      <%= f.label :title %>
+      <%= f.text_field :title, class: "form-control", placeholder: "Enter title" %>
+    </div>
+    <div class="form-group">
+      <%= f.label :image %>
+      <%= f.text_field :image, class: "form-control", placeholder: "Enter image link" %>
+    </div>
+    <div class="form-group" style="display: none;">
+      <%= f.label :forum_id %>
+      <%= f.text_field :forum_id, class: "form-control", placeholder: "Enter forum", value: @forum.id if @forum != nil %>
+    </div>
+    <div class="form-group">
+      <%= f.label :content %>
+      <%= f.text_area :content, class: "form-control tinymce", id: "content-editor", rows: "30", placeholder: "Content" %>
+      <%= tinymce %>
+    </div>
+    <%= f.submit class: "btn btn-primary" %>
+  </form>
+
+<% end %>
