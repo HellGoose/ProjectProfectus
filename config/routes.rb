@@ -13,9 +13,14 @@ Rails.application.routes.draw do
 
 
 
+  post '/vote/post/:id/:dir', :to => 'posts#vote'
+  post '/vote/campaign/:id/:dir', :to => 'campaigns#vote'
+
 	root 'home#index'
 
-  resources :posts
+	resources :news
+	resources :admin, only: [:index]
+	resources :posts
 	resources :campaigns
 	resources :users, only: [:edit, :update, :show]
 

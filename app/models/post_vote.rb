@@ -1,6 +1,6 @@
 class PostVote < ActiveRecord::Base
 	#Restrictions
-	validates :user_id, :post_id, :isDownvote, presence: true
+	validates :user_id, :post_id, presence: true
 	
 	#Relations
 	belongs_to :user

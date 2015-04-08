@@ -66,7 +66,25 @@ $(document).ready ->
   $('#searchButton').click ->
     $('#data').data('search', $('#searchText').val())
     return
-  return
+
+  $('.up_vote').click ->
+    button_id = @id
+    $.post '/vote/campaign/' + button_id + '/up', (data, status) ->
+      $('#'+button_id+'.down_vote').attr('disabled', false)
+      $('#'+button_id+'.up_vote').attr('disabled', true)
+      $('#votes_' + button_id).html(data.message)
+      return
+    return
+
+  $('.down_vote').click ->
+    button_id = @id
+    $.post '/vote/campaign/' + button_id + '/down', (data, status) ->
+      $('#'+button_id+'.down_vote').attr('disabled', true)
+      $('#'+button_id+'.up_vote').attr('disabled', false)
+      $('#votes_' + button_id).html(data.message)
+      return
+    return
+return
 
 window.onkeyup = (e) ->
   key = if e.keyCode then e.keyCode else e.which

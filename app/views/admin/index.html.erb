@@ -1,0 +1,42 @@
+<%= javascript_include_tag "admin" %>
+<%= stylesheet_link_tag "admin" %>
+
+<p id="notice"><%= notice %></p>
+
+<div id='news' data-page=1 data-interval=<%= @newsInterval %> data-size=<%= @all_news.size %>></div>
+
+<div id="tabs">
+	<nav class="navbar navbar-default">
+		<div class="collapse navbar-collapse">
+			<ul class="nav navbar-nav navbar-center">
+				<li class="active"><a href="#news-tab" data-toggle="tab">News<i class="fa"></i></a></li>
+				<li><a href="#flagged_projects-tab" data-toggle="tab">Flagged Campaigns<i class="fa"></i></a></li>
+				<li><a href="#flagged_users-tab" data-toggle="tab">Flagged Users<i class="fa"></i></a></li>
+				<li><a href="#moderator-tab" data-toggle="tab">Moderator Center<i class="fa"></i></a></li>
+			</ul>
+		</div>
+	</nav>
+	<div id="my-tab-content" class="tab-content">
+		<div class="tab-pane active" id="news-tab">
+			<div class="content">
+				<div class="text-center">
+					<a class="btn btn-primary" id="post_news">Post News</a>
+				</div>
+				<div id="news_form">
+					<%= render partial: 'news/newsForm' %>
+				</div>
+				<div class="news_container">
+					<%= render partial: 'news/news', locals: { page: 1, newsPerPage: @newsInterval }  %>
+				</div>
+				<% if @all_news.size > @newsInterval %>
+					<div class="text-center">
+						<a class="btn btn-primary" id="more_news">Show More</a>
+					</div>
+				<% end %>
+			</div>
+		</div>
+		<div class="tab-pane" id="flagged_campaigns-tab">
+
+		</div>
+	</div>
+</div>
