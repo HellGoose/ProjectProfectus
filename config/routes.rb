@@ -14,6 +14,11 @@ Rails.application.routes.draw do
   post '/vote/post/:id/:dir', :to => 'posts#vote'
   post '/vote/campaign/:id/:dir', :to => 'campaigns#vote'
 
+  get '/news/page/:page/:interval', :to => 'news#page'
+
+  get '/campaigns/:id/posts/page/:page/:interval', :to => 'posts#page'
+  get '/posts/:id/comments/page/:page/:interval', :to => 'posts#commentPage'
+
 	root 'home#index'
 
 	resources :news
