@@ -50,6 +50,9 @@
 			</div>
 			<p id="created_by"><%= User.find(@campaign.user_id).name + " - " + @campaign.created_at.to_s %></p>
 			<P><%= @campaign.description %></p>
+			<div id="social_media">
+    			<%= social_share_button_tag(@campaign.title, :popup => "true", :image => @campaign.image, desc: @campaign.description) %>
+  			</div>
 		</div>
 	</div>
 </div>
