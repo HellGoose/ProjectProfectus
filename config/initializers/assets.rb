@@ -14,6 +14,8 @@ Rails.application.config.assets.precompile += %w( about.css )
 Rails.application.config.assets.precompile += %w( campaigns.css )
 Rails.application.config.assets.precompile += %w( users.css )
 Rails.application.config.assets.precompile += %w( home.css )
+Rails.application.config.assets.precompile += %w( posts.css )
 
 Rails.application.config.assets.precompile += %w( campaigns.js )
 Rails.application.config.assets.precompile += %w( home.js )
+Rails.application.config.assets.precompile += %w( posts.js )

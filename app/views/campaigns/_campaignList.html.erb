@@ -12,13 +12,13 @@
 
 <% @campaigns.last(last).first(campaignsPerPage.to_i).each do |c| %>
 	<div class="col-xs-3 campaign">
-		<%= link_to "", "/campaigns/" + p.id.to_s, class: "campaign_link" %>
+		<%= link_to "", "/campaigns/" + c.id.to_s, class: "campaign_link" %>
 		<div>
 
 			<h4><%= c.title %></h4>
 			<h5>Votes: <%= c.voteCount %></h5>
 			<div class="image_container">
-				<%= image_tag c.logoLink, class: "logo img-responsive" %>
+				<%= image_tag c.image, class: "logo img-responsive" %>
 			</div>
 			<p><%= c.description %></p>
 		</div>

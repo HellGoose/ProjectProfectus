@@ -6,14 +6,14 @@
 
 <p id="notice"><%= notice %></p>
 
-<%= link_to 'Back', campaigns_path %> |
+<%= link_to 'Back', campaigns_path %>
 
 <div id='data' data-page='1' data-interval=<%= @postsInterval %> data-size=<%= @posts.size() %> data-campaign=<%= @campaign.id %>></div>
 
 <div id="campaign">
 	<div class="col-xs-12 main_campaign">
 		<div class="vote_container">
-			<% userVote = @campaign.votes.find_by(user_id: session[:user_id], topic_id: @campaign.id)
+			<% userVote = @campaign.votes.find_by(user_id: session[:user_id], campaign_id: @campaign.id)
 
 			opacity = 1
 			if !session[:user_id]
@@ -49,7 +49,6 @@
 				<% end %>
 			</div>
 			<p id="created_by"><%= User.find(@campaign.user_id).name + " - " + @campaign.created_at.to_s %></p>
-			<%= sanitize @campaign.content, :tags => %w(a b i strong em p param h1 h2 h3 h4 h5 h6 br hr ul li img iframe) %>
 		</div>
 	</div>
 </div>
