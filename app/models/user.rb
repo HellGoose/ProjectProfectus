@@ -1,22 +1,16 @@
 class User < ActiveRecord::Base
-	#Required fields:
+	#Restrictions:
 	validates :name, :provider, :uid, 
 	:oauth_token, :oauth_token_expires_at, 
 	:role, presence: true
 
 	#Relations:
-	has_many :projects
 	has_many :posts
-	has_many :topics
-	has_many :donations, class_name: "ProjectDonation"
-	has_many :projectVotes, class_name: "ProjectVote"
-	has_many :topicVotes, class_name: "TopicVote"
+	has_many :campaigns
 	has_many :postVotes, class_name: "PostVote"
-	has_many :projectsVoted, class_name: "Project", through: "ProjectVote"
-	has_many :topicsVoted, class_name: "Post", through: "TopicVote"
+	has_many :campaignVotes, class_name: "CampaignVote"
 	has_many :postsVoted, class_name: "Post", through: "PostVote"
-	has_many :projectDonated, class_name: "Project", through: "ProjectDonation"
-	has_and_belongs_to_many :projectsFlagged, class_name: "Project", join_table: "flaggedProjects"
+	has_many :campaignsVoted, class_name: "Campaign", through: "campaignVote"
 
 
 	#Authentication
@@ -34,9 +28,19 @@ class User < ActiveRecord::Base
 		end
 	end
 
+	#Callbacks
 	after_initialize :init
-	def init
-		self.subscriptionAmount ||= 0 if self.has_attribute? :donationAmount
-		self.money ||= 0 if self.has_attribute? :money
-	end
+
+	private
+		#Set default values
+		def init
+			self.username ||= "" if self.has_attribute? :username
+			self.location ||= "" if self.has_attribute? :location
+			self.image ||= "" if self.has_attribute? :image
+			self.phone ||= "" if self.has_attribute? :phone
+			self.points ||= 0 if self.has_attribute? :points
+			self.level ||= 1 if self.has_attribute? :level
+			self.role ||= 0 if self.has_attribute? :role
+			self.badgeCount ||= 0 if self.has_attribute? :badgeCount
+		end
 end
