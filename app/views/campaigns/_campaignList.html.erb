@@ -1,0 +1,26 @@
+<% first = (page.to_i - 1) * campaignsPerPage.to_i %>
+<% last = (@campaigns.size() - first)%>
+<% if last <= 0 %>
+	<% last = 0 %>
+<% end %>
+
+<% if @campaigns.size()==0 %>
+	<div class="noCampaign">
+		<h3>There appears to be no campaigns in this category.</h3>
+	</div>
+<% end %>
+
+<% @campaigns.last(last).first(campaignsPerPage.to_i).each do |c| %>
+	<div class="col-xs-3 campaign">
+		<%= link_to "", "/campaigns/" + c.id.to_s, class: "campaign_link" %>
+		<div>
+
+			<h4><%= c.title %></h4>
+			<h5>Votes: <%= c.voteCount %></h5>
+			<div class="image_container">
+				<%= image_tag c.image, class: "logo img-responsive" %>
+			</div>
+			<p><%= c.description %></p>
+		</div>
+	</div>
+<% end %>

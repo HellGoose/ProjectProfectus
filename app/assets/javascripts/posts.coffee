@@ -26,15 +26,15 @@ $(document).ready ->
 		if $('#answer' + button_id).html() != ""
 			$('#answer' + button_id).html("")
 		else
-			$('#answer' + button_id).load('/posts/answer/' + $('#data').data('topic') + '/' + button_id)
+			$('#answer' + button_id).load('/posts/answer/' + $('#data').data('campaign') + '/' + button_id)
 		return
 
 	$('body').on 'click', '#more_posts', ->
 		page = $('#data').data('page') + 1
 		interval = $('#data').data('interval')
 		size = $('#data').data('size')
-		topic = $('#data').data('topic')
-		$($('<div class="posts">').load('/topics/' + topic + '/posts/page/' + page + '/' + interval)).insertAfter('.posts')
+		campaign = $('#data').data('campaign')
+		$($('<div class="posts">').load('/campaigns/' + campaign + '/posts/page/' + page + '/' + interval)).insertAfter('.posts')
 		$('#data').data('page', page)
 		if page >= (Math.ceil(size/interval))
 			$('#more_posts').hide()
@@ -45,7 +45,7 @@ $(document).ready ->
 		page = $('#' + button_id + '.data').data('page') + 1
 		interval = $('#data').data('interval')
 		size = $('#' + button_id + '.data').data('size')
-		topic = $('#data').data('topic')
+		campaign = $('#data').data('campaign')
 		$($('<div class="comments">').load('/posts/' + button_id + '/comments/page/' + page + '/' + interval)).insertBefore $(this).parent()
 		$('#' + button_id + '.data').data 'page', page
 		if page >= Math.ceil(size / interval)

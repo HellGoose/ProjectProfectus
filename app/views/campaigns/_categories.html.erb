@@ -1,0 +1,21 @@
+
+<% Category.all.each do |c| %>
+	
+	<div class="col-xs-2 categories">
+		<%#= link_to "", "/projects/" + p.id.to_s, class: "project_link" %>
+		
+		<div>
+			<button type="button" name=<%= c.campaigns.size() %> class="btn btn-info catButton" id=<%= c.id %>>
+			<%= c.name %>
+
+			</button>
+			
+		</div>
+	</div>
+<% end %>
+
+<div class="col-xs-2 categories">
+	<button type="button" name=<%= @campaigns.size() %> class="btn btn-info catButton" id=0>
+		Show All <3
+	</button>			
+</div>
