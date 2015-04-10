@@ -41,7 +41,7 @@
 		</div>
 
 		<div class="text_container">
-			<h3><%= @campaign.title %></h4>
+			<h3 id="title"><%= @campaign.title %></h4>
 			<div class="edit">
 				<% if @campaign.user_id == session[:user_id] || isAdmin %>
 					<%= link_to "Edit |", edit_campaign_path(@campaign)%> 
@@ -53,7 +53,7 @@
 								<%=  " - " + @campaign.created_at.to_s %>
 			</p>
 			<P><%= @campaign.description %></p>
-			<p><%= link_to "Go to Campaign Site", @campaign.link, class: "btn btn-primary"%></p>
+			<p><%= link_to "Go to Campaign Site", @campaign.link, class: "btn btn-primary", id: "campaign-link" %></p>
 			<div id="social_media">
     			<%= social_share_button_tag(@campaign.title, :popup => "true", :image => @campaign.image, desc: @campaign.description) %>
   			</div>
