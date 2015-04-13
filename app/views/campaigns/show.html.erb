@@ -11,54 +11,7 @@
 <div id="data" data-page="1" data-interval=<%= @postsInterval %> data-size=<%= @posts.size() %> data-campaign=<%= @campaign.id %>></div>
 
 <div id="campaign">
-	<div class="col-xs-12 main_campaign">
-		<div class="vote_container">
-			<% userVote = @campaign.votes.find_by(user_id: session[:user_id], campaign_id: @campaign.id)
-
-			opacity = 1
-			if !session[:user_id]
-				opacity = 0.5
-			end %>
-			
-			<button id=<%= @campaign.id.to_s %> class="glyphicon glyphicon-menu-up up_vote" aria-hidden="true" style="opacity:<%= opacity %>" 
-				<% if !session[:user_id] or (userVote != nil and !userVote.isDownvote)%>
-					disabled 
-				<%end%>>
-
-			</button>
-
-			<p><span id=<%= "votes_" + @campaign.id.to_s %>><%= @campaign.voteCount %></span></p>
-
-			<button id=<%=  @campaign.id.to_s %> class="glyphicon glyphicon-menu-down down_vote" aria-hidden="true" style="opacity:<%= opacity %>" 
-				<% if !session[:user_id] or (userVote != nil and userVote.isDownvote)%>
-					disabled
-				<%end%>>
-			</button>
-		</div>
-
-		<div class="image_container">
-			<%= image_tag @campaign.image, class: "logo img-responsive" %>
-		</div>
-
-		<div class="text_container">
-			<h3 id="campaign-title"><%= @campaign.title %></h4>
-			<div class="edit">
-				<% if @campaign.user_id == session[:user_id] || isAdmin %>
-					<%= link_to "Edit |", edit_campaign_path(@campaign)%> 
-					<%= link_to "Delete", @campaign, method: :delete, data: {confirm: "Are you sure?"} %>
-				<% end %>
-			</div>
-			<p id="created_by"><%= link_to User.find(@campaign.user_id).name,
-								user_path(User.find(@campaign.user_id))%>
-								<%=  " - " + @campaign.created_at.to_s %>
-			</p>
-			<P id="campaign-description" ><%= @campaign.description %></p>
-			<p><%= link_to "Go to Campaign Site", @campaign.link, class: "btn btn-primary", id: "campaign-link" %></p>
-			<div id="social_media">
-    			<%= social_share_button_tag(@campaign.title, :popup => "true", :image => @campaign.image, desc: @campaign.description) %>
-  			</div>
-		</div>
-	</div>
+	<%= render partial: "campaign" %>
 </div>
 
 <% if current_user %>

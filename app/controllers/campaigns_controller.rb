@@ -41,8 +41,6 @@ class CampaignsController < ApplicationController
       obj = embedly.extract :url => @campaign.link
       o = obj.first
 
-      Rails.logger.info ">>>> o: #{o.inspect}"
-
       @campaign.title = o.title
       @campaign.description = o.description			
 
