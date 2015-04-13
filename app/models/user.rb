@@ -7,6 +7,7 @@ class User < ActiveRecord::Base
 	#Relations:
 	has_many :posts
 	has_many :campaigns
+	has_many :badges, class_name: "UserBadge"
 	has_many :postVotes, class_name: "PostVote"
 	has_many :campaignVotes, class_name: "CampaignVote"
 	has_many :postsVoted, class_name: "Post", through: "PostVote"

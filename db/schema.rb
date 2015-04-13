@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150408103701) do
+ActiveRecord::Schema.define(version: 20150410093055) do
 
   create_table "badges", force: :cascade do |t|
     t.string   "name",        limit: 255
@@ -63,13 +63,11 @@ ActiveRecord::Schema.define(version: 20150408103701) do
   end
 
   create_table "post_comments", id: false, force: :cascade do |t|
-    t.integer "id",         limit: 4, null: false
     t.integer "comment_id", limit: 4
     t.integer "post_id",    limit: 4
   end
 
   add_index "post_comments", ["comment_id"], name: "index_post_comments_on_comment_id", using: :btree
-  add_index "post_comments", ["id"], name: "index_post_comments_on_id", using: :btree
   add_index "post_comments", ["post_id"], name: "index_post_comments_on_post_id", using: :btree
 
   create_table "post_votes", force: :cascade do |t|
@@ -95,6 +93,17 @@ ActiveRecord::Schema.define(version: 20150408103701) do
 
   add_index "posts", ["campaign_id"], name: "index_posts_on_campaign_id", using: :btree
   add_index "posts", ["user_id"], name: "index_posts_on_user_id", using: :btree
+
+  create_table "user_badges", force: :cascade do |t|
+    t.integer  "user_id",       limit: 4, null: false
+    t.integer  "badge_id",      limit: 4, null: false
+    t.integer  "timesAchieved", limit: 4
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
+  add_index "user_badges", ["badge_id"], name: "index_user_badges_on_badge_id", using: :btree
+  add_index "user_badges", ["user_id"], name: "index_user_badges_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "name",                   limit: 255
