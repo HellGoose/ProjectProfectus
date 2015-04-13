@@ -21,11 +21,15 @@
 	User created: <%= @user.created_at.strftime("%B %d, %Y") %><br />
 	Nickname: <%= if @user.username then @user.username end %><br />
 	Email: <%= if @user.email then @user.email end %><br />
+	Location: <%= if @user.location then @user.location end %><br />
 	Address: <%= if @user.address then @user.address end %><br />
 	Phone: <%= if @user.phone then @user.phone end %><br />
-	Location: <%= if @user.location then @user.location end %><br />
+	Level: <%= @user.level %><br/>
+	Experience: <%= @user.points %><br/>
 	Number of Campaigns: <%= @user.campaigns.count %><br />
 	Number of Forum Posts: <%= @user.posts.count %><br/>
-
+	Number of Badges: <%= @user.badgeCount %><br/>
+	Badges: <% @user.badges.each do |b| %>
+				<%= image_tag b.badge.imageUrl, class: "img-responsive img-thumbnail" %>
+			<% end %><br/>
 </div>
-
