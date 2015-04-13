@@ -6,14 +6,14 @@ class UsersController < ApplicationController
 	end
 
 	def edit
-		if !current_user
+		if !current_user && is_this_user?
 			redirect_to user_path(params[:id])
 		end
 	end
 
 	def update
 		respond_to do |format|
-			if current_user && @user.update(user_params)
+			if current_user && is_this_user? && @user.update(user_params)
 				format.html { redirect_to @user, notice: 'User was successfully updated.' }
 				format.json { render :show, status: :ok, location: @user }
 			else
@@ -41,6 +41,10 @@ class UsersController < ApplicationController
 		end
 
 		def user_params
-			params.require(:user).permit(:username, :email, :image, :address, :phone)
+			params.require(:user).permit(:username, :email, :image, :location, :address, :phone)
+		end
+
+		def is_this_user?
+			@user.id = current_user.id
 		end
 end
