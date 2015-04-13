@@ -90,6 +90,8 @@ class PostsController < ApplicationController
 
       respond_to do |format|
         if @post.save
+          current_user.points +=3
+          current_user.save
           @campaign.save
           format.html { redirect_to @campaign }
         else

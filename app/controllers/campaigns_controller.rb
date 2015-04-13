@@ -46,6 +46,8 @@ class CampaignsController < ApplicationController
 
       respond_to do |format|
       if @campaign.save
+          current_user.points +=107
+          current_user.save
        		format.html { redirect_to @campaign, notice: 'Campaign was successfully created.' }
        		format.json { render :show, status: :created, location: @campaign }
       else
