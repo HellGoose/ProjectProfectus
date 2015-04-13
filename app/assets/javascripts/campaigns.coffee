@@ -103,11 +103,4 @@ $(document).ready ->
         $('#votes_' + button_id).html(data.message)
         return
       return
-
-    campaign = $('#campaign-link').attr('href')
-    console.log campaign
-
-    $.embedly.extract(campaign, key: '0eef325249694df490605b1fd29147f5').progress (data) ->
-      alert data.title
-      return
   return

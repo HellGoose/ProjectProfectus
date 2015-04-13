@@ -33,19 +33,29 @@ class CampaignsController < ApplicationController
 
 	def create
 		if current_user
-			@campaign = Campaign.new(campaign_params)
-      		@campaign.user_id = session[:user_id]
+      @campaign = Campaign.new(campaign_params)
+      @campaign.user_id = session[:user_id]
 
-      		respond_to do |format|
-        	if @campaign.save
-          		format.html { redirect_to @campaign, notice: 'Campaign was successfully created.' }
-          		format.json { render :show, status: :created, location: @campaign }
-       		else
-          		format.html { render :new }
-          		format.json { render json: @campaign.errors, status: :unprocessable_entity }
-        		end
-      		end
-    	end
+      embedly = Embedly::API.new :key => '0eef325249694df490605b1fd29147f5'
+
+      obj = embedly.extract :url => @campaign.link
+      o = obj.first
+
+      Rails.logger.info ">>>> o: #{o.inspect}"
+
+      @campaign.title = o.title
+      @campaign.description = o.description			
+
+      respond_to do |format|
+      if @campaign.save
+       		format.html { redirect_to @campaign, notice: 'Campaign was successfully created.' }
+       		format.json { render :show, status: :created, location: @campaign }
+      else
+       		format.html { render :new }
+       		format.json { render json: @campaign.errors, status: :unprocessable_entity }
+      	end
+      end
+    end
 	end
 
 	def destroy
