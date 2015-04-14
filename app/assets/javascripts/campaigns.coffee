@@ -41,64 +41,88 @@ changePage = (dir) ->
   return
 
 $(document).ready ->
-  page = $('#data').data('page')
-  size = $('#data').data('size')
-  interval = $('#data').data('interval')
+  if (window.location.pathname == '/campaigns' || window.location.pathname == '/campaigns/')
+    page = $('#data').data('page')
+    size = $('#data').data('size')
+    interval = $('#data').data('interval')
 
-  if page == 1
-    $('#prev').attr('disabled', true)
-  if size <= interval
-    $('#next').attr('disabled', true)
+    if page == 1
+      $('#prev').attr('disabled', true)
+    if size <= interval
+      $('#next').attr('disabled', true)
 
-  $('#next').click ->
-    changePage('>')
-    return
-  $('#prev').click ->
-    changePage('<')
-    return
-
-  $('.catButton').click ->
-    $('#data').data('category', @id)
-    $('#data').data('size', @name)
-    changePage('reset')
-    $('#'+@id+'.catButton').attr('style', 'color: black')
-    return
-
-  $('#searchButton').click ->
-    $('#data').data('search', $('#searchText').val())
-    return
-
-  $('.up_vote').click ->
-    button_id = @id
-    $.post '/vote/campaign/' + button_id + '/up', (data, status) ->
-      $('#'+button_id+'.down_vote').attr('disabled', false)
-      $('#'+button_id+'.up_vote').attr('disabled', true)
-      $('#votes_' + button_id).html(data.message)
+    $('#next').click ->
+      changePage('>')
       return
-    return
-
-  $('.down_vote').click ->
-    button_id = @id
-    $.post '/vote/campaign/' + button_id + '/down', (data, status) ->
-      $('#'+button_id+'.down_vote').attr('disabled', true)
-      $('#'+button_id+'.up_vote').attr('disabled', false)
-      $('#votes_' + button_id).html(data.message)
+    $('#prev').click ->
+      changePage('<')
       return
-    return
 
+    $('.catButton').click ->
+      $('#data').data('category', @id)
+      $('#data').data('size', @name)
+      changePage('reset')
+      $('#'+@id+'.catButton').attr('style', 'color: black')
+      return
 
-window.onkeyup = (e) ->
-  key = if e.keyCode then e.keyCode else e.which
-  switch key
-    when 13
-      if $('#searchText').focus
-        search()
-    when 39
-      $('#next').click()
-    when 37
-      $('#prev').click()
-    else
-      console.log 'Key: ' + key
-      break
+    $('#searchButton').click ->
+      $('#data').data('search', $('#searchText').val())
+      return
+
+    window.onkeyup = (e) ->
+      key = if e.keyCode then e.keyCode else e.which
+      switch key
+        when 13
+          if $('#searchText').focus
+            search()
+        when 39
+          $('#next').click()
+        when 37
+          $('#prev').click()
+        else
+          console.log 'Key: ' + key
+          break
+      return
+
+  else if (window.location.pathname == '/campaigns/new')
+    $('#campaign_link').on 'input', ->
+      campaign = $('#campaign_link').val()
+
+      urlregex = new RegExp('^(http|https|ftp)://([a-zA-Z0-9.-]+(:[a-zA-Z0-9.&amp;%$-]+)*@)*((25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]).(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0).(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0).(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])|([a-zA-Z0-9-]+.)*[a-zA-Z0-9-]+.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Z]{2}))(:[0-9]+)*(/($|[a-zA-Z0-9.,?\'\\+&amp;%$#=~_-]+))*$')
+      if urlregex.test campaign
+        $.embedly.extract(campaign, key: '0eef325249694df490605b1fd29147f5').progress (data) ->
+          renderCampaignPreview(data)
+          return
+      return
+  else
+
+    $('.up_vote').click ->
+      button_id = @id
+      $.post '/vote/campaign/' + button_id + '/up', (data, status) ->
+        $('#'+button_id+'.down_vote').attr('disabled', false)
+        $('#'+button_id+'.up_vote').attr('disabled', true)
+        $('#votes_' + button_id).html(data.message)
+        return
+      return
+
+    $('.down_vote').click ->
+      button_id = @id
+      $.post '/vote/campaign/' + button_id + '/down', (data, status) ->
+        $('#'+button_id+'.down_vote').attr('disabled', true)
+        $('#'+button_id+'.up_vote').attr('disabled', false)
+        $('#votes_' + button_id).html(data.message)
+        return
+      return
   return
-return
+
+renderCampaignPreview = (data) ->
+  console.log data
+  
+  $('#description-field').val(data.description)
+  $('#image-field').val(data.images[0].url)
+  $('#title-field').val(data.title)
+
+  $('#campaign-image').attr('src', data.images[0].url)
+  $('#campaign-title').html(data.title)
+  $('#campaign-description').html(data.description)
+  return

@@ -7,6 +7,7 @@ class User < ActiveRecord::Base
 	#Relations:
 	has_many :posts
 	has_many :campaigns
+	has_many :badges, class_name: "UserBadge"
 	has_many :postVotes, class_name: "PostVote"
 	has_many :campaignVotes, class_name: "CampaignVote"
 	has_many :postsVoted, class_name: "Post", through: "PostVote"
@@ -30,6 +31,7 @@ class User < ActiveRecord::Base
 
 	#Callbacks
 	after_initialize :init
+	before_update :lvlUp
 
 	private
 		#Set default values
@@ -42,5 +44,10 @@ class User < ActiveRecord::Base
 			self.level ||= 1 if self.has_attribute? :level
 			self.role ||= 0 if self.has_attribute? :role
 			self.badgeCount ||= 0 if self.has_attribute? :badgeCount
+		end
+
+		#Check for level up
+		def lvlUp
+			self.level = (self.points/100).floor + 1
 		end
 end
