@@ -31,7 +31,7 @@ class User < ActiveRecord::Base
 
 	#Callbacks
 	after_initialize :init
-	before_update :lvlUp
+	before_update :lvlUp, :achieveBadge
 
 	private
 		#Set default values
@@ -46,8 +46,31 @@ class User < ActiveRecord::Base
 			self.badgeCount ||= 0 if self.has_attribute? :badgeCount
 		end
 
-		#Check for level up
+		#Update level
 		def lvlUp
-			self.level = (self.points/100).floor + 1
+			self.level = (self.points/1000).floor + 1
+		end
+
+		#Update badges
+		def achieveBadge
+			campaignCount = self.campaigns.count
+
+			#One-timers (Only awardable once)
+			#The first campaign
+			if campaignCount == 1 and !self.badges.find(2)
+				self.badges.create(user_id: self.id, badge_id: 2, timesAchieved: 1)
+				self.points += Badge.find(2).points
+			end
+			#Multi-timers (Awardable multiple times)
+			#Created 10 campaigns
+			if campaignCount > 0 and campaignCount%10 == 0
+				if !self.badges.find(3)
+					self.badges.create(user_id: self.id, badge_id: 2, timesAchieved: 1)
+					self.points += Badge.find(3).points
+				elsif campaignCount/10 > self.badges.find(3).timesAchieved
+					self.badges.find(3).timesAchieved = campaignCount/10
+					self.points += Badge.find(3).points
+				end
+			end
 		end
 end
