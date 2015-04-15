@@ -20,7 +20,11 @@
 			<div class="image_container">
 				<%= image_tag c.image, class: "logo img-responsive" %>
 			</div>
+			<% if c.description.length > 150 %>
+			<p><%= c.description[0,150] + "..." %></p>
+			<% else %>
 			<p><%= c.description %></p>
+			<% end %>
 		</div>
 	</div>
 <% end %>
