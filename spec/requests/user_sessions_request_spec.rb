@@ -24,3 +24,20 @@ describe "GET '/auth/failure'" do
     expect(response).to redirect_to root_path
   end
 end
+
+describe "GET '/signout'" do
+  before(:each) do
+    valid_facebook_login_setup
+    get '/auth/facebook/callback'
+    request.env["omniauth.auth"] = OmniAuth.config.mock_auth[:facebook]
+    get "/signout"
+  end
+
+  it "should set session[user_id] to nil" do
+    expect(session[:user_id]).to eq(nil)
+  end
+
+  it "should redirect to root" do
+    expect(response).to redirect_to root_path
+  end
+end
