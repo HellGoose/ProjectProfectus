@@ -7,7 +7,7 @@
 
 <% @all_news.last(last).first(newsPerPage.to_i).each do |n| %>
 	<div class="col-xs-12 news">
-		<div class="text_container">
+		<div class="text-news-container">
 			<div class="edit">
 				<% if isAdmin %>
 					<%= link_to 'Edit |', edit_news_path(n)%> 

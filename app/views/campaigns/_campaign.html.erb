@@ -1,28 +1,4 @@
 	<div class="col-xs-12 main_campaign">
-		<div class="vote_container">
-			<% userVote = @campaign.votes.find_by(user_id: session[:user_id], campaign_id: @campaign.id)
-
-			opacity = 1
-			if !session[:user_id]
-				opacity = 0.5
-			end %>
-			
-			<button id=<%= @campaign.id.to_s %> class="glyphicon glyphicon-menu-up up_vote" aria-hidden="true" style="opacity:<%= opacity %>" 
-				<% if !session[:user_id] or (userVote != nil and !userVote.isDownvote)%>
-					disabled 
-				<%end%>>
-
-			</button>
-
-			<p><span id=<%= "votes_" + @campaign.id.to_s %>><%= @campaign.voteCount %></span></p>
-
-			<button id=<%=  @campaign.id.to_s %> class="glyphicon glyphicon-menu-down down_vote" aria-hidden="true" style="opacity:<%= opacity %>" 
-				<% if !session[:user_id] or (userVote != nil and userVote.isDownvote)%>
-					disabled
-				<%end%>>
-			</button>
-		</div>
-
 		<div class="image_container">
 			<%= image_tag @campaign.image, class: "logo img-responsive" %>
 		</div>
