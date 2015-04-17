@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   get '/campaigns/page/:category/:page/:interval', :to => 'campaigns#page', :as => :campaigns_page
 
   post '/vote/post/:id/:dir', :to => 'posts#vote'
-  post '/vote/campaign/:id/:dir', :to => 'campaigns#vote'
+  get '/vote/campaign/:id/', :to => 'campaigns#vote'
 
   get '/news/page/:page/:interval', :to => 'news#page'
 

@@ -2,29 +2,21 @@
 
 <div id='news' data-page=1 data-interval=<%= @newsInterval %> data-size=<%= @all_news.size %>></div>
 
+<div id='campaign' data-vote=-1></div>
+
 <div class="header">
 	<div class="text-center">
 		<p class="header-brand-text">Welcome to Profectus</p>
 		<a class="btn btn-success" id="start-voting">Make a difference</a>
+		<a class="btn btn-success" id="back-voting" style="display: none;">Back</a>
+		<a class="btn btn-success" id="next-voting" style="display: none;">Next</a>
 	</div>
 </div>
 
 <div id="voting">
-	<div class="col-xs-12">
-		<%= render partial: 'campaigns/vote', locals: { stage: 1 } %>
-	</div>
-	<div class="campaign-display" id="0">
-		<% @campaign = @campaignVoting[0] %>
-		<%= render partial: "campaigns/campaign" %>
-	</div>
-	<div class="campaign-display" id="1">
-		<% @campaign = @campaignVoting[1] %>
-		<%= render partial: "campaigns/campaign" %>
-	</div>
-	<div class="campaign-display" id="2">
-		<% @campaign = @campaignVoting[2] %>
-		<%= render partial: "campaigns/campaign" %>
-	</div>
+	<% if @campaignVoting != nil and @campaignVoting.size > 0 %>
+	<%= render partial: 'campaigns/campaignVoting' %>
+	<% end %>
 </div>
 
 <div id="tabs">

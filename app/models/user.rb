@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
 	has_many :postVotes, class_name: "PostVote"
 	has_many :campaignVotes, class_name: "CampaignVote"
 	has_many :postsVoted, class_name: "Post", through: "PostVote"
-	has_many :campaignsVoted, class_name: "Campaign", through: "campaignVote"
+	has_many :campaignsVoted, class_name: "Campaign", :through => :campaignVotes, :source => :campaign
 
 
 	#Authentication
