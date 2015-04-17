@@ -43,11 +43,8 @@ ActiveRecord::Schema.define(version: 20150417104726) do
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
     t.string   "image",       limit: 255
-<<<<<<< HEAD
-=======
     t.integer  "roundScore",  limit: 4
     t.integer  "globalScore", limit: 4
->>>>>>> eeb379cc71f8608db410a9380814dd15fa37087e
   end
 
   add_index "campaigns", ["category_id"], name: "index_campaigns_on_category_id", using: :btree
