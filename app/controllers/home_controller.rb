@@ -6,6 +6,21 @@ class HomeController < ApplicationController
 		@all_news = News.order("created_at DESC")
 		@newsInterval = 5
 
-		@campaignVoting = Campaign.all.sample(3)
+
+		if current_user
+			step = 0
+			campaignVotes = current_user.campaignVotes.find_by(step: step)
+
+			puts campaignVotes
+
+
+
+
+			@campaignVoting = current_user.campaignsVoted
+			if @campaignVoting == []
+				@campaignVoting << Campaign.all.sample(9)
+				current_user.save
+			end
+		end
 	end
 end
