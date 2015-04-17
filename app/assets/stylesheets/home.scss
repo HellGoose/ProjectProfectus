@@ -41,9 +41,9 @@
 	width: 248px;
 	height: 248px;
 	float: left;
-	margin: -15px;
+	margin: 0px;
 	position: absolute;
-	top: 100px;
+	top: 125px;
 }
 
 .image-vote-container img, .image_container img {
@@ -62,18 +62,28 @@
 }
 
 .campaign-vote {
-	margin: 10px;
 	background-color: #fcfcfc;
 	border: 1px solid #ddd;
 	border-radius: 5px;
+	height: 300px;
+	width: 250px;
+	cursor: hand;
+	cursor: pointer;
+}
+
+.campaign-container {
+	margin: 10px;
 	min-width: 250px;
 	max-width: 250px;
-	height: 300px;
 }
 
 #voting {
 	width: 73.68421%;
 	margin:0 auto;
+}
+
+.vote-star {
+	margin: 5px;
 }
 
 //News

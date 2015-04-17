@@ -5,7 +5,7 @@
 $(document).ready ->
 	$('#voting').slideUp 0
 	$('.campaign-display').slideUp 0
-	$('.campaign_link').on 'click', ->
+	$('.campaign-vote').on 'click', ->
 		if @id == '0'
 			$('#0.campaign-display').slideToggle()
 			$('#1.campaign-display').slideUp(0)
