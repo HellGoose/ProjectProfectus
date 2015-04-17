@@ -1,0 +1,13 @@
+<% i = 0 %>
+<% @campaignVoting.each do |c| %>
+	<div class="col-xs-3 campaign-vote">
+		<a class="campaign_link" href="javascript:void(0);" id="<%= i %>"></a>
+		<% i += 1 %>
+		<div class="text-center">
+			<h4><%= c.title %></h4>
+			<div class="image-vote-container">
+				<%= image_tag c.image, class: "logo img-responsive" %>
+			</div>
+		</div>
+	</div>
+<% end %>
