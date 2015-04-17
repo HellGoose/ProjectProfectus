@@ -5,7 +5,7 @@
 $(document).ready ->
 	$('#voting').slideUp 0
 	$('.campaign-display').slideUp 0
-	$('.campaign-vote').on 'click', ->
+	$('body').on 'click', '.campaign-vote', ->
 		if @id == '0'
 			$('#0.campaign-display').slideToggle()
 			$('#1.campaign-display').slideUp(0)
@@ -20,8 +20,29 @@ $(document).ready ->
 			$('#0.campaign-display').slideUp(0)
 		return
 	$('#start-voting').on 'click', ->
+		$('#start-voting').hide()
+		$('#back-voting').show()
+		$('#next-voting').show()
 		$('#voting').slideToggle()
 		$('#tabs').slideToggle()
+		return
+	$('#back-voting').on 'click', ->
+		$('#start-voting').show()
+		$('#back-voting').hide()
+		$('#next-voting').hide()
+		$('#voting').slideToggle()
+		$('#tabs').slideToggle()
+		return
+	$('body').on 'click', '.vote-star', ->
+		$('.vote-star').children().removeClass('active')
+		$(this).children().addClass('active')
+		$('#campaign').data('vote', @id)
+		return
+	$('#next-voting').on 'click', ->
+		campaign = $('#campaign').data('vote')
+		$('#voting').load "/vote/campaign/" + campaign, (response, status) ->
+			$('.campaign-display').slideUp 0
+			return
 		return
 	$('#more_news').click ->
 		page = $('#news').data('page') + 1
