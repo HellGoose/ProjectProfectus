@@ -41,3 +41,25 @@ describe "GET '/signout'" do
     expect(response).to redirect_to root_path
   end
 end
+
+describe "GET '/users/:user_id'" do
+  before(:each) do
+    valid_facebook_login_setup
+    get '/auth/facebook/callback'
+    request.env["omniauth.auth"] = OmniAuth.config.mock_auth[:facebook]
+  end
+
+  it "should return response.status 200" do
+    get '/users/'+session[:user_id].to_s
+    expect(response.status).to eq(200)
+  end
+
+  # it "should redirect to user account page" do
+
+  # end
+end
+
+# describe "GET 'user/:user_id/edit'" do
+#   it "should ..." do
+#   end
+# end
