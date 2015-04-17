@@ -1,8 +1,7 @@
 class UpdateCampaignVote < ActiveRecord::Migration
   def change
-  	asdasdadad
   	remove_column :campaign_votes, :isDownvote
-  	add_column : :campaign_votes, :points, :integer
-
+  	add_column :campaign_votes, :stage, :integer
+  	add_column :campaign_votes, :voteType, :integer
   end
 end

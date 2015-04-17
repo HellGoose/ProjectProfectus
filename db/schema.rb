@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150415095558) do
+ActiveRecord::Schema.define(version: 20150417090022) do
 
   create_table "badges", force: :cascade do |t|
     t.string   "name",        limit: 255
@@ -25,9 +25,10 @@ ActiveRecord::Schema.define(version: 20150415095558) do
   create_table "campaign_votes", force: :cascade do |t|
     t.integer  "user_id",     limit: 4
     t.integer  "campaign_id", limit: 4
-    t.boolean  "isDownvote",  limit: 1
     t.datetime "created_at",            null: false
     t.datetime "updated_at",            null: false
+    t.integer  "step",        limit: 4
+    t.integer  "voteType",    limit: 4
   end
 
   add_index "campaign_votes", ["campaign_id"], name: "index_campaign_votes_on_campaign_id", using: :btree
