@@ -3,6 +3,26 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 $(document).ready ->
+	$('#voting').slideUp 0
+	$('.campaign-display').slideUp 0
+	$('.campaign_link').on 'click', ->
+		if @id == '0'
+			$('#0.campaign-display').slideToggle()
+			$('#1.campaign-display').slideUp(0)
+			$('#2.campaign-display').slideUp(0)
+		if @id == '1'
+			$('#1.campaign-display').slideToggle()
+			$('#0.campaign-display').slideUp(0)
+			$('#2.campaign-display').slideUp(0)
+		if @id == '2'
+			$('#2.campaign-display').slideToggle()
+			$('#1.campaign-display').slideUp(0)
+			$('#0.campaign-display').slideUp(0)
+		return
+	$('#start-voting').on 'click', ->
+		$('#voting').slideToggle()
+		$('#tabs').slideToggle()
+		return
 	$('#more_news').click ->
 		page = $('#news').data('page') + 1
 		interval = $('#news').data('interval')

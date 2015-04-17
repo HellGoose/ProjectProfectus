@@ -1,5 +1,4 @@
 <%= javascript_include_tag "admin" %>
-<%= stylesheet_link_tag "admin" %>
 
 <p id="notice"><%= notice %></p>
 
@@ -9,7 +8,8 @@
 	<nav class="navbar navbar-default">
 		<div class="collapse navbar-collapse">
 			<ul class="nav navbar-nav navbar-center">
-				<li class="active"><a href="#news-tab" data-toggle="tab">News<i class="fa"></i></a></li>
+				<li class="active"><a href="#iteration-tab" data-toggle="tab">Iteration</a></li>
+				<li><a href="#news-tab" data-toggle="tab">News<i class="fa"></i></a></li>
 				<li><a href="#flagged_projects-tab" data-toggle="tab">Flagged Campaigns<i class="fa"></i></a></li>
 				<li><a href="#flagged_users-tab" data-toggle="tab">Flagged Users<i class="fa"></i></a></li>
 				<li><a href="#moderator-tab" data-toggle="tab">Moderator Center<i class="fa"></i></a></li>
@@ -17,7 +17,18 @@
 		</div>
 	</nav>
 	<div id="my-tab-content" class="tab-content">
-		<div class="tab-pane active" id="news-tab">
+		<div class="tab-pane active" id="iteration-tab">
+			<div class="content text-center">
+				<h5>Time until next iteration: 00:00:00</h5>
+				<h5>Status: script is currently not running!</h5>
+				<div id="time-input">
+					<input class="form-control" placeholder="Iteration duration" type="text" id="iteration-duration" size="5" />
+				</div>
+				<a class="btn btn-primary" id="start-iteration">Start</a>
+				<a class="btn btn-primary" id="stop-iteration">Stop</a>
+			</div>
+		</div>
+		<div class="tab-pane" id="news-tab">
 			<div class="content">
 				<div class="text-center">
 					<a class="btn btn-primary" id="post_news">Post News</a>

@@ -9,4 +9,13 @@ class AdminController < ApplicationController
       redirect_to '/'
     end
   end
+
+  def iteration
+  	if params[:run] == 'start'
+  		respond_to do |format|
+          msg = { :status => 'ok', :message => 'Script is running' }
+          format.json  { render :json => msg }
+    	end
+  	end
+  end
 end

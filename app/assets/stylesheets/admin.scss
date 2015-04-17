@@ -36,7 +36,7 @@
 	margin-bottom: 10px;
 }
 
-.news .text_container {
+.news .text-news-container {
 	margin-right: auto;
 	margin-left: auto;
 	background-color: #fcfcfc;
@@ -45,7 +45,7 @@
 	width: 425px;
 }
 
-.news .text_container .edit {
+.news .text-news-container .edit {
 	margin-top: 5px;
 	margin-right: 5px;
 	float: right;
@@ -53,6 +53,18 @@
 	left: 700px;
 }
 
-.news .text_container p {
+.news .text-news-container p {
 	word-wrap: break-word;
+}
+
+#start-iteration, #stop-iteration {
+	margin: 5px;
+	margin-right: 2px;
+	margin-left: 2px;
+}
+
+#iteration-duration {
+	width: 130px;
+	margin-right: auto;
+	margin-left: auto;
 }
