@@ -12,10 +12,9 @@ class AdminController < ApplicationController
 
   def iteration
   	if params[:run] == 'start'
-  		system( "ruby 'iteration.rb'" )
   		respond_to do |format|
-        	msg = { :status => 'ok', :message => 'Script is running' }
-			format.json  { render :json => msg }
+          msg = { :status => 'ok', :message => 'Script is running' }
+          format.json  { render :json => msg }
     	end
   	end
   end
