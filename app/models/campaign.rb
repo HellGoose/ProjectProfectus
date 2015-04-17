@@ -19,5 +19,7 @@ class Campaign < ActiveRecord::Base
 			self.title ||= "" if self.has_attribute? :title
 			self.description ||= "" if self.has_attribute? :description
 			self.voteCount ||= 0 if self.has_attribute? :voteCount
+			self.roundScore ||= 0 if self.has_attribute? :roundScore
+			self.globalScore ||= 0 if self.has_attribute? :globalScore
 		end
 end
