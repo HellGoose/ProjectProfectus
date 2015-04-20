@@ -17,7 +17,9 @@
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 require 'rails_helper'
+require 'feature_helper'
 require 'support/omni_auth_test_helper'
+require 'capybara/rspec'
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
@@ -86,6 +88,38 @@ RSpec.configure do |config|
   # as the one that triggered the failure.
   Kernel.srand config.seed
 =end
+  Capybara.default_host = 'http://localhost:3000' #This is very important!
+
+  OmniAuth.config.test_mode = true
+  # OmniAuth.config.add_mock(:default, {
+  #   :info => {
+  #           :email => 'foobar@test.com',
+  #           :name => 'foo',
+  #           :password => 'qwerty123'
+  #        }
+  # })
+
+  OmniAuth.config.mock_auth[:facebook] = OmniAuth::AuthHash.new({
+    provider: 'facebook',
+    uid: '123545',
+    info: {
+      first_name: "Gaius",
+      last_name:  "Baltar",
+      email:      "test@example.com"
+    },
+    credentials: {
+      token: "123456",
+      expires_at: Time.now + 1.week
+    },
+    extra: {
+      raw_info: {
+        gender: 'male'
+      }
+    }
+  })
+
+  config.include FeatureHelper, type: :feature
   config.include OmniAuthTestHelper, type: :request
   config.include OmniAuthTestHelper, type: :controller
+  config.include OmniAuthTestHelper, type: :feature
 end

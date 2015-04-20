@@ -40,6 +40,12 @@ gem 'embedly'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
+# Use Capybara for acceptance testing
+gem 'capybara'
+
+# Use rspec-activemodel-mocks for mock_models in testing
+gem 'rspec-activemodel-mocks'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
@@ -52,5 +58,11 @@ group :development, :test do
 
   # Rspec testing framework
   gem 'rspec-rails', '~> 3.0'	
+
+  # Use factory_girl for fixtures
+	gem 'factory_girl_rails'
 end
 
+# group :test do
+#   gem 'capybara', '~>2.1.0'
+# end
