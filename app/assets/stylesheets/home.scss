@@ -89,23 +89,23 @@
 //News
 
 .news {
-	margin-top: 10px;
-	margin-bottom: 10px;
+	margin: 10px 0 10px 0;
 }
 
 .news .text-news-container {
-	margin-right: auto;
-	margin-left: auto;
+	margin: 0 auto;
 	background-color: #fcfcfc;
 	border: 1px solid #ddd;
 	border-radius: 10px;
-	width: 425px;
+	width: 96%;
 }
 
 .news .text-news-container .edit {
-	margin-top: 5px;
-	margin-right: 5px;
-	float: right;
+	margin: 5px 5px 0 0;
+}
+
+.news .text-news-container .content {
+	margin: 10px;
 }
 
 .news .text-news-container p {

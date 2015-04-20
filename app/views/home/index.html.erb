@@ -19,32 +19,21 @@
 	<% end %>
 </div>
 
-<div id="tabs">
-	<ul class="nav nav-pills">
-		<li class="active"><a href="#top-tab" data-toggle="tab">Top Projects<i class="fa"></i></a></li>
-		<li><a href="#news-tab" data-toggle="tab">News<i class="fa"></i></a></li>
-	</ul>
-	<div id="my-tab-content" class="tab-content">
-		<div class="tab-pane active" id="top-tab">
-			<div class="text-center">
-				<h1>Top 8 Campaigns</h1>
-				<div class="col-xs-12" id="campaigns">
-					<%= render partial: 'campaigns/campaignList', locals: { page: 1, campaignsPerPage: 8 } %>
-				</div>
-			</div>
-		</div>
-		<div class="tab-pane" id="news-tab">
-			<div class="text-center">
-				<h1>Latest News</h1>
-			</div>
-			<div class="news_container">
-				<%= render partial: 'news/news', locals: { page: 1, newsPerPage: @newsInterval }  %>
-			</div>
-			<% if @all_news.size > @newsInterval %>
-				<div class="text-center">
-					<a class="btn btn-primary" id="more_news">Show More</a>
-				</div>
-			<% end %>
-		</div>
+<div class="text-center">
+	<h1>Top 8 Campaigns</h1>
+	<div class="col-xs-12" id="campaigns">
+		<%= render partial: 'campaigns/campaignList', locals: { page: 1, campaignsPerPage: 8 } %>
 	</div>
 </div>
+
+<div class="text-center">
+	<h1>Latest News</h1>
+</div>
+<div class="news_container">
+	<%= render partial: 'news/news', locals: { page: 1, newsPerPage: @newsInterval }  %>
+</div>
+<% if @all_news.size > @newsInterval %>
+<div class="text-center">
+	<a class="btn btn-primary" id="more_news">Show More</a>
+</div>
+<% end %>
