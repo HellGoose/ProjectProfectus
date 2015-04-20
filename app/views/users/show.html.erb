@@ -2,32 +2,43 @@
 
 <h1>Profile</h1>
 
-<div class="col-sm-4">
+<div class="col-sm-3">
 	<% if !@user.image || @user.image == '' %>
 		<%= image_tag getFacebookPicURL, class: "img-responsive img-thumbnail" %>
 	<% else %>
 		<%= image_tag @user.image, class: "img-responsive img-thumbnail" %>
 	<% end %>
 </div>
-<div class="col-sm-8">
+<div class="col-sm-9">
 	<h3 class="name-header">
 		<%= @user.name %>
+		<%= if @user.username != "" then "(" + @user.username + ")" end %>
 		<% if @user == current_user %>
 			<%= link_to "edit", edit_user_path(@user) %>
 		<% end %>
 	</h3>
 	User created: <%= @user.created_at.strftime("%B %d, %Y") %><br />
-	Nickname: <%= if @user.username then @user.username end %><br />
-	Email: <%= if @user.email then @user.email end %><br />
-	Location: <%= if @user.location then @user.location end %><br />
-	Address: <%= if @user.address then @user.address end %><br />
-	Phone: <%= if @user.phone then @user.phone end %><br />
+	<% if @user.email != "" %>
+	Email: <%= @user.email %><br />
+	<% end %>
+	<% if @user.location != "" %>
+	Location: <%= @user.location %><br />
+	<% end %>
+	<% if @user.address != "" %>
+	Address: <%= @user.address %><br />
+	<% end %>
+	<% if @user.phone != "" %>
+	Phone: <%= @user.phone %><br />
+	<% end %>
 	Level: <%= @user.level %><br/>
 	Experience: <%= @user.points %><br/>
 	Number of Campaigns: <%= @user.campaigns.count %><br />
 	Number of Forum Posts: <%= @user.posts.count %><br/>
-	Number of Badges: <%= @user.badgeCount %><br/>
-	Badges: <% @user.badges.each do |b| %>
-				<%= image_tag b.badge.imageUrl, class: "img-responsive img-thumbnail" %>
-			<% end %><br/>
+	Number of Badges: <%= @user.badges.sum(:timesAchieved) %><br/>
+</div>
+
+<div class="col-sm-12 badges">
+	<% @user.badges.each do |b| %>
+	<%= image_tag b.badge.imageUrl, class: "img-responsive img-thumbnail", width: "150px" %>
+	<% end %>
 </div>
