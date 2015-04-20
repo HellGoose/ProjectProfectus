@@ -17,8 +17,8 @@ $(document).ready ->
 		if page >= (Math.ceil(size/interval))
 			$('#more_news').hide()
 		return
-	$('#start-iteration').on 'click', ->
-		$.post '/admin/iteration/start', (data, status) ->
+	$('#start-round').on 'click', ->
+		$.post '/admin/round/start', (data, status) ->
 	        return
 		return
 	return

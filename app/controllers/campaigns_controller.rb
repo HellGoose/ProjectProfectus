@@ -86,6 +86,13 @@ class CampaignsController < ApplicationController
         current_user.save
 
         if current_user.isOnStep >= 3
+          current_user.campaignVotes.where(voteType: 1).each do |v|
+            v.campaign.roundScore += 1
+            v.campaing.save
+          end
+          bestCampaign = current_user.campaignVotes.find_by(voteType: 2).campaign
+          bestCampaign.roundScore += 10
+          bestCampaign.save
           render :nothing => true
         else
 

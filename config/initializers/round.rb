@@ -1,8 +1,11 @@
 Thread.new {
 	round = Round.find(1)
 	i = 0
-
+	print "Round: " + round.currentRound.to_s + "\n"
+	print "Duration: " + round.duration.to_s + "\n"
+	print "DecayRate: " + round.decayRate.to_s + "\n"
 	while true  do
+		print "\nloop: " + i.to_s 
 		if i >= round.duration or round.forceNewRound == true
 			runRound(round.decayRate)
 			round.forceNewRound = false
@@ -16,8 +19,7 @@ Thread.new {
 }
 
 def runRound (decayRate)
-	round = Round.find(1)
-	campaigns = Campaigns.order('roundScore DESC')
+	campaigns = Campaign.all.order('roundScore DESC')
 	users = User.all
 
 	#Declare Winners
@@ -43,6 +45,7 @@ def runRound (decayRate)
 	#Reset user voting
 	users.each do |u|
 		u.isOnStep = 0
+		u.campaignVotes.clear
 		u.save
 	end
 
