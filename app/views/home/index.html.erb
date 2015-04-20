@@ -2,57 +2,38 @@
 
 <div id='news' data-page=1 data-interval=<%= @newsInterval %> data-size=<%= @all_news.size %>></div>
 
+<div id='campaign' data-vote=-1></div>
+
 <div class="header">
 	<div class="text-center">
 		<p class="header-brand-text">Welcome to Profectus</p>
 		<a class="btn btn-success" id="start-voting">Make a difference</a>
+		<a class="btn btn-success" id="back-voting" style="display: none;">Back</a>
+		<a class="btn btn-success" id="next-voting" style="display: none;">Next</a>
 	</div>
 </div>
 
 <div id="voting">
-	<div class="col-xs-12">
-		<%= render partial: 'campaigns/vote', locals: { stage: 1 } %>
-	</div>
-	<div class="campaign-display" id="0">
-		<% @campaign = @campaignVoting[0] %>
-		<%= render partial: "campaigns/campaign" %>
-	</div>
-	<div class="campaign-display" id="1">
-		<% @campaign = @campaignVoting[1] %>
-		<%= render partial: "campaigns/campaign" %>
-	</div>
-	<div class="campaign-display" id="2">
-		<% @campaign = @campaignVoting[2] %>
-		<%= render partial: "campaigns/campaign" %>
+	<% if @campaignVoting != nil and @campaignVoting.size > 0 %>
+	<%= render partial: 'campaigns/campaignVoting' %>
+	<% end %>
+</div>
+
+<div class="text-center">
+	<h1>Top 8 Campaigns</h1>
+	<div class="col-xs-12" id="campaigns">
+		<%= render partial: 'campaigns/campaignList', locals: { page: 1, campaignsPerPage: 8 } %>
 	</div>
 </div>
 
-<div id="tabs">
-	<ul class="nav nav-pills">
-		<li class="active"><a href="#top-tab" data-toggle="tab">Top Projects<i class="fa"></i></a></li>
-		<li><a href="#news-tab" data-toggle="tab">News<i class="fa"></i></a></li>
-	</ul>
-	<div id="my-tab-content" class="tab-content">
-		<div class="tab-pane active" id="top-tab">
-			<div class="text-center">
-				<h1>Top 8 Campaigns</h1>
-				<div class="col-xs-12" id="campaigns">
-					<%= render partial: 'campaigns/campaignList', locals: { page: 1, campaignsPerPage: 8 } %>
-				</div>
-			</div>
-		</div>
-		<div class="tab-pane" id="news-tab">
-			<div class="text-center">
-				<h1>Latest News</h1>
-			</div>
-			<div class="news_container">
-				<%= render partial: 'news/news', locals: { page: 1, newsPerPage: @newsInterval }  %>
-			</div>
-			<% if @all_news.size > @newsInterval %>
-				<div class="text-center">
-					<a class="btn btn-primary" id="more_news">Show More</a>
-				</div>
-			<% end %>
-		</div>
-	</div>
+<div class="text-center">
+	<h1>Latest News</h1>
 </div>
+<div class="news_container">
+	<%= render partial: 'news/news', locals: { page: 1, newsPerPage: @newsInterval }  %>
+</div>
+<% if @all_news.size > @newsInterval %>
+<div class="text-center">
+	<a class="btn btn-primary" id="more_news">Show More</a>
+</div>
+<% end %>

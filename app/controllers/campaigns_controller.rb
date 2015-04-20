@@ -1,5 +1,5 @@
 class CampaignsController < ApplicationController
-	before_action :set_campaign, only: [:vote, :show, :edit, :update, :destroy]
+	before_action :set_campaign, only: [:show, :edit, :update, :destroy]
 
 	def index
 		@campaigns = Campaign.all.order('voteCount DESC')
@@ -72,31 +72,33 @@ class CampaignsController < ApplicationController
 
 	def vote
     	if current_user
-    		userVote = @campaign.votes.find_by(user_id: session[:user_id])
-    		if (userVote == nil)
-        		userVote = @campaign.votes.create(campaign_id: @campaign.id, user_id: session[:user_id])
-        		if params[:dir] == 'up'
-        			@campaign.voteCount += 1
-        			userVote.isDownvote = false
-        		elsif params[:dir] == 'down'
-        			@campaign.voteCount -= 1
-        			userVote.isDownvote = true
-        		end        
-    		else
-    			if params[:dir] == 'up' and userVote.isDownvote != false
-        			userVote.isDownvote = false
-        			@campaign.voteCount += 2
-        		elsif params[:dir] == 'down' and userVote.isDownvote != true
-        			userVote.isDownvote = true
-        			@campaign.voteCount -= 2
-    			end
-    		end
-      		userVote.save
-      		@campaign.save
-      		respond_to do |format|
-        		msg = { :status => 'ok', :message => @campaign.voteCount }
-        		format.json  { render :json => msg }
-      		end
+        campaign_id = params[:id].to_i
+        campaigns = current_user.campaignVotes.where(step: current_user.isOnStep)
+
+        for i in 0..2
+          campaigns[campaign_id / 3 + i].voteType = 0
+          campaigns[campaign_id / 3 + i].save
+        end
+
+        campaigns[campaign_id].voteType = 1
+        campaigns[campaign_id].save
+        current_user.isOnStep += 1
+        current_user.save
+
+        if current_user.isOnStep >= 3
+          render :nothing => true
+        else
+
+        	campaignVotes = current_user.campaignVotes.where(step: current_user.isOnStep)
+          @campaignVoting = []
+          for i in 0..2
+            @campaignVoting << campaignVotes[i].campaign
+          end
+
+          respond_to do |format|
+            format.js { render partial: 'campaignVoting' }
+          end
+        end
     	end
   	end
 

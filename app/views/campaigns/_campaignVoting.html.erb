@@ -1,0 +1,15 @@
+<div class="col-xs-12">
+	<%= render partial: 'campaigns/vote' %>
+</div>
+<div class="campaign-display" id="0">
+	<% @campaign = @campaignVoting[0] %>
+	<%= render partial: "campaigns/campaign" %>
+</div>
+<div class="campaign-display" id="1">
+	<% @campaign = @campaignVoting[1] %>
+	<%= render partial: "campaigns/campaign" %>
+</div>
+<div class="campaign-display" id="2">
+	<% @campaign = @campaignVoting[2] %>
+	<%= render partial: "campaigns/campaign" %>
+</div>
