@@ -16,14 +16,37 @@ Thread.new {
 }
 
 def runRound (decayRate)
+	round = Round.find(1)
 	campaigns = Campaigns.order('roundScore DESC')
 	users = User.all
 
+	#Declare Winners
+	if campaigns.first.roundScore > 0
+		winnerCampaigns = campaigns.first(3)
+		winnerUser = winnerCampaigns.first.user
+
+		#User of the round
+		round.winnerUser.create(user_id: winnerUser.id, round_id: round.id, round: round.currentRound)
+
+		#Top 3 campaigns
+		i = 0
+		winnerCampaigns.each do |c|
+			round.winnerCampaigns.create(campaign_id: c.id, round_id: round.id, round: round.currentRound, placing: i)
+			i+=1
+		end
+
+		#Increment to next round
+		round.currentRound +=1
+		round.save
+	end
+
+	#Reset user voting
 	users.each do |u|
 		u.isOnStep = 0
 		u.save
 	end
 
+	#Compute and reset scores
 	campaigns.each do |c|
 		c.globalScore = c.globalScore * decayRate + c.roundScore
 		c.roundScore = 0
