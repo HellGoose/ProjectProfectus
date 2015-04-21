@@ -10,7 +10,7 @@ class AdminController < ApplicationController
     end
   end
 
-  def iteration
+  def round
   	if params[:run] == 'start'
   		respond_to do |format|
           msg = { :status => 'ok', :message => 'Script is running' }

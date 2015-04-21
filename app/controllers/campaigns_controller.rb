@@ -73,28 +73,66 @@ class CampaignsController < ApplicationController
 	def vote
     	if current_user
         campaign_id = params[:id].to_i
-        campaigns = current_user.campaignVotes.where(step: current_user.isOnStep)
 
-        for i in 0..2
-          campaigns[campaign_id / 3 + i].voteType = 0
-          campaigns[campaign_id / 3 + i].save
+        #Process voting for current step
+        if current_user.isOnStep < 3
+          #Campaigns from group x
+          campaigns = current_user.campaignVotes.where(step: current_user.isOnStep)
+
+          #Unvoting (Trengs denne? Eller blir det egen metode for back?)
+          for i in 0..2
+            campaigns[campaign_id / 3 + i].voteType = 0
+            campaigns[campaign_id / 3 + i].save
+          end
+
+          #Setting the vote (1 point)
+          campaigns[campaign_id].voteType = 1
+          campaigns[campaign_id].save
+          
+        elsif current_user.isOnStep == 3
+          #Campaigns already voted
+          campaigns = current_user.campaignVotes.where.not(voteType: 0)
+
+          #Setting the vote (10 points)
+          campaigns[campaign_id].voteType = 2
+          campaigns[campaign_id].save
         end
 
-        campaigns[campaign_id].voteType = 1
-        campaigns[campaign_id].save
+        #Increment to next step
         current_user.isOnStep += 1
         current_user.save
 
-        if current_user.isOnStep >= 3
-          render :nothing => true
-        else
+        #Render next step
+        if current_user.isOnStep > 3
 
-        	campaignVotes = current_user.campaignVotes.where(step: current_user.isOnStep)
+          #Giving points to the best
+          bestCampaign = current_user.campaignVotes.find_by(voteType: 2).campaign
+          bestCampaign.roundScore += 10
+          bestCampaign.save
+
+          #Giving points to the rest
+          current_user.campaignVotes.where(voteType: 1).each do |v|
+            v.campaign.roundScore += 1
+            v.campaign.save
+          end
+          
+          render :nothing => true
+
+        else
+          #Fetch next steps campaigns
+          if current_user.isOnStep < 3
+            campaignVotes = current_user.campaignVotes.where(step: current_user.isOnStep)
+          else #aka isOnStep == 3
+            campaignVotes = current_user.campaignVotes.where.not(voteType: 0)
+          end
+
+          #Make them globally accessible
           @campaignVoting = []
           for i in 0..2
             @campaignVoting << campaignVotes[i].campaign
           end
 
+          #Render view
           respond_to do |format|
             format.js { render partial: 'campaignVoting' }
           end
