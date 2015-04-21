@@ -108,7 +108,7 @@ class PostsController < ApplicationController
     campaign = Campaign.find(@post.campaign_id)
     respond_to do |format|
       if (isPostOwner || isAdmin) && @post.update(post_params)
-        format.html { redirect_to campaign, notice: 'Post was successfully updated.' }
+        format.html { redirect_to campaign, notice: '<span class="alert alert-success">Post was successfully updated.</span>' }
         format.json { render :show, status: :ok, location: @post }
       else
         format.html { render :edit }
@@ -123,10 +123,10 @@ class PostsController < ApplicationController
     campaign = Campaign.find(@post.campaign_id)
     respond_to do |format|
       if isPostOwner && @post.destroy
-        format.html { redirect_to campaign, notice: 'Post was successfully destroyed.' }
+        format.html { redirect_to campaign, notice: '<span class="alert alert-success">Post was successfully destroyed.</span>' }
         format.json { head :no_content }
       else
-        format.html { redirect_to campaign, notice: 'You cannot delete this post.' }
+        format.html { redirect_to campaign, notice: '<span class="alert alert-warning">You cannot delete this post.</span>' }
         format.json { head :no_content }
       end
     end
