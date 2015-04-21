@@ -24,14 +24,14 @@ $(document).ready ->
 		$('#back-voting').show()
 		$('#next-voting').show()
 		$('#voting').slideToggle()
-		$('#tabs').slideToggle()
+		$('#campaigns-news').slideToggle()
 		return
 	$('#back-voting').on 'click', ->
 		$('#start-voting').show()
 		$('#back-voting').hide()
 		$('#next-voting').hide()
 		$('#voting').slideToggle()
-		$('#tabs').slideToggle()
+		$('#campaigns-news').slideToggle()
 		return
 	$('body').on 'click', '.vote-star', ->
 		$('.vote-star').children().removeClass('active')
