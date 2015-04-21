@@ -1,12 +1,13 @@
-Thread.new {
+t = Thread.new {
 	runScript = false
 	round = Round.find(1)
 	i = 0
-	print "Round: " + round.currentRound.to_s + "\n"
-	print "Duration: " + round.duration.to_s + "\n"
-	print "DecayRate: " + round.decayRate.to_s + "\n"
 	while runScript do
-		print "\nloop: " + i.to_s 
+		print "Round started!"
+		print "Round: " + round.currentRound.to_s + "\n"
+		print "Duration: " + round.duration.to_s + "\n"
+		print "DecayRate: " + round.decayRate.to_s + "\n"
+		print "\nSeconds to next Round: " + (round.duration - i).to_s 
 		if i >= round.duration or round.forceNewRound == true
 			runRound(round.decayRate)
 			round.forceNewRound = false
@@ -18,6 +19,7 @@ Thread.new {
 		sleep 1
 	end
 }
+at_exit{t.kill}
 
 def runRound (decayRate)
 	round = Round.find(1)
@@ -30,15 +32,13 @@ def runRound (decayRate)
 		winnerUser = winnerCampaigns.first.user
 
 		#User of the round
-		print round.winnerUsers.to_s
 		round.winnerUsers.create(user_id: winnerUser.id, round_id: round.id, roundWon: round.currentRound)
-		print "Winner of the DAY :D\n"
+
 		#Top 3 campaigns
 		i = 0
 		winnerCampaigns.each do |c|
 			round.winnerCampaigns.create(campaign_id: c.id, round_id: round.id, roundWon: round.currentRound, placing: i)
 			i+=1
-			print "WInner CAMPAIGN " + i.to_s
 		end
 
 		#Compute and reset scores
