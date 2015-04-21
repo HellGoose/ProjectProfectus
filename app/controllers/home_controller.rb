@@ -10,7 +10,7 @@ class HomeController < ApplicationController
 			campaignVotes = current_user.campaignVotes.where(step: current_user.isOnStep)
 
 			@campaignVoting = []
-			if current_user.campaignVotes == []
+			if current_user.campaignVotes == [] and current_user.isOnStep < 3
 				current_user.isOnStep = 0
 
 				campaigns = Campaign.order("(roundScore + globalScore) DESC")
@@ -27,13 +27,16 @@ class HomeController < ApplicationController
 			
 				current_user.save
 			end
-
-			if current_user.isOnStep < 3 and current_user.isOnStep >= 0
-				@campaignVoting = []
-				for i in 0..2
-					@campaignVoting << campaignVotes[i].campaign
-				end
+		
+			if current_user.isOnStep >= 3
+				campaignVotes = current_user.campaignVotes.where(voteType: 1)
 			end
+
+			@campaignVoting = []
+			for i in 0..2
+				next if (campaignVotes[i] == nil)
+				@campaignVoting << campaignVotes[i].campaign
+			end			
 		end
 	end
 end
