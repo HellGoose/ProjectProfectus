@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150417104726) do
+ActiveRecord::Schema.define(version: 20150420101701) do
 
   create_table "badges", force: :cascade do |t|
     t.string   "name",        limit: 255
@@ -25,9 +25,10 @@ ActiveRecord::Schema.define(version: 20150417104726) do
   create_table "campaign_votes", force: :cascade do |t|
     t.integer  "user_id",     limit: 4
     t.integer  "campaign_id", limit: 4
-    t.boolean  "isDownvote",  limit: 1
     t.datetime "created_at",            null: false
     t.datetime "updated_at",            null: false
+    t.integer  "step",        limit: 4
+    t.integer  "voteType",    limit: 4
   end
 
   add_index "campaign_votes", ["campaign_id"], name: "index_campaign_votes_on_campaign_id", using: :btree
@@ -96,6 +97,32 @@ ActiveRecord::Schema.define(version: 20150417104726) do
   add_index "posts", ["campaign_id"], name: "index_posts_on_campaign_id", using: :btree
   add_index "posts", ["user_id"], name: "index_posts_on_user_id", using: :btree
 
+  create_table "round_winner_campaigns", force: :cascade do |t|
+    t.integer  "round",       limit: 4
+    t.integer  "placing",     limit: 4
+    t.integer  "campaign_id", limit: 4
+    t.integer  "round_id",    limit: 4
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+  end
+
+  create_table "round_winner_users", force: :cascade do |t|
+    t.integer  "round",      limit: 4
+    t.integer  "user_id",    limit: 4
+    t.integer  "round_id",   limit: 4
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
+
+  create_table "rounds", force: :cascade do |t|
+    t.integer  "duration",      limit: 4
+    t.boolean  "forceNewRound", limit: 1
+    t.float    "decayRate",     limit: 24
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+    t.integer  "currentRound",  limit: 4
+  end
+
   create_table "user_badges", force: :cascade do |t|
     t.integer  "user_id",       limit: 4, null: false
     t.integer  "badge_id",      limit: 4, null: false
@@ -117,7 +144,6 @@ ActiveRecord::Schema.define(version: 20150417104726) do
     t.string   "phone",                  limit: 255
     t.integer  "points",                 limit: 4
     t.integer  "level",                  limit: 4
-    t.integer  "badgeCount",             limit: 4
     t.integer  "role",                   limit: 4
     t.datetime "bannedUntil"
     t.string   "provider",               limit: 255
@@ -126,6 +152,7 @@ ActiveRecord::Schema.define(version: 20150417104726) do
     t.datetime "oauth_token_expires_at"
     t.datetime "created_at",                         null: false
     t.datetime "updated_at",                         null: false
+    t.integer  "isOnStep",               limit: 4
   end
 
 end

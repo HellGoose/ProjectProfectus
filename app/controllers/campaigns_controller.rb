@@ -22,7 +22,7 @@ class CampaignsController < ApplicationController
 	def update
     	respond_to do |format|
       		if (isCampaignOwner or isAdmin) && @campaign.update(campaign_params)
-        		format.html { redirect_to @campaign, notice: 'Campaign was successfully updated.' }
+        		format.html { redirect_to @campaign, notice: '<span class="alert alert-success">Campaign was successfully updated.</span>' }
         		format.json { render :show, status: :ok, location: @campaign }
       		else
         		format.html { render :edit }
