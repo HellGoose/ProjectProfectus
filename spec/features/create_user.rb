@@ -42,30 +42,23 @@ end
 =end
 require 'spec_helper'
 
+feature 'create_user' do
+  background do
+    user = create(:user)
+    login_with_oauth(user)
+  end
+end
+
 feature "Signing in" do
 
   before do
     #Capybara.current_driver = :selenium
-    valid_facebook_login_setup
-    #login_with_oauth #call your helper method
+    #valid_facebook_login_setup
+    user = create(:user)
+    login_with_oauth(user)
   end
 
-  scenario "Signing in with correct credentials" do
-    expect(page).to have_content('Welcome')
-  end
-end
-
-feature "Add project" do
-  background do
-    valid_facebook_login_setup
-    visit '/auth/facebook/callback'
-  end
-  scenario "Create new campaign" do
-    visit '/campaigns/new'
-    within("#campaign") do
-      fill_in 'campaign_link', :with => 'google.com'
-    end
-    click_button 'Create Campaign'
-    expect(page).to have_text("campaign was successfully created.")
+  scenario "Signing in" do
+    expect(page).to have_text('Welcome to Profectus')
   end
 end

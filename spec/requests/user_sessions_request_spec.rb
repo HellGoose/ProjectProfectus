@@ -3,9 +3,7 @@ require 'spec_helper'
 describe "GET '/auth/facebook/callback'" do
 
   before(:each) do
-    valid_facebook_login_setup
-    get '/auth/facebook/callback'
-    request.env["omniauth.auth"] = OmniAuth.config.mock_auth[:facebook]
+    login_with_oauth(build(:user))
   end
 
   it "should set user_id" do
@@ -18,7 +16,6 @@ describe "GET '/auth/facebook/callback'" do
 end
 
 describe "GET '/auth/failure'" do
-
   it "should redirect to root" do
     get "/auth/failure"
     expect(response).to redirect_to root_path
@@ -27,9 +24,8 @@ end
 
 describe "GET '/signout'" do
   before(:each) do
-    valid_facebook_login_setup
+    login_with_oauth(build(:user))
     get '/auth/facebook/callback'
-    request.env["omniauth.auth"] = OmniAuth.config.mock_auth[:facebook]
     get "/signout"
   end
 
@@ -44,9 +40,8 @@ end
 
 describe "GET '/users/:user_id'" do
   before(:each) do
-    valid_facebook_login_setup
+    login_with_oauth(build(:user))
     get '/auth/facebook/callback'
-    request.env["omniauth.auth"] = OmniAuth.config.mock_auth[:facebook]
   end
 
   it "should return response.status 200" do
