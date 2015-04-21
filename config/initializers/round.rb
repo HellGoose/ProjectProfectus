@@ -3,10 +3,6 @@ t = Thread.new {
 	round = Round.find(1)
 	i = 0
 	while runScript do
-		print "Round started!"
-		print "Round: " + round.currentRound.to_s + "\n"
-		print "Duration: " + round.duration.to_s + "\n"
-		print "DecayRate: " + round.decayRate.to_s + "\n"
 		print "\nSeconds to next Round: " + (round.duration - i).to_s 
 		if i >= round.duration or round.forceNewRound == true
 			runRound(round.decayRate)
