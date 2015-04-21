@@ -1,10 +1,11 @@
 Thread.new {
+	runScript = false
 	round = Round.find(1)
 	i = 0
 	print "Round: " + round.currentRound.to_s + "\n"
 	print "Duration: " + round.duration.to_s + "\n"
 	print "DecayRate: " + round.decayRate.to_s + "\n"
-	while true  do
+	while runScript do
 		print "\nloop: " + i.to_s 
 		if i >= round.duration or round.forceNewRound == true
 			runRound(round.decayRate)
@@ -19,6 +20,7 @@ Thread.new {
 }
 
 def runRound (decayRate)
+	round = Round.find(1)
 	campaigns = Campaign.all.order('roundScore DESC')
 	users = User.all
 
@@ -28,13 +30,22 @@ def runRound (decayRate)
 		winnerUser = winnerCampaigns.first.user
 
 		#User of the round
-		round.winnerUser.create(user_id: winnerUser.id, round_id: round.id, round: round.currentRound)
-
+		print round.winnerUsers.to_s
+		round.winnerUsers.create(user_id: winnerUser.id, round_id: round.id, roundWon: round.currentRound)
+		print "Winner of the DAY :D\n"
 		#Top 3 campaigns
 		i = 0
 		winnerCampaigns.each do |c|
-			round.winnerCampaigns.create(campaign_id: c.id, round_id: round.id, round: round.currentRound, placing: i)
+			round.winnerCampaigns.create(campaign_id: c.id, round_id: round.id, roundWon: round.currentRound, placing: i)
 			i+=1
+			print "WInner CAMPAIGN " + i.to_s
+		end
+
+		#Compute and reset scores
+		campaigns.each do |c|
+			c.globalScore = (c.globalScore * decayRate + c.roundScore).to_i
+			c.roundScore = 0
+			c.save
 		end
 
 		#Increment to next round
@@ -45,14 +56,9 @@ def runRound (decayRate)
 	#Reset user voting
 	users.each do |u|
 		u.isOnStep = 0
-		u.campaignVotes.clear
 		u.save
 	end
 
-	#Compute and reset scores
-	campaigns.each do |c|
-		c.globalScore = c.globalScore * decayRate + c.roundScore
-		c.roundScore = 0
-		c.save
-	end
+	#Clear all votes
+	CampaignVote.destroy_all
 end
