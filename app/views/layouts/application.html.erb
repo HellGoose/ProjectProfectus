@@ -28,7 +28,7 @@
 					<% if current_user %>
 						<li><a href="/campaigns/new">Add Campaign</a></li>
 					<% end %>
-					<li class="<%= 'active' if params[:controller] == 'projects' %>"><a href="/campaigns">Campaigns</a></li>
+					<li class="<%= 'active' if params[:controller] == 'campaigns' %>"><a href="/campaigns">Campaigns</a></li>
 					<li class="<%= 'active' if params[:controller] == 'about' %>"><a href="/about/index">About</a></li>
 					<li class="dropdown <%= 'active' if params[:controller] == 'users' %>">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
