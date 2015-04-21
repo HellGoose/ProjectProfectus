@@ -14,7 +14,7 @@ class UsersController < ApplicationController
 	def update
 		respond_to do |format|
 			if current_user && is_this_user && @user.update(user_params)
-				format.html { redirect_to @user, notice: 'User was successfully updated.' }
+				format.html { redirect_to @user, notice: '<span class="alert alert-success">User was successfully updated.</span>' }
 				format.json { render :show, status: :ok, location: @user }
 			else
 				format.html { render :edit }
@@ -26,7 +26,7 @@ class UsersController < ApplicationController
 	def destroy
 		@user.destroy
 		respond_to do |format|
-			format.html { redirect_to '/signout', notice: 'User was deleted.' }
+			format.html { redirect_to '/signout', notice: '<span class="alert alert-success">User was deleted.</span>' }
 			format.json { head :no_content }
 		end
 	end

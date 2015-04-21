@@ -36,7 +36,7 @@ class NewsController < ApplicationController
 	def update
 	    respond_to do |format|
 			if isAdmin && @news.update(news_params)
-				format.html { redirect_to '/admin/', notice: 'News was successfully updated.' }
+				format.html { redirect_to '/admin/', notice: '<span class="alert alert-success">News was successfully updated.</span>' }
 				format.json { render :show, status: :ok, location: @news }
 			else
 				format.html { render :edit }
@@ -48,7 +48,7 @@ class NewsController < ApplicationController
 	def destroy
 		respond_to do |format|
 			if isAdmin && @news.destroy
-				format.html { redirect_to '/admin/', notice: 'News was successfully destroyed.' }
+				format.html { redirect_to '/admin/', notice: '<span class="alert alert-success">News was successfully destroyed.</span>' }
 				format.json { head :no_content }
 			else
 				format.html { redirect_to '/' }

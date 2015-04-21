@@ -16,3 +16,10 @@
 //= require bootstrap-sprockets
 //= require social-share-button
 //= require tinymce
+
+// Makes notice messages disappear after a couple of seconds
+window.setTimeout((function() {
+  $('#notice').fadeTo(500, 0).slideUp(500, function() {
+    $(this).remove();
+  });
+}), 3000);
