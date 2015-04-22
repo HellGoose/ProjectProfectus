@@ -2,7 +2,7 @@ class CampaignsController < ApplicationController
 	before_action :set_campaign, only: [:show, :edit, :update, :destroy]
 
 	def index
-		@campaigns = Campaign.all.order('voteCount DESC')
+		@campaigns = Campaign.all.order('(globalScore + roundScore) DESC')
 		@campaignsInterval = 8
 	end
 
@@ -12,7 +12,7 @@ class CampaignsController < ApplicationController
 
 	def show
 		@postsInterval = 10
-		@posts = @campaign.posts.where('isComment = 0').order('voteCount DESC')
+		@posts = @campaign.posts.where('isComment = 0').order('(globalScore + roundScore) DESC')
 		@post = Post.new
 	end
 
@@ -142,9 +142,9 @@ class CampaignsController < ApplicationController
   def page
     if params[:category].to_i > 0
       category = Category.find(params[:category])
-      @campaigns = category.campaigns.order('voteCount DESC')
+      @campaigns = category.campaigns.order('(globalScore + roundScore) DESC')
     else
-      @campaigns = Campaign.all.order('voteCount DESC')
+      @campaigns = Campaign.all.order('(globalScore + roundScore) DESC')
     end
     page = params[:page]
     interval = params[:interval]
