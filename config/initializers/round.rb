@@ -24,7 +24,7 @@ def runRound (decayRate)
 
 	#Variables
 	userOfTheRoundPoints = 437
-	percentageOfRoundScore = 0.1
+	percentageOfRoundScore = 0.9
 
 	#Declare Winners
 	if campaigns.first.roundScore > 0
@@ -47,6 +47,7 @@ def runRound (decayRate)
 		campaigns.each do |c|
 			c.globalScore = (c.globalScore * decayRate + c.roundScore).to_i
 			c.user.points += (c.roundScore*percentageOfRoundScore).to_i
+			c.user.save
 			c.roundScore = 0
 			c.save
 		end
