@@ -105,6 +105,7 @@ class CampaignsController < ApplicationController
 
         if current_user.isOnStep == 4
           campaignVotes = current_user.campaignVotes.where.not(voteType: 0)
+          @votedFor = current_user.campaignVotes.where(voteType: 2)
 
           @campaignVoting = []
           for i in 0..2
