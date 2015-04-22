@@ -1,4 +1,4 @@
-<p class="text-center" id="notice"><%= sanitize notice %></p>
+<div class="text-center" id="notice"><%= sanitize notice %></div>
 
 <h1>Profile</h1>
 
@@ -39,6 +39,6 @@
 
 <div class="col-sm-12 badges">
 	<% @user.badges.each do |b| %>
-	<%= image_tag b.badge.imageUrl, class: "img-responsive img-thumbnail", width: "150px" %>
+	<%= image_tag b.badge.imageUrl, class: "img-responsive img-thumbnail", width: "150px", title: b.badge.description, alt: b.badge.name %>
 	<% end %>
 </div>
