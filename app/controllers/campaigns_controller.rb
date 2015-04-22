@@ -48,7 +48,7 @@ class CampaignsController < ApplicationController
       if @campaign.save
           current_user.points +=107
           current_user.save
-       		format.html { redirect_to @campaign, notice: 'Campaign was successfully created.' }
+       		format.html { redirect_to @campaign, notice: '<span class="alert alert-success">Campaign was successfully created.</span>' }
        		format.json { render :show, status: :created, location: @campaign }
       else
        		format.html { render :new }
@@ -61,10 +61,10 @@ class CampaignsController < ApplicationController
 	def destroy
 	    respond_to do |format|
 			if (isCampaignOwner or isAdmin) && @campaign.destroy
-				format.html { redirect_to @campaign, notice: 'Campaign was successfully destroyed.' }
+				format.html { redirect_to @campaign, notice: '<span class="alert alert-success">Campaign was successfully destroyed.</span>' }
 				format.json { head :no_content }
 			else
-				format.html { redirect_to @campaign, notice: 'You cannot delete this campaign.' }
+				format.html { redirect_to @campaign, notice: '<span class="alert alert-warning">You cannot delete this campaign.</span>' }
 				format.json { head :no_content }
 			end
 		end
