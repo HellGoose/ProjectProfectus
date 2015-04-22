@@ -22,6 +22,10 @@ def runRound (decayRate)
 	campaigns = Campaign.all.order('roundScore DESC')
 	users = User.all
 
+	#Variables
+	userOfTheRoundPoints = 437
+	percentageOfRoundScore = 0.1
+
 	#Declare Winners
 	if campaigns.first.roundScore > 0
 		winnerCampaigns = campaigns.first(3)
@@ -29,6 +33,8 @@ def runRound (decayRate)
 
 		#User of the round
 		round.winnerUsers.create(user_id: winnerUser.id, round_id: round.id, roundWon: round.currentRound)
+		winnerUser.points += userOfTheRoundPoints
+		winnerUser.save
 
 		#Top 3 campaigns
 		i = 0
@@ -40,6 +46,7 @@ def runRound (decayRate)
 		#Compute and reset scores
 		campaigns.each do |c|
 			c.globalScore = (c.globalScore * decayRate + c.roundScore).to_i
+			c.user.points += (c.roundScore*percentageOfRoundScore).to_i
 			c.roundScore = 0
 			c.save
 		end
