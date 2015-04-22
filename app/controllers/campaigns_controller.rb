@@ -12,7 +12,7 @@ class CampaignsController < ApplicationController
 
 	def show
 		@postsInterval = 10
-		@posts = @campaign.posts.where('isComment = 0').order('(globalScore + roundScore) DESC')
+		@posts = @campaign.posts.where('isComment = 0').order('voteCount DESC')
 		@post = Post.new
 	end
 
