@@ -16,7 +16,7 @@ class HomeController < ApplicationController
 				campaigns = Campaign.order("(roundScore + globalScore) DESC")
 
 				@campaignVoting << campaigns.last(campaigns.size * 0.5).sample(3)
-				@campaignVoting << campaigns.first(campaigns.size * 0.5).last(campaigns.size * 0.6).sample(3)
+				@campaignVoting << campaigns.slice((campaigns.size * 0.2)..(campaigns.size * 0.5)).sample(3)
 				@campaignVoting << campaigns.first(campaigns.size * 0.2).sample(3)
 
 				for i in 0..8
@@ -29,7 +29,7 @@ class HomeController < ApplicationController
 			end
 		
 			if current_user.isOnStep >= 3
-				campaignVotes = current_user.campaignVotes.where(voteType: 1)
+				campaignVotes = current_user.campaignVotes.where.not(voteType: 0)
 			end
 
 			@campaignVoting = []
