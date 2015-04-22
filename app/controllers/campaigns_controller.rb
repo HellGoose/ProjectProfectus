@@ -41,19 +41,21 @@ class CampaignsController < ApplicationController
       obj = embedly.extract :url => @campaign.link
       o = obj.first
 
-      @campaign.title = o.title
-      @campaign.description = o.description			
+      if o.provider_url == 'https://www.kickstarter.com' or o.provider_url == 'http://www.indiegogo.com'
+        @campaign.title = o.title
+        @campaign.description = o.description			
 
-      respond_to do |format|
-      if @campaign.save
-          current_user.points +=107
-          current_user.save
-       		format.html { redirect_to @campaign, notice: 'Campaign was successfully created.' }
-       		format.json { render :show, status: :created, location: @campaign }
-      else
-       		format.html { render :new }
-       		format.json { render json: @campaign.errors, status: :unprocessable_entity }
-      	end
+        respond_to do |format|
+        if @campaign.save
+            current_user.points +=107
+            current_user.save
+         		format.html { redirect_to @campaign, notice: 'Campaign was successfully created.' }
+         		format.json { render :show, status: :created, location: @campaign }
+        else
+         		format.html { render :new }
+         		format.json { render json: @campaign.errors, status: :unprocessable_entity }
+        	end
+        end
       end
     end
 	end
@@ -74,6 +76,20 @@ class CampaignsController < ApplicationController
     	if current_user and current_user.isOnStep < 4
         campaign_id = params[:id].to_i
 
+        if (current_user.campaignVotes == [])
+          campaigns = Campaign.order("(roundScore + globalScore) DESC")
+
+          campaignVoting = []
+          campaignVoting << campaigns.last(campaigns.size * 0.5).sample(3)
+          campaignVoting << campaigns.slice((campaigns.size * 0.2)..(campaigns.size * 0.5)).sample(3)
+          campaignVoting << campaigns.first(campaigns.size * 0.2).sample(3)
+
+          for i in 0..8
+            step = (i / 3).to_i
+            current_user.campaignVotes.create(user_id: current_user.id, campaign_id: campaignVoting[step][i % 3].id, step: step)
+          end
+        end
+
         if current_user.isOnStep < 3
           campaigns = current_user.campaignVotes.where(step: current_user.isOnStep)
 
@@ -90,7 +106,7 @@ class CampaignsController < ApplicationController
 
           campaigns[campaign_id].voteType = 2
           campaigns[campaign_id].save
-          
+            
           campaigns[campaign_id].campaign.roundScore += 10
           campaigns[campaign_id].campaign.save
 
@@ -135,10 +151,8 @@ class CampaignsController < ApplicationController
         else
           render :nothing => true
         end
-      else
-        render :nothing => true
     	end
-  	end
+    end
 
   def page
     if params[:category].to_i > 0
