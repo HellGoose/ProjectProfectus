@@ -116,8 +116,6 @@ $(document).ready ->
   return
 
 renderCampaignPreview = (data) ->
-  console.log data
-  
   $('#description-field').val(data.description)
   $('#image-field').val(data.images[0].url)
   $('#title-field').val(data.title)
