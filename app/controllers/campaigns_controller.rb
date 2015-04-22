@@ -94,6 +94,8 @@ class CampaignsController < ApplicationController
           campaigns[campaign_id].campaign.roundScore += 10
           campaigns[campaign_id].campaign.save
 
+          current_user.points += 3
+
           current_user.campaignVotes.where(voteType: 1).each do |v|
             v.campaign.roundScore += 1
             v.campaign.save
