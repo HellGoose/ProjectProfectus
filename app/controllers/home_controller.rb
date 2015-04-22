@@ -30,6 +30,7 @@ class HomeController < ApplicationController
 		
 			if current_user.isOnStep >= 3
 				campaignVotes = current_user.campaignVotes.where.not(voteType: 0)
+				@votedFor = current_user.campaignVotes.where(voteType: 2)
 			end
 
 			@campaignVoting = []

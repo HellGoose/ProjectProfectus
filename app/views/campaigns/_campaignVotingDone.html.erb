@@ -1,7 +1,17 @@
+<div class="step-text text-center">
+	<h1>Done Voting</h1>
+</div>
 <div class="col-xs-12">
 	<% i = 0 %>
 	<% @campaignVoting.each do |c| %>
 		<div class="col-xs-3 campaign-container">
+			<div class="text-center vote-star" id="<%= i %>">
+				<% if c == @votedFor[0].campaign %>
+					<span class="voting-done glyphicon glyphicon-star" aria-hidden="true"></span>
+				<% else %>
+					<span class="voting-done glyphicon glyphicon-star-empty" aria-hidden="true"></span>
+				<% end %>
+			</div>
 			<div class="campaign-vote" id="<%= i %>">
 				<% i += 1 %>
 				<div class="text-center">
