@@ -49,12 +49,12 @@ def runRound (decayRate)
 		round.save
 	end
 
+	#Clear all votes
+	CampaignVote.destroy_all
+
 	#Reset user voting
 	users.each do |u|
 		u.isOnStep = 0
 		u.save
 	end
-
-	#Clear all votes
-	CampaignVote.destroy_all
 end
