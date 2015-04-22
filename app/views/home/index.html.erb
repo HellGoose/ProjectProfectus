@@ -14,12 +14,18 @@
 </div>
 
 <div id="voting">
-	<% if @campaignVoting != nil and @campaignVoting.size > 0 %>
-		<% if current_user.isOnStep <= 3 %>
-			<%= render partial: 'campaigns/campaignVoting' %>
-		<% else %>
-			<%= render partial: 'campaigns/campaignVotingDone' %>
+	<% if current_user %>
+		<% if @campaignVoting != nil and @campaignVoting.size > 0 %>
+			<% if current_user.isOnStep <= 3 %>
+				<%= render partial: 'campaigns/campaignVoting' %>
+			<% else %>
+				<%= render partial: 'campaigns/campaignVotingDone' %>
+			<% end %>
 		<% end %>
+	<% else %>
+		<div class="text-center">
+			<h1>You need to log in to make a difference!</h1>
+		</div>
 	<% end %>
 </div>
 
