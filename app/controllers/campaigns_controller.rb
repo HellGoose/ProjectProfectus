@@ -63,10 +63,10 @@ class CampaignsController < ApplicationController
 	def destroy
 	    respond_to do |format|
 			if (isCampaignOwner or isAdmin) && @campaign.destroy
-				format.html { redirect_to @campaign, notice: 'Campaign was successfully destroyed.' }
+				format.html { redirect_to @campaign, notice: '<span class="alert alert-success">Campaign was successfully destroyed.</span>' }
 				format.json { head :no_content }
 			else
-				format.html { redirect_to @campaign, notice: 'You cannot delete this campaign.' }
+				format.html { redirect_to @campaign, notice: '<span class="alert alert-warning">You cannot delete this campaign.</span>' }
 				format.json { head :no_content }
 			end
 		end
@@ -109,6 +109,8 @@ class CampaignsController < ApplicationController
             
           campaigns[campaign_id].campaign.roundScore += 10
           campaigns[campaign_id].campaign.save
+
+          current_user.points += 3
 
           current_user.campaignVotes.where(voteType: 1).each do |v|
             v.campaign.roundScore += 1
