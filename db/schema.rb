@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150421105845) do
+ActiveRecord::Schema.define(version: 20150422092608) do
 
   create_table "badges", force: :cascade do |t|
     t.string   "name",        limit: 255
@@ -38,7 +38,6 @@ ActiveRecord::Schema.define(version: 20150421105845) do
     t.string   "title",       limit: 255
     t.string   "link",        limit: 255
     t.string   "description", limit: 255
-    t.integer  "voteCount",   limit: 4
     t.integer  "user_id",     limit: 4
     t.integer  "category_id", limit: 4
     t.datetime "created_at",              null: false
