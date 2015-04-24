@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150420101701) do
+ActiveRecord::Schema.define(version: 20150422092608) do
 
   create_table "badges", force: :cascade do |t|
     t.string   "name",        limit: 255
@@ -38,7 +38,6 @@ ActiveRecord::Schema.define(version: 20150420101701) do
     t.string   "title",       limit: 255
     t.string   "link",        limit: 255
     t.string   "description", limit: 255
-    t.integer  "voteCount",   limit: 4
     t.integer  "user_id",     limit: 4
     t.integer  "category_id", limit: 4
     t.datetime "created_at",              null: false
@@ -98,7 +97,7 @@ ActiveRecord::Schema.define(version: 20150420101701) do
   add_index "posts", ["user_id"], name: "index_posts_on_user_id", using: :btree
 
   create_table "round_winner_campaigns", force: :cascade do |t|
-    t.integer  "round",       limit: 4
+    t.integer  "roundWon",    limit: 4
     t.integer  "placing",     limit: 4
     t.integer  "campaign_id", limit: 4
     t.integer  "round_id",    limit: 4
@@ -107,7 +106,7 @@ ActiveRecord::Schema.define(version: 20150420101701) do
   end
 
   create_table "round_winner_users", force: :cascade do |t|
-    t.integer  "round",      limit: 4
+    t.integer  "roundWon",   limit: 4
     t.integer  "user_id",    limit: 4
     t.integer  "round_id",   limit: 4
     t.datetime "created_at",           null: false

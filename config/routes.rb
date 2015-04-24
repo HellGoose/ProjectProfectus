@@ -19,7 +19,7 @@ Rails.application.routes.draw do
   get '/campaigns/:id/posts/page/:page/:interval', :to => 'posts#page'
   get '/posts/:id/comments/page/:page/:interval', :to => 'posts#commentPage'
 
-  post '/admin/iteration/:run', :to => 'admin#iteration'
+  post '/admin/round/:run', :to => 'admin#round'
 
 	root 'home#index'
 
