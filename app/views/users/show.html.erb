@@ -4,17 +4,17 @@
 
 <div class="col-sm-3">
 	<% if !@user.image || @user.image == '' %>
-		<%= image_tag getFacebookPicURL, class: "img-responsive img-thumbnail" %>
+	<%= image_tag getFacebookPicURL, class: "img-responsive img-thumbnail" %>
 	<% else %>
-		<%= image_tag @user.image, class: "img-responsive img-thumbnail" %>
+	<%= image_tag @user.image, class: "img-responsive img-thumbnail" %>
 	<% end %>
 </div>
-<div class="col-sm-9">
+<div class="col-sm-6">
 	<h3 class="name-header">
 		<%= @user.name %>
 		<%= if @user.username != "" then "(" + @user.username + ")" end %>
 		<% if @user == current_user %>
-			<%= link_to "edit", edit_user_path(@user) %>
+		<%= link_to "edit", edit_user_path(@user) %>
 		<% end %>
 	</h3>
 	User created: <%= @user.created_at.strftime("%B %d, %Y") %><br />
@@ -36,9 +36,28 @@
 	Number of Forum Posts: <%= @user.posts.count %><br/>
 	Number of Badges: <%= @user.badges.sum(:timesAchieved) %><br/>
 </div>
-
-<div class="col-sm-12 badges">
+<div class="col-sm-3 badges">
 	<% @user.badges.each do |b| %>
-	<%= image_tag b.badge.imageUrl, class: "img-responsive img-thumbnail", width: "150px", title: b.badge.description, alt: b.badge.name %>
+	<%= image_tag b.badge.imageUrl, class: "img-responsive img-thumbnail", width: "100px", style: "margin-top: 4px", title: b.badge.description, alt: b.badge.name %>
+	<% end %>
+</div>
+
+<div class="col-sm-12 user-campaigns">
+	<h4 class="text-center">My Campagins</h4>
+	<% @user.campaigns.each do |c| %>
+	<div class="col-sm-3 campaign">
+		<%= link_to "", "/campaigns/" + c.id.to_s, class: "campaign_link" %>
+		<div>
+			<h4><%= c.title %></h4>
+			<div class="image_container">
+				<%= image_tag c.image, class: "logo img-responsive" %>
+			</div>
+			<% if c.description.length > 150 %>
+			<p><%= c.description[0,150] + "..." %></p>
+			<% else %>
+			<p><%= c.description %></p>
+			<% end %>
+		</div>
+	</div>
 	<% end %>
 </div>
