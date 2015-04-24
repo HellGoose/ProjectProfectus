@@ -43,7 +43,9 @@
 </div>
 
 <div class="col-sm-12 user-campaigns">
+	<% if @user.campaigns.count != 0 %>
 	<h4 class="text-center">My Campagins</h4>
+	<% end %>
 	<% @user.campaigns.each do |c| %>
 	<div class="col-sm-3 campaign">
 		<%= link_to "", "/campaigns/" + c.id.to_s, class: "campaign_link" %>
