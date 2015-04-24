@@ -55,14 +55,19 @@ def runRound (decayRate)
 		#Increment to next round
 		round.currentRound +=1
 		round.save
-	end
 
-	#Clear all votes
-	CampaignVote.destroy_all
-
-	#Reset user voting
-	users.each do |u|
-		u.isOnStep = 0
-		u.save
+		#Clear all votes
+		CampaignVote.all.each do |cv|
+			if cv.user.isOnStep == 0 or cv.user.isOnStep == 4
+				cv.destroy
+			end
+		end
+		#Reset user voting
+		users.each do |u|
+			if u.isOnStep == 4
+				u.isOnStep = 0
+				u.save
+			end
+		end
 	end
 end

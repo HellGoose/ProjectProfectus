@@ -9,7 +9,7 @@
 	<%= image_tag @user.image, class: "img-responsive img-thumbnail" %>
 	<% end %>
 </div>
-<div class="col-sm-6">
+<div class="col-sm-5">
 	<h3 class="name-header">
 		<%= @user.name %>
 		<%= if @user.username != "" then "(" + @user.username + ")" end %>
@@ -36,7 +36,7 @@
 	Number of Forum Posts: <%= @user.posts.count %><br/>
 	Number of Badges: <%= @user.badges.sum(:timesAchieved) %><br/>
 </div>
-<div class="col-sm-3 badges">
+<div class="col-sm-4 badges">
 	<% @user.badges.each do |b| %>
 	<%= image_tag b.badge.imageUrl, class: "img-responsive img-thumbnail", width: "100px", style: "margin-top: 4px", title: b.badge.description, alt: b.badge.name %>
 	<% end %>
