@@ -7,6 +7,7 @@ describe "GET '/auth/facebook/callback'" do
   end
 
   it "should set user_id" do
+    puts(User.last.id)
     expect(session[:user_id]).to eq(User.last.id)
   end
 

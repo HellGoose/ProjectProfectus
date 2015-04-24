@@ -42,23 +42,27 @@ end
 =end
 require 'spec_helper'
 
-feature 'create_user' do
-  background do
-    user = create(:user)
-    login_with_oauth(user)
-  end
-end
 
-feature "Signing in" do
 
-  before do
-    #Capybara.current_driver = :selenium
-    #valid_facebook_login_setup
-    user = create(:user)
-    login_with_oauth(user)
-  end
+# feature 'create_user' do
+#   background do
+#     user = create(:user)
+#     login_with_oauth(user)
+#   end
 
-  scenario "Signing in" do
-    expect(page).to have_text('Welcome to Profectus')
-  end
-end
+#   scenario "" do
+# end
+
+# feature "Signing in" do
+
+#   before do
+#     #Capybara.current_driver = :selenium
+#     #valid_facebook_login_setup
+#     user = create(:user)
+#     login_with_oauth(user)
+#   end
+
+#   scenario "Signing in" do
+#     expect(page).to have_text('Welcome to Profectus')
+#   end
+# end
