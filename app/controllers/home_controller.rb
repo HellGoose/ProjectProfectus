@@ -1,5 +1,4 @@
 class HomeController < ApplicationController
-
 	def index
 		filteredCampaigns = Campaign.where("").order("(roundScore + globalScore) DESC");
 		@campaigns = filteredCampaigns.first(8)
