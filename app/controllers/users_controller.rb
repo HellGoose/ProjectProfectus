@@ -31,10 +31,6 @@ class UsersController < ApplicationController
 		end
 	end
 
-  def getFacebookPicURL
-    'http://graph.facebook.com/' + @user.uid + '/picture?type=large'
-  end
-
 	private
 		def set_user
 			@user = User.find(params[:id])
