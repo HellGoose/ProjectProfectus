@@ -23,8 +23,6 @@ class User < ActiveRecord::Base
 			user.email = auth.info.email
 			user.oauth_token = auth.credentials.token
 			user.oauth_token_expires_at = Time.at(auth.credentials.expires_at)
-			user.role = 0
-			user.points = 0
 			user.save!
 		end
 	end
@@ -44,6 +42,7 @@ class User < ActiveRecord::Base
 			self.level ||= 1 if self.has_attribute? :level
 			self.role ||= 0 if self.has_attribute? :role
 			self.badgeCount ||= 0 if self.has_attribute? :badgeCount
+			self.isOnStep ||= 0 if self.has_attribute? :isOnStep
 		end
 
 		#Update level
@@ -56,13 +55,23 @@ class User < ActiveRecord::Base
 			campaignCount = self.campaigns.count
 
 			#One-timers (Only awardable once)
-			#The first campaign
+			firstCampaignBadge(campaignCount)
+
+			#Multi-timers (Awardable multiple times)
+			tenCampaignsBadge(campaignCount)
+		end
+
+		#The first campaign
+		def firstCampaignBadge(campaignCount)
 			if campaignCount == 1 and !self.badges.find_by(badge_id: 2)
 				self.badges.create(user_id: self.id, badge_id: 2, timesAchieved: 1)
 				self.points += Badge.find(2).points
 			end
-			#Multi-timers (Awardable multiple times)
-			#Created 10 campaigns
+		end
+
+
+		#Created 10 campaigns
+		def tenCampaignsBadge(campaignCount)
 			if campaignCount > 0 and campaignCount%10 == 0
 				if !self.badges.find_by(badge_id: 3)
 					self.badges.create(user_id: self.id, badge_id: 3, timesAchieved: 1)
