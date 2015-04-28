@@ -1,30 +1,44 @@
 
 <% Round.find(1).winnerCampaigns.where(roundWon: 9).each do |wc| %>
-	<div class="col-xs-3 campaign">
-		<% c = wc.campaign %>
-		<%= link_to "", "/campaigns/" + c.id.to_s, class: "campaign_link" %>
-		<div>
 
-			<h4><%= c.title %></h4>
-			<h5>GlobalScore: <%= c.globalScore %></h5>
-			<h5>RoundScore: <%= c.roundScore %></h5>
-			<div class="image_container">
-				<%= image_tag c.image, class: "logo img-responsive" %>
+	<div class="col-xs-3 campaign-container">
+		<div class="text-center">
+			<h3><%= (wc.placing+1).to_s %></h3>
+		</div>
+
+		<div class="campaign">
+			<% c = wc.campaign %>
+			<%= link_to "", "/campaigns/" + c.id.to_s, class: "campaign_link" %>
+			<div>
+
+				<h4><%= c.title %></h4>
+				<h5>GlobalScore: <%= c.globalScore %></h5>
+				<h5>RoundScore: <%= c.roundScore %></h5>
+				<div class="image_container">
+					<%= image_tag c.image, class: "logo img-responsive" %>
+				</div>
+				<% if c.description.length > 150 %>
+				<p><%= c.description[0,150] + "..." %></p>
+				<% else %>
+				<p><%= c.description %></p>
+				<% end %>
 			</div>
-			<% if c.description.length > 150 %>
-			<p><%= c.description[0,150] + "..." %></p>
-			<% else %>
-			<p><%= c.description %></p>
-			<% end %>
 		</div>
 	</div>
 <% end %>
-<div class="col-xs-3 campaign">
+<div class="col-xs-3 campaign-container">
+	<div class="text-center">
+		<h3> MVP </h3>
+	</div>
+
+	<div class="campaign">
 	<% user = RoundWinnerUser.find_by(roundWon: 9).user %>
+	<%= link_to "", "/users/" + user.id.to_s, class: "campaign_link" %>
 	<div class="image_container">
-		<%= image_tag user.image, class: "logo img-responsive" %>
+		<%= image_tag getFacebookPicURL(user), class: "logo img-responsive" %>
 	</div>
 	<h4><%= user.name %></h4>
 	<h5>Level: <%= user.level %></h5>
 	<h5>Experience: <%= user.points %></h5>
+	</div>
 </div>
