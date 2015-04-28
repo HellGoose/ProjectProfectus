@@ -19,6 +19,7 @@
 require 'rails_helper'
 require 'support/feature_oauth_helper'
 require 'support/request_oauth_helper'
+require 'capybara/poltergeist'
 
 require 'capybara/rspec'
 RSpec.configure do |config|
@@ -89,8 +90,22 @@ RSpec.configure do |config|
   # as the one that triggered the failure.
   Kernel.srand config.seed
 =end
-
+  config.use_transactional_fixtures = true
+  # OmniAuth.config.test_mode = true
+  # OmniAuth.config.mock_auth[:facebook] = OmniAuth::AuthHash.new({
+  #     :provider => 'facebook',
+  #     :uid => '123456',
+  #     :info => {
+  #         'name' => 'OauthMockName',
+  #         'email' => 'OauthMock@email.com'
+  #     },
+  #     credentials: {
+  #       token: "321321",
+  #       expires_at: Time.now + 1.week
+  #     },
+  # })
   Capybara.default_host = 'http://localhost:3000'
+  Capybara.javascript_driver = :poltergeist
   
   # Include FactoryGirl so we can use 'create' instead of 'FactoryGirl.create'
   config.include FactoryGirl::Syntax::Methods

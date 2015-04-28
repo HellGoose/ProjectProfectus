@@ -1,4 +1,5 @@
 # User
+
 FactoryGirl.define do
 	factory :user do
 		name 				'Jon'
@@ -9,6 +10,13 @@ FactoryGirl.define do
 		oauth_token '654321'
 		oauth_token_expires_at Time.now + 1.week
 		role        0
+	end
+end
+
+FactoryGirl.define do
+	factory :campaign do
+		link 				'factorylink'
+		user_id     '123'
 	end
 end
 

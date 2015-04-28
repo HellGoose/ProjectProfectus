@@ -43,6 +43,13 @@ gem 'embedly'
 # Use Capybara for acceptance testing
 gem 'capybara'
 
+# Use Capybara-webkit for headless testing (supports JS)
+# gem 'capybara-webkit'
+# use with: Capybara.javascript_driver = :webkit
+
+# Use Poltergeist for headless testing
+gem 'poltergeist'
+
 # Use rspec-activemodel-mocks for mock_models in testing
 gem 'rspec-activemodel-mocks'
 

@@ -1,6 +1,6 @@
 feature "Add project" do
   background do
-    user = create(:user)
+    user = build(:user)
     login_with_oauth(user)
   end
   scenario "Create new campaign" do
