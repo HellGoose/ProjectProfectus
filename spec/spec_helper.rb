@@ -17,11 +17,12 @@
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 require 'rails_helper'
+require 'capybara/rspec'
+require 'database_cleaner'
+require 'capybara/poltergeist'
 require 'support/feature_oauth_helper'
 require 'support/request_oauth_helper'
-require 'capybara/poltergeist'
-
-require 'capybara/rspec'
+require 'support/database_cleaner.rb'
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
@@ -91,6 +92,7 @@ RSpec.configure do |config|
   Kernel.srand config.seed
 =end
   config.use_transactional_fixtures = false
+
   # OmniAuth.config.test_mode = true
   # OmniAuth.config.mock_auth[:facebook] = OmniAuth::AuthHash.new({
   #     :provider => 'facebook',
@@ -104,6 +106,7 @@ RSpec.configure do |config|
   #       expires_at: Time.now + 1.week
   #     },
   # })
+
   Capybara.default_host = 'http://localhost:3000'
   Capybara.javascript_driver = :poltergeist
   

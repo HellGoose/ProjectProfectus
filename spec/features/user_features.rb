@@ -1,8 +1,12 @@
 feature "Login" do
 	scenario "with login button" do
 		user = create(:user)
-		@campaign = create(:campaign, user_id: user.id)
+		for i in 0..9
+   		create(:campaign)
+		end
 		round = create(:round)
+		create(:round_winner_user, user_id: user.id, 
+			round_id: round.id)
 		login_with_oauth(user)
 		expect(page).to have_text("Logout")
 	end

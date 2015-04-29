@@ -30,6 +30,17 @@ FactoryGirl.define do
 		currentRound		1
 	end
 end
+
+FactoryGirl.define do
+	factory :round_winner_user do
+		user_id					1
+		round_id				1
+		roundWon				9
+		created_at			Time.now
+		updated_at			Time.now
+	end
+end
+
 #   # This will use the User class (Admin would have been guessed)
 #   factory :admin, class: User do
 #     first_name "Admin"

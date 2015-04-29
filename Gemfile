@@ -50,6 +50,9 @@ gem 'capybara'
 # Use Poltergeist for headless testing
 gem 'poltergeist'
 
+# Use DatabaseCleaner for cleaning test DB before run
+gem 'database_cleaner', '~> 1.4.1'
+
 # Use rspec-activemodel-mocks for mock_models in testing
 gem 'rspec-activemodel-mocks'
 
