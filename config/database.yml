@@ -48,7 +48,10 @@ test:
 #     url: <%= ENV['DATABASE_URL'] %>
 #
 production:
-  <<: *default
-  database: runah_profectus
-  username: runah_profectus
+  adapter: mysql2
+  encoding: utf8
+  pool: 5
+  host: 172.31.35.247
+  database: profectus_database
+  username: profectus
   password: profectusdatabase
