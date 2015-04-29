@@ -90,7 +90,7 @@ RSpec.configure do |config|
   # as the one that triggered the failure.
   Kernel.srand config.seed
 =end
-  config.use_transactional_fixtures = true
+  config.use_transactional_fixtures = false
   # OmniAuth.config.test_mode = true
   # OmniAuth.config.mock_auth[:facebook] = OmniAuth::AuthHash.new({
   #     :provider => 'facebook',

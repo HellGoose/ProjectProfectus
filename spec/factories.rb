@@ -20,6 +20,16 @@ FactoryGirl.define do
 	end
 end
 
+FactoryGirl.define do
+	factory :round do
+		duration 				5
+		forceNewRound 	0
+		decayRate 			0.75
+		created_at			Time.now
+		updated_at			Time.now
+		currentRound		1
+	end
+end
 #   # This will use the User class (Admin would have been guessed)
 #   factory :admin, class: User do
 #     first_name "Admin"

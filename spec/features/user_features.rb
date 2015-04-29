@@ -1,12 +1,13 @@
 feature "Login" do
 	scenario "with login button" do
-		@user = create(:user, name: "Kari")
-		@campaign = create(:campaign, user_id: @user.id)
-		login_with_oauth(@user)
+		user = create(:user)
+		@campaign = create(:campaign, user_id: user.id)
+		round = create(:round)
+		login_with_oauth(user)
 		expect(page).to have_text("Logout")
 	end
 end
-
+=begin
 feature "Logout" do
 	before do
 		@user = create(:user, name: "kari")
@@ -17,7 +18,7 @@ feature "Logout" do
 		visit '/signout'
 		expect(page).to have_text("Login")
 	end
-end 
+end
 
 feature 'create_user' do
   background do
@@ -49,7 +50,7 @@ feature "Edit user" do
     expect(page).to have_text("User was successfully updated.")
   end
 end
-=begin
+
 feature "See profile" do
 	before do
 		@user = build(:user, name: "Karl")
