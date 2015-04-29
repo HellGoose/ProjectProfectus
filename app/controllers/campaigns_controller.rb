@@ -56,6 +56,11 @@ class CampaignsController < ApplicationController
          		format.json { render json: @campaign.errors, status: :unprocessable_entity }
         	end
         end
+      else
+        respond_to do |format|
+          format.html { render :new }
+          format.json { render json: @campaign.errors, status: :unprocessable_entity }
+        end
       end
     end
 	end
