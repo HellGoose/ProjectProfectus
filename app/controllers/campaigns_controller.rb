@@ -56,6 +56,11 @@ class CampaignsController < ApplicationController
          		format.json { render json: @campaign.errors, status: :unprocessable_entity }
         	end
         end
+      else
+        respond_to do |format|
+          format.html { render :new }
+          format.json { render json: @campaign.errors, status: :unprocessable_entity }
+        end
       end
     end
 	end
@@ -73,88 +78,33 @@ class CampaignsController < ApplicationController
 	end
 
 	def vote
-    	if current_user and current_user.isOnStep < 4
-        campaign_id = params[:id].to_i
-
-        if (current_user.campaignVotes == [])
-          campaigns = Campaign.order("(roundScore + globalScore) DESC")
-
-          campaignVoting = []
-          campaignVoting << campaigns.last(campaigns.size * 0.5).sample(3)
-          campaignVoting << campaigns.slice((campaigns.size * 0.2)..(campaigns.size * 0.5)).sample(3)
-          campaignVoting << campaigns.first(campaigns.size * 0.2).sample(3)
-
-          for i in 0..8
-            step = (i / 3).to_i
-            current_user.campaignVotes.create(user_id: current_user.id, campaign_id: campaignVoting[step][i % 3].id, step: step)
-          end
-        end
-
-        if current_user.isOnStep < 3
-          campaigns = current_user.campaignVotes.where(step: current_user.isOnStep)
-
-          for i in 0..2
-            next if campaigns[campaign_id / 3 + i] == nil
-            campaigns[campaign_id / 3 + i].voteType = 0
-            campaigns[campaign_id / 3 + i].save
-          end
-
-          campaigns[campaign_id].voteType = 1
-          campaigns[campaign_id].save
-        elsif current_user.isOnStep == 3
-          campaigns = current_user.campaignVotes.where.not(voteType: 0)
-
-          campaigns[campaign_id].voteType = 2
-          campaigns[campaign_id].save
-            
-          campaigns[campaign_id].campaign.roundScore += 10
-          campaigns[campaign_id].campaign.save
-
-          current_user.points += 3
-
-          current_user.campaignVotes.where(voteType: 1).each do |v|
-            v.campaign.roundScore += 1
-            v.campaign.save
-          end
-        end
-
+  	if current_user and current_user.isOnStep <= 4
+      if params[:id].to_i >= 0
+        processVote(params[:id].to_i)
         current_user.isOnStep += 1
         current_user.save
+      end
 
-        if current_user.isOnStep == 4
-          campaignVotes = current_user.campaignVotes.where.not(voteType: 0)
-          @votedFor = current_user.campaignVotes.where(voteType: 2)
+      @campaignVoting = []
+      setUpNextVotingStep
 
-          @campaignVoting = []
-          for i in 0..2
-            next if campaignVotes[i] == nil
-            @campaignVoting << campaignVotes[i].campaign
-          end
-
-          respond_to do |format|
-            format.js { render partial: 'campaignVotingDone' }
-          end
-        elsif current_user.isOnStep < 4
-          if current_user.isOnStep < 3
-            campaignVotes = current_user.campaignVotes.where(step: current_user.isOnStep)
-          else
-            campaignVotes = current_user.campaignVotes.where.not(voteType: 0)
-          end
-
-          @campaignVoting = []
-          for i in 0..2
-            next if campaignVotes[i] == nil
-            @campaignVoting << campaignVotes[i].campaign
-          end
-
-          respond_to do |format|
-            format.js { render partial: 'campaignVoting' }
-          end
-        else
-          render :nothing => true
+      if current_user.isOnStep == 4
+        respond_to do |format|
+          format.js { render partial: 'campaignVotingDone' }
         end
-    	end
-    end
+
+      elsif current_user.isOnStep < 4
+        respond_to do |format|
+          format.js { render partial: 'campaignVoting' }
+        end
+
+      else
+        render :nothing => true
+      end
+    else
+      render :nothing => true
+  	end
+  end
 
   def page
     if params[:category].to_i > 0
@@ -182,4 +132,72 @@ class CampaignsController < ApplicationController
 		def campaign_params
 			params.require(:campaign).permit(:title, :description, :image, :link, :category_id)
 		end
+
+    def processVote(campaign_id)
+      if current_user.isOnStep < 3
+        campaigns = current_user.campaignVotes.where(step: current_user.isOnStep)
+
+        for i in 0..2
+          next if campaigns[i] == nil
+          campaigns[i].voteType = 0
+          campaigns[i].save
+        end
+        campaigns[campaign_id].voteType = 1
+        campaigns[campaign_id].save
+
+      elsif current_user.isOnStep == 3
+        campaigns = current_user.campaignVotes.where.not(voteType: 0)
+
+        campaigns[campaign_id].voteType = 2
+        campaigns[campaign_id].save
+          
+        campaigns[campaign_id].campaign.roundScore += 10
+        campaigns[campaign_id].campaign.save
+
+        current_user.points += 4
+
+        current_user.campaignVotes.where(voteType: 1).each do |v|
+          v.campaign.roundScore += 1
+          v.campaign.save
+        end
+      end
+    end
+
+    def setUpNextVotingStep
+      if current_user.campaignVotes == [] and current_user.isOnStep <= 4
+        campaignVotes = genCampaignsForVoting
+    
+      elsif current_user.isOnStep >= 3
+        campaignVotes = current_user.campaignVotes.where.not(voteType: 0)
+        @votedFor = current_user.campaignVotes.where(voteType: 2)
+      
+      else
+        campaignVotes = current_user.campaignVotes.where(step: current_user.isOnStep)
+      end
+
+      for i in 0..2
+        next if (campaignVotes[i] == nil)
+        @campaignVoting << campaignVotes[i].campaign
+      end
+    end
+
+    def genCampaignsForVoting
+      current_user.isOnStep = 0
+      campaignVotes = current_user.campaignVotes
+      genedCampaigns = []
+
+      campaigns = Campaign.order("(roundScore + globalScore) DESC")
+
+      genedCampaigns << campaigns.last(campaigns.size * 0.5).sample(3)
+      genedCampaigns << campaigns.slice((campaigns.size * 0.2)..(campaigns.size * 0.5)).sample(3)
+      genedCampaigns << campaigns.first(campaigns.size * 0.2).sample(3)
+
+      for i in 0..8
+        step = (i / 3).to_i
+        campaignVotes.create(user_id: current_user.id, campaign_id: genedCampaigns[step][i % 3].id, step: step)
+      end
+
+      current_user.save
+      current_user.campaignVotes.where(step: current_user.isOnStep)
+    end
 end

@@ -20,11 +20,12 @@ $(document).ready ->
 			$('#0.campaign-display').slideUp(0)
 		return
 	$('#start-voting').on 'click', ->
-		step = $('#campaign').data('step')
 		$('#start-voting').hide()
 		$('#back-voting').show()
-		if step < 4
-			$('#next-voting').show()
+		$('#next-voting').show()
+		$('#voting').load "/vote/campaign/-1", (response, status) ->
+			$('.campaign-display').slideUp(0)
+			return
 		$('#voting').slideToggle()
 		$('#campaigns-news').slideToggle()
 		return
@@ -44,12 +45,10 @@ $(document).ready ->
 		campaign = $('#campaign').data('vote')
 		step = $('#campaign').data('step')
 		$('#voting').load "/vote/campaign/" + campaign, (response, status) ->
-			$('.campaign-display').slideUp 0
+			$('.campaign-display').slideUp(0)
 			step += 1
 			$('#campaign').data('step', step)
 			return
-		if step >= 3
-			$('#next-voting').hide()
 		return
 	$('#more_news').click ->
 		page = $('#news').data('page') + 1
