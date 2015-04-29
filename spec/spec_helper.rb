@@ -23,6 +23,8 @@ require 'capybara/poltergeist'
 require 'support/feature_oauth_helper'
 require 'support/request_oauth_helper'
 require 'support/database_cleaner.rb'
+# require 'support/database_fill.rb'
+
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
@@ -109,6 +111,7 @@ RSpec.configure do |config|
 
   Capybara.default_host = 'http://localhost:3000'
   Capybara.javascript_driver = :poltergeist
+  Capybara.ignore_hidden_elements = false
   
   # Include FactoryGirl so we can use 'create' instead of 'FactoryGirl.create'
   config.include FactoryGirl::Syntax::Methods

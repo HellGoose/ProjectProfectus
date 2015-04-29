@@ -1,5 +1,5 @@
 
-<% Round.find(1).winnerCampaigns.where(roundWon: 9).each do |wc| %>
+<% Round.first.winnerCampaigns.where(roundWon: 9).each do |wc| %>
 
 	<div class="col-xs-3 campaign-container">
 		<div class="text-center">
