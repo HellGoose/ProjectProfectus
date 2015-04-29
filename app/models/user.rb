@@ -2,7 +2,7 @@ class User < ActiveRecord::Base
 	#Restrictions:
 	validates :name, :provider, :uid, 
 	:oauth_token, :oauth_token_expires_at, 
-	:role, presence: true
+	presence: true
 
 	#Relations:
 	has_many :posts
