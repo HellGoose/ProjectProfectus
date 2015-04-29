@@ -90,12 +90,12 @@ class CampaignsController < ApplicationController
 
       if current_user.isOnStep == 4
         respond_to do |format|
-          format.js { render partial: 'campaignVotingDone' }
+          format.js { render partial: 'campaignVotingDone'}
         end
 
       elsif current_user.isOnStep < 4
         respond_to do |format|
-          format.js { render partial: 'campaignVoting' }
+          format.js { render partial: 'campaignVoting'}
         end
 
       else
