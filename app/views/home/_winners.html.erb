@@ -1,5 +1,5 @@
 
-<% round = Round.find(1)
+<% round = Round.first
 winnerCampaigns = round.winnerCampaigns.where(roundWon: round.currentRound)
 if round != nil and winnerCampaigns != []
 	winnerCampaigns.each do |wc| %>
