@@ -58,7 +58,7 @@ def runRound (decayRate)
 		round.save
 
 		#Clear all votes
-		CampaignVote.each do |cv|
+		CampaignVote.all.each do |cv|
 			if cv.user.isOnStep == 0 or cv.user.isOnStep == 4
 				cv.destroy
 			end
