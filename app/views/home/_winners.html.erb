@@ -1,8 +1,9 @@
 
 <% round = Round.first
 lastRound = round.currentRound-1
-winnerCampaigns = round.winnerCampaigns.where(roundWon: lastRound)
-if round != nil and winnerCampaigns != []
+
+if round != nil
+	winnerCampaigns = round.winnerCampaigns.where(roundWon: lastRound)
 	winnerCampaigns.each do |wc| 
 		next if wc.campaign == nil%>
 
@@ -27,7 +28,7 @@ if round != nil and winnerCampaigns != []
 		</div>
 
 		<div class="campaign">
-			<% user = RoundWinnerUser.find_by(roundWon: lastRound).user 
+			<% user = round.winnerUsers.find_by(roundWon: lastRound).user
 			if user != nil %>
 				<%= link_to "", "/users/" + user.id.to_s, class: "campaign_link" %>
 				<div class="image_container">
