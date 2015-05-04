@@ -12,6 +12,7 @@
 !/log/.keep
 /tmp
 .DS_Store
+/pids/*
 
 #Ignore Ruby Suff
 Gemfile.lock
