@@ -1,4 +1,11 @@
+@@SCRIPT_IS_RUNNING = false
+@@mutex = Mutex.new
+sleep 1
 t = Thread.new {
+	@@mutex.lock
+	Thread.stop if (@@SCRIPT_IS_RUNNING)
+	@@SCRIPT_IS_RUNNING = true
+	@@mutex.unlock
 	runScript = false
 	round = Round.first
 	i = 0
