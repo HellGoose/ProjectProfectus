@@ -87,12 +87,16 @@ $(document).ready ->
   else if (window.location.pathname == '/campaigns/new')
     $('#campaign_link').on 'input', ->
       campaign = $('#campaign_link').val()
+      validURLs = ['kickstarter.com', 'indiegogo.com']
 
       urlregex = new RegExp('^(http|https|ftp)://([a-zA-Z0-9.-]+(:[a-zA-Z0-9.&amp;%$-]+)*@)*((25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]).(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0).(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0).(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])|([a-zA-Z0-9-]+.)*[a-zA-Z0-9-]+.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Z]{2}))(:[0-9]+)*(/($|[a-zA-Z0-9.,?\'\\+&amp;%$#=~_-]+))*$')
-      if urlregex.test campaign
+      if urlregex.test(campaign) and new RegExp(validURLs.join("|")).test(campaign)
         $.embedly.extract(campaign, key: '0eef325249694df490605b1fd29147f5').progress (data) ->
           renderCampaignPreview(data)
           return
+      else
+        clearCampaignPreview()
+        return
       return
   else
 
@@ -123,4 +127,14 @@ renderCampaignPreview = (data) ->
   $('#campaign-image').attr('src', data.images[0].url)
   $('#campaign-title').html(data.title)
   $('#campaign-description').html(data.description)
+  return
+
+clearCampaignPreview = ->
+  $('#description-field').val('')
+  $('#image-field').val('')
+  $('#title-field').val('')
+
+  $('#campaign-image').attr('src', '')
+  $('#campaign-title').html('')
+  $('#campaign-description').html('')
   return
