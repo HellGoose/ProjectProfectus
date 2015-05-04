@@ -22,3 +22,6 @@ worker_processes 8
 
 # Time-out
 timeout 30
+
+require ('roundScript.rb')
+roundScript.init()
