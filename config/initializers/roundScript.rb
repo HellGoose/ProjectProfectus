@@ -1,6 +1,6 @@
 t = Thread.new {
 	runScript = false
-	round = Round.find(1)
+	round = Round.first
 	i = 0
 	while runScript do
 		print "\nSeconds to next Round: " + (round.duration - i).to_s 
@@ -13,12 +13,13 @@ t = Thread.new {
 			i += 1
 		end
 		sleep 1
+		round = Round.first
 	end
 }
 at_exit{t.kill}
 
 def runRound (decayRate)
-	round = Round.find(1)
+	round = Round.first
 	campaigns = Campaign.all.order('roundScore DESC')
 	users = User.all
 

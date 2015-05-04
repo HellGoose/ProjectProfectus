@@ -86,6 +86,7 @@ $(document).ready ->
 
   else if (window.location.pathname == '/campaigns/new')
     $('#campaign_link').on 'input', ->
+      $('#submitButton').attr('disabled', true)
       campaign = $('#campaign_link').val()
       validURLs = ['kickstarter.com', 'indiegogo.com']
 
@@ -93,6 +94,7 @@ $(document).ready ->
       if urlregex.test(campaign) and new RegExp(validURLs.join("|")).test(campaign)
         $.embedly.extract(campaign, key: '0eef325249694df490605b1fd29147f5').progress (data) ->
           renderCampaignPreview(data)
+          $('#submitButton').attr('disabled', false)
           return
       else
         clearCampaignPreview()

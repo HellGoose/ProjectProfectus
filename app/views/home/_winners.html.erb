@@ -1,34 +1,45 @@
 
-<% Round.find(1).winnerCampaigns.where(roundWon: 9).each do |wc| %>
+<% round = Round.first
+if round != nil
+	lastRound = round.currentRound-1
+	winnerCampaigns = round.winnerCampaigns.where(roundWon: lastRound)
+	winnerCampaigns.each do |wc| 
+		next if wc.campaign == nil%>
 
-	<div class="col-xs-3 campaign-container">
-		<div class="text-center">
-			<h3><%= (wc.placing+1).to_s %></h3>
-		</div>
-
-		<div class="campaign">
-			<% c = wc.campaign %>
-			<%= link_to "", "/campaigns/" + c.id.to_s, class: "campaign_link" %>
-			<% @campaign = c %>
-			<%= render partial: 'campaigns/campaignSmall'%>
-		</div>
-	</div>
-<% end %>
-<% if  RoundWinnerUser.find_by(roundWon: 9) != nil %>
-	<div class="col-xs-3 campaign-container">
-		<div class="text-center">
-			<h3> MVP </h3>
-		</div>
-
-		<div class="campaign">
-			<% user = RoundWinnerUser.find_by(roundWon: 9).user %>
-			<%= link_to "", "/users/" + user.id.to_s, class: "campaign_link" %>
-			<div class="image_container">
-				<%= image_tag getFacebookPicURL(user), class: "logo img-responsive" %>
+		<div class="col-xs-3 campaign-container">
+			<div class="text-center">
+				<h3><%= (wc.placing+1).to_s %></h3>
 			</div>
-			<h4><%= user.name %></h4>
-			<h5>Level: <%= user.level %></h5>
-			<h5>Experience: <%= user.points %></h5>
+
+			<div class="campaign">
+				<% c = wc.campaign %>
+				<%= link_to "", "/campaigns/" + c.id.to_s, class: "campaign_link" %>
+				<% @campaign = c %>
+				<%= render partial: 'campaigns/campaignSmall'%>
+			</div>
+		</div>
+	<% end %>
+
+
+	<div class="col-xs-3 campaign-container">
+		<div class="text-center">
+			<h3>Champion</h3>
+		</div>
+
+		<div class="campaign">
+			<%winnerUser = round.winnerUsers.find_by(roundWon: lastRound)
+			if winnerUser != nil
+				user = winnerUser.user
+				if user != nil %>
+					<%= link_to "", "/users/" + user.id.to_s, class: "campaign_link" %>
+					<div class="image_container">
+						<%= image_tag getFacebookPicURL(user), class: "logo img-responsive" %>
+					</div>
+					<h4><%= user.name %></h4>
+					<h5>Level: <%= user.level %></h5>
+					<h5>Experience: <%= user.points %></h5>
+				<%end 
+			end%>
 		</div>
 	</div>
 <% end %>
