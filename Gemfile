@@ -48,7 +48,10 @@ gem 'capybara'
 # use with: Capybara.javascript_driver = :webkit
 
 # Use Poltergeist for headless testing
-gem 'poltergeist'
+#gem 'poltergeist'
+
+# Use Selenium for JS support when testing
+gem 'selenium-webdriver', :group => :test
 
 # Use DatabaseCleaner for cleaning test DB before run
 gem 'database_cleaner', '~> 1.4.1'

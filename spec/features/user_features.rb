@@ -41,18 +41,25 @@ end
 
 feature "Edit user" do
 	before do
-		@user = create(:user)
+		@user = create(:user, name: "AAARE")
 		for i in 0..9
 			create(:campaign, user_id: @user.id)
 		end
 		round = create(:round)
 		login_with_oauth(@user)
+
 	end
-	scenario "with text" do
-		visit '/users/' +@user.id.to_s# click_button 'account'
-		visit '/users/'+@user.id.to_s+'/edit'# click_button 'edit'
+	scenario "with text", :js => true do
+		click_on 'account'
+		#visit '/users/' +@user.id.to_s# click_button 'account'
+		
+		click_on 'edit'
+		#visit edit_user_path(@user)
+		#puts(page.body)
+		#visit '/users/'+@user.id.to_s+'/edit'# click_button 'edit'
+		
 		#fill_in('user_username', :with => @user.name)
-		puts(find(:css, 'input#user_username.form-control').value)
+		#puts(find(:css, 'input#user_username.form-control').value)
 		#within("div#wrap") do
 			#within("div.container") do
 			#	within("form#edit_user_"+@user.id.to_s+".edit_user") do
@@ -63,7 +70,9 @@ feature "Edit user" do
 			#	end
 			#end
 		#end
-		click_button 'update_user'
+		#puts(find('submit'))
+		click_button 'Update User'
+		puts(page.body)
 		expect(page).to have_text("User was successfully updated.")
 	end
 end
@@ -79,6 +88,6 @@ feature "See profile" do
 	end
 	scenario "by opening account page" do
 		visit '/users/'+@user.id.to_s
-		expect(page).to have_text("Karl")
+		expect(page).to have_text("Profile")
 	end
 end

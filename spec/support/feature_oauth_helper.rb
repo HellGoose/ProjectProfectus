@@ -15,6 +15,6 @@ module FeatureOauthHelper
 	      expires_at: Time.now + 1.week
 	    },
 	  })
-    visit "/auth/#{service}/callback"
+    visit "/auth/#{service}"#/callback"
   end
 end

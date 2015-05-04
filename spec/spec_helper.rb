@@ -19,7 +19,7 @@
 require 'rails_helper'
 require 'capybara/rspec'
 require 'database_cleaner'
-require 'capybara/poltergeist'
+#require 'capybara/poltergeist'
 require 'support/feature_oauth_helper'
 require 'support/request_oauth_helper'
 require 'support/database_cleaner.rb'
@@ -110,8 +110,9 @@ RSpec.configure do |config|
   # })
 
   Capybara.default_host = 'http://localhost:3000'
-  Capybara.javascript_driver = :poltergeist
+  #Capybara.javascript_driver = :poltergeist
   Capybara.ignore_hidden_elements = false
+  #js: true
   
   # Include FactoryGirl so we can use 'create' instead of 'FactoryGirl.create'
   config.include FactoryGirl::Syntax::Methods
