@@ -28,16 +28,19 @@ if round != nil
 		</div>
 
 		<div class="campaign">
-			<% user = round.winnerUsers.find_by(roundWon: lastRound).user
-			if user != nil %>
-				<%= link_to "", "/users/" + user.id.to_s, class: "campaign_link" %>
-				<div class="image_container">
-					<%= image_tag getFacebookPicURL(user), class: "logo img-responsive" %>
-				</div>
-				<h4><%= user.name %></h4>
-				<h5>Level: <%= user.level %></h5>
-				<h5>Experience: <%= user.points %></h5>
-			<% end %>
+			<%winnerUser = round.winnerUsers.find_by(roundWon: lastRound)
+			if winnerUser != nil
+				user = winnerUser.user
+				if user != nil %>
+					<%= link_to "", "/users/" + user.id.to_s, class: "campaign_link" %>
+					<div class="image_container">
+						<%= image_tag getFacebookPicURL(user), class: "logo img-responsive" %>
+					</div>
+					<h4><%= user.name %></h4>
+					<h5>Level: <%= user.level %></h5>
+					<h5>Experience: <%= user.points %></h5>
+				<%end 
+			end%>
 		</div>
 	</div>
 <% end %>
