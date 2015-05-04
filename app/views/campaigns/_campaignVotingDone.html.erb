@@ -1,4 +1,4 @@
-<script type="text/javascript">if (<%= current_user.isOnStep %> >= 4) {$('#next-voting').hide();}</script>
+<script>$('#campaign').data('step', <%= current_user.isOnStep %>);</script>
 <div class="step-text text-center">
 	<h1>Done Voting</h1>
 </div>

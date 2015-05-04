@@ -1,6 +1,9 @@
 
 Connect:	chmod 600 Profectus.pem
 			ssh -i Profectus.pem ec2-user@52.17.193.124
+			Start unicorn daemon: 
+				cd /home/ec2-user/Profectus/
+				bundle exec unicorn -E production -c config/unicorn.rb -D
 
 DB:			ssh -i Profectus.pem ec2-user@52.17.85.163
 			Master user: 	root

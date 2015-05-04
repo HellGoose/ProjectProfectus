@@ -78,8 +78,8 @@ class CampaignsController < ApplicationController
 	end
 
 	def vote
-  	if current_user and current_user.isOnStep <= 4
-      if params[:id].to_i >= 0
+  	if current_user and current_user.isOnStep <= 4 and Campaign.all.count > 15
+      if params[:id].to_i >= 0 and current_user.isOnStep < 4
         processVote(params[:id].to_i)
         current_user.isOnStep += 1
         current_user.save
@@ -90,12 +90,12 @@ class CampaignsController < ApplicationController
 
       if current_user.isOnStep == 4
         respond_to do |format|
-          format.js { render partial: 'campaignVotingDone' }
+          format.js { render partial: 'campaignVotingDone'}
         end
 
       elsif current_user.isOnStep < 4
         respond_to do |format|
-          format.js { render partial: 'campaignVoting' }
+          format.js { render partial: 'campaignVoting'}
         end
 
       else
