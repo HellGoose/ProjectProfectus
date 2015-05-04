@@ -53,7 +53,7 @@ feature "Edit user" do
 		click_on 'account'
 		#visit '/users/' +@user.id.to_s# click_button 'account'
 		
-		click_on 'edit'
+		#click_on 'edit'
 		#visit edit_user_path(@user)
 		#puts(page.body)
 		#visit '/users/'+@user.id.to_s+'/edit'# click_button 'edit'
@@ -71,8 +71,8 @@ feature "Edit user" do
 			#end
 		#end
 		#puts(find('submit'))
-		click_button 'Update User'
-		puts(page.body)
+		#click_on 'Update User'
+		#puts(page.body)
 		expect(page).to have_text("User was successfully updated.")
 	end
 end
