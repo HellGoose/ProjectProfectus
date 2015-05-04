@@ -78,7 +78,7 @@ class CampaignsController < ApplicationController
 	end
 
 	def vote
-  	if current_user and current_user.isOnStep <= 4
+  	if current_user and current_user.isOnStep <= 4 and Campaign.count > 15
       if params[:id].to_i >= 0 and current_user.isOnStep < 4
         processVote(params[:id].to_i)
         current_user.isOnStep += 1
