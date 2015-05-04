@@ -22,9 +22,12 @@ $(document).ready ->
 	$('#start-voting').on 'click', ->
 		$('#start-voting').hide()
 		$('#back-voting').show()
-		$('#next-voting').show()
 		$('#voting').load "/vote/campaign/-1", (response, status) ->
 			$('.campaign-display').slideUp(0)
+			if $('#campaign').data('step') < 4
+				$('#next-voting').show()
+			else
+				$('#next-voting').hide()
 			return
 		$('#voting').slideToggle()
 		$('#campaigns-news').slideToggle()
@@ -43,11 +46,12 @@ $(document).ready ->
 		return
 	$('#next-voting').on 'click', ->
 		campaign = $('#campaign').data('vote')
-		step = $('#campaign').data('step')
 		$('#voting').load "/vote/campaign/" + campaign, (response, status) ->
 			$('.campaign-display').slideUp(0)
-			step += 1
-			$('#campaign').data('step', step)
+			if $('#campaign').data('step') < 4
+				$('#next-voting').show()
+			else
+				$('#next-voting').hide()
 			return
 		return
 	$('#more_news').click ->
