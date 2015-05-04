@@ -1,7 +1,6 @@
 <% round = Round.first
-lastRound = round.currentRound-1
-
 if round != nil
+	lastRound = round.currentRound-1
 	winnerCampaigns = round.winnerCampaigns.where(roundWon: lastRound)
 	winnerCampaigns.each do |wc| 
 		next if wc.campaign == nil%>
