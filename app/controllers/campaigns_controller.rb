@@ -49,7 +49,7 @@ class CampaignsController < ApplicationController
         if @campaign.save
             current_user.points +=107
             current_user.save
-         		format.html { redirect_to @campaign, notice: 'Campaign was successfully created.' }
+         		format.html { redirect_to @campaign, notice: '<span class="alert alert-success">Campaign was successfully created.</span>' }
          		format.json { render :show, status: :created, location: @campaign }
         else
          		format.html { render :new }
