@@ -1,24 +1,21 @@
-def init
-	t = Thread.new {
-		runScript = false
-		round = Round.first
-		i = 0
-		while runScript do
-			print "\nSeconds to next Round: " + (round.duration - i).to_s 
-			if i >= round.duration or round.forceNewRound == true
-				runRound(round.decayRate)
-				round.forceNewRound = false
-				round.save
-				i = 0
-			else
-				i += 1
-			end
-			sleep 1
-			round = Round.first
+t = Thread.new {
+	runScript = false
+	round = Round.first
+	i = 0
+	while runScript do
+		if i >= round.duration or round.forceNewRound == true
+			runRound(round.decayRate)
+			round.forceNewRound = false
+			round.save
+			i = 0
+		else
+			i += 1
 		end
-	}
-	at_exit{t.kill}
-end
+		sleep 1
+		round = Round.first
+	end
+}
+at_exit{t.kill}
 
 def runRound (decayRate)
 	round = Round.first

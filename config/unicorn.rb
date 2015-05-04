@@ -18,10 +18,7 @@ stdout_path "/home/ec2-user/Profectus/log/unicorn.log"
 
 # Number of processes
 # worker_processes 4
-worker_processes 8
+worker_processes 1
 
 # Time-out
 timeout 30
-
-require ('roundScript.rb')
-roundScript.init()
