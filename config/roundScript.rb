@@ -5,13 +5,11 @@ def roundScript
 		round = Round.first
 		i = 0
 		while runScript do
-			if i >= round.duration or round.forceNewRound == true
+			if Time.now.to_i >= round.endTime.to_i  or round.forceNewRound == true
 				runRound(round.decayRate)
 				round.forceNewRound = false
+				round.endTime = Time.at(round.endTime.to_i + round.duration).to_datetime
 				round.save
-				i = 0
-			else
-				i += 1
 			end
 			sleep 1
 			round = Round.first

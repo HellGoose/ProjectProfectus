@@ -22,9 +22,10 @@
 			<div class="content text-center">
 				<h5>Next round in: <%= distance_of_time_in_words_to_now(round.endTime) %></h5>
 				<div id="time-input">
-					<input class="form-control" placeholder="Round duration" type="text" id="round-duration" size="5" />
-					<a class="btn btn-primary" id="start-round">Update</a>
+					<input class="round-duration form-control" placeholder="Days" type="text" id="days" size="5" />
+					<input class="round-duration form-control" placeholder="Hours" type="text" id="hours" size="5" />
 				</div>
+				<a class="btn btn-primary" id="start-round">Update Duration</a>
 				<a class="btn btn-primary" id="stop-round">Force New Round</a>
 			</div>
 		</div>
