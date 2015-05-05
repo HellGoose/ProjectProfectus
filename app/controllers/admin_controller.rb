@@ -11,9 +11,10 @@ class AdminController < ApplicationController
   end
 
   def round
-  	if params[:run] == 'start'
+    round = Round.first
+  	if params[:duration] == 'start'
   		respond_to do |format|
-          msg = { :status => 'ok', :message => 'Script is running' }
+          msg = { :status => 'ok', :message => 'Duration updated to' + round.duration }
           format.json  { render :json => msg }
     	end
   	end

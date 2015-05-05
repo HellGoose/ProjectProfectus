@@ -1,4 +1,5 @@
 <%= javascript_include_tag "admin" %>
+<% round = Round.first %>
 
 <div class="text-center" id="notice"><%= sanitize notice %></div><br />
 
@@ -19,12 +20,12 @@
 	<div id="my-tab-content" class="tab-content">
 		<div class="tab-pane active" id="round-tab">
 			<div class="content text-center">
-				<h5>Next round in: <%= distance_of_time_in_words(200) %></h5>
+				<h5>Next round in: <%= distance_of_time_in_words_to_now(round.endTime) %></h5>
 				<div id="time-input">
 					<input class="form-control" placeholder="Round duration" type="text" id="round-duration" size="5" />
+					<a class="btn btn-primary" id="start-round">Update</a>
 				</div>
-				<a class="btn btn-primary" id="start-round">Start</a>
-				<a class="btn btn-primary" id="stop-round">Stop</a>
+				<a class="btn btn-primary" id="stop-round">Force New Round</a>
 			</div>
 		</div>
 		<div class="tab-pane" id="news-tab">
