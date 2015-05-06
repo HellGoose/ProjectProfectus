@@ -17,8 +17,20 @@ $(document).ready ->
 		if page >= (Math.ceil(size/interval))
 			$('#more_news').hide()
 		return
-	$('#start-round').on 'click', ->
-		$.post '/admin/round/start', (data, status) ->
+	$('#update-duration').on 'click', ->
+		days_in_seconds = 0
+		hours_in_seconds = 0
+		if $('#days').val() != ''
+			days_in_seconds = (parseInt$('#days').val())*86400
+		if $('#hours').val() != ''
+			hours_in_seconds = (parseInt $('#hours').val())*3600
+		duration = days_in_seconds+hours_in_seconds
+		console.log(duration)
+		$.post '/admin/round/update/'+duration.toString(), (data, status) ->
+	        return
+		return
+	$('#force-new-round').on 'click', ->
+		$.post '/admin/round/force/true', (data, status) ->
 	        return
 		return
 	return
