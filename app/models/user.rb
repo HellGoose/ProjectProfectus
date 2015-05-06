@@ -52,13 +52,15 @@ class User < ActiveRecord::Base
 
 		#Update badges
 		def achieveBadge
-			campaignCount = self.campaigns.count
+			if Badge.count > 0
+				campaignCount = self.campaigns.count
 
-			#One-timers (Only awardable once)
-			firstCampaignBadge(campaignCount)
+				#One-timers (Only awardable once)
+				firstCampaignBadge(campaignCount)
 
-			#Multi-timers (Awardable multiple times)
-			tenCampaignsBadge(campaignCount)
+				#Multi-timers (Awardable multiple times)
+				tenCampaignsBadge(campaignCount)
+			end
 		end
 
 		#The first campaign

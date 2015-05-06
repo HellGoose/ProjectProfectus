@@ -5,7 +5,7 @@ module FeatureOauthHelper
   	# OmniAuth.config.add_mock(:default, {
   	OmniAuth.config.mock_auth[service] = OmniAuth::AuthHash.new({
 	    provider: 'facebook',
-	    uid: '123545',
+	    uid: user.uid,
 	    info: {
 	      name: 	user.name,
 	      email: 	user.email
@@ -15,6 +15,6 @@ module FeatureOauthHelper
 	      expires_at: Time.now + 1.week
 	    },
 	  })
-    visit "/auth/#{service}"#/callback"
+    visit "/auth/#{service}/callback"
   end
 end

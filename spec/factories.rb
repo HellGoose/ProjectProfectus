@@ -1,5 +1,3 @@
-# User
-
 FactoryGirl.define do
 	factory :user do
 		name 				'Jon'
@@ -15,8 +13,10 @@ end
 
 FactoryGirl.define do
 	factory :campaign do
-		link 				'factorylink'
-		user_id     '123'
+		link 						'https://www.kickstarter.com/'
+		user_id     		1
+		created_at			Time.now
+		updated_at			Time.now
 	end
 end
 
@@ -40,6 +40,24 @@ FactoryGirl.define do
 		updated_at			Time.now
 	end
 end
+
+FactoryGirl.define do
+	factory :category do
+		name						"test_category"
+		created_at			Time.now
+		updated_at			Time.now
+	end
+end
+
+# FactoryGirl.define do
+# 	factory :round_winner_user do
+# 		user_id					1
+# 		round_id				1
+# 		roundWon				9
+# 		created_at			Time.now
+# 		updated_at			Time.now
+# 	end
+# end
 
 #   # This will use the User class (Admin would have been guessed)
 #   factory :admin, class: User do

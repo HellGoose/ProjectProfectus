@@ -111,7 +111,7 @@ RSpec.configure do |config|
 
   Capybara.default_host = 'http://localhost:3000'
   #Capybara.javascript_driver = :poltergeist
-  Capybara.ignore_hidden_elements = false
+  Capybara.ignore_hidden_elements = true
   #js: true
   
   # Include FactoryGirl so we can use 'create' instead of 'FactoryGirl.create'
