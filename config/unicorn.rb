@@ -20,7 +20,7 @@ stdout_path "/home/ec2-user/Profectus/log/unicorn.log"
 
 # Number of processes
 # worker_processes 4
-worker_processes 1
+worker_processes 8
 
 # Time-out
 timeout 30
