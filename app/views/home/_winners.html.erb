@@ -10,7 +10,7 @@ if round != nil
 				<h3><%= (wc.placing+1).to_s %></h3>
 			</div>
 
-			<div class="campaign">
+			<div class="winner-campaign">
 				<% c = wc.campaign %>
 				<%= link_to "", "/campaigns/" + c.id.to_s, class: "campaign_link" %>
 				<% @campaign = c %>
@@ -25,7 +25,7 @@ if round != nil
 			<h3>Champion</h3>
 		</div>
 
-		<div class="campaign">
+		<div class="winner-campaign">
 			<%winnerUser = round.winnerUsers.find_by(roundWon: lastRound)
 			if winnerUser != nil
 				user = winnerUser.user
