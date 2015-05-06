@@ -13,6 +13,7 @@ class AdminController < ApplicationController
   def round
     round = Round.first
   	if params[:duration] == 'start'
+      round.duration = params[:duration]
   		respond_to do |format|
           msg = { :status => 'ok', :message => 'Duration updated to' + round.duration }
           format.json  { render :json => msg }
