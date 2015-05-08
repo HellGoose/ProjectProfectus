@@ -24,13 +24,6 @@
 	width: 100%;
 }
 
-.image_container {
-	width: 200px;
-	height: 150px;
-	float: left;
-	margin-top: 10px;
-}
-
 .main_campaign .image_container {
 	height: 250px;
 }
@@ -69,12 +62,6 @@
 	width: 250px;
 	cursor: hand;
 	cursor: pointer;
-}
-
-.campaign-container {
-	margin: 10px;
-	min-width: 250px;
-	max-width: 250px;
 }
 
 #voting {
