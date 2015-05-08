@@ -15,14 +15,14 @@ class AdminController < ApplicationController
   	if params[:type] == 'update'
       round.duration = params[:val].to_i
   		respond_to do |format|
-          msg = { :status => 'ok', :message => 'Duration updated to' + round.duration.to_s}
-          format.json  { render :json => msg }
+          msg = { status: 'ok', message: '<span class="alert alert-success">Duration updated to ' + view_context.distance_of_time_in_words(round.duration) +'</span>'}
+          format.json  { render json: msg }
     	end
     elsif params[:type] == 'force'
       round.forceNewRound = true
       respond_to do |format|
-          msg = { :status => 'ok', :message => 'Forcing new round!' }
-          format.json  { render :json => msg }
+          msg = { status: 'ok', message: '<span class="alert alert-success">Forcing new round!</span>' }
+          format.json  { render json: msg }
       end
     end
     round.save

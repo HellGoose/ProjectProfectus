@@ -10,7 +10,7 @@ class CampaignsController < ApplicationController
 		@campaign = Campaign.new
 	end
 
-	def show
+	def showdistance_of_time_in_words
 		@postsInterval = 10
 		@posts = @campaign.posts.where('isComment = 0').order('voteCount DESC')
 		@post = Post.new
