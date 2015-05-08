@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150422092608) do
+ActiveRecord::Schema.define(version: 20150505114415) do
 
   create_table "badges", force: :cascade do |t|
     t.string   "name",        limit: 255
@@ -120,6 +120,7 @@ ActiveRecord::Schema.define(version: 20150422092608) do
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
     t.integer  "currentRound",  limit: 4
+    t.datetime "endTime"
   end
 
   create_table "user_badges", force: :cascade do |t|
