@@ -90,6 +90,7 @@ feature "Campaign voting" do
       user = create(:user, name: "Ola"+(i+1).to_s)
       create(:campaign, user_id: user.id)
     end
+    create(:round)
   end
   scenario "by going through voting process", :js => true do
     #click_on "start-voting"
