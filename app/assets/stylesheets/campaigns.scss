@@ -87,7 +87,7 @@
 	color: #363632;
 }
 
-#campaigns {
+#campaigns, #winners {
 	margin: 14px;
 	margin-top: 5px;
 }
@@ -99,5 +99,24 @@
 	border-radius: 10px;
 	min-width: 250px;
 	max-width: 250px;
+	height: 400px;
+}
+
+.campaign-container {
+	padding: 0px;
+	margin: 10px;
+	min-width: 250px;
+	max-width: 250px;
+}
+
+.campaign-container .text-center h3 {
+	margin-left: 0px;
+}
+
+.winner-campaign {
+	padding: 10px;
+	background-color: #fcfcfc;
+	border: 1px solid #ddd;
+	border-radius: 10px;
 	height: 400px;
 }
