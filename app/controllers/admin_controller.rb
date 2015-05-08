@@ -11,11 +11,20 @@ class AdminController < ApplicationController
   end
 
   def round
-  	if params[:run] == 'start'
+    round = Round.lock.first
+  	if params[:type] == 'update'
+      round.duration = params[:val].to_i
   		respond_to do |format|
-          msg = { :status => 'ok', :message => 'Script is running' }
-          format.json  { render :json => msg }
+          msg = { status: 'ok', message: '<span class="alert alert-success">Duration updated to ' + view_context.distance_of_time_in_words(round.duration) +'</span>'}
+          format.json  { render json: msg }
     	end
-  	end
+    elsif params[:type] == 'force'
+      round.forceNewRound = true
+      respond_to do |format|
+          msg = { status: 'ok', message: '<span class="alert alert-success">Forcing new round!</span>' }
+          format.json  { render json: msg }
+      end
+    end
+    round.save
   end
 end

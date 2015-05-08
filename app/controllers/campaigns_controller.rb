@@ -78,7 +78,11 @@ class CampaignsController < ApplicationController
 	end
 
 	def vote
-  	if current_user and current_user.isOnStep <= 4 and Campaign.all.count > 15
+    if Campaign.all.count < 15
+      respond_to do |format|
+        format.js { render partial: 'home/not_enough_campaigns'}
+      end
+  	elsif current_user and current_user.isOnStep <= 4
       if params[:id].to_i >= 0 and current_user.isOnStep < 4
         processVote(params[:id].to_i)
         current_user.isOnStep += 1
@@ -99,10 +103,12 @@ class CampaignsController < ApplicationController
         end
 
       else
-        render :nothing => true
+        render nothing: true
       end
     else
-      render :nothing => true
+      respond_to do |format|
+        format.js { render partial: 'home/not_logged_in'}
+      end
   	end
   end
 
