@@ -1,7 +1,6 @@
 # Place all the behaviors and hooks related to the matching controller here.
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
-
 $(document).ready ->
 	$('#news_form').slideToggle 0
 	$('#post_news').click ->
@@ -28,11 +27,16 @@ $(document).ready ->
 		$.post '/admin/round/update/'+duration.toString(), (data, status) ->
 			$('#days').val('')
 			$('#hours').val('')
+			$('#feedback').slideDown 0
 			$('#feedback').html(data.message)
+			$('#feedback').slideUp 400
 			return
 		return
 	$('#force-new-round').on 'click', ->
 		$.post '/admin/round/force/true', (data, status) ->
+			$('#feedback').slideDown 0
+			$('#feedback').html(data.message)
+			$('#feedback').slideUp 400
 			return
 		return
 	return
