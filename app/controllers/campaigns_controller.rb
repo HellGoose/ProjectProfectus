@@ -44,7 +44,7 @@ class CampaignsController < ApplicationController
       if o.provider_url == 'https://www.kickstarter.com' or o.provider_url == 'http://www.indiegogo.com'
         o.title.slice! 'CLICK HERE to support '
         @campaign.title = o.title
-        @campaign.description = o.description			
+        @campaign.description = o.description.encode('utf-8', 'binary', invalid: :replace, undef: :replace, replace: '')	
 
         respond_to do |format|
         if @campaign.save
