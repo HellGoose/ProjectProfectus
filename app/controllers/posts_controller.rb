@@ -53,8 +53,8 @@ class PostsController < ApplicationController
       userVote.save()
       post.save()
       respond_to do |format|
-        msg = { :status => "ok", :message => post.voteCount }
-        format.json  { render :json => msg }
+        msg = { status: "ok", message: post.voteCount }
+        format.json  { render json: msg }
       end
     end
   end

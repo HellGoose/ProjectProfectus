@@ -12,15 +12,18 @@
 		<button id="searchButton">Search</button>
 	</div>
 	<div class="col-xs-6 text-right">
-		<select name="filter" id="filter">
-			<option value="1">Votes</option>
-			<option value="2">Name</option>
+		<select name="sortBy" id="sortBy">
+			<option value="(globalScore + roundScore) DESC">Votes</option>
+			<option value="title ASC">Title</option>
+			<option value='roundscore DESC'>Round Score</option>
+			<option value='globalscore DESC'>Global Score</option>
 		</select>
 	</div>
 </div>
 
-<div id='data' data-page=1 data-interval=<%= @campaignsInterval %> data-size=<%= @campaigns.size() %> data-category="0" data-search="">
+<div id='data' data-page=1 data-interval=<%= @campaignsInterval %> data-size=<%= @campaigns.size() %> data-category="0" data-search-text=" " data-sort-by="(globalScore + roundScore) DESC">
 </div>
+
 
 <div class="col-sm-12 text-center" id="campaigns">
 	<%= render partial: 'campaignList', locals: { page: 1, campaignsPerPage: @campaignsInterval } %>
