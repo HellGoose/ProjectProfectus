@@ -1,6 +1,7 @@
 <%= javascript_include_tag "admin" %>
 <% round = Round.first %>
 
+<div class="text-center" id="notice"><%= sanitize notice %></div>
 <div class="text-center" id="feedback"></div><br />
 
 <div id='news' data-page=1 data-interval=<%= @newsInterval %> data-size=<%= @all_news.size %>></div>
