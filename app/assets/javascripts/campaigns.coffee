@@ -9,9 +9,7 @@ changePage = (dir) ->
   interval = $('#data').data('interval')
   category = $('#data').data('category')
   sortBy = $('#data').data('sort-by').replace(/ /g, '_')
-  console.log(sortBy)
   searchText = $('#data').data('search-text').replace(/ /g, '_')
-  console.log(searchText)
 
   if (dir == '>')
     if page < (Math.ceil(size/interval))
