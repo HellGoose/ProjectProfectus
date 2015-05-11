@@ -21,10 +21,11 @@
 		<div class="tab-pane active" id="round-tab">
 			<div class="content text-center">
 				<h5>Next round in: <%= distance_of_time_in_words_to_now(round.endTime) %></h5>
+				<h5>Round duration: <%= distance_of_time_in_words(round.duration) %></h5>
 				<div id="time-input">
 					<input class="round-duration form-control" placeholder="Days" type="text" id="days" size="5" />
 					<input class="round-duration form-control" placeholder="Hours" type="text" id="hours" size="5" />
-				</div>
+				</div><br />
 				<a class="btn btn-primary" id="update-duration">Update Duration</a>
 				<a class="btn btn-primary" id="force-new-round">Force New Round</a>
 			</div>
