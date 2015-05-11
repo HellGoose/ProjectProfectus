@@ -27,16 +27,20 @@ $(document).ready ->
 		$.post '/admin/round/update/'+duration.toString(), (data, status) ->
 			$('#days').val('')
 			$('#hours').val('')
-			$('#feedback').slideDown 0
 			$('#feedback').html(data.message)
-			$('#feedback').slideUp 400
+			$('#feedback').slideUp 0
+			$('#feedback').slideToggle 400
+			$('#feedback').delay(2000)
+			$('#feedback').slideToggle 400
 			return
 		return
 	$('#force-new-round').on 'click', ->
 		$.post '/admin/round/force/true', (data, status) ->
-			$('#feedback').slideDown 0
 			$('#feedback').html(data.message)
-			$('#feedback').slideUp 400
+			$('#feedback').slideUp 0
+			$('#feedback').slideToggle 400
+			$('#feedback').delay(2000)
+			$('#feedback').slideToggle 400
 			return
 		return
 	return

@@ -28,9 +28,9 @@ $(document).ready ->
 				$('#next-voting').show()
 			else
 				$('#next-voting').hide()
+			$('#voting').slideToggle()
+			$('#campaigns-news').slideToggle()
 			return
-		$('#voting').slideToggle()
-		$('#campaigns-news').slideToggle()
 		return
 	$('#back-voting').on 'click', ->
 		$('#start-voting').show()
