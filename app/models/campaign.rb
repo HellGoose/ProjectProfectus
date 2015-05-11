@@ -1,6 +1,7 @@
 class Campaign < ActiveRecord::Base
 	#Restrictions
 	validates :link, :user_id, presence: true
+	validates_uniqueness_of :title
 
 	#Relations
 	belongs_to :user

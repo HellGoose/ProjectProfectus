@@ -16,6 +16,7 @@ Rails.application.routes.draw do
 
   get '/news/page/:page/:interval', :to => 'news#page'
 
+  get '/users/:id/campaigns/:page/:interval', :to => 'users#campaignPage'
   get '/campaigns/:id/posts/page/:page/:interval', :to => 'posts#page'
   get '/posts/:id/comments/page/:page/:interval', :to => 'posts#commentPage'
 

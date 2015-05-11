@@ -46,14 +46,14 @@ class CampaignsController < ApplicationController
 				@campaign.description = o.description			
 
 				respond_to do |format|
-				if @campaign.save
-					current_user.points +=107
-					current_user.save
-						format.html { redirect_to @campaign, notice: '<span class="alert alert-success">Campaign was successfully created.</span>' }
-						format.json { render :show, status: :created, location: @campaign }
-				else
-						format.html { render :new }
-						format.json { render json: @campaign.errors, status: :unprocessable_entity }
+					if @campaign.save
+						current_user.points +=107
+						current_user.save
+							format.html { redirect_to @campaign, notice: '<span class="alert alert-success">Campaign was successfully created.</span>' }
+							format.json { render :show, status: :created, location: @campaign }
+					else
+							format.html { render :new }
+							format.json { render json: @campaign.errors, status: :unprocessable_entity }
 					end
 				end
 			else

@@ -17,26 +17,49 @@ $(document).ready ->
 			$('#more_news').hide()
 		return
 	$('#update-duration').on 'click', ->
+		days = $('#days').val()
+		hours = $('#hours').val()
 		days_in_seconds = 0
 		hours_in_seconds = 0
-		if $('#days').val() != ''
-			days_in_seconds = (parseInt $('#days').val())*86400
-		if $('#hours').val() != ''
-			hours_in_seconds = (parseInt $('#hours').val())*3600
-		duration = days_in_seconds+hours_in_seconds
-		$.post '/admin/round/update/'+duration.toString(), (data, status) ->
-			$('#days').val('')
-			$('#hours').val('')
-			$('#feedback').slideDown 0
-			$('#feedback').html(data.message)
-			$('#feedback').slideUp 400
-			return
+		if (isNaN(days) or parseInt(days) < 0) or (isNaN(hours) or parseInt(hours) < 0) or (days == '' and hours == '')
+			$.post '/admin/round/error/input', (data, status) ->
+				$('#days').val('')
+				$('#hours').val('')
+				$('#feedback').html(data.message)
+				$('#feedback').slideUp 0
+				$('#feedback').slideToggle 400
+				$('#feedback').delay(2000)
+				$('#feedback').slideToggle 400
+				return
+		else
+			if (days == '')
+				days_in_seconds = 0
+			else
+				days_in_seconds = (parseInt(days))*86400
+			if (hours == '')
+				hours_in_seconds = 0
+			else
+				hours_in_seconds = (parseInt(hours))*3600
+			
+			duration = days_in_seconds+hours_in_seconds
+			$.post '/admin/round/update/'+duration.toString(), (data, status) ->
+				$('#days').val('')
+				$('#hours').val('')
+				$('#feedback').html(data.message)
+				$('#feedback').slideUp 0
+				$('#feedback').slideToggle 400
+				$('#feedback').delay(2000)
+				$('#feedback').slideToggle 400
+				return
 		return
+
 	$('#force-new-round').on 'click', ->
 		$.post '/admin/round/force/true', (data, status) ->
-			$('#feedback').slideDown 0
 			$('#feedback').html(data.message)
-			$('#feedback').slideUp 400
+			$('#feedback').slideUp 0
+			$('#feedback').slideToggle 400
+			$('#feedback').delay(2000)
+			$('#feedback').slideToggle 400
 			return
 		return
 	return

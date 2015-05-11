@@ -24,6 +24,11 @@ class AdminController < ApplicationController
           msg = { status: 'ok', message: '<span class="alert alert-success">Forcing new round!</span>' }
           format.json  { render json: msg }
       end
+    elsif params[:type] == 'error'
+      respond_to do |format|
+          msg = { status: 'ok', message: '<span class="alert alert-warning">Invalid input. Only positive numbers.</span>' }
+          format.json  { render json: msg }
+      end
     end
     round.save
   end
