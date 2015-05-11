@@ -42,6 +42,7 @@ class CampaignsController < ApplicationController
       o = obj.first
 
       if o.provider_url == 'https://www.kickstarter.com' or o.provider_url == 'http://www.indiegogo.com'
+        o.title.slice! 'CLICK HERE to support '
         @campaign.title = o.title
         @campaign.description = o.description			
 

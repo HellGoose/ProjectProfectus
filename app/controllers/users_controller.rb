@@ -16,7 +16,7 @@ class UsersController < ApplicationController
 	def campaignPage
 		page = params[:page].to_i
    		interval = params[:interval].to_i
-   		if (page * interval < @user.campaigns.size)
+   		if (page * interval <= @user.campaigns.size)
    			@userCampaigns = @user.campaigns.order('(globalScore + roundScore) DESC').first(page * interval).last(interval)
    		else
    			@userCampaigns = @user.campaigns.order('(globalScore + roundScore) DESC').last(@user.campaigns.size % interval)
