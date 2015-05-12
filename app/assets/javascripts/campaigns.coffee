@@ -30,13 +30,16 @@ changePage = (dir) ->
       if size > interval
         $('#next').attr('disabled', false)
   else
-    page = 1
-    $('#prev').attr('disabled', true)
-    if size <= interval
-      $('#next').attr('disabled', true)
-    else
-      $('#next').attr('disabled', false)
-    $('.catButton').attr('style', 'color: white')
+    $.get '/campaigns/page/' + category + '/' + searchText, (data, status) ->
+      $('#data').data('size', data.message)
+      page = 1
+      $('#prev').attr('disabled', true)
+      if data.message <= interval
+        $('#next').attr('disabled', true)
+      else
+        $('#next').attr('disabled', false)
+      $('.catButton').attr('style', 'color: white')
+      return
 
   $('#campaigns').load '/campaigns/page/' + category + '/' + page + '/' + interval+'/'+sortBy+'/'+searchText, (data, response) ->
     $('#data').data('page', page)
@@ -86,16 +89,15 @@ $(document).ready ->
       key = if e.keyCode then e.keyCode else e.which
       switch key
         when 13
-          if $('#searchText').focus
+          if $('#searchText').is(":focus")
             search()
         when 39
-          if !($('#searchText').focus)
+          if !($('#searchText').is(":focus"))
             $('#next').click()
         when 37
-          if !($('#searchText').focus)
+          if !($('#searchText').is(":focus"))
             $('#prev').click()
         else
-          console.log 'Key: ' + key
           break
       return
 
