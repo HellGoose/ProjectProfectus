@@ -47,7 +47,10 @@ changePage = (dir) ->
   return
 
 search = ->
-  $('#data').data('search-text', $('#searchText').val())
+  searchText = $('#searchText').val()
+  if searchText == ''
+    searchText = ' '
+  $('#data').data('search-text', searchText)
   changePage('reset')
   return
 
