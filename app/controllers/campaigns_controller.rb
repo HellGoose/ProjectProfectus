@@ -158,9 +158,9 @@ class CampaignsController < ApplicationController
 			search_condition = "%" + text + "%"
 			if category > 0
 				category = Category.find(category)
-				category.campaigns.where('title LIKE ? OR description LIKE ?', search_condition, search_condition)
+				category.campaigns.where('title LIKE ? OR description LIKE ? COLLATE utf8_general_ci', search_condition, search_condition)
 			else
-				Campaign.where('title LIKE ? OR description LIKE ?', search_condition, search_condition)
+				Campaign.where('title LIKE ? OR description LIKE ? COLLATE utf8_general_ci', search_condition, search_condition)
 			end
 		end
 
