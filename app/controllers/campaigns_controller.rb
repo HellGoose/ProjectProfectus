@@ -111,6 +111,20 @@ class CampaignsController < ApplicationController
 		end
 	end
 
+  def size
+    category = 0
+    searchText = ' '
+    category = params[:category].to_i if params[:category] != nil
+    searchText = params[:searchText].gsub('_', ' ') if params[:searchText] != nil
+
+    @campaigns = search(searchText, category)
+    
+    respond_to do |format|
+      msg = { status: "ok", message: @campaigns.size }
+      format.json  { render json: msg }
+    end
+  end
+
 	def page
 		page = params[:page]
 		interval = params[:interval]
@@ -145,9 +159,9 @@ class CampaignsController < ApplicationController
 			text = '%#{text}%'
 			if category > 0
 				category = Category.find(category)
-				category.campaigns.where('title LIKE ? OR description LIKE ?', text, text)
+				category.campaigns.where('title LIKE ? OR description LIKE ? COLLATE utf8_general_ci', text, text)
 			else
-				Campaigns.where('title LIKE ? OR description LIKE ?', text, text)
+				Campaign.where('title LIKE ? OR description LIKE ? COLLATE utf8_general_ci', text, text)
 			end
 		end
 
