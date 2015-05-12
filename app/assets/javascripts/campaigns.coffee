@@ -37,6 +37,9 @@ changePage = (dir) ->
     $('.catButton').attr('style', 'color: white')
 
   $('#campaigns').load('/campaigns/page/' + category + '/' + page + '/' + interval)
+  $.get '/campaigns/page/' + category + '/size', (data, status) ->
+      console.log data
+      return
   $('#data').data('page', page)
   return
 
