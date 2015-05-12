@@ -8,6 +8,8 @@ changePage = (dir) ->
   size = $('#data').data('size')
   interval = $('#data').data('interval')
   category = $('#data').data('category')
+  sortBy = $('#data').data('sort-by').replace(/ /g, '_')
+  searchText = $('#data').data('search-text').replace(/ /g, '_')
 
   if (dir == '>')
     if page < (Math.ceil(size/interval))
@@ -28,19 +30,25 @@ changePage = (dir) ->
       if size > interval
         $('#next').attr('disabled', false)
   else
-    page = 1
-    $('#prev').attr('disabled', true)
-    if size <= interval
-      $('#next').attr('disabled', true)
-    else
-      $('#next').attr('disabled', false)
-    $('.catButton').attr('style', 'color: white')
-
-  $('#campaigns').load('/campaigns/page/' + category + '/' + page + '/' + interval)
-  $.get '/campaigns/page/' + category + '/size', (data, status) ->
-      console.log data
+    $.get '/campaigns/page/' + category + '/' + searchText, (data, status) ->
+      $('#data').data('size', data.message)
+      page = 1
+      $('#prev').attr('disabled', true)
+      if data.message <= interval
+        $('#next').attr('disabled', true)
+      else
+        $('#next').attr('disabled', false)
+      $('.catButton').attr('style', 'color: white')
       return
-  $('#data').data('page', page)
+
+  $('#campaigns').load '/campaigns/page/' + category + '/' + page + '/' + interval+'/'+sortBy+'/'+searchText, (data, response) ->
+    $('#data').data('page', page)
+    return
+  return
+
+search = ->
+  $('#data').data('search-text', $('#searchText').val())
+  changePage('reset')
   return
 
 $(document).ready ->
@@ -69,21 +77,27 @@ $(document).ready ->
       return
 
     $('#searchButton').click ->
-      $('#data').data('search', $('#searchText').val())
+      search()
+      return
+
+    $('#sortBy').on 'change', ->
+      $('#data').data('sort-by', $('#sortBy').find(':selected').val())
+      changePage('reset')
       return
 
     window.onkeyup = (e) ->
       key = if e.keyCode then e.keyCode else e.which
       switch key
         when 13
-          if $('#searchText').focus
+          if $('#searchText').is(":focus")
             search()
         when 39
-          $('#next').click()
+          if !($('#searchText').is(":focus"))
+            $('#next').click()
         when 37
-          $('#prev').click()
+          if !($('#searchText').is(":focus"))
+            $('#prev').click()
         else
-          console.log 'Key: ' + key
           break
       return
 

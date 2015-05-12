@@ -1,11 +1,12 @@
 def roundScript
 	runScript = true
 	t = Thread.new {
+		puts ('Starting script!') if runScript == true
 		until defined?(ActiveRecord::Base)
 			sleep 2
 		end
-		puts ('Starting script!') if runScript == true
 		round = Round.first
+		puts ('Script started') if runScript == true
 		while runScript do
 			if Time.now.to_i >= round.endTime.to_i  or round.forceNewRound == true
 				puts ('Starting a new Round!')

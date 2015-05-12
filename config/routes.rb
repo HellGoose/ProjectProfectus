@@ -9,8 +9,8 @@ Rails.application.routes.draw do
 	get '/campaigns/:id/posts/page/:page/:interval', :to => 'posts#page'
 	get '/posts/:id/comments/page/:page/:interval', :to => 'posts#commentPage'
 
-  get '/campaigns/page/:category/size', :to => 'campaigns#size'
-  get '/campaigns/page/:category/:page/:interval', :to => 'campaigns#page', :as => :campaigns_page
+  get '/campaigns/page/:category/:searchText', :to => 'campaigns#size'
+  get '/campaigns/page/:category/:page/:interval/:sortBy/:searchText', :to => 'campaigns#page', :as => :campaigns_page
 
   post '/vote/post/:id/:dir', :to => 'posts#vote'
   get '/vote/campaign/:id/', :to => 'campaigns#vote'
