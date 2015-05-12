@@ -113,23 +113,14 @@ class CampaignsController < ApplicationController
 	def page
 		page = params[:page]
 		interval = params[:interval]
+		category = 0
 		sortBy = ' '
 		searchText = ' '
-		if params[:sortBy] != nil
-			sortBy = params[:sortBy].gsub('_', ' ')
-		end
-		if params[:searchText] != nil
-			searchText = params[:searchText].gsub('_', ' ')
-			puts 'AaaaaAAAAAAAAAAAAAAAAAAAAAAAAAAAaaaAa ' + searchText
-		end
+		category = params[:category].to_i if params[:category] != nil
+		sortBy = params[:sortBy].gsub('_', ' ') if params[:sortBy] != nil
+		searchText = params[:searchText].gsub('_', ' ') if params[:searchText] != nil
 
-
-		if params[:category].to_i > 0
-			category = Category.find(params[:category])
-			@campaigns = category.campaigns.order(sortBy)
-		else
-			@campaigns = search(searchText).order(sortBy)
-		end
+		@campaigns = search(searchText, category).order(sortBy)
 		
 		respond_to do |format|
 			format.html { render partial: 'campaignList', locals: { page: page, campaignsPerPage: interval}}
@@ -149,10 +140,14 @@ class CampaignsController < ApplicationController
 			params.require(:campaign).permit(:title, :description, :image, :link, :category_id)
 		end
 
-		def search(text)
-			puts text
+		def search(text, category)
 			search_condition = "%" + text + "%"
-			Campaign.where('title LIKE ? OR description LIKE ?', search_condition, search_condition)
+			if category > 0
+				category = Category.find(category)
+				category.campaigns.where('title LIKE ? OR description LIKE ?', search_condition, search_condition)
+			else
+				Campaigns.where('title LIKE ? OR description LIKE ?', search_condition, search_condition)
+			end
 		end
 
 		def processVote(campaign_id)
