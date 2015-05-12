@@ -37,11 +37,12 @@ class CampaignsController < ApplicationController
 			@campaign.user_id = session[:user_id]
 
 			embedly = Embedly::API.new :key => '0eef325249694df490605b1fd29147f5'
-
 			obj = embedly.extract :url => @campaign.link
 			o = obj.first
+			kickstarterURL = 'https://www.kickstarter.com'
+			indigogoURL = 'http://www.indiegogo.com'
 
-			if o.provider_url == 'https://www.kickstarter.com' or o.provider_url == 'http://www.indiegogo.com'
+			if o.provider_url == kickstarterURL or o.provider_url == indigogoURL
 				@campaign.title = o.title
 				@campaign.description = o.description			
 
@@ -49,11 +50,11 @@ class CampaignsController < ApplicationController
 					if @campaign.save
 						current_user.points +=107
 						current_user.save
-							format.html { redirect_to @campaign, notice: '<span class="alert alert-success">Campaign was successfully created.</span>' }
-							format.json { render :show, status: :created, location: @campaign }
+						format.html { redirect_to @campaign, notice: '<span class="alert alert-success">Campaign was successfully created.</span>' }
+						format.json { render :show, status: :created, location: @campaign }
 					else
-							format.html { render :new }
-							format.json { render json: @campaign.errors, status: :unprocessable_entity }
+						format.html { render :new }
+						format.json { render json: @campaign.errors, status: :unprocessable_entity }
 					end
 				end
 			else
@@ -67,7 +68,7 @@ class CampaignsController < ApplicationController
 
 	def destroy
 		respond_to do |format|
-			if (isCampaignOwner or isAdmin) && @campaign.destroy
+			if (isCampaignOwner or isAdmin) and @campaign.destroy
 				format.html { redirect_to @campaign.user, notice: '<span class="alert alert-success">Campaign was successfully destroyed.</span>' }
 				format.json { head :no_content }
 			else
@@ -117,8 +118,8 @@ class CampaignsController < ApplicationController
 		sortBy = ' '
 		searchText = ' '
 		category = params[:category].to_i if params[:category] != nil
-		sortBy = params[:sortBy].gsub('_', ' ') if params[:sortBy] != nil
-		searchText = params[:searchText].gsub('_', ' ') if params[:searchText] != nil
+		sortBy = params[:sortBy].tr('_', ' ') if params[:sortBy] != nil
+		searchText = params[:searchText].tr('_', ' ') if params[:searchText] != nil
 
 		@campaigns = search(searchText, category).order(sortBy)
 		
@@ -141,12 +142,12 @@ class CampaignsController < ApplicationController
 		end
 
 		def search(text, category)
-			search_condition = "%" + text + "%"
+			text = '%#{text}%'
 			if category > 0
 				category = Category.find(category)
-				category.campaigns.where('title LIKE ? OR description LIKE ?', search_condition, search_condition)
+				category.campaigns.where('title LIKE ? OR description LIKE ?', text, text)
 			else
-				Campaigns.where('title LIKE ? OR description LIKE ?', search_condition, search_condition)
+				Campaigns.where('title LIKE ? OR description LIKE ?', text, text)
 			end
 		end
 
@@ -200,7 +201,7 @@ class CampaignsController < ApplicationController
 			campaignVotes = current_user.campaignVotes
 			genedCampaigns = []
 
-			campaigns = Campaign.order("(roundScore + globalScore) DESC")
+			campaigns = Campaign.order('(roundScore + globalScore) DESC')
 
 			genedCampaigns << campaigns.last(campaigns.size * 0.5).sample(3)
 			genedCampaigns << campaigns.slice((campaigns.size * 0.2)..(campaigns.size * 0.5)).sample(3)

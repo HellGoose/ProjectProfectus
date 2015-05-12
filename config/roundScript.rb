@@ -10,7 +10,7 @@ def roundScript
 		while runScript do
 			if Time.now.to_i >= round.endTime.to_i  or round.forceNewRound == true
 				puts ('Starting a new Round!')
-				runRound(round.decayRate)
+				runNewRound(round.decayRate)
 				if !round.forceNewRound
 					round.endTime = Time.at(round.endTime.to_i + round.duration).to_datetime
 				end
@@ -26,7 +26,7 @@ def roundScript
 end
 
 private
-	def runRound (decayRate)
+	def runNewRound (decayRate)
 		round = Round.first
 		campaigns = Campaign.all.order('roundScore DESC')
 		users = User.all
