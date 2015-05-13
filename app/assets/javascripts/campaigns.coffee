@@ -18,8 +18,6 @@ changePage = (dir) ->
   sortBy = $('#data').data('sort-by').replace(/ /g, '_')
   searchText = $('#data').data('search-text').replace(/ /g, '_')
 
-  if (dir == 'reset')
-    page = 1
   if (dir == '>')
     if page < (Math.ceil(size/interval))
       page += 1
@@ -39,6 +37,7 @@ changePage = (dir) ->
       if size > interval
         $('#next').attr('disabled', false)
   else
+    page = 1
     $.get '/campaigns/page/' + category + '/' + searchText, (data, status) ->
       $('#data').data('size', data.message)
       $('#prev').attr('disabled', true)
@@ -92,6 +91,8 @@ $(document).ready ->
     $('.catButton').click ->
       $('#data').data('category', @id)
       $('#data').data('size', @name)
+      $('.catButton').removeClass('active')
+      $(this).addClass('active')
       changePage('reset')
       $('#'+@id+'.catButton').attr('style', 'color: black')
       return
