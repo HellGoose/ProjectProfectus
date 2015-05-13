@@ -8,16 +8,20 @@
 
 <div id="searchBar">
 	<div class="col-xs-6">
-		<input type="text" id="searchText"></input>
-		<button id="searchButton">Search</button>
+		<div class="col-xs-6">
+			<input type="text" id="searchText" class="form-control" placeholder="Search"></input>
+		</div>
+		<button id="searchButton" class="btn btn-success">Search</button>
 	</div>
-	<div class="col-xs-6 text-right">
-		<select name="sortBy" id="sortBy">
-			<option value="(globalScore + roundScore) DESC">Votes</option>
-			<option value="title ASC">Title</option>
-			<option value='roundscore DESC'>Round Score</option>
-			<option value='globalscore DESC'>Global Score</option>
-		</select>
+	<div class="col-xs-6">
+		<div class="col-xs-6" style="float: right">
+			<select name="sortBy" id="sortBy" class="form-control">
+				<option value="(globalScore + roundScore) DESC">Votes</option>
+				<option value="title ASC">Title</option>
+				<option value='roundscore DESC'>Round Score</option>
+				<option value='globalscore DESC'>Global Score</option>
+			</select>
+		</div>
 	</div>
 </div>
 
