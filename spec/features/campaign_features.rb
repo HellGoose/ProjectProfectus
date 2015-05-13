@@ -24,7 +24,7 @@ feature "Add new campaign" do
   scenario "by creating a campaign", :js => true do
     click_on 'Add Campaign'
     fill_in 'campaign_link', :with => @campaign.link
-    click_on 'Create Campaign'
+    click_on 'submitButton'
     expect(page).to have_text("Campaign was successfully created.")
   end
 end
@@ -41,7 +41,7 @@ feature "Add new campaign" do
     click_on 'Add Campaign'
     fill_in 'campaign_link', :with => @campaign.link
     select "category2", :from => "campaign_category_id"
-    click_on 'Create Campaign'
+    click_on 'submitButton'
     expect(page).to have_text("Campaign was successfully created.")
   end
 end
@@ -53,7 +53,7 @@ feature "View all campaigns" do
     @campaign = build(:campaign, user_id: @user.id)
     click_on 'Add Campaign'
     fill_in 'campaign_link', :with => @campaign.link
-    click_on 'Create Campaign'
+    click_on 'submitButton'
   end
   scenario "by clicking 'campaigns' in navbar", :js => true do
     click_on 'Campaigns'
@@ -71,7 +71,7 @@ feature "Filter campaigns by category" do
       click_on 'Add Campaign'
       fill_in 'campaign_link', :with => @campaign.link
       select "category"+i.to_s, :from => "campaign_category_id"
-      click_on 'Create Campaign'
+      click_on 'submitButton'
     end
   end
   scenario "by clicking 'campaigns' and '<category>'", :js => true do

@@ -1,4 +1,5 @@
-feature "Campaign voting" do
+# Remember to clean database before voting
+feature "Campaign voting for many users" do
 	before :each do
 		create(:category, name:"category")
 		campaign_links = [
@@ -35,30 +36,23 @@ feature "Campaign voting" do
 			'https://www.indiegogo.com/projects/imbrief-a-briefcase-as-smart-stylish-as-you-are'
 		]
 		for i in 1..campaign_links.length
-			user = create(:user, name: "Olav"+i.to_s)
+			user = create(:user, name: "Olav"+i.to_s, uid: 1000+i)
 			create(:campaign, link: campaign_links[i-1], user_id: user.id)
 		end
 		create(:round)
 	end
-
-	scenario "by going through voting process", :js => true do
-		for j in 1..10
-			p1 = fork do
-				voter = create(:user, name:"Kari"+j.to_s, uid: 11111+j)
-				login_with_oauth(voter)
-				page.find(:xpath, '//*[@id="start-voting"]').click
-				for i in 0..3
-					page.find(:xpath, '//*[@id='+Random.rand(0..2).to_s+']/a').click
-					page.find(:xpath, '//*[@id="next-voting"]').click
-				end
-				puts "OK! "+j.to_s
-				current_window.close
-				exit!
+		scenario "by going through voting process for every user ", :js => true do
+		for j in 1..50
+			voter = create(:user, name:"Kari"+j.to_s, uid: 10000+j)
+			login_with_oauth(voter)
+			page.find(:xpath, '//*[@id="start-voting"]').click
+			for i in 0..3
+				page.find(:xpath, '//*[@id='+Random.rand(0..2).to_s+']/a').click
+				page.find(:xpath, '//*[@id="next-voting"]').click
 			end
+			puts voter.name+" voted!"
 		end
-		Process.waitpid(p1)
-		visit root_path
-		puts "finished!"
-		expect(page).to have_text('Campaigns')
+			visit root_path
+			expect(page).to have_text('Campaigns')
 	end
-end
+end 

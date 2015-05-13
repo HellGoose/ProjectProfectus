@@ -44,11 +44,11 @@ gem 'unicorn'
 gem 'capybara'
 
 # Use Capybara-webkit for headless testing (supports JS)
-# gem 'capybara-webkit'
+#gem 'capybara-webkit'
 # use with: Capybara.javascript_driver = :webkit
 
 # Use Poltergeist for headless testing
-#gem 'poltergeist'
+#gem 'poltergeist', :group => :test
 
 # Use Selenium for JS support when testing
 gem 'selenium-webdriver', :group => :test

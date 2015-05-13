@@ -19,11 +19,9 @@
 require 'rails_helper'
 require 'capybara/rspec'
 require 'database_cleaner'
-#require 'capybara/poltergeist'
 require 'support/feature_oauth_helper'
 require 'support/request_oauth_helper'
-require 'support/database_cleaner.rb'
-# require 'support/database_fill.rb'
+require 'support/database_cleaner.rb' # Uncomment to not clean DB after test run
 
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
@@ -95,25 +93,10 @@ RSpec.configure do |config|
 =end
   config.use_transactional_fixtures = false
 
-  # OmniAuth.config.test_mode = true
-  # OmniAuth.config.mock_auth[:facebook] = OmniAuth::AuthHash.new({
-  #     :provider => 'facebook',
-  #     :uid => '123456',
-  #     :info => {
-  #         'name' => 'OauthMockName',
-  #         'email' => 'OauthMock@email.com'
-  #     },
-  #     credentials: {
-  #       token: "321321",
-  #       expires_at: Time.now + 1.week
-  #     },
-  # })
-
   Capybara.default_host = 'http://localhost:3000'
-  #Capybara.javascript_driver = :poltergeist
-  Capybara.ignore_hidden_elements = true
-  #js: true
-  
+  Capybara.javascript_driver = :selenium
+  #Capybara.ignore_hidden_elements = true
+
   # Include FactoryGirl so we can use 'create' instead of 'FactoryGirl.create'
   config.include FactoryGirl::Syntax::Methods
 
