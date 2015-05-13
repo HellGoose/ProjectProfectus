@@ -1,10 +1,11 @@
 def roundScript
-	runScript = true
+	runScript = false
 	t = Thread.new {
 		puts ('Starting script!') if runScript == true
 		until defined?(ActiveRecord::Base)
-			sleep 2
+			sleep 0.1
 		end
+		sleep 5
 		round = Round.first
 		puts ('Script started') if runScript == true
 		while runScript do
@@ -27,6 +28,9 @@ end
 
 private
 	def runRound (decayRate)
+		if Campaign.all.empty?
+			return
+		end
 		round = Round.first
 		campaigns = Campaign.all.order('roundScore DESC')
 		users = User.all
