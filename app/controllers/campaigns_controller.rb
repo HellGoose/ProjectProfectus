@@ -85,7 +85,7 @@ class CampaignsController < ApplicationController
 			whiteList = [kickstarterURL,indigogoURL]
 
 			case embedlyData.provider_url
-			when whiteList
+			when *whiteList
 				embedlyData.title.slice!("CLICK HERE to support ")
 				@campaign.title = embedlyData.title
 				@campaign.description = embedlyData.description.encode('utf-8', 'binary', invalid: :replace, undef: :replace, replace: '')
