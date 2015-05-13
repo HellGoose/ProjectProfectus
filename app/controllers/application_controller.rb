@@ -11,6 +11,9 @@ class ApplicationController < ActionController::Base
 		@current_user ||= User.find(session[:user_id]) if session[:user_id]
 	end
 
+	# Public: Checks if the current user is an admin.
+	#
+	# Returns true iff current user is an admin.
 	def isAdmin
 		if current_user != nil
 			current_user.role > 1
@@ -19,7 +22,10 @@ class ApplicationController < ActionController::Base
 		end
 	end
 
+	# Public: Gets the users facebook profile picture.
+	#
+	# Returns the profile picture.
 	def getFacebookPicURL(user)
-    	'http://graph.facebook.com/' + user.uid + '/picture?type=large'
-  	end
+		'http://graph.facebook.com/' + user.uid + '/picture?type=large'
+	end
 end

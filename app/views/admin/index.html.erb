@@ -4,7 +4,7 @@
 <div class="text-center" id="notice"><%= sanitize notice %></div>
 <div class="text-center" id="feedback"></div><br />
 
-<div id='news' data-page=1 data-interval=<%= @newsInterval %> data-size=<%= @all_news.size %>></div>
+<div id='news' data-page=1 data-interval=<%= @newsInterval %> data-size=<%= @allNews.size %>></div>
 
 <div id="tabs">
 	<nav class="navbar navbar-default">
@@ -42,7 +42,7 @@
 				<div class="news_container">
 					<%= render partial: 'news/news', locals: { page: 1, newsPerPage: @newsInterval }  %>
 				</div>
-				<% if @all_news.size > @newsInterval %>
+				<% if @allNews.size > @newsInterval %>
 					<div class="text-center">
 						<a class="btn btn-primary" id="more_news">Show More</a>
 					</div>
