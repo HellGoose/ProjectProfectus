@@ -1,4 +1,4 @@
 class Badge < ActiveRecord::Base
-	#Relations
+	#Relations (Used like: ClassName.relation):
 	has_many :users
 end

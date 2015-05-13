@@ -1,4 +1,8 @@
+<%= javascript_include_tag "users" %>
+
 <div class="text-center" id="notice"><%= sanitize notice %></div>
+
+<div id="data" data-page="1" data-interval=<%= @campaignsInterval %> data-size=<%= @user.campaigns.size %>></div>
 
 <h1>Profile</h1>
 
@@ -43,14 +47,25 @@
 </div>
 
 <div class="col-sm-12 user-campaigns">
-	<% if @user.campaigns.count != 0 %>
-	<h4 class="text-center">My Campaigns</h4>
+	<% if @userCampaigns.count != 0 %>
+		<h4 class="text-center">My Campagins</h4>
 	<% end %>
-	<% @user.campaigns.each do |c| %>
-	<div class="col-sm-3 campaign">
-		<%= link_to "", "/campaigns/" + c.id.to_s, class: "campaign_link"%>
-		<% @campaign = c %>
-		<%= render partial: 'campaigns/campaignSmall' %>
+	<% i = 0 %>
+	<div class="user-campaigns2">
+		<% @userCampaigns.each do |c| %>
+			<% break if i >= @campaignsInterval %>
+			<div class="col-sm-3 campaign">
+				<%= link_to "", "/campaigns/" + c.id.to_s, class: "campaign_link" %>
+				<% @campaign = c %>
+				<%= render partial: 'campaigns/campaignSmall' %>
+			</div>
+			<% i += 1 %>
+		<% end %>
 	</div>
+	<% if i >= 8 %>
+		<div class="text-center">
+			<a class="btn btn-primary" id="more_campaigns">Show More</a>
+		</div>
 	<% end %>
 </div>
+

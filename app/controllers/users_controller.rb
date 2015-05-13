@@ -1,14 +1,29 @@
 class UsersController < ApplicationController
-	before_action :set_user, only: [:show, :edit, :update]
+	before_action :set_user, only: [:show, :edit, :update, :campaignPage]
 	helper_method :getFacebookPicURL
 
 	def show
+		@userCampaigns = @user.campaigns.order('(globalScore + roundScore) DESC')
+		@campaignsInterval = 8
 	end
 
 	def edit
 		if !current_user || !is_this_user
 			redirect_to user_path(params[:id])
 		end
+	end
+
+	def campaignPage
+		page = params[:page].to_i
+   		interval = params[:interval].to_i
+   		if (page * interval <= @user.campaigns.size)
+   			@userCampaigns = @user.campaigns.order('(globalScore + roundScore) DESC').first(page * interval).last(interval)
+   		else
+   			@userCampaigns = @user.campaigns.order('(globalScore + roundScore) DESC').last(@user.campaigns.size % interval)
+   		end
+   		respond_to do |format|
+	    	format.js { render partial: 'userCampaigns' }
+	    end
 	end
 
 	def update

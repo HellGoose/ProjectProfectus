@@ -1,8 +1,9 @@
 class Campaign < ActiveRecord::Base
 	#Restrictions
 	validates :link, :user_id, presence: true
+	validates_uniqueness_of :title
 
-	#Relations
+	#Relations (Used like: ClassName.relation):
 	belongs_to :user
 	belongs_to :category
 	has_many :posts, :dependent => :destroy
