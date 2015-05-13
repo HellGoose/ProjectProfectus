@@ -2,7 +2,7 @@ class Post < ActiveRecord::Base
 	#Restrictions
 	validates :content, :user_id, :campaign_id, presence: true
 
-	#Relations
+	#Relations (Used like: ClassName.relation):
 	belongs_to :user
 	belongs_to :campaign
 	has_and_belongs_to_many :comments, 

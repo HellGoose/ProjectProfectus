@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
 	:oauth_token, :oauth_token_expires_at, 
 	presence: true
 
-	#Relations:
+	#Relations (Used like: ClassName.relation):
 	has_many :posts
 	has_many :campaigns
 	has_many :badges, class_name: "UserBadge"

@@ -22,7 +22,7 @@ class UsersController < ApplicationController
    			@userCampaigns = @user.campaigns.order('(globalScore + roundScore) DESC').last(@user.campaigns.size % interval)
    		end
    		respond_to do |format|
-	      format.js { render partial: 'userCampaigns' }
+	    	format.js { render partial: 'userCampaigns' }
 	    end
 	end
 

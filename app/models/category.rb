@@ -1,4 +1,4 @@
 class Category < ActiveRecord::Base
-	#Relations
+	#Relations (Used like: ClassName.relation):
 	has_many :campaigns
 end
