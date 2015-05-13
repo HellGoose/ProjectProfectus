@@ -53,7 +53,7 @@ class CampaignsController < ApplicationController
 	# Renders campaign#show iff the update succeeds, else rerenders campaign#edit with the error.
 	def update
 		respond_to do |format|
-			if (isCampaignOwner or isAdmin) && @campaign.update(campaign_params)
+			if (isCampaignOwner or isAdmin) and @campaign.update(campaign_params)
 				msg = "<span class=\"alert alert-success\">Campaign was successfully updated.</span>"
 				format.html { redirect_to @campaign, notice: msg }
 				format.json { render :show, status: :ok, location: @campaign }
@@ -70,6 +70,7 @@ class CampaignsController < ApplicationController
 	# @campaign 	- The campaign to be added in the database.
 	# embedly 	 	- An instance of the Embedly API used for scraping data off websites.
 	# embedlyData - The relevant data scraped from the given URL.
+	# whiteList		- A list of all allowed provider_URLs.
 	#
 	# Renders campaign#index.
 	def create
@@ -81,8 +82,10 @@ class CampaignsController < ApplicationController
 			embedlyData = (embedly.extract url: @campaign.link).first
 			kickstarterURL = "https://www.kickstarter.com"
 			indigogoURL = "http://www.indiegogo.com"
+			whiteList = [kickstarterURL,indigogoURL]
 
-			if embedlyData.provider_url == kickstarterURL or embedlyData.provider_url == indigogoURL
+			case embedlyData.provider_url
+			when whiteList
 				embedlyData.title.slice!("CLICK HERE to support ")
 				@campaign.title = embedlyData.title
 				@campaign.description = embedlyData.description.encode('utf-8', 'binary', invalid: :replace, undef: :replace, replace: '')
@@ -196,7 +199,7 @@ class CampaignsController < ApplicationController
 	end
 
 	# Public: Filters out which campaigns to be rendered on a page.
-	# Route: root//campaigns/page/:category/:page/:interval/:sortBy/:searchText
+	# Route: root/campaigns/page/:category/:page/:interval/:sortBy/:searchText
 	# 	:category 	- The id of the category in the database.
 	# 	:page 			- The current page.
 	# 	:interval 	- Campaigns per page.
