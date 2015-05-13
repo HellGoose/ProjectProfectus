@@ -1,4 +1,5 @@
 class HomeController < ApplicationController
+
 	# Public: Prepares variables for home#index
 	# Route: root
 	#

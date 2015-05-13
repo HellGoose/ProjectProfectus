@@ -133,17 +133,31 @@ class PostsController < ApplicationController
 	end
 
 	private
-		# Use callbacks to share common setup or constraints between actions.
-		def set_post
-			@post = Post.find(params[:id])
-		end
 
-		# Never trust parameters from the scary internet, only allow the white list through.
-		def post_params
-			params.require(:post).permit(:content, :campaign_id, :post_id)
-		end
+	# Private: Makes the a post globally accessible.
+	#
+	# @post - The globally accessible post.
+	#
+	# Returns the post.
+	def set_post
+		@post = Post.find(params[:id])
+	end
 
-		def isPostOwner
-			@post.user_id == session[:user_id]
-		end
+	# Private: Checks if the fields of the given parameters are allowed.
+	#
+	# params - The parameters to check.
+	#
+	# Returns the parameters iff the parameters are allowed.
+	def post_params
+		params.require(:post).permit(:content, :campaign_id, :post_id)
+	end
+
+	# Private: Checks if the current user owns the given post.
+	#
+	# @post - The given post.
+	#
+	# Returns true if the current user is the owner.
+	def isPostOwner
+		@post.user_id == session[:user_id]
+	end
 end
