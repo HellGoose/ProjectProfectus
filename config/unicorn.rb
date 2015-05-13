@@ -25,7 +25,9 @@ worker_processes 8
 # Time-out
 timeout 30
 
-require APP_ROOT + '/config/roundScript.rb'
+require APP_ROOT + '/config/round_script.rb'
+require APP_ROOT + '/config/database_init.rb'
 after_fork do |server, worker|
+	databaseInit() if worker.nr == 0
 	roundScript() if worker.nr == 0
 end

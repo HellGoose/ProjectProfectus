@@ -3,6 +3,13 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
+# Sorts, filters and changes pages for the campaign list.
+# Valid inputs are '>', '<' and 'reset'. 
+# '>' changes to the next page. '<' changes to the previous page.
+# 'Reset' basically goes to the first page of the current list.
+# For the campaign loading a GET request is sent to the webserver
+# and the controller returns the correct list based on the filters
+# sorting and page. The list is then dynamically replacing the current list.
 changePage = (dir) ->
   page = $('#data').data('page')
   size = $('#data').data('size')
@@ -30,9 +37,9 @@ changePage = (dir) ->
       if size > interval
         $('#next').attr('disabled', false)
   else
+    page = 1
     $.get '/campaigns/page/' + category + '/' + searchText, (data, status) ->
       $('#data').data('size', data.message)
-      page = 1
       $('#prev').attr('disabled', true)
       if data.message <= interval
         $('#next').attr('disabled', true)
@@ -46,6 +53,8 @@ changePage = (dir) ->
     return
   return
 
+# Sets the search text in the custom data variable and resets the 
+# campaign list.
 search = ->
   searchText = $('#searchText').val()
   if searchText == ''
@@ -54,17 +63,22 @@ search = ->
   changePage('reset')
   return
 
+# Runs the code after the document is ready
 $(document).ready ->
+  # Recognizes which path the user is on.
   if (window.location.pathname == '/campaigns' || window.location.pathname == '/campaigns/')
     page = $('#data').data('page')
     size = $('#data').data('size')
     interval = $('#data').data('interval')
 
+    # Initially disables button if there are no more campaigns on the next
+    # page or the user is on page 1
     if page == 1
       $('#prev').attr('disabled', true)
     if size <= interval
       $('#next').attr('disabled', true)
 
+    # Changes pages when the user clicks on the next and previous buttons.
     $('#next').click ->
       changePage('>')
       return
@@ -72,22 +86,31 @@ $(document).ready ->
       changePage('<')
       return
 
+    # Sets the category when the user clicks on a category and resets
+    # the current campaign list.
     $('.catButton').click ->
       $('#data').data('category', @id)
       $('#data').data('size', @name)
+      $('.catButton').removeClass('active')
+      $(this).addClass('active')
       changePage('reset')
       $('#'+@id+'.catButton').attr('style', 'color: black')
       return
 
+    # Initiating a search when the user clicks the search button.
     $('#searchButton').click ->
       search()
       return
 
+    # Sets the sorting filter based on what the user chooses
+    # and resets the current campaign list.
     $('#sortBy').on 'change', ->
       $('#data').data('sort-by', $('#sortBy').find(':selected').val())
       changePage('reset')
       return
 
+    # Changes pages when the user uses the arrow keys and initiating a
+    # search when the user uses the enter key.
     window.onkeyup = (e) ->
       key = if e.keyCode then e.keyCode else e.which
       switch key
@@ -105,6 +128,12 @@ $(document).ready ->
       return
 
   else if (window.location.pathname == '/campaigns/new')
+    # Runs the embedly scraper when the user pastes a valid link
+    # into the campaign_link input field. The code both checks if the 
+    # link is a valid link and also where it goes.
+    # After the scraper has returned data, a preview will be rendered and
+    # the Submit button will be enabled. The Submit button will be disabled
+    # if the link is invalid.
     $('#campaign_link').on 'input', ->
       $('#submitButton').attr('disabled', true)
       campaign = $('#campaign_link').val()
@@ -120,27 +149,9 @@ $(document).ready ->
         clearCampaignPreview()
         return
       return
-  else
-
-    $('.up_vote').click ->
-      button_id = @id
-      $.post '/vote/campaign/' + button_id + '/up', (data, status) ->
-        $('#'+button_id+'.down_vote').attr('disabled', false)
-        $('#'+button_id+'.up_vote').attr('disabled', true)
-        $('#votes_' + button_id).html(data.message)
-        return
-      return
-
-    $('.down_vote').click ->
-      button_id = @id
-      $.post '/vote/campaign/' + button_id + '/down', (data, status) ->
-        $('#'+button_id+'.down_vote').attr('disabled', true)
-        $('#'+button_id+'.up_vote').attr('disabled', false)
-        $('#votes_' + button_id).html(data.message)
-        return
-      return
   return
 
+# Renders a preview of the campaign the scraper received.
 renderCampaignPreview = (data) ->
   $('#description-field').val(data.description)
   $('#image-field').val(data.images[0].url)
@@ -151,6 +162,7 @@ renderCampaignPreview = (data) ->
   $('#campaign-description').html(data.description)
   return
 
+# Clears the campaign preview area
 clearCampaignPreview = ->
   $('#description-field').val('')
   $('#image-field').val('')

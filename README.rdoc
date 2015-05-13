@@ -71,7 +71,7 @@ We now need the Ruby Gems to be installed.
   bundle install
 
 Setup MySQL server as shown {here.}[http://www.rackspace.com/knowledge_center/article/installing-mysql-server-on-ubuntu] 
-Users and database needs to be updated in config/database.yml in the production block
+Users and database needs to be updated in config/database.yml in the production block.
 
 This code will setup the database and compile the assets the app will use.
 
