@@ -27,8 +27,8 @@ class CampaignsController < ApplicationController
 	# Route: GET root/campaigns/:id
 	# 	:id - The id of the campaign in the database.
 	#
-	# @postInterval - All campaigns present in the database.
-	# @posts 				- Number of campaigns shown per page.
+	# @posts 				- All posts present in the database. 
+	# @postInterval	- Number of campaigns shown per page.
 	# @post 				- Placeholder for the "new post" form
 	#
 	# Renders campaign#show.
@@ -50,10 +50,13 @@ class CampaignsController < ApplicationController
 	# Route: PUT root/campaigns/:id
 	# 	:id - The id of the campaign in the database.
 	#
-	# Renders campaign#show iff the update succeeds, else rerenders campaign#edit with the error.
+	# @campaign - The campaign to update.
+	#
+	# Renders campaign#show iff the update succeeds, 
+	# otherwise rerenders campaign#edit with the error.
 	def update
 		respond_to do |format|
-			if (isCampaignOwner or isAdmin) && @campaign.update(campaign_params)
+			if (isCampaignOwner or isAdmin) and @campaign.update(campaign_params)
 				msg = "<span class=\"alert alert-success\">Campaign was successfully updated.</span>"
 				format.html { redirect_to @campaign, notice: msg }
 				format.json { render :show, status: :ok, location: @campaign }
@@ -70,6 +73,7 @@ class CampaignsController < ApplicationController
 	# @campaign 	- The campaign to be added in the database.
 	# embedly 	 	- An instance of the Embedly API used for scraping data off websites.
 	# embedlyData - The relevant data scraped from the given URL.
+	# whiteList		- A list of all allowed provider_URLs.
 	#
 	# Renders campaign#index.
 	def create
@@ -81,11 +85,14 @@ class CampaignsController < ApplicationController
 			embedlyData = (embedly.extract url: @campaign.link).first
 			kickstarterURL = "https://www.kickstarter.com"
 			indigogoURL = "http://www.indiegogo.com"
+			whiteList = [kickstarterURL,indigogoURL]
 
-			if embedlyData.provider_url == kickstarterURL or embedlyData.provider_url == indigogoURL
+			case embedlyData.provider_url
+			when *whiteList
 				embedlyData.title.slice!("CLICK HERE to support ")
 				@campaign.title = embedlyData.title
-				@campaign.description = embedlyData.description.encode('utf-8', 'binary', invalid: :replace, undef: :replace, replace: '')
+				description = embedlyData.description.encode('utf-8', 'binary', invalid: :replace, undef: :replace, replace: '')
+				@campaign.description = description[0, 255]
 
 				respond_to do |format|
 					if @campaign.save
@@ -112,7 +119,10 @@ class CampaignsController < ApplicationController
 	# Route: DELETE root/campaigns/:id
 	# 	:id - The id of the campaign in the database.
 	#
-	# Renders user#show iff the deletion succeeded, else renders campaign#show with the error.
+	# @campaign - The campaign to be deleted.
+	#
+	# Renders user#show iff the deletion succeeded,
+	# otherwise renders campaign#show with the error.
 	def destroy
 		respond_to do |format|
 			if (isCampaignOwner or isAdmin) and @campaign.destroy
@@ -132,8 +142,8 @@ class CampaignsController < ApplicationController
 	# 	:id - The id of the campaign relative to the current voting step.
 	#
 	# current_user.isOnStep - The voting step the current user is on.
-	# 	isOnStep <  4 - The vote is processed.
-	#  	isOnStep == 4 - The user is done voting, and the result is rendered.
+	# 	isOnStep <	4 - The vote is processed.
+	# 	isOnStep == 4 - The user is done voting, and the result is rendered.
 	#
 	# Renders the next voting step iff the user is logged in. else 
 	# renders an error if the user is not logged in or there are not enough 
@@ -196,7 +206,7 @@ class CampaignsController < ApplicationController
 	end
 
 	# Public: Filters out which campaigns to be rendered on a page.
-	# Route: root//campaigns/page/:category/:page/:interval/:sortBy/:searchText
+	# Route: root/campaigns/page/:category/:page/:interval/:sortBy/:searchText
 	# 	:category 	- The id of the category in the database.
 	# 	:page 			- The current page.
 	# 	:interval 	- Campaigns per page.
