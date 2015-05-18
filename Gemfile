@@ -48,10 +48,10 @@ gem 'capybara'
 # use with: Capybara.javascript_driver = :webkit
 
 # Use Poltergeist for headless testing
-#gem 'poltergeist', :group => :test
+gem 'poltergeist', :group => :test
 
 # Use Selenium for JS support when testing
-gem 'selenium-webdriver', :group => :test
+#gem 'selenium-webdriver', :group => :test
 
 # Use DatabaseCleaner for cleaning test DB before run
 gem 'database_cleaner', '~> 1.4.1'
@@ -70,7 +70,7 @@ group :development, :test do
   gem 'spring'
 
   # Rspec testing framework
-  gem 'rspec-rails', '~> 3.0'	
+  gem 'rspec-rails'#, '~> 3.0'	
 
   # Use factory_girl for fixtures
 	gem 'factory_girl_rails'

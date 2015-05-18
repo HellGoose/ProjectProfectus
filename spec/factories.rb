@@ -13,6 +13,7 @@ end
 
 FactoryGirl.define do
 	factory :campaign do
+		title						'kickstarter'
 		link 						'https://www.kickstarter.com/'
 		user_id     		1
 		created_at			Time.now
@@ -22,7 +23,7 @@ end
 
 FactoryGirl.define do
 	factory :round do
-		duration 				5
+		duration 				100000
 		forceNewRound 	0
 		decayRate 			0.75
 		created_at			Time.now

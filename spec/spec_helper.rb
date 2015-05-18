@@ -18,10 +18,12 @@
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 require 'rails_helper'
 require 'capybara/rspec'
+require 'capybara/poltergeist'
 require 'database_cleaner'
 require 'support/feature_oauth_helper'
 require 'support/request_oauth_helper'
-require 'support/database_cleaner.rb' # Uncomment to not clean DB after test run
+#require 'support/database_cleaner.rb' # Uncomment to not clean DB after test run
+
 
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
@@ -94,7 +96,7 @@ RSpec.configure do |config|
   config.use_transactional_fixtures = false
 
   Capybara.default_host = 'http://localhost:3000'
-  Capybara.javascript_driver = :selenium
+  Capybara.javascript_driver = :poltergeist#:selenium
   #Capybara.ignore_hidden_elements = true
 
   # Include FactoryGirl so we can use 'create' instead of 'FactoryGirl.create'
