@@ -27,8 +27,9 @@ gem 'turbolinks'
 gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
-
+# Use social share buttons to easily share content to sites like: Facebook, twitter, etc
 gem 'social-share-button', '~> 0.1.6'
+# Use embedly for scraping info off websites
 gem 'embedly'
 
 # Use ActiveModel has_secure_password
@@ -50,4 +51,3 @@ group :development, :test do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
 end
-

@@ -1,28 +1,35 @@
 Rails.application.routes.draw do
+	# About page
 	get 'about/index'
 
+	# Login and Session
 	get 'auth/:provider/callback', to: 'sessions#create'		
 	get 'auth/failure', to: redirect('/')
 	get 'signout', to: 'sessions#destroy', as: 'signout'
 
+	# Posts and comments
 	get '/posts/answer/:campaign_id/:post_id', to: 'posts#answer'
 	get '/campaigns/:id/posts/page/:page/:interval', to: 'posts#page'
 	get '/posts/:id/comments/page/:page/:interval', to: 'posts#commentPage'
 
+	# Campaign filtering
 	get '/campaigns/page/:category/:searchText', to: 'campaigns#size'
 	get '/campaigns/page/:category/:page/:interval/:sortBy/:searchText', to: 'campaigns#page', :as => :campaigns_page
 
+	# Voting
 	post '/vote/post/:id/:dir', to: 'posts#vote'
 	get '/vote/campaign/:id/', to: 'campaigns#vote'
 
+	# News
 	get '/news/page/:page/:interval', to: 'news#page'
 
+	# Campaigns belonging to a user
 	get '/users/:id/campaigns/:page/:interval', to: 'users#campaignPage'
-	get '/campaigns/:id/posts/page/:page/:interval', to: 'posts#page'
-	get '/posts/:id/comments/page/:page/:interval', to: 'posts#commentPage'
 
+	# Round administrating
 	post '/admin/round/:type/:val', to: 'admin#round'
 
+	# Root
 	root 'home#index'
 
 	resources :news
