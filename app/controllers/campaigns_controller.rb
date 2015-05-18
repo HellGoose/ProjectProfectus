@@ -85,7 +85,8 @@ class CampaignsController < ApplicationController
 			if embedlyData.provider_url == kickstarterURL or embedlyData.provider_url == indigogoURL
 				embedlyData.title.slice!("CLICK HERE to support ")
 				@campaign.title = embedlyData.title
-				@campaign.description = embedlyData.description.encode('utf-8', 'binary', invalid: :replace, undef: :replace, replace: '')
+				description = embedlyData.description.encode('utf-8', 'binary', invalid: :replace, undef: :replace, replace: '')
+				@campaign.description = description[0, 255]
 
 				respond_to do |format|
 					if @campaign.save
