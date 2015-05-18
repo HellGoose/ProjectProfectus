@@ -1,6 +1,17 @@
 class PostsController < ApplicationController
 	before_action :set_post, only: [:edit, :update, :destroy]
 
+	# Public: Gets the comments of a post.
+	# Route: GET root/posts/:id/comments/page/:page/:interval
+	# 	:id 			- The id of the post in the database
+	# 	:page 		- The current comment page to be shown.
+	# 	:interval - Number of comments per page.
+	#
+	# comments - All the comments related to the post.
+	# page 		 - The current page to be shown.
+	# interval - Number of comments before the "show more" button.
+	#
+	# Renders all the comments of a post.
 	def commentPage
 		comments = Post.find(params[:id]).comments.order("voteCount DESC")
 		page = params[:page]
@@ -10,6 +21,17 @@ class PostsController < ApplicationController
 		end
 	end
 
+	# Public: Gets the posts of a campaign.
+	# Route: GET root/campaigns/:id/posts/page/:page/:interval
+	# 	:id 			- The id of the campaign in the database
+	# 	:page 		- The current post page to be shown.
+	# 	:interval - Number of posts per page.
+	#
+	# comments - All the posts related to the campaign.
+	# page 		 - The current page to be shown.
+	# interval - Number of cposts before the "show more" button.
+	#
+	# Renders all the posts of a campaign.
 	def page
 		@posts = Campaign.find(params[:id]).posts.where("isComment = 0").order("voteCount DESC")
 		page = params[:page]
@@ -19,6 +41,16 @@ class PostsController < ApplicationController
 		end
 	end
 
+	# Public: Prepares variables for a "new comment" form.
+	# Route: GET root/posts/answer/:campaign_id/:post_id
+	# 	:camapign_id - The id of the campaign in the database.
+	# 	:post_id 		 - The id of the post in the database.
+	#
+	# @post 		- Placeholder for the "new comment" form.
+	# @campaign - The campaign the comment belongs to.
+	# @op 			- The post the comment belongs to.
+	#
+	# Renders the "new comment" form.
 	def answer
 		if current_user
 			@post = Post.new
@@ -30,6 +62,15 @@ class PostsController < ApplicationController
 		end
 	end
 
+	# Public: Process vote requests for posts.
+	# Route: GET root/vote/post/:id/:dir
+	# 	:id  - The id of the post in the database.
+	# 	:dir - The direction of the vote (Up or Down)
+	#
+	# post - The post to be voted.
+	# userVote - Contains the actual vote.
+	#
+	# Renders the updated voting score.
 	def vote
 		if current_user
 			post = Post.find(params[:id])
@@ -59,7 +100,15 @@ class PostsController < ApplicationController
 		end
 	end
 
-	# GET /projects/new
+	# Public: Prepares variables for a "new post" form.
+	# Route: GET root/posts/answer/:campaign_id/:post_id
+	# 	:camapign_id - The id of the campaign in the database.
+	# 	:post_id 		 - The id of the post in the database.
+	#
+	# @post 		- Placeholder for the "new post" form.
+	# @op 			- The post the post belongs to. (nil)
+	#
+	# Renders the "new post" form.
 	def new
 		if current_user
 			@post = Post.new
@@ -67,14 +116,26 @@ class PostsController < ApplicationController
 		end
 	end
 
+	# Public: Prepares variables for post#edit.
+	# Route: GET root/post/:id/edit
+	# 	:id - The id of the post in the database.
+	#
+	# Renders post#edit iff current user is post owner or admin, 
+	# otherwise redirects to related campaign page.
 	def edit
 		if !isPostOwner && !isAdmin
 			redirect_to Campaign.find(@post.campaign_id)
 		end
 	end
 
-	# POST /projects
-	# POST /projects.json
+	# Public: Creates a new post.
+	# Route: POST root/posts/
+	#
+	# @post 			- The post to be added in the database.
+	# @campaign 	- The campaign the post belongs to.
+	#
+	# Renders campaign#show iff the creaton succeeds,
+	# otherwise renders campaign#show with the error.
 	def create
 		if current_user
 			@post = Post.new(content: post_params[:content], campaign_id: post_params[:campaign_id])
@@ -102,8 +163,15 @@ class PostsController < ApplicationController
 		end
 	end
 
-	# PATCH/PUT /projects/1
-	# PATCH/PUT /projects/1.json
+	# Public: Updates a post iff the current user is the post owner or an admin.
+	# Route: PUT root/posts/:id
+	# 	:id - The id of the post in the database.
+	#
+	# @post 	 - The post to be updated.
+	# campaign - The campaign the post belongs to.
+	#
+	# Renders campaign#show iff the update succeeds, 
+	# otherwise rerenders post#edit with the error.
 	def update
 		campaign = Campaign.find(@post.campaign_id)
 		respond_to do |format|
@@ -118,8 +186,15 @@ class PostsController < ApplicationController
 		end
 	end
 
-	# DELETE /projects/1
-	# DELETE /projects/1.json
+	# Public: Deletes a post from the database.
+	# Route: DELETE root/posts/:id
+	# 	:id - The id of the post in the database.
+	#
+	# @post 	 - The post to be updated.
+	# campaign - The campaign the post belongs to.
+	#
+	# Renders campaign#show iff the deletion succeeded,
+	# otherwise renders campaign#show with the error.
 	def destroy
 		campaign = Campaign.find(@post.campaign_id)
 		respond_to do |format|

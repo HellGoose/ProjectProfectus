@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>class CampaignsController - Rails Application Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script src="./js/jquery.js"></script>
+<script src="./js/darkfish.js"></script>
+
+<link href="./css/fonts.css" rel="stylesheet">
+<link href="./css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link"><a href="ApplicationController.html">ApplicationController</a>
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-i-create">#create</a>
+    
+    <li ><a href="#method-i-destroy">#destroy</a>
+    
+    <li ><a href="#method-i-edit">#edit</a>
+    
+    <li ><a href="#method-i-index">#index</a>
+    
+    <li ><a href="#method-i-new">#new</a>
+    
+    <li ><a href="#method-i-page">#page</a>
+    
+    <li ><a href="#method-i-show">#show</a>
+    
+    <li ><a href="#method-i-size">#size</a>
+    
+    <li ><a href="#method-i-update">#update</a>
+    
+    <li ><a href="#method-i-vote">#vote</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-CampaignsController">
+  <h1 id="class-CampaignsController" class="class">
+    class CampaignsController
+  </h1>
+
+  <section class="description">
+    
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-create" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">create</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Public: Creates a new campaign. Route: POST root/campaigns/</p>
+
+<p>@campaign    - The campaign to be added in the database. embedly          -
+An instance of the Embedly API used for scraping data off websites.
+embedlyData - The relevant data scraped from the given URL.</p>
+
+<p>Renders campaign#index.</p>
+          
+          
+
+          
+          <div class="method-source-code" id="create-source">
+            <pre><span class="ruby-comment"># File app/controllers/campaigns_controller.rb, line 75</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">create</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>
+                <span class="ruby-ivar">@campaign</span> = <span class="ruby-constant">Campaign</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">campaign_params</span>)
+                <span class="ruby-ivar">@campaign</span>.<span class="ruby-identifier">user_id</span> = <span class="ruby-identifier">session</span>[<span class="ruby-value">:user_id</span>]
+
+                <span class="ruby-identifier">embedly</span> = <span class="ruby-constant">Embedly</span><span class="ruby-operator">::</span><span class="ruby-constant">API</span>.<span class="ruby-identifier">new</span> <span class="ruby-identifier">key</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;0eef325249694df490605b1fd29147f5&quot;</span>
+                <span class="ruby-identifier">embedlyData</span> = (<span class="ruby-identifier">embedly</span>.<span class="ruby-identifier">extract</span> <span class="ruby-identifier">url</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@campaign</span>.<span class="ruby-identifier">link</span>).<span class="ruby-identifier">first</span>
+                <span class="ruby-identifier">kickstarterURL</span> = <span class="ruby-string">&quot;https://www.kickstarter.com&quot;</span>
+                <span class="ruby-identifier">indigogoURL</span> = <span class="ruby-string">&quot;http://www.indiegogo.com&quot;</span>
+
+                <span class="ruby-keyword">if</span> <span class="ruby-identifier">embedlyData</span>.<span class="ruby-identifier">provider_url</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">kickstarterURL</span> <span class="ruby-keyword">or</span> <span class="ruby-identifier">embedlyData</span>.<span class="ruby-identifier">provider_url</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">indigogoURL</span>
+                        <span class="ruby-identifier">embedlyData</span>.<span class="ruby-identifier">title</span>.<span class="ruby-identifier">slice!</span>(<span class="ruby-string">&quot;CLICK HERE to support &quot;</span>)
+                        <span class="ruby-ivar">@campaign</span>.<span class="ruby-identifier">title</span> = <span class="ruby-identifier">embedlyData</span>.<span class="ruby-identifier">title</span>
+                        <span class="ruby-ivar">@campaign</span>.<span class="ruby-identifier">description</span> = <span class="ruby-identifier">embedlyData</span>.<span class="ruby-identifier">description</span>.<span class="ruby-identifier">encode</span>(<span class="ruby-string">&#39;utf-8&#39;</span>, <span class="ruby-string">&#39;binary&#39;</span>, <span class="ruby-identifier">invalid</span><span class="ruby-operator">:</span> <span class="ruby-value">:replace</span>, <span class="ruby-keyword">undef</span><span class="ruby-operator">:</span> <span class="ruby-value">:replace</span>, <span class="ruby-identifier">replace</span><span class="ruby-operator">:</span> <span class="ruby-string">&#39;&#39;</span>)
+
+                        <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+                                <span class="ruby-keyword">if</span> <span class="ruby-ivar">@campaign</span>.<span class="ruby-identifier">save</span>
+                                        <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">points</span> <span class="ruby-operator">+=</span><span class="ruby-value">107</span>
+                                        <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">save</span>
+                                        <span class="ruby-identifier">msg</span> = <span class="ruby-string">&quot;&lt;span class=\&quot;alert alert-success\&quot;&gt;Campaign was successfully created.&lt;/span&gt;&quot;</span>
+                                        <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">redirect_to</span> <span class="ruby-ivar">@campaign</span>, <span class="ruby-identifier">notice</span><span class="ruby-operator">:</span> <span class="ruby-identifier">msg</span> }
+                                        <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">render</span> <span class="ruby-value">:show</span>, <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">:created</span>, <span class="ruby-identifier">location</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@campaign</span> }
+                                <span class="ruby-keyword">else</span>
+                                        <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">render</span> <span class="ruby-value">:new</span> }
+                                        <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@campaign</span>.<span class="ruby-identifier">errors</span>, <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">:unprocessable_entity</span> }
+                                <span class="ruby-keyword">end</span>
+                        <span class="ruby-keyword">end</span>
+                <span class="ruby-keyword">else</span>
+                        <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+                                <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">render</span> <span class="ruby-value">:new</span> }
+                                <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@campaign</span>.<span class="ruby-identifier">errors</span>, <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">:unprocessable_entity</span> }
+                        <span class="ruby-keyword">end</span>
+                <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-destroy" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">destroy</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Public: Deletes a campaign from the database. Route: DELETE
+root/campaigns/:id</p>
+
+<pre>:id - The id of the campaign in the database.</pre>
+
+<p>Renders user#show iff the deletion succeeded, else renders campaign#show
+with the error.</p>
+          
+          
+
+          
+          <div class="method-source-code" id="destroy-source">
+            <pre><span class="ruby-comment"># File app/controllers/campaigns_controller.rb, line 116</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">destroy</span>
+        <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+                <span class="ruby-keyword">if</span> (<span class="ruby-identifier">isCampaignOwner</span> <span class="ruby-keyword">or</span> <span class="ruby-identifier">isAdmin</span>) <span class="ruby-keyword">and</span> <span class="ruby-ivar">@campaign</span>.<span class="ruby-identifier">destroy</span>
+                        <span class="ruby-identifier">msg</span> = <span class="ruby-string">&quot;&lt;span class=\&quot;alert alert-success\&quot;&gt;Campaign was successfully destroyed.&lt;/span&gt;&quot;</span>
+                        <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">redirect_to</span> <span class="ruby-ivar">@campaign</span>.<span class="ruby-identifier">user</span>, <span class="ruby-identifier">notice</span><span class="ruby-operator">:</span> <span class="ruby-identifier">msg</span> }
+                        <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">head</span> <span class="ruby-value">:no_content</span> }
+                <span class="ruby-keyword">else</span>
+                        <span class="ruby-identifier">msg</span> = <span class="ruby-string">&quot;&lt;span class=\&quot;alert alert-warning\&quot;&gt;You cannot delete this campaign.&lt;/span&gt;&quot;</span>
+                        <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">redirect_to</span> <span class="ruby-ivar">@campaign</span>, <span class="ruby-identifier">notice</span><span class="ruby-operator">:</span> <span class="ruby-identifier">msg</span> }
+                        <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">head</span> <span class="ruby-value">:no_content</span> }
+                <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-edit" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">edit</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Public: Prepares variables for campaign#edit. Route: GET
+root/campaigns/:id/edit</p>
+
+<pre>:id - The id of the campaign in the database.</pre>
+
+<p>Renders campaign#edit.</p>
+          
+          
+
+          
+          <div class="method-source-code" id="edit-source">
+            <pre><span class="ruby-comment"># File app/controllers/campaigns_controller.rb, line 46</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">edit</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-index" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">index</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Public: Prepares variables for campaign#index. Route: GET root/campaigns/</p>
+
+<p>@campaigns                            - All campaigns present in the
+database. @campaignsInterval - Number of campaigns shown per page.</p>
+
+<p>Renders campaign#index.</p>
+          
+          
+
+          
+          <div class="method-source-code" id="index-source">
+            <pre><span class="ruby-comment"># File app/controllers/campaigns_controller.rb, line 11</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">index</span>
+        <span class="ruby-ivar">@campaigns</span> = <span class="ruby-constant">Campaign</span>.<span class="ruby-identifier">all</span>.<span class="ruby-identifier">order</span>(<span class="ruby-string">&quot;(globalScore + roundScore) DESC&quot;</span>)
+        <span class="ruby-ivar">@campaignsInterval</span> = <span class="ruby-value">8</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-new" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">new</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Public: Prepares variables for campaign#new. Route: GET root/campaigns/new</p>
+
+<p>@campaign - Placeholder for the “new campaign” form.</p>
+
+<p>Renders campaign#new.</p>
+          
+          
+
+          
+          <div class="method-source-code" id="new-source">
+            <pre><span class="ruby-comment"># File app/controllers/campaigns_controller.rb, line 22</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">new</span>
+        <span class="ruby-ivar">@campaign</span> = <span class="ruby-constant">Campaign</span>.<span class="ruby-identifier">new</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-page" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">page</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Public: Filters out which campaigns to be rendered on a page. Route:
+root//campaigns/page/:category/:page/:interval/:sortBy/:searchText</p>
+
+<pre>:category   - The id of the category in the database.
+:page                       - The current page.
+:interval   - Campaigns per page.
+:sortBy                     - The variables to sort by (String in MySQL sortBy syntax).
+:searchText - Input from the search field.</pre>
+
+<p>@campaigns                            - All campaigns present in the
+database. @campaignsInterval - Number of campaigns shown per page.</p>
+
+<p>Renders campaign#index.</p>
+          
+          
+
+          
+          <div class="method-source-code" id="page-source">
+            <pre><span class="ruby-comment"># File app/controllers/campaigns_controller.rb, line 210</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">page</span>
+        <span class="ruby-identifier">page</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:page</span>]
+        <span class="ruby-identifier">interval</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:interval</span>]
+        <span class="ruby-identifier">category</span> = <span class="ruby-value">0</span>
+        <span class="ruby-identifier">sortBy</span> = <span class="ruby-string">&quot; &quot;</span>
+        <span class="ruby-identifier">searchText</span> = <span class="ruby-string">&quot; &quot;</span>
+        <span class="ruby-identifier">category</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:category</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:category</span>] <span class="ruby-operator">!=</span> <span class="ruby-keyword">nil</span>
+        <span class="ruby-identifier">sortBy</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:sortBy</span>].<span class="ruby-identifier">tr</span>(<span class="ruby-string">&quot;_&quot;</span>, <span class="ruby-string">&quot; &quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:sortBy</span>] <span class="ruby-operator">!=</span> <span class="ruby-keyword">nil</span>
+        <span class="ruby-identifier">searchText</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:searchText</span>].<span class="ruby-identifier">tr</span>(<span class="ruby-string">&quot;_&quot;</span>, <span class="ruby-string">&quot; &quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:searchText</span>] <span class="ruby-operator">!=</span> <span class="ruby-keyword">nil</span>
+
+        <span class="ruby-ivar">@campaigns</span> = <span class="ruby-identifier">search</span>(<span class="ruby-identifier">searchText</span>, <span class="ruby-identifier">category</span>).<span class="ruby-identifier">order</span>(<span class="ruby-identifier">sortBy</span>)
+        
+        <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+                <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">partial</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;campaignList&quot;</span>, <span class="ruby-identifier">locals</span><span class="ruby-operator">:</span> { <span class="ruby-identifier">page</span><span class="ruby-operator">:</span> <span class="ruby-identifier">page</span>, <span class="ruby-identifier">campaignsPerPage</span><span class="ruby-operator">:</span> <span class="ruby-identifier">interval</span>}}
+        <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-show" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">show</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Public: Prepares variables for campaign#show. Route: GET root/campaigns/:id</p>
+
+<pre>:id - The id of the campaign in the database.</pre>
+
+<p>@postInterval - All campaigns present in the database. @posts              
+- Number of campaigns shown per page. @post                               
+- Placeholder for the “new post” form</p>
+
+<p>Renders campaign#show.</p>
+          
+          
+
+          
+          <div class="method-source-code" id="show-source">
+            <pre><span class="ruby-comment"># File app/controllers/campaigns_controller.rb, line 35</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">show</span>
+        <span class="ruby-ivar">@postsInterval</span> = <span class="ruby-value">10</span>
+        <span class="ruby-ivar">@posts</span> = <span class="ruby-ivar">@campaign</span>.<span class="ruby-identifier">posts</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">isComment</span><span class="ruby-operator">:</span> <span class="ruby-keyword">false</span>).<span class="ruby-identifier">order</span>(<span class="ruby-string">&quot;voteCount DESC&quot;</span>)
+        <span class="ruby-ivar">@post</span> = <span class="ruby-constant">Post</span>.<span class="ruby-identifier">new</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-size" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">size</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Public: Gets the size of the current array of filtered campaigns. Route:
+GET root/campaigns/page/:category/:searchText</p>
+
+<pre>:category   - The id of the category in the database.
+:searchText - Input from the search field.</pre>
+
+<p>category   - The category used to filter the campaigns. searchText - The
+searchText used to filter the campaigns. campaigns     - The current array
+of filtered campaigns.</p>
+
+<p>Returns the size of the current array of filtered campaigns.</p>
+          
+          
+
+          
+          <div class="method-source-code" id="size-source">
+            <pre><span class="ruby-comment"># File app/controllers/campaigns_controller.rb, line 184</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">size</span>
+        <span class="ruby-identifier">category</span> = <span class="ruby-value">0</span>
+        <span class="ruby-identifier">searchText</span> = <span class="ruby-string">&quot; &quot;</span>
+        <span class="ruby-identifier">category</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:category</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:category</span>] <span class="ruby-operator">!=</span> <span class="ruby-keyword">nil</span>
+        <span class="ruby-identifier">searchText</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:searchText</span>].<span class="ruby-identifier">gsub</span>(<span class="ruby-string">&quot;_&quot;</span>, <span class="ruby-string">&quot; &quot;</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:searchText</span>] <span class="ruby-operator">!=</span> <span class="ruby-keyword">nil</span>
+
+        <span class="ruby-identifier">campaigns</span> = <span class="ruby-identifier">search</span>(<span class="ruby-identifier">searchText</span>, <span class="ruby-identifier">category</span>)
+        
+        <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+                <span class="ruby-identifier">msg</span> = { <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;ok&quot;</span>, <span class="ruby-identifier">message</span><span class="ruby-operator">:</span> <span class="ruby-identifier">campaigns</span>.<span class="ruby-identifier">size</span> }
+                <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span>  { <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-identifier">msg</span> }
+        <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-update" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">update</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Public: Updates a campaign iff the current user is the campaign owner or an
+admin. Route: PUT root/campaigns/:id</p>
+
+<pre>:id - The id of the campaign in the database.</pre>
+
+<p>Renders campaign#show iff the update succeeds, else rerenders campaign#edit
+with the error.</p>
+          
+          
+
+          
+          <div class="method-source-code" id="update-source">
+            <pre><span class="ruby-comment"># File app/controllers/campaigns_controller.rb, line 54</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">update</span>
+        <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+                <span class="ruby-keyword">if</span> (<span class="ruby-identifier">isCampaignOwner</span> <span class="ruby-keyword">or</span> <span class="ruby-identifier">isAdmin</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@campaign</span>.<span class="ruby-identifier">update</span>(<span class="ruby-identifier">campaign_params</span>)
+                        <span class="ruby-identifier">msg</span> = <span class="ruby-string">&quot;&lt;span class=\&quot;alert alert-success\&quot;&gt;Campaign was successfully updated.&lt;/span&gt;&quot;</span>
+                        <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">redirect_to</span> <span class="ruby-ivar">@campaign</span>, <span class="ruby-identifier">notice</span><span class="ruby-operator">:</span> <span class="ruby-identifier">msg</span> }
+                        <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">render</span> <span class="ruby-value">:show</span>, <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">:ok</span>, <span class="ruby-identifier">location</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@campaign</span> }
+                <span class="ruby-keyword">else</span>
+                        <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">render</span> <span class="ruby-value">:edit</span> }
+                        <span class="ruby-identifier">format</span>.<span class="ruby-identifier">json</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">json</span><span class="ruby-operator">:</span> <span class="ruby-ivar">@campaign</span>.<span class="ruby-identifier">errors</span>, <span class="ruby-identifier">status</span><span class="ruby-operator">:</span> <span class="ruby-value">:unprocessable_entity</span> }
+                <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-vote" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">vote</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Public: Processes vote requests for campaigns. Including: Voting,
+initiating and resuming. Route: GET root/vote/campaign/:id</p>
+
+<pre>:id - The id of the campaign relative to the current voting step.</pre>
+
+<p>current_user.isOnStep - The voting step the current user is on.</p>
+
+<pre>isOnStep &lt;  4 - The vote is processed.
+isOnStep == 4 - The user is done voting, and the result is rendered.</pre>
+
+<p>Renders the next voting step iff the user is logged in. else  renders an
+error if the user is not logged in or there are not enough  campaigns in
+the database.</p>
+          
+          
+
+          
+          <div class="method-source-code" id="vote-source">
+            <pre><span class="ruby-comment"># File app/controllers/campaigns_controller.rb, line 141</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">vote</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-constant">Campaign</span>.<span class="ruby-identifier">all</span>.<span class="ruby-identifier">count</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">15</span>
+                <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+                        <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">partial</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;home/not_enough_campaigns&quot;</span>}
+                <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">current_user</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">isOnStep</span> <span class="ruby-operator">&lt;=</span> <span class="ruby-value">4</span>
+                <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-value">0</span> <span class="ruby-keyword">and</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">isOnStep</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">4</span>
+                        <span class="ruby-identifier">processVote</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>].<span class="ruby-identifier">to_i</span>)
+                        <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">isOnStep</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
+                        <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">save</span>
+                <span class="ruby-keyword">end</span>
+
+                <span class="ruby-ivar">@campaignVoting</span> = []
+                <span class="ruby-identifier">setUpNextVotingStep</span>
+
+                <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">isOnStep</span> <span class="ruby-operator">==</span> <span class="ruby-value">4</span>
+                        <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+                                <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">partial</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;campaignVotingDone&quot;</span>}
+                        <span class="ruby-keyword">end</span>
+                <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">isOnStep</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">4</span>
+                        <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+                                <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">partial</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;campaignVoting&quot;</span>}
+                        <span class="ruby-keyword">end</span>
+                <span class="ruby-keyword">else</span>
+                        <span class="ruby-identifier">render</span> <span class="ruby-identifier">nothing</span><span class="ruby-operator">:</span> <span class="ruby-keyword">true</span>
+                <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">else</span>
+                <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+                        <span class="ruby-identifier">format</span>.<span class="ruby-identifier">js</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">partial</span><span class="ruby-operator">:</span> <span class="ruby-string">&quot;home/not_logged_in&quot;</span>}
+                <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

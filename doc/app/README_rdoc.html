@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>README - Rails Application Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script src="./js/jquery.js"></script>
+<script src="./js/darkfish.js"></script>
+
+<link href="./css/fonts.css" rel="stylesheet">
+<link href="./css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="file">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+<div class="nav-section">
+  <h3>Table of Contents</h3>
+
+  <ul class="link-list" role="directory">
+    <li><a href="#label-README">README</a>
+    <li><a href="#label-Installation+Guide">Installation Guide</a>
+    <li><a href="#label-Ubuntu">Ubuntu</a>
+    <li><a href="#label-Installation+with+git-3A">Installation with git:</a>
+    <li><a href="#label-After+the+app+has+been+downloaded-3A">After the app has been downloaded:</a>
+  </ul>
+</div>
+
+
+  <div id="project-metadata">
+    <div id="fileindex-section" class="nav-section">
+  <h3>Pages</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="./README_rdoc.html">README</a>
+  
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-label="Page README.rdoc">
+
+<h2 id="label-README"><a href="README_rdoc.html">README</a><span><a href="#label-README">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<p>This <a href="README_rdoc.html">README</a> would normally document whatever
+steps are necessary to get the application up and running.</p>
+
+<p>Things you may want to cover:</p>
+<ul><li>
+<p>Ruby version</p>
+</li><li>
+<p>System dependencies</p>
+</li><li>
+<p>Configuration</p>
+</li><li>
+<p>Database creation</p>
+</li><li>
+<p>Database initialization</p>
+</li><li>
+<p>How to run the test suite</p>
+</li><li>
+<p>Services (job queues, cache servers, search engines, etc.)</p>
+</li><li>
+<p>Deployment instructions</p>
+</li><li>
+<p>…</p>
+</li></ul>
+
+<p>Please feel free to use a different markup language if you do not plan to
+run <code>rake doc:app</code>.</p>
+
+<h3 id="label-Installation+Guide">Installation Guide<span><a href="#label-Installation+Guide">&para;</a> <a href="#top">&uarr;</a></span></h3>
+
+<h4 id="label-Ubuntu">Ubuntu<span><a href="#label-Ubuntu">&para;</a> <a href="#top">&uarr;</a></span></h4>
+
+<p>To install the web-app Ubuntu needs to have its aptitude updated and curl
+installed.</p>
+
+<pre>sudo apt-get update
+sudo apt-get install curl</pre>
+
+<p>For Rails to run we need to install Ruby via RVM (Ruby Version Manager).</p>
+
+<pre>gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
+\curl -L https://get.rvm.io | bash -s stable --ruby</pre>
+
+<p>We also need a JavaScript runtime and a MySQL client.</p>
+
+<pre>sudo apt-get install nodejs
+sudo apt-get install libmysqlclient-dev</pre>
+
+<p>Now we&#39;re going to install Rails. Alternatively we can install Rails
+without documentation.</p>
+
+<pre>gem install bundler
+gem install rails             
+(gem install rails --no-ri --no-rdoc)</pre>
+
+<h5 id="label-Installation+with+git-3A">Installation with git:<span><a href="#label-Installation+with+git-3A">&para;</a> <a href="#top">&uarr;</a></span></h5>
+
+<pre>mkdir Profectus
+sudo apt-get install git
+
+git init
+git remote add origin https://github.com/kristh/ProjectProfectus
+git pull origin master</pre>
+
+<h5 id="label-After+the+app+has+been+downloaded-3A">After the app has been downloaded:<span><a href="#label-After+the+app+has+been+downloaded-3A">&para;</a> <a href="#top">&uarr;</a></span></h5>
+
+<p>We now need the Ruby Gems to be installed.</p>
+
+<pre class="ruby"><span class="ruby-identifier">bundle</span> <span class="ruby-identifier">install</span>
+</pre>
+
+<p>Setup MySQL server as shown <a
+href="http://www.rackspace.com/knowledge_center/article/installing-mysql-server-on-ubuntu">here.</a>
+Users and database needs to be updated in config/database.yml in the
+production block.</p>
+
+<p>This code will setup the database and compile the assets the app will use.</p>
+
+<pre>rake db:schema:load
+rake assets:precompile</pre>
+
+<p>Finally we&#39;re able to run the app. To run Unicorn as daemon, simply add
+-D at the end. If more servers are to be deployed we recommend to disable
+the script running from unicorn.rb in the additional servers.</p>
+
+<pre>bundle exec unicorn -E production -c config/unicorn.rb</pre>
+
+<p>Facebook now needs to be configured to use the new host on the developer
+page to be able to login users to the system.</p>
+
+<p>Unicorn will run the page on 0.0.0.0:8080 as default. A proxy like Nginx
+can be used to proxy port 80 access to unicorn on port 8080.</p>
+</main>
+
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

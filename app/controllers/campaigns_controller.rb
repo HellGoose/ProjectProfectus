@@ -27,8 +27,8 @@ class CampaignsController < ApplicationController
 	# Route: GET root/campaigns/:id
 	# 	:id - The id of the campaign in the database.
 	#
-	# @postInterval - All campaigns present in the database.
-	# @posts 				- Number of campaigns shown per page.
+	# @posts 				- All posts present in the database. 
+	# @postInterval	- Number of campaigns shown per page.
 	# @post 				- Placeholder for the "new post" form
 	#
 	# Renders campaign#show.
@@ -50,7 +50,10 @@ class CampaignsController < ApplicationController
 	# Route: PUT root/campaigns/:id
 	# 	:id - The id of the campaign in the database.
 	#
-	# Renders campaign#show iff the update succeeds, else rerenders campaign#edit with the error.
+	# @campaign - The campaign to update.
+	#
+	# Renders campaign#show iff the update succeeds, 
+	# otherwise rerenders campaign#edit with the error.
 	def update
 		respond_to do |format|
 			if (isCampaignOwner or isAdmin) and @campaign.update(campaign_params)
@@ -116,7 +119,10 @@ class CampaignsController < ApplicationController
 	# Route: DELETE root/campaigns/:id
 	# 	:id - The id of the campaign in the database.
 	#
-	# Renders user#show iff the deletion succeeded, else renders campaign#show with the error.
+	# @campaign - The campaign to be deleted.
+	#
+	# Renders user#show iff the deletion succeeded,
+	# otherwise renders campaign#show with the error.
 	def destroy
 		respond_to do |format|
 			if (isCampaignOwner or isAdmin) and @campaign.destroy
@@ -136,8 +142,8 @@ class CampaignsController < ApplicationController
 	# 	:id - The id of the campaign relative to the current voting step.
 	#
 	# current_user.isOnStep - The voting step the current user is on.
-	# 	isOnStep <  4 - The vote is processed.
-	#  	isOnStep == 4 - The user is done voting, and the result is rendered.
+	# 	isOnStep <	4 - The vote is processed.
+	# 	isOnStep == 4 - The user is done voting, and the result is rendered.
 	#
 	# Renders the next voting step iff the user is logged in. else 
 	# renders an error if the user is not logged in or there are not enough 
