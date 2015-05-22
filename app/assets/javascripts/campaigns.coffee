@@ -136,13 +136,14 @@ $(document).ready ->
     # if the link is invalid.
     $('#campaign_link').on 'input', ->
       $('#submitButton').attr('disabled', true)
-      campaign = $('#campaign_link').val()
+      campaign = $('#campaign_link').val().split('?')[0]
       validURLs = ['kickstarter.com', 'indiegogo.com']
 
-      urlregex = new RegExp('^(http|https|ftp)://([a-zA-Z0-9.-]+(:[a-zA-Z0-9.&amp;%$-]+)*@)*((25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]).(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0).(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0).(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])|([a-zA-Z0-9-]+.)*[a-zA-Z0-9-]+.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Z]{2}))(:[0-9]+)*(/($|[a-zA-Z0-9.,?\'\\+&amp;%$#=~_-]+))*$')
+      urlregex = new RegExp('^(http|https)://([a-zA-Z0-9.-]+(:[a-zA-Z0-9.&amp;%$-]+)*@)*(([a-zA-Z0-9-]+.)*[a-zA-Z0-9-]+.(com|net|org|[a-zA-Z]{2}))')
       if urlregex.test(campaign) and new RegExp(validURLs.join("|")).test(campaign)
         $.embedly.extract(campaign, key: '0eef325249694df490605b1fd29147f5').progress (data) ->
-          renderCampaignPreview(data)
+          if data.title?
+            renderCampaignPreview(data)
           $('#submitButton').attr('disabled', false)
           return
       else
@@ -155,10 +156,10 @@ $(document).ready ->
 renderCampaignPreview = (data) ->
   $('#description-field').val(data.description)
   $('#image-field').val(data.images[0].url)
-  $('#title-field').val(data.title)
+  $('#title-field').val(data.title.replace('CLICK HERE to support ', ''))
 
   $('#campaign-image').attr('src', data.images[0].url)
-  $('#campaign-title').html(data.title)
+  $('#campaign-title').html(data.title.replace('CLICK HERE to support ', ''))
   $('#campaign-description').html(data.description)
   return
 
