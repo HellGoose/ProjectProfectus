@@ -22,7 +22,7 @@ require 'capybara/poltergeist'
 require 'database_cleaner'
 require 'support/feature_oauth_helper'
 require 'support/request_oauth_helper'
-#require 'support/database_cleaner.rb' # Uncomment to not clean DB after test run
+require 'support/database_cleaner.rb' # Uncomment to not clean DB after test run
 
 
 RSpec.configure do |config|
