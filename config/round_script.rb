@@ -1,5 +1,5 @@
 def roundScript
-	runScript = false
+	runScript = true
 	t = Thread.new {
 		puts ('Starting script!') if runScript == true
 		until defined?(ActiveRecord::Base)
@@ -12,7 +12,7 @@ def roundScript
 			if Time.now.to_i >= round.endTime.to_i or round.forceNewRound == true
 				puts ('Starting a new Round!')
 				runNewRound(round.decayRate)
-				round.endTime = (Time.now + round.duration).to_datetime
+				round.endTime = Time.at(Time.now.to_i + round.duration).to_datetime
 				round.forceNewRound = false
 				round.save
 			end
