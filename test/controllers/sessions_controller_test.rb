@@ -8,7 +8,7 @@ class SessionsControllerTest < ActionController::TestCase
   test "GET '/auth/facebook/callback' should set user_id" do
     valid_facebook_login_setup
     #get 'auth/facebook/callback'
-    request.env["omniauth.auth"] = OmniAuth.config.mock_auth[:facebook]
+    #request.env["omniauth.auth"] = OmniAuth.config.mock_auth[:facebook]
     get 'create'
     assert_equal(session[:user_id], User.last.id)
   end

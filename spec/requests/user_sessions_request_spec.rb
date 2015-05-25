@@ -5,7 +5,7 @@ describe "GET '/auth/facebook/callback'" do
   before(:each) do
     login_with_oauth(build(:user))
   end
-
+  
   it "should set user_id" do
     puts(User.last.id)
     expect(session[:user_id]).to eq(User.last.id)
@@ -49,13 +49,4 @@ describe "GET '/users/:user_id'" do
     get '/users/'+session[:user_id].to_s
     expect(response.status).to eq(200)
   end
-
-  # it "should redirect to user account page" do
-
-  # end
 end
-
-# describe "GET 'user/:user_id/edit'" do
-#   it "should ..." do
-#   end
-# end

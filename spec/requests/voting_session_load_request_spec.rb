@@ -64,8 +64,7 @@ describe "Users parallell voting requests" do
 			t.abort_on_exception = true
 		end
 	end
-	it "Should render website properly for user X", :js => true do 
-		sleep 10
+	it "Should render website properly for user X" do 
 		if @n == 10
 			get '/'
 			puts "finished!"

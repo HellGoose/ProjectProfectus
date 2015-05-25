@@ -20,6 +20,7 @@ module OmniAuthTestHelper
           }
         }
       })
+      get '/auth/facebook/callback'
     end
   end
 end
