@@ -9,12 +9,10 @@ def roundScript
 		round = Round.first
 		puts ('Script started') if runScript == true
 		while runScript do
-			if Time.now.to_i >= round.endTime.to_i  or round.forceNewRound == true
+			if Time.now.to_i >= round.endTime.to_i or round.forceNewRound == true
 				puts ('Starting a new Round!')
 				runNewRound(round.decayRate)
-				if !round.forceNewRound
-					round.endTime = (Time.now + round.duration).to_datetime
-				end
+				round.endTime = (Time.now + round.duration).to_datetime
 				round.forceNewRound = false
 				round.save
 			end
