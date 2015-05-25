@@ -13,7 +13,7 @@ def roundScript
 				puts ('Starting a new Round!')
 				runNewRound(round.decayRate)
 				if !round.forceNewRound
-					round.endTime = Time.at(round.endTime.to_i + round.duration).to_datetime
+					round.endTime = (Time.now + round.duration).to_datetime
 				end
 				round.forceNewRound = false
 				round.save
