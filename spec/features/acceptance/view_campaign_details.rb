@@ -32,18 +32,19 @@ $campaign_links = [
   'https://www.indiegogo.com/projects/imbrief-a-briefcase-as-smart-stylish-as-you-are'
 ]
 
-feature "View all campaigns" do
+feature "View campaign details" do
   before do
-    @user = build(:user)
+    @user = create(:user)
     login_with_oauth(@user)
-    #@campaign = build(:campaign, user_id: @user.id)
-    click_on 'Add Campaign'
-    fill_in 'campaign_link', :with => $campaign_links.pop#@campaign.link
-    click_on 'submitButton'
   end
-  scenario "by clicking 'campaigns' in navbar", :js => true do
-    click_on 'Campaigns'
-    save_screenshot('spec/features/screenshots/view_list_of_campaigns.png')
-    expect(page).to have_css('div#campaigns')
+  scenario "by clicking the campaign created", :js => true do
+    click_on 'Add Campaign'
+    fill_in 'campaign_link', :with => $campaign_links.pop
+    enable_element_by_id('submitButton')
+    click_on 'submitButton'
+    visit '/campaigns/'+Campaign.first.id.to_s
+    sleep 0.2
+    save_screenshot('spec/features/screenshots/view_campaign_details.png')
+    expect(page).to have_text('Go to Campaign Site')
   end
 end

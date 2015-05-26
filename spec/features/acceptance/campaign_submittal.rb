@@ -32,20 +32,18 @@ $campaign_links = [
   'https://www.indiegogo.com/projects/imbrief-a-briefcase-as-smart-stylish-as-you-are'
 ]
 
-feature "View campaign details" do
+feature "Campaign submittal" do
   before do
     @user = build(:user)
     login_with_oauth(@user)
     #@campaign = build(:campaign, user_id: @user.id)
-    click_on 'Add Campaign'
-    @campaign_link = $campaign_links.pop
-    fill_in 'campaign_link', :with => @campaign_link
-    click_on 'submitButton'
   end
-  scenario "by clicking the campaign created", :js => true do
-    click_on 'Campaigns'
-    click_on @campaign_link
-    save_screenshot('spec/features/screenshots/view_campaign_details.png')
-    expect(page).to have_text('Go to Campaign Site')
+  scenario "by adding a campaign", :js => true do
+    click_on 'Add Campaign'
+    fill_in 'campaign_link', :with => $campaign_links.pop
+    enable_element_by_id('submitButton')
+    click_on 'submitButton'
+    save_screenshot('spec/features/screenshots/campaign_submittal.png')
+    expect(page).to have_text("Campaign was successfully created.")
   end
 end

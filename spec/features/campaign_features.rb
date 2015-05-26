@@ -53,7 +53,6 @@ feature "Add new campaign" do
   before do
     @user = build(:user)
     login_with_oauth(@user)
-    #@campaign = build(:campaign, user_id: @user.id)
   end
   scenario "by creating a campaign", :js => true do
     click_on 'Add Campaign'
@@ -67,7 +66,6 @@ feature "Add new campaign with category" do
   before do
     @user = build(:user)
     login_with_oauth(@user)
-    #@campaign = build(:campaign, user_id: @user.id)
     create(:category, name: "category1")
     create(:category, name: "category2")
   end
@@ -75,6 +73,7 @@ feature "Add new campaign with category" do
     click_on 'Add Campaign'
     fill_in 'campaign_link', :with => $campaign_links.pop#@campaign.link
     select "category2", :from => "campaign_category_id"
+    enable_element_by_id('submitButton')
     click_on 'submitButton'
     expect(page).to have_text("Campaign was successfully created.")
   end
@@ -99,13 +98,12 @@ feature "Filter campaigns by category" do
   before do
     @user = build(:user)
     login_with_oauth(@user)
-    #@campaign = build(:campaign, user_id: @user.id)
     for i in 1..2
       create(:category, name: "category"+i.to_s)
       click_on 'Add Campaign'
-      puts $campaign_links[i-1]
-      fill_in 'campaign_link', :with => $campaign_links[i-1]#@campaign.link
+      fill_in 'campaign_link', :with => $campaign_links[i-1]
       select "category"+i.to_s, :from => "campaign_category_id"
+      enable_element_by_id('submitButton')
       click_on 'submitButton'
     end
   end
@@ -123,16 +121,16 @@ feature "Campaign voting" do
     create(:category, name:"category")
     for i in 0..20
       user = create(:user, name: "Ola"+(i+1).to_s)
-      create(:campaign, user_id: user.id)
+      create(:campaign, title:"campaign"+i.to_s, link:$campaign_links[i-1], user_id: user.id)
     end
     create(:round)
   end
   scenario "by going through voting process", :js => true do
-    #click_on "start-voting"
     page.find(:xpath, '//*[@id="start-voting"]').click
     for i in 0..3
       page.find(:xpath, '//*[@id='+Random.rand(0..2).to_s+']/a').click
       page.find(:xpath, '//*[@id="next-voting"]').click
+      sleep 0.5
     end
     expect(page).to have_text('Done Voting')
   end

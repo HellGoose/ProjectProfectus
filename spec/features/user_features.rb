@@ -1,10 +1,6 @@
 feature "Login" do
 	scenario "with login button" do
 		@user = create(:user)
-		# for i in 0..9
-		# 	create(:campaign, user_id: @user.id)
-		# end
-		#round = create(:round)
 		login_with_oauth(@user)
 		expect(page).to have_text("Logout")
 	end

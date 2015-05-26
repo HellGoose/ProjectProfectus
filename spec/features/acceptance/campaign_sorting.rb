@@ -32,17 +32,27 @@ $campaign_links = [
   'https://www.indiegogo.com/projects/imbrief-a-briefcase-as-smart-stylish-as-you-are'
 ]
 
-feature "Campaign submittal" do
+feature "Campaign sorting" do
   before do
-    @user = build(:user)
-    login_with_oauth(@user)
-    #@campaign = build(:campaign, user_id: @user.id)
+    user = create(:user)
+    create(:category, name: "Category 1")
+    create(:category, name: "Category 2")
+    create(:campaign, title: "Votes = 20", category_id: 1,
+      link: $campaign_links.pop, user_id: user.id, globalScore: 20)
+    create(:campaign, title: "Votes = 10", category_id: 1,
+      link: $campaign_links.pop, user_id: user.id, globalScore: 10)
+    create(:campaign, title: "Votes = 40", category_id: 2,
+      link: $campaign_links.pop, user_id: user.id, globalScore: 40)
+    create(:campaign, title: "Votes = 30", category_id: 2,
+      link: $campaign_links.pop, user_id: user.id, globalScore: 30)
   end
-  scenario "by adding a campaign", :js => true do
-    click_on 'Add Campaign'
-    fill_in 'campaign_link', :with => $campaign_links.pop#@campaign.link
-    click_on 'submitButton'
-    save_screenshot('spec/features/screenshots/campaign_submittal.png')
-    expect(page).to have_text("Campaign was successfully created.")
+  scenario "by 'Category 2' and votes", :js => true do
+    visit root_path
+    click_on 'Campaigns'
+    click_on 'Category 2'
+    sleep 0.2
+    select "Votes", :from => "sortBy"
+    save_screenshot('spec/features/screenshots/campaign_sorting.png')
+    expect(page).to have_text("Votes = 40")
   end
 end

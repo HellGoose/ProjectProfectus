@@ -31,20 +31,20 @@ $campaign_links = [
   'https://www.indiegogo.com/projects/goze-your-true-life-journey-curated',
   'https://www.indiegogo.com/projects/imbrief-a-briefcase-as-smart-stylish-as-you-are'
 ]
-feature "Add new campaign with category" do
+
+feature "View all campaigns" do
   before do
     @user = build(:user)
     login_with_oauth(@user)
     #@campaign = build(:campaign, user_id: @user.id)
-    create(:category, name: "category1")
-    create(:category, name: "category2")
-  end
-  scenario "by setting category to category2", :js => true do
     click_on 'Add Campaign'
-    fill_in 'campaign_link', :with => $campaign_links.pop#@campaign.link
-    select "category2", :from => "campaign_category_id"
+    fill_in 'campaign_link', :with => $campaign_links.pop
+    enable_element_by_id('submitButton')
     click_on 'submitButton'
-    save_screenshot('spec/features/screenshots/campaign_category.png')
-    expect(page).to have_text("Campaign was successfully created.")
+  end
+  scenario "by clicking 'campaigns' in navbar", :js => true do
+    click_on 'Campaigns'
+    save_screenshot('spec/features/screenshots/view_list_of_campaigns.png')
+    expect(page).to have_css('div#campaigns')
   end
 end

@@ -20,10 +20,10 @@ require 'rails_helper'
 require 'capybara/rspec'
 require 'capybara/poltergeist'
 require 'database_cleaner'
-require 'support/feature_oauth_helper'
-require 'support/request_oauth_helper'
+require 'support/feature_oauth_helper.rb'
+require 'support/request_oauth_helper.rb'
 require 'support/database_cleaner.rb' # Uncomment to not clean DB after test run
-
+require 'support/enable_element_helper.rb'
 
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
@@ -97,11 +97,16 @@ RSpec.configure do |config|
 
   Capybara.default_host = 'http://localhost:3000'
   Capybara.javascript_driver = :poltergeist#:selenium
-  #Capybara.ignore_hidden_elements = true
+  Capybara.ignore_hidden_elements = true
+
+  Capybara.register_driver :poltergeist do |app|
+  	Capybara::Poltergeist::Driver.new(app, phantomjs_options: ['--ignore-ssl-errors=true'])
+	end
 
   # Include FactoryGirl so we can use 'create' instead of 'FactoryGirl.create'
   config.include FactoryGirl::Syntax::Methods
 
   config.include FeatureOauthHelper, type: :feature
   config.include RequestOauthHelper, type: :request
+  config.include EnableElementHelper, type: :feature
 end
