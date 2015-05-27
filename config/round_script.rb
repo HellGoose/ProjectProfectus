@@ -1,27 +1,32 @@
 def roundScript
 	runScript = true
-	t = Thread.new {
-		puts ('Starting script!') if runScript == true
-		until defined?(ActiveRecord::Base)
+	puts ('Starting script!') if runScript == true
+	s = Thread.new {
+		until defined?(ActiveSupport)
 			sleep 0.1
 		end
-		sleep 5
-		round = Round.first
-		puts ('Script started') if runScript == true
-		while runScript do
-			if Time.now.to_i >= round.endTime.to_i or round.forceNewRound == true
-				puts ('Starting a new Round!')
-				runNewRound(round.decayRate)
-				round.endTime = Time.at(Time.now.to_i + round.duration).to_datetime
-				round.forceNewRound = false
-				round.save
-			end
-			sleep 1
-			round = Round.first
+		ActiveSupport.on_load(:after_initialize) do
+			t = Thread.new {
+				puts ('Script started') if runScript == true
+				round = Round.first
+				while runScript do
+					if Time.now.to_i >= round.endTime.to_i or round.forceNewRound == true
+						puts ('Starting a new Round!')
+						runNewRound(round.decayRate)
+						round.endTime = Time.at(Time.now.to_i + round.duration).to_datetime
+						round.forceNewRound = false
+						round.save
+					end
+					sleep 1
+					round = Round.first
+				end
+			}
+			at_exit{t.kill}
+			t.abort_on_exception = true
 		end
 	}
-	at_exit{t.kill}
-	t.abort_on_exception = true
+	at_exit{s.kill}
+	s.abort_on_exception = true
 end
 
 private
