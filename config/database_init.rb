@@ -1,21 +1,26 @@
 def databaseInit
-	t = Thread.new {
-		until defined?(ActiveRecord::Base)
+	s = Thread.new {
+		until defined?(ActiveSupport)
 			sleep 0.1
 		end
-		sleep 2
-		if Round.all.empty?
-			initRound()
-		end
-		if Category.all.empty?
-			initCategories()
-		end
-		if Badge.all.empty?
-			initBadges()
+		ActiveSupport.on_load(:after_initialize) do
+			t = Thread.new {
+				if Round.all.empty?
+					initRound()
+				end
+				if Category.all.empty?
+					initCategories()
+				end
+				if Badge.all.empty?
+					initBadges()
+				end
+			}
+			at_exit{t.kill}
+			t.abort_on_exception = true
 		end
 	}
-	at_exit{t.kill}
-	t.abort_on_exception = true
+	at_exit{s.kill}
+	s.abort_on_exception = true
 end
 
 private
