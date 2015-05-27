@@ -33,9 +33,9 @@ if round != nil
 					<%= link_to "", "/users/" + user.id.to_s, class: "campaign_link" %>
 					<div class="image_container">
 						<% if !user.image || user.image == '' %>
-						<%= image_tag getFacebookPicURL(user), class: "img-responsive img-thumbnail" %>
+						<%= image_tag getFacebookPicURL(user), class: "img-responsive" %>
 						<% else %>
-						<%= image_tag user.image, class: "img-responsive img-thumbnail" %>
+						<%= image_tag user.image, class: "img-responsive" %>
 						<% end %>
 					</div>
 					<h4><%= user.name %></h4>
