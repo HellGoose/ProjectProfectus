@@ -38,7 +38,7 @@ class User < ActiveRecord::Base
 			self.location ||= "" if self.has_attribute? :location
 			self.image ||= "" if self.has_attribute? :image
 			self.phone ||= "" if self.has_attribute? :phone
-			self.points ||= 0 if self.has_attribute? :points
+			self.points ||= 25 if self.has_attribute? :points
 			self.level ||= 1 if self.has_attribute? :level
 			self.role ||= 0 if self.has_attribute? :role
 			self.badgeCount ||= 0 if self.has_attribute? :badgeCount
