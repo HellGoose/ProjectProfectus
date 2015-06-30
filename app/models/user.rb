@@ -23,8 +23,6 @@ class User < ActiveRecord::Base
 			user.email = auth.info.email
 			user.oauth_token = auth.credentials.token
 			user.oauth_token_expires_at = Time.at(auth.credentials.expires_at)
-			user.points += 1 if !user.hasLoggedInThisRound
-			user.hasLoggedInThisRound = true
 			user.save!
 		end
 	end

@@ -149,6 +149,8 @@ class CampaignsController < ApplicationController
 	# renders an error if the user is not logged in or there are not enough 
 	# campaigns in the database.
 	def vote
+		puts current_user.name
+		puts current_user.isOnStep
 		if Campaign.all.count < 15
 			respond_to do |format|
 				format.js { render partial: "home/not_enough_campaigns"}
@@ -293,9 +295,8 @@ class CampaignsController < ApplicationController
 		case current_user.isOnStep
 		when 0..2
 			campaignVotes = current_user.campaignVotes.where(step: current_user.isOnStep)
-
 			(0..2).each do |i|
-				next if campaigns[i] == nil
+				next if campaignVotes[i] == nil
 				campaignVotes[i].voteType = 0
 				campaignVotes[i].save
 			end

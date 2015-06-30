@@ -9,6 +9,11 @@ class SessionsController < ApplicationController
 	# Renders root.
 	def create
 		user = User.from_omniauth(env["omniauth.auth"])
+		if !user.hasLoggedInThisRound
+			user.points += 1
+			user.hasLoggedInThisRound = true
+			user.save
+		end
 		session[:user_id] = user.id
 		session[:return_to] ||= request.referer
 		redirect_to root_path

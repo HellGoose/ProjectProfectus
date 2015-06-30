@@ -49,14 +49,14 @@ def runNewRound (decayRate)
 
 		#User of the round
 		round.winnerUsers.create(
-			user_id: winnerUser.id,
+			user_id: winnerUsers[0].id,
 			round_id: round.id,
 			roundWon: round.currentRound
 		)
 		i = 0
 		winnerUsers.each do |wu|
-			winnerUser.points += usersOfTheRoundPoints[i]
-			winnerUser.save
+			wu.points += usersOfTheRoundPoints[i]
+			wu.save
 			i+=1
 		end
 
@@ -88,7 +88,7 @@ def runNewRound (decayRate)
 				case cv.campaign.id
 				when winnerCampaigns[0].id, winnerCampaigns[1].id, winnerCampaigns[2].id
 					placing = cv.campaign.roundsWon.where(roundWon: round.currentRound).placing
-					cv.user.points += usersOfTheRoundPoints[placing]
+					cv.user.points += (usersOfTheRoundPoints[placing]/5).to_i
 					cv.user.save
 				end
 				cv.destroy
@@ -99,6 +99,7 @@ def runNewRound (decayRate)
 		users.each do |u|
 			if u.isOnStep == 4
 				u.isOnStep = 0
+				u.hasLoggedInThisRound = false
 				u.save
 			end
 		end
