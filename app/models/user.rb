@@ -23,6 +23,8 @@ class User < ActiveRecord::Base
 			user.email = auth.info.email
 			user.oauth_token = auth.credentials.token
 			user.oauth_token_expires_at = Time.at(auth.credentials.expires_at)
+			user.points += 1 if !user.hasLoggedInThisRound
+			user.hasLoggedInThisRound = true
 			user.save!
 		end
 	end
@@ -43,6 +45,7 @@ class User < ActiveRecord::Base
 			self.role ||= 0 if self.has_attribute? :role
 			self.badgeCount ||= 0 if self.has_attribute? :badgeCount
 			self.isOnStep ||= 0 if self.has_attribute? :isOnStep
+			self.hasLoggedInThisRound = true if (self.has_attribute? :bool_value) && self.bool_field.nil? 
 		end
 
 		#Update level

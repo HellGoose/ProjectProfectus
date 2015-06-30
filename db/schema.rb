@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150505114415) do
+ActiveRecord::Schema.define(version: 20150630125704) do
 
   create_table "badges", force: :cascade do |t|
     t.string   "name",        limit: 255
@@ -153,6 +153,7 @@ ActiveRecord::Schema.define(version: 20150505114415) do
     t.datetime "created_at",                         null: false
     t.datetime "updated_at",                         null: false
     t.integer  "isOnStep",               limit: 4
+    t.boolean  "hasLoggedInThisRound",   limit: 1
   end
 
 end
