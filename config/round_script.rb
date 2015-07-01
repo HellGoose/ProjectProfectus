@@ -32,6 +32,7 @@ end
 private
 def runNewRound (decayRate)
 	if Campaign.all.empty?
+		puts "Failed to start round! There are no campaigns in the database."
 		return
 	end
 	round = Round.first
@@ -45,7 +46,10 @@ def runNewRound (decayRate)
 	#Declare Winners
 	if campaigns.first.roundScore > 0
 		winnerCampaigns = campaigns.first(3)
-		winnerUsers = winnerCampaigns.each { |c| c.user }
+		winnerUsers = []
+		winnerCampaigns.each do |wc|
+			winnerUsers << wc.user
+		end
 
 		#User of the round
 		round.winnerUsers.create(
@@ -87,7 +91,7 @@ def runNewRound (decayRate)
 			if cv.user.isOnStep == 0 or cv.user.isOnStep == 4
 				case cv.campaign.id
 				when winnerCampaigns[0].id, winnerCampaigns[1].id, winnerCampaigns[2].id
-					placing = cv.campaign.roundsWon.where(roundWon: round.currentRound).placing
+					placing = RoundWinnerCampaign.find_by(roundWon: round.currentRound, campaign_id: cv.campaign_id).placing
 					cv.user.points += (usersOfTheRoundPoints[placing]/5).to_i
 					cv.user.save
 				end
@@ -107,5 +111,8 @@ def runNewRound (decayRate)
 		#Increment to next round
 		round.currentRound += 1
 		round.save
+		puts "Done! New Round Started."
+	else
+		puts "Failed to start round! No scores found. Continuing with this round."
 	end
 end
