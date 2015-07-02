@@ -44,6 +44,7 @@
 									<li><%= link_to "Admin", "/admin/", id: "admin", role: "menuitem" %></li>
 								<% end %>
 							<li><%= link_to "Account", user_path(current_user), id: "account", role: "menuitem" %></li>
+							<li><a href='#' id='refer-a-friend' onclick="return false;">Refer-a-friend</a></li>
 							<li class="divider"></li>
 							<li><%= link_to "Logout", "/signout", id: "logout", role: "menuitem" %></li>
 							
