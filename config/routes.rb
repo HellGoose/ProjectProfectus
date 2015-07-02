@@ -3,9 +3,11 @@ Rails.application.routes.draw do
 	get 'about/index'
 
 	# Login and Session
-	get 'auth/:provider/callback', to: 'sessions#create'		
-	get 'auth/failure', to: redirect('/')
-	get 'signout', to: 'sessions#destroy', as: 'signout'
+	get '/refer_a_friend', to: 'home#refer_a_friend'
+	get '/signup/:referer', to: 'users#referer'
+	get '/auth/:provider/callback', to: 'sessions#create'
+	get '/auth/failure', to: redirect('/')
+	get '/signout', to: 'sessions#destroy', as: 'signout'
 
 	# Posts and comments
 	get '/posts/answer/:campaign_id/:post_id', to: 'posts#answer'

@@ -31,7 +31,7 @@ private
 	end
 
 	def initCategories
-		Category.create(name: 'Show All')
+		Category.create(name: 'Technology')
 	end
 
 	def initBadges
@@ -39,5 +39,10 @@ private
 			name: 'My First Campaign', 
 			description: 'Created a campaign.', 
 			imageUrl: 'http://badgemonkey.com/images/im-just-a-freaking.jpg', 
+			points: 500)
+		Badge.create(
+			name: 'Campaign Fronter', 
+			description: 'Created 10 campaigns.', 
+			imageUrl: 'http://badgemonkey.com/images/iamawesombadge.jpg', 
 			points: 500)
 	end

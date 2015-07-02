@@ -14,4 +14,15 @@ class HomeController < ApplicationController
 		@allNews = News.order("created_at DESC")
 		@newsInterval = 5
 	end
+
+	# Public: Renders a view containing information about refer-a-friend
+	# Route: GET root/singup/:referer
+	# 	:referer - The id of the refering user.
+	#
+	# Renders home#refer_a_friend in window-mode.
+	def refer_a_friend
+		respond_to do |format|
+			format.html { render partial: 'refer_a_friend', layout: 'windowed' }
+		end
+	end
 end
