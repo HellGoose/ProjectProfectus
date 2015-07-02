@@ -22,7 +22,7 @@ class HomeController < ApplicationController
 	# Renders home#refer_a_friend in window-mode.
 	def refer_a_friend
 		respond_to do |format|
-      format.html { render partial: 'refer_a_friend', layout: 'windowed' }
-    end
+			format.html { render partial: 'refer_a_friend', layout: 'windowed' }
+		end
 	end
 end
