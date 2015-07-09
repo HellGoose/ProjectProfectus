@@ -50,13 +50,13 @@ class UsersController < ApplicationController
     end
 	end
 
-	# Public: Updates a user iff the current user is this user.
+	# Public: Updates a user if the current user is this user.
 	# Route: PUT root/users/:id
 	# 	:id - The id of the user in the database.
 	#
 	# @user - The user to update.
 	#
-	# Renders user#show iff the update succeeds, 
+	# Renders user#show if the update succeeds, 
 	# otherwise rerenders user#edit with the error.
 	def update
 		respond_to do |format|
@@ -68,6 +68,16 @@ class UsersController < ApplicationController
 				format.json { render json: @user.errors, status: :unprocessable_entity }
 			end
 		end
+	end
+
+	# Public: Redirects signup with referer to facebook login.
+	# Route: GET /signup/:referer
+	# 	:referer - The id of the user that refererd this user.
+	#
+	# Redirects to session#create.
+	def referer
+		#referer = User.find_by(id: params[:referer].to_i)
+		redirect_to '/auth/facebook?referer=' + params[:referer]
 	end
 
 	# Public: Deletes a user from the database.

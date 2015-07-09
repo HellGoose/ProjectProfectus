@@ -8,12 +8,24 @@ class SessionsController < ApplicationController
 	#
 	# Renders root.
 	def create
-		user = User.from_omniauth(env["omniauth.auth"])
+		auth_params = request.env['omniauth.auth']
+		params = request.env['omniauth.params']
+
+		user_tmp = User.find_by(uid: auth_params['uid'])
+		user = User.from_omniauth(auth_params)
+		referer = User.find_by(id: params['referer'].to_i)
+
+		if user_tmp == nil && user.uid != referer.uid && referer != nil
+			referer.points += 5
+			referer.save
+		end
+
 		if !user.hasLoggedInThisRound
 			user.points += 1
 			user.hasLoggedInThisRound = true
 			user.save
 		end
+		
 		session[:user_id] = user.id
 		session[:return_to] ||= request.referer
 		redirect_to root_path

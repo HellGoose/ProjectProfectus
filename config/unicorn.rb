@@ -15,8 +15,8 @@ stderr_path = APP_ROOT + "/log/unicorn.log"
 stdout_path = APP_ROOT + "/log/unicorn.log"
 
 # Unicorn socket
-#listen "/tmp/unicorn.[app name].sock"
-#listen "/tmp/unicorn.myapp.sock"
+listen = APP_ROOT + "/tmp/unicorn.[app name].sock"
+listen = APP_ROOT + "/tmp/unicorn.myapp.sock"
 
 # Number of processes
 # worker_processes 4

@@ -1,0 +1,6 @@
+<div class='text-center'>
+  <h2>Use this link to refer-a-friend!</h2>
+  <% url =  request.original_url %>
+  <% url.slice! ('refer_a_friend') %>
+  <a><%= url + 'signup/' + current_user.id.to_s %></a>
+</div>
