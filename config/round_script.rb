@@ -32,6 +32,7 @@ end
 private
 def runNewRound (decayRate)
 	if Campaign.all.empty?
+		puts "Failed to start round! There are no campaigns in the database."
 		return
 	end
 	round = Round.first
@@ -39,23 +40,39 @@ def runNewRound (decayRate)
 	users = User.all
 
 	#Variables
-	userOfTheRoundPoints = 437
+	usersOfTheRoundPoints = [25, 10, 5]
 	percentageOfRoundScore = 0.9
 
 	#Declare Winners
 	if campaigns.first.roundScore > 0
 		winnerCampaigns = campaigns.first(3)
-		winnerUser = winnerCampaigns.first.user
+		winnerUsers = []
+		winnerCampaigns.each do |wc|
+			winnerUsers << wc.user
+		end
 
 		#User of the round
-		round.winnerUsers.create(user_id: winnerUser.id, round_id: round.id, roundWon: round.currentRound)
-		winnerUser.points += userOfTheRoundPoints
-		winnerUser.save
+		round.winnerUsers.create(
+			user_id: winnerUsers[0].id,
+			round_id: round.id,
+			roundWon: round.currentRound
+		)
+		i = 0
+		winnerUsers.each do |wu|
+			wu.points += usersOfTheRoundPoints[i]
+			wu.save
+			i+=1
+		end
 
 		#Top 3 campaigns
 		i = 0
 		winnerCampaigns.each do |c|
-			round.winnerCampaigns.create(campaign_id: c.id, round_id: round.id, roundWon: round.currentRound, placing: i)
+			round.winnerCampaigns.create(
+				campaign_id: c.id,
+				round_id: round.id,
+				roundWon: round.currentRound,
+				placing: i
+			)
 			i+=1
 		end
 
@@ -68,13 +85,16 @@ def runNewRound (decayRate)
 			c.save
 		end
 
-		#Increment to next round
-		round.currentRound +=1
-		round.save
+		#Clear all votes and add scores
 
-		#Clear all votes
 		CampaignVote.all.each do |cv|
 			if cv.user.isOnStep == 0 or cv.user.isOnStep == 4
+				case cv.campaign.id
+				when winnerCampaigns[0].id, winnerCampaigns[1].id, winnerCampaigns[2].id
+					placing = RoundWinnerCampaign.find_by(roundWon: round.currentRound, campaign_id: cv.campaign_id).placing
+					cv.user.points += (usersOfTheRoundPoints[placing]/5).to_i
+					cv.user.save
+				end
 				cv.destroy
 			end
 		end
@@ -83,8 +103,16 @@ def runNewRound (decayRate)
 		users.each do |u|
 			if u.isOnStep == 4
 				u.isOnStep = 0
+				u.hasLoggedInThisRound = false
 				u.save
 			end
 		end
+
+		#Increment to next round
+		round.currentRound += 1
+		round.save
+		puts "Done! New Round Started."
+	else
+		puts "Failed to start round! No scores found. Continuing with this round."
 	end
 end

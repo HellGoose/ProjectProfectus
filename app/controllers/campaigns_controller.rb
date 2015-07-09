@@ -96,7 +96,7 @@ class CampaignsController < ApplicationController
 
 				respond_to do |format|
 					if @campaign.save
-						current_user.points +=107
+						current_user.points +=5
 						current_user.save
 						msg = "<span class=\"alert alert-success\">Campaign was successfully created.</span>"
 						format.html { redirect_to @campaign, notice: msg }
@@ -292,27 +292,30 @@ class CampaignsController < ApplicationController
 	def processVote(campaign_id)
 		case current_user.isOnStep
 		when 0..2
-			campaigns = current_user.campaignVotes.where(step: current_user.isOnStep)
-
+			campaignVotes = current_user.campaignVotes.where(step: current_user.isOnStep)
 			(0..2).each do |i|
-				next if campaigns[i] == nil
-				campaigns[i].voteType = 0
-				campaigns[i].save
+				next if campaignVotes[i] == nil
+				campaignVotes[i].voteType = 0
+				campaignVotes[i].save
 			end
-			campaigns[campaign_id].voteType = 1
-			campaigns[campaign_id].save
+			campaignVotes[campaign_id].voteType = 1
+			campaignVotes[campaign_id].save
 		when 3
-			campaigns = current_user.campaignVotes.where.not(voteType: 0)
+			campaignVotes = current_user.campaignVotes.where.not(voteType: 0)
 
-			campaigns[campaign_id].voteType = 2
-			campaigns[campaign_id].save
-			campaigns[campaign_id].campaign.roundScore += 10
-			campaigns[campaign_id].campaign.save
+			campaignVotes[campaign_id].voteType = 2
+			campaignVotes[campaign_id].save
+			campaignVotes[campaign_id].campaign.roundScore += 10
+			campaignVotes[campaign_id].campaign.save
+			campaignVotes[campaign_id].campaign.user.points += 1
+			campaignVotes[campaign_id].campaign.user.save
 
-			current_user.points += 4
+			current_user.points += 1
 			current_user.campaignVotes.where(voteType: 1).each do |v|
 				v.campaign.roundScore += 1
 				v.campaign.save
+				v.campaign.user.points += 1
+				v.campaign.user.save
 			end
 		end
 	end
