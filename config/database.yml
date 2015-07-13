@@ -49,14 +49,14 @@ test:
 #     url: <%= ENV['DATABASE_URL'] %>
 #
 
-development:
-  url: <%= ENV['DATABASE_URL'] || "mysql2://root:root@localhost:3306/podiumdb" %> 
+# development:
 
 production:
-  adapter: mysql2
-  encoding: utf8
-  pool: 5
-  host: 172.31.35.247
-  database: profectus_database
-  username: profectus
-  password: profectusdatabase
+  url: <%= ENV['DATABASE_URL'] || "mysql2://root:root@localhost:3306/podiumdb" %> 
+  # adapter: mysql2
+  # encoding: utf8
+  # pool: 5
+  # host: 172.31.35.247
+  # database: profectus_database
+  # username: profectus
+  # password: profectusdatabase
