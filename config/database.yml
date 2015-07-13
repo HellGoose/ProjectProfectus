@@ -10,12 +10,13 @@
 #   http://dev.mysql.com/doc/refman/5.0/en/old-client.html
 #
 default: &default
-  adapter: mysql2
-  encoding: utf8
-  pool: 5
-  username: runah_profectus
-  password: profectusdatabase
-  host: mysql.stud.ntnu.no
+  # adapter: mysql2
+  # encoding: utf8
+  # pool: 5
+  # username: runah_profectus
+  # password: profectusdatabase
+  # host: mysql.stud.ntnu.no
+  url: <%= ENV['DATABASE_URL'] || "mysql2://root:root@localhost:3306/podiumdb" %>
 
 development:
   <<: *default
@@ -49,7 +50,7 @@ test:
 #
 
 development:
-  url: <%= ENV['DATABASE_URL'] %> 
+  url: <%= ENV['DATABASE_URL'] || "mysql2://root:root@localhost:3306/podiumdb" %> 
 
 production:
   adapter: mysql2

@@ -9,18 +9,19 @@ class Campaign < ActiveRecord::Base
 	has_many :posts, :dependent => :destroy
 	has_many :votes, class_name: "CampaignVote", :dependent => :delete_all
 	has_many :usersVoted, class_name: "User", through: "campaign_votes"
+	has_many :roundsWon, class_name: "RoundWinnerCampaign", :dependent => :delete_all
 
 	#Callbacks
 	after_initialize :init
 
 	private
-		#Sets default values
-		def init
-			self.image ||= "" if self.has_attribute? :image
-			self.title ||= "" if self.has_attribute? :title
-			self.description ||= "" if self.has_attribute? :description
-			self.voteCount ||= 0 if self.has_attribute? :voteCount
-			self.roundScore ||= 0 if self.has_attribute? :roundScore
-			self.globalScore ||= 0 if self.has_attribute? :globalScore
-		end
+	#Sets default values
+	def init
+		self.image ||= "" if self.has_attribute? :image
+		self.title ||= "" if self.has_attribute? :title
+		self.description ||= "" if self.has_attribute? :description
+		self.voteCount ||= 0 if self.has_attribute? :voteCount
+		self.roundScore ||= 0 if self.has_attribute? :roundScore
+		self.globalScore ||= 0 if self.has_attribute? :globalScore
+	end
 end

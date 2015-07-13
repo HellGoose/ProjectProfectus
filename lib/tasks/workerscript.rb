@@ -1,32 +1,39 @@
+def databaseInit
+	ActiveSupport.on_load(:after_initialize) do
+		puts "111"
+		if Round.all.empty?
+			initRound()
+		end
+		if Category.all.empty?
+			initCategories()
+		end
+		if Badge.all.empty?
+			initBadges()
+		end
+		if Campaign.all.empty?
+			initCampaign()
+		end
+	end
+end
+
 def roundScript
 	runScript = true
-	puts ('Starting script!') if runScript == true
-	s = Thread.new {
-		until defined?(ActiveSupport)
-			sleep 0.1
+	ActiveSupport.on_load(:after_initialize) do
+		puts ('Script started') if runScript == true
+		round = Round.first
+		round.forceNewRound = true
+		while 1 do
+			if Time.now.to_i >= round.endTime.to_i or round.forceNewRound == true
+				puts ('Starting a new Round!')
+				runNewRound(round.decayRate)
+				round.endTime = Time.at(Time.now.to_i + round.duration).to_datetime
+				round.forceNewRound = false
+				round.save
+			end
+			sleep 1
+			round = Round.first
 		end
-		ActiveSupport.on_load(:after_initialize) do
-			t = Thread.new {
-				puts ('Script started') if runScript == true
-				round = Round.first
-				while 1 do
-					if Time.now.to_i >= round.endTime.to_i or round.forceNewRound == true
-						puts ('Starting a new Round!')
-						runNewRound(round.decayRate)
-						round.endTime = Time.at(Time.now.to_i + round.duration).to_datetime
-						round.forceNewRound = false
-						round.save
-					end
-					sleep 1
-					round = Round.first
-				end
-			}
-			at_exit{t.kill}
-			t.abort_on_exception = true
-		end
-	}
-	at_exit{s.kill}
-	s.abort_on_exception = true
+	end
 end
 
 private
@@ -116,3 +123,33 @@ def runNewRound (decayRate)
 		puts "Failed to start round! No scores found. Continuing with this round."
 	end
 end
+
+private
+	def initRound
+		Round.create(
+			duration: 3600, 
+			decayRate: 0.75)
+	end
+
+	def initCategories
+		Category.create(name: 'Technology')
+	end
+
+	def initCampaign
+		Campaign.create(
+			name: "TestCampaign",
+		)
+	end
+
+	def initBadges
+		Badge.create(
+			name: 'My First Campaign', 
+			description: 'Created a campaign.', 
+			imageUrl: 'http://badgemonkey.com/images/im-just-a-freaking.jpg', 
+			points: 500)
+		Badge.create(
+			name: 'Campaign Fronter', 
+			description: 'Created 10 campaigns.', 
+			imageUrl: 'http://badgemonkey.com/images/iamawesombadge.jpg', 
+			points: 500)
+	end
