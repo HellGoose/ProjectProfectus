@@ -1,6 +1,5 @@
 def databaseInit
 	ActiveSupport.on_load(:after_initialize) do
-		puts "111"
 		if Round.all.empty?
 			initRound()
 		end
