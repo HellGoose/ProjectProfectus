@@ -60,6 +60,9 @@ gem 'database_cleaner', '~> 1.4.1'
 # Use rspec-activemodel-mocks for mock_models in testing
 gem 'rspec-activemodel-mocks'
 
+#Puma
+gem 'puma'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
