@@ -63,7 +63,7 @@ gem 'rspec-activemodel-mocks'
 #Puma
 gem 'puma'
 
-group :development, :test do
+#group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
 
@@ -78,4 +78,4 @@ group :development, :test do
 
   # Use factory_girl for fixtures
 	gem 'factory_girl_rails'
-end
+#end
