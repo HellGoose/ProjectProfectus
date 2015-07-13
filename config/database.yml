@@ -47,6 +47,10 @@ test:
 #   production:
 #     url: <%= ENV['DATABASE_URL'] %>
 #
+
+staging:
+  url: <%= ENV['DATABASE_URL'] %>
+  
 production:
   adapter: mysql2
   encoding: utf8
