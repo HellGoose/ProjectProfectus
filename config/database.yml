@@ -49,6 +49,7 @@ test:
 #
 
 development:
+  <<: *default
   url: <%= ENV['DATABASE_URL'] %> 
 
 production:
