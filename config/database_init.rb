@@ -39,10 +39,10 @@ private
 			name: 'My First Campaign', 
 			description: 'Created a campaign.', 
 			imageUrl: 'http://badgemonkey.com/images/im-just-a-freaking.jpg', 
-			points: 500)
+			points: 50)
 		Badge.create(
 			name: 'Campaign Fronter', 
 			description: 'Created 10 campaigns.', 
 			imageUrl: 'http://badgemonkey.com/images/iamawesombadge.jpg', 
-			points: 500)
+			points: 50)
 	end
