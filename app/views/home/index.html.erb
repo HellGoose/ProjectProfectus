@@ -6,8 +6,9 @@
 
 <div class="header">
 	<div class="text-center">
-		<p class="header-brand-text">Welcome to Profectus</p>
-		<a class="btn btn-success" id="start-voting">Make a difference</a>
+		<h2>Have your say on today's nominations<h2>
+		<!-- <a class="btn btn-success" id="pledge" href="pledge">pledge</a> -->
+		<a class="btn btn-success" id="start-voting">START</a>
 		<a class="btn btn-success" id="back-voting" style="display: none;">Back</a>
 		<a class="btn btn-success" id="next-voting" style="display: none;">Next</a>
 	</div>
@@ -16,22 +17,18 @@
 <div id="voting"></div>
 
 <div id="campaigns-news">
-	<div class="text-center">
-		<h1>Round Winners</h1>
+		<h3>Round Winners</h3>
+		<hr>
 		<div class="col-xs-12" id="winners">
 			<%= render partial: 'winners' %>
 		</div>
-	</div>
-	<div class="text-center">
-		<h1>Top 8 Campaigns</h1>
+		<h3>Top 8 Campaigns</h3>
+		<hr>
 		<div class="col-xs-12" id="campaigns">
 			<%= render partial: 'campaigns/campaignList', locals: { page: 1, campaignsPerPage: 8 } %>
 		</div>
-	</div>
-
-	<div class="text-center">
-		<h1>Latest News</h1>
-	</div>
+		<h3>Latest News</h3>
+		<hr>
 	<div class="news_container">
 		<%= render partial: 'news/news', locals: { page: 1, newsPerPage: @newsInterval }  %>
 	</div>

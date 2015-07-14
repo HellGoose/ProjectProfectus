@@ -19,7 +19,23 @@
 
 // Makes notice messages disappear after a couple of seconds
 window.setTimeout((function() {
-  $('#notice').fadeTo(500, 0).slideUp(500, function() {
-    $(this).remove();
-  });
+	$('#notice').fadeTo(500, 0).slideUp(500, function() {
+		$(this).remove();
+	});
 }), 3000);
+
+var check_for_notifications = function() {
+	$.get('/notifications', function(data) {
+		if (data) {
+			$('#notifications').html(data);
+			$('#notifications').fadeIn('slow');
+			window.setTimeout((function() {
+				$('#notifications').fadeOut('slow');
+			}), 5000);
+		}
+	});
+};
+
+$(document).ready(function() {
+	setInterval(check_for_notifications, 10000);
+});

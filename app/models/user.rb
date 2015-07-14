@@ -7,6 +7,7 @@ class User < ActiveRecord::Base
 	#Relations (Used like: ClassName.relation):
 	has_many :posts
 	has_many :campaigns
+	has_many :pointsHistories
 	has_many :badges, class_name: "UserBadge"
 	has_many :postVotes, class_name: "PostVote"
 	has_many :campaignVotes, class_name: "CampaignVote"
@@ -43,7 +44,7 @@ class User < ActiveRecord::Base
 			self.role ||= 0 if self.has_attribute? :role
 			self.badgeCount ||= 0 if self.has_attribute? :badgeCount
 			self.isOnStep ||= 0 if self.has_attribute? :isOnStep
-			self.hasLoggedInThisRound = true if (self.has_attribute? :bool_value) && self.bool_field.nil? 
+			self.hasLoggedInThisRound = true if (self.has_attribute? :bool_value) && self.bool_field.nil?
 		end
 
 		#Update level
@@ -66,7 +67,7 @@ class User < ActiveRecord::Base
 
 		#The first campaign
 		def firstCampaignBadge(campaignCount)
-			if campaignCount == 1 and !self.badges.find_by(badge_id: 2)
+			if campaignCount == 1 and !self.badges.find_by(badge_id: 1)
 				self.badges.create(user_id: self.id, badge_id: 2, timesAchieved: 1)
 				self.points += Badge.find(2).points
 			end
@@ -76,12 +77,12 @@ class User < ActiveRecord::Base
 		#Created 10 campaigns
 		def tenCampaignsBadge(campaignCount)
 			if campaignCount > 0 and campaignCount%10 == 0
-				if !self.badges.find_by(badge_id: 3)
-					self.badges.create(user_id: self.id, badge_id: 3, timesAchieved: 1)
-					self.points += Badge.find(3).points
-				elsif campaignCount/10 > self.badges.find_by(badge_id: 3).timesAchieved
-					self.badges.find_by(badge_id: 3).timesAchieved = campaignCount/10
-					self.points += Badge.find(3).points
+				if !self.badges.find_by(badge_id: 2)
+					self.badges.create(user_id: self.id, badge_id: 2, timesAchieved: 1)
+					self.points += Badge.find(2).points
+				elsif campaignCount/10 > self.badges.find_by(badge_id: 2).timesAchieved
+					self.badges.find_by(badge_id: 2).timesAchieved = campaignCount/10
+					self.points += Badge.find(2).points
 				end
 			end
 		end

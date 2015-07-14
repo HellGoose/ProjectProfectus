@@ -60,6 +60,12 @@ gem 'database_cleaner', '~> 1.4.1'
 # Use rspec-activemodel-mocks for mock_models in testing
 gem 'rspec-activemodel-mocks'
 
+#Puma
+gem 'puma'
+
+# Rspec testing framework
+gem 'rspec-rails'#, '~> 3.0'	
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
@@ -70,9 +76,6 @@ group :development, :test do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
 
-  # Rspec testing framework
-  gem 'rspec-rails'#, '~> 3.0'	
-
   # Use factory_girl for fixtures
-	gem 'factory_girl_rails'
+	gem 'factory_girl_rails', :require => false
 end

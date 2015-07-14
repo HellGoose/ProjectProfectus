@@ -24,6 +24,7 @@ Rails.application.routes.draw do
 
 	# News
 	get '/news/page/:page/:interval', to: 'news#page'
+	get '/notifications', to: 'home#notifications'
 
 	# Campaigns belonging to a user
 	get '/users/:id/campaigns/:page/:interval', to: 'users#campaignPage'
@@ -34,6 +35,7 @@ Rails.application.routes.draw do
 	# Root
 	root 'home#index'
 
+	resources :pledge, only: [:show]
 	resources :news
 	resources :admin, only: [:index]
 	resources :posts

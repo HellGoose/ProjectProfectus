@@ -1,74 +1,97 @@
 <!DOCTYPE html>
-<html>
-<head>
-	<title>Profectus</title>
-	<%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-	<%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-	<script src="http://cdn.embed.ly/jquery.embedly-3.1.1.min.js" type="text/javascript"></script>
-	<%= csrf_meta_tags %>
-</head>
-<body>
-	<div id="wrap">
-		<nav class="navbar navbar-default navbar-static-top">
-			<div class="container">
-				<!-- Brand and toggle get grouped for better mobile display -->
-				<div class="navbar-header">
-					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-						<span class="sr-only">Toggle navigation</span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-					</button>
-					<a class="navbar-brand" href="/">Profectus</a>
-				</div>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Podium</title>
 
-			<!-- Collect the nav links, forms, and other content for toggling -->
-			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-				<ul class="nav navbar-nav navbar-right" id="menu">
-					<% if current_user %>
-						<li><a href="/campaigns/new">Add Campaign</a></li>
-					<% end %>
-					<li class="<%= 'active' if params[:controller] == 'campaigns' %>"><a href="/campaigns">Campaigns</a></li>
-					<li class="<%= 'active' if params[:controller] == 'about' %>"><a href="/about/index">About</a></li>
-					<li class="dropdown <%= 'active' if params[:controller] == 'users' %>">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-						<% if current_user %>
-							<%= current_user.name %>
-						<% else %>
-							Login
-						<% end %>
-						<span class="caret"></span></a>
-						<ul class="dropdown-menu" role="menu">
-							<% if current_user %>
-								<% if isAdmin %>
-									<li><%= link_to "Admin", "/admin/", id: "admin", role: "menuitem" %></li>
-								<% end %>
-							<li><%= link_to "Account", user_path(current_user), id: "account", role: "menuitem" %></li>
-							<li><a href='#' id='refer-a-friend' onclick="return false;">Refer-a-friend</a></li>
-							<li class="divider"></li>
-							<li><%= link_to "Logout", "/signout", id: "logout", role: "menuitem" %></li>
-							
-							<% else %>
-							<li><%= link_to "Login using Facebook", "/auth/facebook", id: "facebook_login", role: "menuitem" %></li>
-							<li><%= link_to "Login using Google", "/auth/google", id: "google_login", role: "menuitem" %></li>
-							<% end %>
-						</ul>
-					</li>
-				</ul>
-			</div><!-- /.navbar-collapse -->
-		</div><!-- /.container-fluid -->
-	</nav>
-		<div class="container">
-			<%= yield %>
-		</div>
-	</div> <!-- Wrapper -->
+    <!-- Profectus -->
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+    <script src="http://cdn.embed.ly/jquery.embedly-3.1.1.min.js" type="text/javascript"></script>
+    <%= csrf_meta_tags %>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
-	<div id="footer">
-	  <div class="container">
-	    <li class="text-muted"><a href="/about/index">About Us</a></li>
-	    <li class="text-muted"><a href="/about/index#faq">FAQ</a></li>
-	  </div>
-	</div>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="navbar navbar-default navbar-static-top navbar-xs" id="header" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            Menu <b class="caret"></b>
+          </button>
+          <a class="navbar-brand" href="/">
+            <ul><img src="https://cloud.githubusercontent.com/assets/690017/4317652/8946bb80-3f15-11e4-8b1b-961d47232979.png" width="25px" align="middle"> Podium</ul>
+          </a>
+        </div> <!-- End navbar-header -->
+        <div class="navbar-collapse collapse">
+        	<ul class="nav navbar-nav navbar-left">
+        		<li class="<%= 'active' if params[:controller] == 'campaigns' %>">
+              <a href="/campaigns">Browse Campaigns</a>
+            </li>
+        		<li class="<%= 'active' if params[:controller] == 'about' %>">
+              <a href="/about/index">About</a>
+            </li>
+        	</ul>
+          <ul class="nav navbar-nav navbar-right">
+              <% if current_user %>
+                <li><a href="#"><i class="fa fa-star" style="color: gold;"></i> <%= current_user.points %></a></li>
+                <li><a href="<%= user_path(current_user) %>">
+                  <img class="img-circle center-cropped" id="profile-pic" height="30" width="30" src="<%= getFacebookPicURL(current_user) %>" style="
+                  margin-top: -100%;
+                  margin-bottom: -100%;
+                  "> <%= current_user.name %></a></li>
+              <% else %>
+                <li><a href="/auth/facebook">Login</a></li>
+              <% end %>
+            <% if current_user %>
+              <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bars"></i></a>
+              <ul class="dropdown-menu">
+                <li class="dropdown-header"></li>
+                  <% if isAdmin %>
+                    <li><a href="/admin/">Admin Page</a></li>
+                  <% end %>
+                  <li><a href="/campaigns/new">Add Campaign</a></li>
+                  <li><a href='#' id='refer-a-friend' onclick="return false;">Refer-a-friend</a></li>
+                  <li class="divider"></li>
+                  <li> <a href="/signout">Log out</a></li>
+              </ul>
+              <% end %>
+            </li>
+          </ul>
+        </div>
+      </div> <!-- End container -->
+	  </div> <!-- End navbar -->
 
-</body>
+    <div class="container" id="content">
+      <div class="notification-container">
+        <div class="text-center" id="notifications" style="display:none"></div>
+      </div>
+      <%= yield %>
+    </div><!-- End content -->
+
+    
+    <div class="navbar navbar-inverse navbar-static-bottom" id="footer" role="navigation"><!-- Footer -->
+      <div class="container">
+        <div class="navbar-text pull-left">
+          <p> 2015 Podium </p>
+        </div>
+        <div class="navbar-text pull-right">
+          <a href="#"><i class="fa fa-facebook-square fa-2x"></i></a>
+          <a href="#"><i class="fa fa-twitter fa-2x"></i></a>
+          <a href="#"><i class="fa fa-google-plus fa-2x"></i></a>
+        </div>
+      </div>
+    </div><!-- End footer -->
+  </body>
 </html>

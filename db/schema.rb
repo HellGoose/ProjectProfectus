@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150630125704) do
+ActiveRecord::Schema.define(version: 20150713180127) do
 
   create_table "badges", force: :cascade do |t|
     t.string   "name",        limit: 255
@@ -63,6 +63,17 @@ ActiveRecord::Schema.define(version: 20150630125704) do
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
   end
+
+  create_table "points_histories", force: :cascade do |t|
+    t.integer  "points_received", limit: 4
+    t.string   "description",     limit: 255
+    t.boolean  "seen",            limit: 1
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.integer  "user_id",         limit: 4
+  end
+
+  add_index "points_histories", ["user_id"], name: "index_points_histories_on_user_id", using: :btree
 
   create_table "post_comments", id: false, force: :cascade do |t|
     t.integer "comment_id", limit: 4
@@ -156,4 +167,5 @@ ActiveRecord::Schema.define(version: 20150630125704) do
     t.boolean  "hasLoggedInThisRound",   limit: 1
   end
 
+  add_foreign_key "points_histories", "users"
 end
