@@ -76,12 +76,12 @@ class User < ActiveRecord::Base
 		#Created 10 campaigns
 		def tenCampaignsBadge(campaignCount)
 			if campaignCount > 0 and campaignCount%10 == 0
-				if !self.badges.find_by(badge_id: 3)
+				if !self.badges.find_by(badge_id: 2)
 					self.badges.create(user_id: self.id, badge_id: 2, timesAchieved: 1)
-					self.points += Badge.find(3).points
-				elsif campaignCount/10 > self.badges.find_by(badge_id: 3).timesAchieved
-					self.badges.find_by(badge_id: 3).timesAchieved = campaignCount/10
-					self.points += Badge.find(3).points
+					self.points += Badge.find(2).points
+				elsif campaignCount/10 > self.badges.find_by(badge_id: 2).timesAchieved
+					self.badges.find_by(badge_id: 2).timesAchieved = campaignCount/10
+					self.points += Badge.find(2).points
 				end
 			end
 		end
