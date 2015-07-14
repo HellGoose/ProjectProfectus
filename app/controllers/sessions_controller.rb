@@ -15,14 +15,24 @@ class SessionsController < ApplicationController
 		user = User.from_omniauth(auth_params)
 		referer = User.find_by(id: params['referer'].to_i)
 
+		if !user_tmp && user
+			notification = PointsHistory.new(description: 'You logged in for the first time!', points_received: 25)
+			user.pointsHistories << notification
+			user.save
+		end
+
 		if user_tmp == nil && user.uid != referer.uid && referer != nil
+			notification = PointsHistory.new(description: 'You refered ' + user.name + '!', points_received: 5)
+			referer.pointsHistory << notification
 			referer.points += 5
 			referer.save
 		end
 
 		if !user.hasLoggedInThisRound
+			notification = PointsHistory.new(description: 'You logged in this round!', points_received: 1)
 			user.points += 1
 			user.hasLoggedInThisRound = true
+			user.pointsHistories << notification
 			user.save
 		end
 		
