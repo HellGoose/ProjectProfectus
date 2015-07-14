@@ -28,6 +28,12 @@
 	height: 250px;
 }
 
+#start-voting {
+	background-color: #F05000;
+	border-color: #E54C00;
+	/*border-radius: 0px;*/
+}
+
 //Campaign voting
 
 .image-vote-container {
@@ -76,6 +82,13 @@
 
 .voting-done {
 	font-size: 35px;
+}
+
+#campaigns-news > hr {
+	border-color: #385559;
+	border-width: 3px;
+	margin-top: 2px;
+	margin-bottom: 2px;
 }
 
 //News
