@@ -22,10 +22,6 @@ Rails.application.routes.draw do
 	post '/vote/post/:id/:dir', to: 'posts#vote'
 	get '/vote/campaign/:id/', to: 'campaigns#vote'
 
-	# Pledge
-	# get '/pledge/', to: 'campaign#pledge'
-	get "/:pledge" => "pledge#show"
-
 	# News
 	get '/news/page/:page/:interval', to: 'news#page'
 
@@ -38,6 +34,7 @@ Rails.application.routes.draw do
 	# Root
 	root 'home#index'
 
+	resources :pledge, only: [:show]
 	resources :news
 	resources :admin, only: [:index]
 	resources :posts
