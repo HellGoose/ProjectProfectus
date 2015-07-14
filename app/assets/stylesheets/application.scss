@@ -61,6 +61,13 @@ html, body{
   margin-bottom: -100%;
 }
 
+#center-cropped {
+  object-fit: none; /* Do not scale the image */
+  object-position: center; /* Center the image within the element */
+  height: 100px;
+  width: 100px;
+}
+
 #footer {
   margin-top: 30px; 
   border-radius: 0px;
