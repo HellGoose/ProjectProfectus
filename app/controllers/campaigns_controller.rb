@@ -311,6 +311,7 @@ class CampaignsController < ApplicationController
 			campaignVotes[campaign_id].campaign.user.save
 
 			current_user.points += 1
+			current_user.save
 			current_user.campaignVotes.where(voteType: 1).each do |v|
 				v.campaign.roundScore += 1
 				v.campaign.save
