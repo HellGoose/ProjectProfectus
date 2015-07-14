@@ -25,4 +25,35 @@ class HomeController < ApplicationController
 			format.html { render partial: 'refer_a_friend', layout: 'windowed' }
 		end
 	end
+
+
+	# Public: Renders a partial view containing a notification.
+	# Route: GET root/notifications
+	#
+	# unreadNotifications	- The PointsHistory of the user where they are not seen and sorted by oldest first.
+	#
+	# Renders home#notifications in a notification div on the front-end.
+	# Renders nothing if user is not logged in or the user has no unseen notifications.
+	def notifications
+		if !current_user
+			respond_to do |format|
+				format.html { render nothing: true }
+			end
+			return
+		end
+		unreadNotifications = current_user.pointsHistories.where(seen: false).order('created_at ASC')
+
+		if (unreadNotifications != [])
+			@notification = unreadNotifications.first
+			@notification.seen = true
+			@notification.save
+			respond_to do |format|
+				format.html { render partial: 'notifications' }
+			end
+		else
+			respond_to do |format|
+				format.html { render nothing: true }
+			end
+		end
+	end
 end

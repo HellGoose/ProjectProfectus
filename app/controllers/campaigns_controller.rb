@@ -96,6 +96,8 @@ class CampaignsController < ApplicationController
 
 				respond_to do |format|
 					if @campaign.save
+						notification = PointsHistory.new(description: 'You successfully made a submission!', points_received: 5)
+						current_user.pointsHistories << notification
 						current_user.points +=5
 						current_user.save
 						msg = "<span class=\"alert alert-success\">Campaign was successfully created.</span>"
@@ -307,15 +309,20 @@ class CampaignsController < ApplicationController
 			campaignVotes[campaign_id].save
 			campaignVotes[campaign_id].campaign.roundScore += 10
 			campaignVotes[campaign_id].campaign.save
+
+			notification = PointsHistory.new(description: 'Someone voted for your submission!', points_received: 1)
+			campaignVotes[campaign_id].campaign.user.pointsHistories << notification
 			campaignVotes[campaign_id].campaign.user.points += 1
 			campaignVotes[campaign_id].campaign.user.save
 
+			notification = PointsHistory.new(description: 'You successfully voted this round!', points_received: 1)
+			current_user.pointsHistories << notification
 			current_user.points += 1
 			current_user.campaignVotes.where(voteType: 1).each do |v|
 				v.campaign.roundScore += 1
 				v.campaign.save
-				v.campaign.user.points += 1
-				v.campaign.user.save
+				#v.campaign.user.points += 1
+				#v.campaign.user.save
 			end
 		end
 	end
