@@ -59,6 +59,8 @@ def runNewRound (decayRate)
 		)
 		i = 0
 		winnerUsers.each do |wu|
+			notification = PointsHistory.new(description: 'A submission of yours have won the round!', points_received: usersOfTheRoundPoints[i])
+			wu.pointsHistories << notification
 			wu.points += usersOfTheRoundPoints[i]
 			wu.save
 			i+=1

@@ -60,9 +60,10 @@
               <ul class="dropdown-menu">
                 <li class="dropdown-header"></li>
                   <% if isAdmin %>
-                    <li><a href="/admin/"></li>
+                    <li><a href="/admin/">Admin Page</a></li>
                   <% end %>
                   <li><a href="/campaigns/new">Add Campaign</a></li>
+                  <li><a href='#' id='refer-a-friend' onclick="return false;">Refer-a-friend</a></li>
                   <li class="divider"></li>
                   <li> <a href="/signout">Log out</a></li>
               </ul>
@@ -74,7 +75,10 @@
 	  </div> <!-- End navbar -->
 
     <div class="container" id="content">
-    <%= yield %>
+      <div class="notification-container">
+        <div class="text-center" id="notifications" style="display:none"></div>
+      </div>
+      <%= yield %>
     </div><!-- End content -->
 
     

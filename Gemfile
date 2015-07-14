@@ -77,5 +77,5 @@ group :development, :test do
   gem 'spring'
 
   # Use factory_girl for fixtures
-	gem 'factory_girl_rails'
+	gem 'factory_girl_rails', :require => false
 end
