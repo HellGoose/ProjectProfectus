@@ -39,6 +39,7 @@
 	Number of Campaigns: <%= @user.campaigns.count %><br />
 	Number of Forum Posts: <%= @user.posts.count %><br/>
 	Number of Badges: <%= @user.badges.sum(:timesAchieved) %><br/>
+	Submissions this round: <%=  @user.additionsThisRound %>/<%= Round.first.maxAdditionsPerUser %>
 </div>
 <div class="col-sm-4 badges">
 	<% @user.badges.each do |b| %>
