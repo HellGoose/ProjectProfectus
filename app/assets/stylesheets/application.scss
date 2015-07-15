@@ -117,6 +117,7 @@ html, body{
 }
 .navbar-default .navbar-nav > li > .dropdown-menu {
   background-color: #385559;
+  border-radius: 2px;
 }
 .navbar-default .navbar-nav > li > .dropdown-menu > li > a {
   color: #ecf0f1;
@@ -149,6 +150,7 @@ html, body{
 .navbar-default .navbar-collapse,
 .navbar-default .navbar-form {
   border-color: #ecf0f1;
+  border-radius: 0px;
 }
 .navbar-default .navbar-link {
   color: #ecf0f1;
