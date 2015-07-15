@@ -29,6 +29,10 @@
 #winner_container {
 }
 
+#winner_container > h3 {
+	background: #F7F7F7;
+}
+
 #top8_container {
 	background-color: #F7F7F7;
 }
@@ -46,6 +50,7 @@
 	position: absolute;
 	top: 125px;
 }
+
 
 .image-vote-container img, .image_container img {
 	max-width: 100%;
