@@ -25,6 +25,7 @@ def roundScript
 				round.endTime = Time.at(Time.now.to_i + round.duration).to_datetime
 				round.forceNewRound = false
 				round.save
+				cleanupDatabase
 			end
 			sleep 1
 			round = Round.first
@@ -84,8 +85,12 @@ def runNewRound (decayRate)
 		#Compute and reset scores
 		campaigns.each do |c|
 			c.globalScore = (c.globalScore * decayRate + c.roundScore).to_i
-			c.user.points += (c.roundScore*percentageOfRoundScore).to_i
-			c.user.save
+			if (c.roundScore*percentageOfRoundScore).to_i > 0
+				notification = PointsHistory.new(description: 'Your submission received ' + c.roundScore.to_s + ' round points!', points_received: (c.roundScore*percentageOfRoundScore).to_i)
+				c.user.pointsHistories << notification
+				c.user.points += (c.roundScore*percentageOfRoundScore).to_i
+				c.user.save
+			end
 			c.roundScore = 0
 			c.save
 		end
@@ -97,6 +102,8 @@ def runNewRound (decayRate)
 				case cv.campaign.id
 				when winnerCampaigns[0].id, winnerCampaigns[1].id, winnerCampaigns[2].id
 					placing = RoundWinnerCampaign.find_by(roundWon: round.currentRound, campaign_id: cv.campaign_id).placing
+					notification = PointsHistory.new(description: 'A submission you voted for won the round!', points_received: (usersOfTheRoundPoints[placing]/5).to_i)
+					cv.user.pointsHistories << notification
 					cv.user.points += (usersOfTheRoundPoints[placing]/5).to_i
 					cv.user.save
 				end
@@ -120,6 +127,14 @@ def runNewRound (decayRate)
 		puts "Done! New Round Started."
 	else
 		puts "Failed to start round! No scores found. Continuing with this round."
+	end
+end
+
+def cleanupDatabase
+	PointsHistory.all.each do |ph|
+		if ph.seen
+			ph.destroy
+		end
 	end
 end
 
