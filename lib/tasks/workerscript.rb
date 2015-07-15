@@ -9,9 +9,6 @@ def databaseInit
 		if Badge.all.empty?
 			initBadges()
 		end
-		if Campaign.all.empty?
-			initCampaign()
-		end
 	end
 end
 
@@ -47,7 +44,7 @@ def runNewRound (decayRate)
 
 	#Variables
 	usersOfTheRoundPoints = [25, 10, 5]
-	percentageOfRoundScore = 0.9
+	percentageOfRoundScore = 0.1
 
 	#Declare Winners
 	if campaigns.first.roundScore > 0
@@ -65,6 +62,8 @@ def runNewRound (decayRate)
 		)
 		i = 0
 		winnerUsers.each do |wu|
+			notification = PointsHistory.new(description: 'A submission of yours have won the round!', points_received: usersOfTheRoundPoints[i])
+			wu.pointsHistories << notification
 			wu.points += usersOfTheRoundPoints[i]
 			wu.save
 			i+=1
@@ -123,32 +122,25 @@ def runNewRound (decayRate)
 	end
 end
 
-private
-	def initRound
-		Round.create(
-			duration: 3600, 
-			decayRate: 0.75)
-	end
+def initRound
+	Round.create(
+		duration: 3600, 
+		decayRate: 0.75)
+end
 
-	def initCategories
-		Category.create(name: 'Technology')
-	end
+def initCategories
+	Category.create(name: 'Technology')
+end
 
-	def initCampaign
-		Campaign.create(
-			name: "TestCampaign",
-		)
-	end
-
-	def initBadges
-		Badge.create(
-			name: 'My First Campaign', 
-			description: 'Created a campaign.', 
-			imageUrl: 'http://badgemonkey.com/images/im-just-a-freaking.jpg', 
-			points: 500)
-		Badge.create(
-			name: 'Campaign Fronter', 
-			description: 'Created 10 campaigns.', 
-			imageUrl: 'http://badgemonkey.com/images/iamawesombadge.jpg', 
-			points: 500)
-	end
+def initBadges
+	Badge.create(
+		name: 'My First Campaign', 
+		description: 'Created a campaign.', 
+		imageUrl: 'http://badgemonkey.com/images/im-just-a-freaking.jpg', 
+		points: 50)
+	Badge.create(
+		name: 'Campaign Fronter', 
+		description: 'Created 10 campaigns.', 
+		imageUrl: 'http://badgemonkey.com/images/iamawesombadge.jpg', 
+		points: 50)
+end

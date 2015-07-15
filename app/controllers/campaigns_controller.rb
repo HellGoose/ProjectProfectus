@@ -318,6 +318,7 @@ class CampaignsController < ApplicationController
 			notification = PointsHistory.new(description: 'You successfully voted this round!', points_received: 1)
 			current_user.pointsHistories << notification
 			current_user.points += 1
+			current_user.save
 			current_user.campaignVotes.where(voteType: 1).each do |v|
 				v.campaign.roundScore += 1
 				v.campaign.save

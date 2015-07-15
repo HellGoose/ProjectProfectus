@@ -21,7 +21,7 @@ class SessionsController < ApplicationController
 			user.save
 		end
 
-		if user_tmp == nil && user.uid != referer.uid && referer != nil
+		if user_tmp == nil && referer != nil && user.uid != referer.uid 
 			notification = PointsHistory.new(description: 'You refered ' + user.name + '!', points_received: 5)
 			referer.pointsHistory << notification
 			referer.points += 5
