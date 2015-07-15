@@ -109,6 +109,7 @@ def runNewRound (decayRate)
 			if u.isOnStep == 4
 				u.isOnStep = 0
 				u.hasLoggedInThisRound = false
+				u.additionsThisRound = 0
 				u.save
 			end
 		end
@@ -125,7 +126,8 @@ end
 def initRound
 	Round.create(
 		duration: 3600, 
-		decayRate: 0.75)
+		decayRate: 0.75,
+		maxAdditionsPerUser: 3)
 end
 
 def initCategories

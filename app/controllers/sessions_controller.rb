@@ -18,6 +18,13 @@ class SessionsController < ApplicationController
 		if !user_tmp && user
 			notification = PointsHistory.new(description: 'You logged in for the first time!', points_received: 25)
 			user.pointsHistories << notification
+			user.hasLoggedInThisRound = true
+			user.save
+		elsif !user.hasLoggedInThisRound
+			notification = PointsHistory.new(description: 'You logged in this round!', points_received: 1)
+			user.points += 1
+			user.hasLoggedInThisRound = true
+			user.pointsHistories << notification
 			user.save
 		end
 
@@ -26,14 +33,6 @@ class SessionsController < ApplicationController
 			referer.pointsHistory << notification
 			referer.points += 5
 			referer.save
-		end
-
-		if !user.hasLoggedInThisRound
-			notification = PointsHistory.new(description: 'You logged in this round!', points_received: 1)
-			user.points += 1
-			user.hasLoggedInThisRound = true
-			user.pointsHistories << notification
-			user.save
 		end
 		
 		session[:user_id] = user.id
