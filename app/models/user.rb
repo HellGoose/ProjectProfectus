@@ -68,8 +68,8 @@ class User < ActiveRecord::Base
 		#The first campaign
 		def firstCampaignBadge(campaignCount)
 			if campaignCount == 1 and !self.badges.find_by(badge_id: 1)
-				self.badges.create(user_id: self.id, badge_id: 2, timesAchieved: 1)
-				self.points += Badge.find(2).points
+				self.badges.create(user_id: self.id, badge_id: 1, timesAchieved: 1)
+				self.points += Badge.find(1).points
 			end
 		end
 

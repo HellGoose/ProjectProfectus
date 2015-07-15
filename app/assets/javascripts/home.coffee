@@ -68,6 +68,7 @@ $(document).ready ->
 	# vote button. Also sends the list id of the current voted campaign.
 	$('#next-voting').on 'click', ->
 		campaign = $('#campaign').data('vote')
+		$('#campaign').data('vote', -1)
 		$('#voting').load "/vote/campaign/" + campaign, (response, status) ->
 			$('.campaign-display').slideUp(0)
 			if $('#campaign').data('step') < 4
