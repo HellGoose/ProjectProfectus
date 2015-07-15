@@ -20,7 +20,15 @@ class CampaignsController < ApplicationController
 	#
 	# Renders campaign#new.
 	def new
-		@campaign = Campaign.new
+		if current_user && current_user.additionsThisRound < Round.first.maxAdditionsPerUser
+			@campaign = Campaign.new
+		else
+			respond_to do |format|
+				msg = "<span class=\"alert alert-warning\">You have exceeded your submission limit for this round.</span>"
+				format.html { redirect_to current_user, notice: msg }
+				format.json { render :show, location: current_user }
+			end
+		end
 	end
 
 	# Public: Prepares variables for campaign#show.
@@ -77,7 +85,7 @@ class CampaignsController < ApplicationController
 	#
 	# Renders campaign#index.
 	def create
-		if current_user
+		if current_user && current_user.additionsThisRound < Round.first.maxAdditionsPerUser
 			@campaign = Campaign.new(campaign_params)
 			@campaign.user_id = session[:user_id]
 
@@ -99,6 +107,7 @@ class CampaignsController < ApplicationController
 						notification = PointsHistory.new(description: 'You successfully made a submission!', points_received: 5)
 						current_user.pointsHistories << notification
 						current_user.points +=5
+						current_user.additionsThisRound += 1
 						current_user.save
 						msg = "<span class=\"alert alert-success\">Campaign was successfully created.</span>"
 						format.html { redirect_to @campaign, notice: msg }
@@ -113,6 +122,12 @@ class CampaignsController < ApplicationController
 					format.html { render :new }
 					format.json { render json: @campaign.errors, status: :unprocessable_entity }
 				end
+			end
+		else
+			respond_to do |format|
+				msg = "<span class=\"alert alert-warning\">You have exceeded your submission limit for this round.</span>"
+				format.html { redirect_to current_user, notice: msg }
+				format.json { render :show, location: current_user }
 			end
 		end
 	end
