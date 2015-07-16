@@ -32,10 +32,13 @@ Rails.application.routes.draw do
 	# Round administrating
 	post '/admin/round/:type/:val', to: 'admin#round'
 
+	# Pledge
+	# get '/pledge', to: 'pledge#index'
+
 	# Root
 	root 'home#index'
 
-	resources :pledge, only: [:show]
+	resources :pledge, only: [:index]
 	resources :news
 	resources :admin, only: [:index]
 	resources :posts
