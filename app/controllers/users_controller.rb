@@ -11,7 +11,8 @@ class UsersController < ApplicationController
 	#
 	# Renders user#show.
 	def show
-		@userCampaigns = @user.campaigns.order('(globalScore + roundScore) DESC')
+		@userCampaigns = @user.campaigns.order('created_at DESC')
+		@userNominations = @user.nominations.where(nominated: true)
 		@campaignsInterval = 8
 	end
 
