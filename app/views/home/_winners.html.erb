@@ -1,3 +1,4 @@
+
 <% round = Round.first
 if round != nil
 	lastRound = round.currentRound-1
@@ -5,12 +6,12 @@ if round != nil
 	winnerCampaigns.each do |wc| 
 		next if wc.campaign == nil%>
 
-		<div class="col-xs-3 campaign-container">
+		<div class="col-xs-4 campaign-container text-center">
 			<div class="text-center">
 				<h3><%= (wc.placing+1).to_s %></h3>
 			</div>
 
-			<div class="winner-campaign">
+			<div class="campaign">
 				<% c = wc.campaign %>
 				<%= link_to "", "/campaigns/" + c.id.to_s, class: "campaign_link" %>
 				<% @campaign = c %>
@@ -18,31 +19,4 @@ if round != nil
 			</div>
 		</div>
 	<% end %>
-
-
-	<div class="col-xs-3 campaign-container">
-		<div class="text-center">
-			<h3>Champion</h3>
-		</div>
-
-		<div class="winner-campaign">
-			<%winnerUser = round.winnerUsers.find_by(roundWon: lastRound)
-			if winnerUser != nil
-				user = winnerUser.user
-				if user != nil %>
-					<%= link_to "", "/users/" + user.id.to_s, class: "campaign_link" %>
-					<div class="image_container">
-						<% if !user.image || user.image == '' %>
-						<%= image_tag getFacebookPicURL(user), class: "img-responsive" %>
-						<% else %>
-						<%= image_tag user.image, class: "img-responsive" %>
-						<% end %>
-					</div>
-					<h4><%= user.name %></h4>
-					<h5>Level: <%= user.level %></h5>
-					<h5>Experience: <%= user.points %></h5>
-				<%end 
-			end%>
-		</div>
-	</div>
 <% end %>

@@ -16,22 +16,28 @@
 
 //Campaign display under the voting elements
 
-.main_campaign {
-	margin: 10px 0px 10px 0px;
-	background-color: #fcfcfc;
-	border: 1px solid #ddd;
-	border-radius: 5px;
-	width: 100%;
-}
-
-.main_campaign .image_container {
-	height: 250px;
-}
-
 #start-voting {
 	background-color: #F05000;
 	border-color: #E54C00;
-	/*border-radius: 0px;*/
+	border-radius: 0px;
+}
+
+/*#campaign-news:nth-child(odd) .container {
+    background-color: #F7F7F7;
+}*/
+
+#winner_container {
+}
+
+#winner_container > h3 {
+	background: #F7F7F7;
+}
+
+#top8_container {
+	background-color: #F7F7F7;
+}
+
+#news_container {
 }
 
 //Campaign voting
@@ -44,6 +50,7 @@
 	position: absolute;
 	top: 125px;
 }
+
 
 .image-vote-container img, .image_container img {
 	max-width: 100%;
@@ -64,7 +71,7 @@
 .campaign-vote {
 	background-color: #fcfcfc;
 	border: 1px solid #ddd;
-	border-radius: 5px;
+	border-radius: 0px;
 	height: 300px;
 	width: 250px;
 	cursor: hand;
@@ -84,7 +91,14 @@
 	font-size: 35px;
 }
 
-#campaigns-news > hr {
+/*#campaigns-news > hr {
+	border-color: #385559;
+	border-width: 3px;
+	margin-top: 2px;
+	margin-bottom: 2px;
+}*/
+
+.campaigns-news-rule {
 	border-color: #385559;
 	border-width: 3px;
 	margin-top: 2px;
@@ -101,7 +115,7 @@
 	margin: 0 auto;
 	background-color: #fcfcfc;
 	border: 1px solid #ddd;
-	border-radius: 10px;
+	border-radius: 0px;
 	width: 96%;
 }
 

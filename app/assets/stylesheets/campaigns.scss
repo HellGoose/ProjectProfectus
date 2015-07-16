@@ -54,15 +54,15 @@
 }
 
 .image_container {
-	width: 200px;
-	height: 150px;
-	margin: 10px;
+	margin-bottom: 10px;
 	float: left;
 }
 
 .image_container img {
 	max-width: 100%;
 	max-height: 100%;
+	width: 250px;
+  margin: 10px;
 }
 
 .campaign_link {
@@ -94,12 +94,13 @@
 }
 
 .campaign {
-	margin: 10px;
-	background-color: #fcfcfc;
-	border: 1px solid #ddd;
+	margin: 0px;
+	padding: 0px;
+	background-color: transparent;
+	/*border: 1px solid #ddd;*/
 	min-width: 250px;
 	max-width: 250px;
-	height: 400px;
+	height: 260px;
 }
 
 .campaign-container {
@@ -109,13 +110,73 @@
 	max-width: 250px;
 }
 
+.campaign-box {
+	margin-top: -5px;
+	background-color: white;
+}
+
+.campaign-box > h4 {
+	height: 260px;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 20px;
+}
+
 .campaign-container .text-center h3 {
 	margin-left: 0px;
 }
 
 .winner-campaign {
 	padding: 10px;
-	background-color: #fcfcfc;
+	background-color: transparent;
 	border: 1px solid #ddd;
 	height: 400px;
 }
+
+// Add Campaign
+#preview {
+	margin: 10px 0px 10px 0px;
+	background-color: #fcfcfc;
+	border: 1px solid #ddd;
+	width: 100%;
+}
+
+#preview {
+	border-radius: 0px;
+	padding-left: 0px;
+}
+
+#preview > div.image_container {
+	margin: 5px;
+}
+
+#campaign_link {
+	border-radius: 0px;
+}
+
+// Campaign Site
+.main_campaign {
+	margin: 10px 0px 10px 0px;
+	background-color: #fcfcfc;
+	border: 1px solid #ddd;
+	border-radius: 0px;
+	width: 100%;
+	padding: 10px;
+}
+
+#campaign > div > div.image_container > img {
+	margin-right: 10px;
+}
+
+
+/*.main_campaign {
+	margin: 10px 0px 10px 0px;
+	background-color: #fcfcfc;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+	width: 100%;
+}
+
+.main_campaign .image_container {
+	height: 250px;
+}*/

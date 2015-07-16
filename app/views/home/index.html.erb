@@ -17,24 +17,11 @@
 <div id="voting"></div>
 
 <div id="campaigns-news">
+	<div class="container" id="winner_container">
 		<h3>Round Winners</h3>
-		<hr>
-		<div class="col-xs-12" id="winners">
+		<hr class="campaigns-news-rule">
+		<div class="row text-center" id="winners">
 			<%= render partial: 'winners' %>
 		</div>
-		<h3>Top 8 Campaigns</h3>
-		<hr>
-		<div class="col-xs-12" id="campaigns">
-			<%= render partial: 'campaigns/campaignList', locals: { page: 1, campaignsPerPage: 8 } %>
-		</div>
-		<h3>Latest News</h3>
-		<hr>
-	<div class="news_container">
-		<%= render partial: 'news/news', locals: { page: 1, newsPerPage: @newsInterval }  %>
 	</div>
-	<% if @allNews.size > @newsInterval %>
-		<div class="text-center">
-			<a class="btn btn-primary" id="more_news">Show More</a>
-		</div>
-	<% end %>
 </div>
