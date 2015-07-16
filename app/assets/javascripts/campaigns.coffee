@@ -144,7 +144,32 @@ $(document).ready ->
         $.embedly.extract(campaign, key: '0eef325249694df490605b1fd29147f5').progress (data) ->
           if data.title?
             renderCampaignPreview(data)
-          $('#submitButton').attr('disabled', false)
+          $.getJSON '/campaigns/checkIfCanAdd/' + data.title, (data) ->
+            $.each data, (key, val) ->
+              switch key
+                when 'Campaign'
+                  switch val
+                    when 'nominated: true'
+                      $('#notice').html('<span class="alert alert-warning">Campaign is already nominated.</span>')
+                      $('#notice').slideUp 0
+                      $('#notice').slideToggle 400
+                      $('#notice').delay(2000)
+                      $('#notice').slideToggle 400
+                    when 'nominated: false'
+                      $('#submitButton').attr('disabled', false)
+                    when 'was not found'
+                      $('#submitButton').attr('disabled', false)
+                    else
+                      break
+                when 'User'
+                  switch val
+                    when 'not logged in'
+                    else
+                      break
+                else
+                  break
+              return
+            return
           return
       else
         clearCampaignPreview()

@@ -105,7 +105,7 @@ class CampaignsController < ApplicationController
 
 					respond_to do |format|
 						if @campaign.save
-							notification = PointsHistory.new(description: 'You successfully made a submission!', points_received: 5)
+							notification = PointsHistory.new(description: 'You successfully nominated a campaign!', points_received: 5)
 							current_user.pointsHistories << notification
 							current_user.points +=5
 							current_user.additionsThisRound += 1
@@ -124,7 +124,7 @@ class CampaignsController < ApplicationController
 						@campaign.nominated = true
 						@campaign.nominator_id = current_user.id
 						if @campaign.save
-							notification = PointsHistory.new(description: 'You successfully made a submission!', points_received: 5)
+							notification = PointsHistory.new(description: 'You successfully made a nomination!', points_received: 5)
 							current_user.pointsHistories << notification
 							current_user.points +=5
 							current_user.additionsThisRound += 1
@@ -155,6 +155,20 @@ class CampaignsController < ApplicationController
 				msg = "<span class=\"alert alert-warning\">You have exceeded your submission limit for this round.</span>"
 				format.html { redirect_to current_user, notice: msg }
 				format.json { render :show, location: current_user }
+			end
+		end
+	end
+
+	# Public: Checks if a campaign can be nominated
+	def check_if_can_add
+		campaign = Campaign.find_by(title: params[:title])
+		respond_to do |format|
+			if !current_user
+				format.json { render json: { 'User' => 'not logged in' } }
+			elsif !campaign
+				format.json { render json: { 'Campaign' => 'was not found' } }
+			else
+				format.json { render json: { 'Campaign' => 'nominated: ' + campaign.nominated.to_s } } #campaign.nominated } }
 			end
 		end
 	end
@@ -352,7 +366,7 @@ class CampaignsController < ApplicationController
 			campaignVotes[campaign_id].campaign.roundScore += 10
 			campaignVotes[campaign_id].campaign.save
 
-			notification = PointsHistory.new(description: 'Someone voted for your submission!', points_received: 1)
+			notification = PointsHistory.new(description: 'Someone voted for your nominee!', points_received: 1)
 			campaignVotes[campaign_id].campaign.user.pointsHistories << notification
 			campaignVotes[campaign_id].campaign.user.points += 1
 			campaignVotes[campaign_id].campaign.user.save
