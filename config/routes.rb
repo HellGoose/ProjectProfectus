@@ -28,6 +28,7 @@ Rails.application.routes.draw do
 
 	# Campaigns belonging to a user
 	get '/users/:id/campaigns/:page/:interval', to: 'users#campaignPage'
+	get '/campaigns/checkIfCanAdd/:title', to: 'campaigns#check_if_can_add'
 
 	# Round administrating
 	post '/admin/round/:type/:val', to: 'admin#round'

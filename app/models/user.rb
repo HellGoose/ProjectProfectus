@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
 	#Relations (Used like: ClassName.relation):
 	has_many :posts
 	has_many :campaigns
-	has_many :nominations, class_name: "Campaign"
+	has_many :nominations, class_name: "Campaign", foreign_key: :nominator_id
 	has_many :pointsHistories
 	has_many :badges, class_name: "UserBadge"
 	has_many :postVotes, class_name: "PostVote"
