@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150715173837) do
+ActiveRecord::Schema.define(version: 20150716184521) do
 
   create_table "badges", force: :cascade do |t|
     t.string   "name",        limit: 255
@@ -46,9 +46,12 @@ ActiveRecord::Schema.define(version: 20150715173837) do
     t.integer  "roundScore",         limit: 4
     t.integer  "globalScore",        limit: 4
     t.integer  "timesShownInVoting", limit: 4
+    t.boolean  "nominated",          limit: 1
+    t.integer  "nominator_id",       limit: 4
   end
 
   add_index "campaigns", ["category_id"], name: "index_campaigns_on_category_id", using: :btree
+  add_index "campaigns", ["nominator_id"], name: "fk_rails_3ea12c1987", using: :btree
   add_index "campaigns", ["user_id"], name: "index_campaigns_on_user_id", using: :btree
 
   create_table "categories", force: :cascade do |t|
@@ -170,5 +173,7 @@ ActiveRecord::Schema.define(version: 20150715173837) do
     t.integer  "additionsThisRound",     limit: 4
   end
 
+  add_foreign_key "campaigns", "users", column: "nominator_id"
+  add_foreign_key "campaigns", "users", name: "nominator_id"
   add_foreign_key "points_histories", "users"
 end
