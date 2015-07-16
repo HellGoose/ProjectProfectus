@@ -150,7 +150,7 @@ $(document).ready ->
                 when 'Campaign'
                   switch val
                     when 'nominated: true'
-                      $('#notice').html('Campaign is already nominated')
+                      $('#notice').html('<span class="alert alert-warning">Campaign is already nominated.</span>')
                       $('#notice').slideUp 0
                       $('#notice').slideToggle 400
                       $('#notice').delay(2000)

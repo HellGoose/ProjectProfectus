@@ -64,7 +64,7 @@ def runNewRound (decayRate)
 		)
 		i = 0
 		winnerUsers.each do |wu|
-			notification = PointsHistory.new(description: 'A submission of yours have won the round!', points_received: usersOfTheRoundPoints[i])
+			notification = PointsHistory.new(description: 'A nominee of yours have won the round!', points_received: usersOfTheRoundPoints[i])
 			wu.pointsHistories << notification
 			wu.points += usersOfTheRoundPoints[i]
 			wu.save
@@ -87,7 +87,7 @@ def runNewRound (decayRate)
 		campaigns.each do |c|
 			c.globalScore = (c.globalScore * decayRate + c.roundScore).to_i
 			if (c.roundScore*percentageOfRoundScore).to_i > 0
-				notification = PointsHistory.new(description: 'Your submission received ' + c.roundScore.to_s + ' round points!', points_received: (c.roundScore*percentageOfRoundScore).to_i)
+				notification = PointsHistory.new(description: 'Your nominee received ' + c.roundScore.to_s + ' round points!', points_received: (c.roundScore*percentageOfRoundScore).to_i)
 				c.user.pointsHistories << notification
 				c.user.points += (c.roundScore*percentageOfRoundScore).to_i
 				c.user.save
@@ -110,7 +110,7 @@ def runNewRound (decayRate)
 				case cv.campaign.id
 				when winnerCampaigns[0].id, winnerCampaigns[1].id, winnerCampaigns[2].id
 					placing = RoundWinnerCampaign.find_by(roundWon: round.currentRound, campaign_id: cv.campaign_id).placing
-					notification = PointsHistory.new(description: 'A submission you voted for won the round!', points_received: (usersOfTheRoundPoints[placing]/5).to_i)
+					notification = PointsHistory.new(description: 'A nominee you voted for won the round!', points_received: (usersOfTheRoundPoints[placing]/5).to_i)
 					cv.user.pointsHistories << notification
 					cv.user.points += (usersOfTheRoundPoints[placing]/5).to_i
 					cv.user.save
