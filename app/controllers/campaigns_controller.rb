@@ -132,6 +132,19 @@ class CampaignsController < ApplicationController
 		end
 	end
 
+	def check_if_can_add
+		campaign = Campaign.find_by(title: params[:title])
+		respond_to do |format|
+			if !current_user
+				format.json { render json: { 'User' => 'not logged in' } }
+			elsif !campaign
+				format.json { render json: { 'Campaign' => 'was not found' } }
+			else
+				format.json { render json: { 'Campaign' => 'nominated: ' + 'true' } } #campaign.nominated } }
+			end
+		end
+	end
+
 	# Public: Deletes a campaign from the database.
 	# Route: DELETE root/campaigns/:id
 	# 	:id - The id of the campaign in the database.
