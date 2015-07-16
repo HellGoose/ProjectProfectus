@@ -1,3 +1,4 @@
 <div class="text-center">
 	<h1>There are not enough nominated campaigns to start the voting process!</h1>
+	<p><%= Campaign.where(nominated: true).count %>/15</p>
 </div>
