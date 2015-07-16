@@ -5,6 +5,7 @@ class Campaign < ActiveRecord::Base
 
 	#Relations (Used like: ClassName.relation):
 	belongs_to :user
+	belongs_to :nominator, class_name: "User"
 	belongs_to :category
 	has_many :posts, :dependent => :destroy
 	has_many :votes, class_name: "CampaignVote", :dependent => :delete_all
@@ -23,5 +24,7 @@ class Campaign < ActiveRecord::Base
 		self.voteCount ||= 0 if self.has_attribute? :voteCount
 		self.roundScore ||= 0 if self.has_attribute? :roundScore
 		self.globalScore ||= 0 if self.has_attribute? :globalScore
+		self.timesShownInVoting ||= 0 if self.has_attribute? :timesShownInVoting
+		self.nominated = true if (self.has_attribute? :nominated) && self.nominated.nil?
 	end
 end
