@@ -47,28 +47,6 @@ html, body{
 	height: 35px;
 }
 
-.navbar-text > a{
-  color: inherit;
-  text-decoration: none;
-}
-
-.navbar {
-
-  margin-bottom: 0px;
-}
-
-#profile-pic {
-  margin-top: -100%;
-  margin-bottom: -100%;
-}
-
-#center-cropped {
-  object-fit: none; /* Do not scale the image */
-  object-position: center; /* Center the image within the element */
-  height: 100px;
-  width: 100px;
-}
-
 #footer {
   margin-top: 30px; 
   border-radius: 0px;
@@ -93,7 +71,33 @@ html, body{
   margin-right: auto;
 }
 
+#profile-pic {
+  margin-top: -100%;
+  margin-bottom: -100%;
+}
+
+#center-cropped {
+  object-fit: none; /* Do not scale the image */
+  object-position: center; /* Center the image within the element */
+  height: 100px;
+  width: 100px;
+}
+
+.my-submissions {
+  margin: 0px;
+}
+
 // Navbar
+
+.navbar-text > a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.navbar {
+
+  margin-bottom: 0px;
+}
 
 .navbar-default {
   background-color: #385559;

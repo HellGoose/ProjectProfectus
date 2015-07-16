@@ -112,7 +112,18 @@
 
 .campaign-box {
 	margin-top: -5px;
+}
+
+/*#winners > div:nth-child(even) > div.campaign > div{
+	background-color: #F7F7F7;
+}*/
+
+/*#winners > div:nth-child(odd) > div.campaign > div{
 	background-color: white;
+}*/
+
+#winner_container .campaign-box {
+	background-color: #F7F7F7;
 }
 
 .campaign-box > h4 {
@@ -131,6 +142,16 @@
 	background-color: transparent;
 	border: 1px solid #ddd;
 	height: 400px;
+}
+
+#first_place {
+	/*text-align: center;*/
+}
+#second_place {
+	/*text-align: left;*/
+}
+#third_place {
+	/*text-align: right;*/
 }
 
 // Add Campaign
