@@ -35,12 +35,13 @@ end
 
 private
 def runNewRound (decayRate)
-	if Campaign.all.empty?
-		puts "Failed to start round! There are no campaigns in the database."
+	if Campaign.where(nominated: true).empty?
+		puts "Failed to start new round! Not enough nominated campaigns."
+		puts "Extending the current round!"
 		return
 	end
 	round = Round.first
-	campaigns = Campaign.all.order('roundScore DESC')
+	campaigns = Campaign.where(nominated: true).order('roundScore DESC')
 	users = User.all
 
 	#Variables
@@ -52,7 +53,7 @@ def runNewRound (decayRate)
 		winnerCampaigns = campaigns.first(3)
 		winnerUsers = []
 		winnerCampaigns.each do |wc|
-			winnerUsers << wc.user
+			winnerUsers << wc.nominator
 		end
 
 		#User of the round
@@ -90,8 +91,15 @@ def runNewRound (decayRate)
 				c.user.pointsHistories << notification
 				c.user.points += (c.roundScore*percentageOfRoundScore).to_i
 				c.user.save
+				if c.user_id != c.nominator_id
+					c.nominator.pointsHistories << notification
+					c.nominator.points += (c.roundScore*percentageOfRoundScore).to_i
+					c.nominator.save
+				end
 			end
+			c.timesShownInVoting = 0
 			c.roundScore = 0
+			c.nominated = false
 			c.save
 		end
 
@@ -126,7 +134,8 @@ def runNewRound (decayRate)
 		round.save
 		puts "Done! New Round Started."
 	else
-		puts "Failed to start round! No scores found. Continuing with this round."
+		puts "Failed to start round! No scores found."
+		puts "Extending the current round."
 	end
 end
 

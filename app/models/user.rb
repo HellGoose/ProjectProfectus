@@ -7,6 +7,7 @@ class User < ActiveRecord::Base
 	#Relations (Used like: ClassName.relation):
 	has_many :posts
 	has_many :campaigns
+	has_many :nominations, class_name: "Campaign"
 	has_many :pointsHistories
 	has_many :badges, class_name: "UserBadge"
 	has_many :postVotes, class_name: "PostVote"
@@ -44,7 +45,7 @@ class User < ActiveRecord::Base
 			self.role ||= 0 if self.has_attribute? :role
 			self.badgeCount ||= 0 if self.has_attribute? :badgeCount
 			self.isOnStep ||= 0 if self.has_attribute? :isOnStep
-			self.hasLoggedInThisRound = true if (self.has_attribute? :bool_value) && self.bool_field.nil?
+			self.hasLoggedInThisRound = true if (self.has_attribute? :hasLoggedInThisRound) && self.hasLoggedInThisRound.nil?
 			self.additionsThisRound ||= 0 if self.has_attribute? :additionsThisRound
 		end
 
