@@ -374,14 +374,21 @@ class CampaignsController < ApplicationController
 	# Returns the campaigns corresponding to the current step.
 	def genCampaignsForVoting
 		current_user.isOnStep = 0
-		campaignVotes = current_user.campaignVotes
-		genedCampaigns = []
 
 		campaigns = Campaign.order("(roundScore + globalScore) DESC")
-		genedCampaigns << campaigns.last(campaigns.size * 0.5).sample(3)
-		genedCampaigns << campaigns.slice((campaigns.size * 0.2)..(campaigns.size * 0.5)).sample(3)
-		genedCampaigns << campaigns.first(campaigns.size * 0.2).sample(3)
+		lowTier = campaigns.last(campaigns.size * 0.5)
+		midTier = campaigns.slice((campaigns.size * 0.2)..(campaigns.size * 0.5))
+		highTier = campaigns.first(campaigns.size * 0.2)
 
+		genedCampaigns = []
+		genedCampaigns << lowTier
+		genedCampaigns << lowTier.sample(2)
+		genedCampaigns << 
+		genedCampaigns << midTier.sample(2)
+		genedCampaigns << 
+		genedCampaigns << highTier.sample(2)
+
+		campaignVotes = current_user.campaignVotes
 		(0..8).each do |i|
 			step = (i / 3).to_i
 			campaignVotes.create(user_id: current_user.id, campaign_id: genedCampaigns[step][i % 3].id, step: step)
