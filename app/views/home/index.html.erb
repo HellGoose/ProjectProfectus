@@ -1,54 +1,50 @@
 <%= javascript_include_tag "home" %>
 
+<script type="text/javascript">    
+function hideButton(buttonElement){
+	$('#pledge-modal').modal('hide');
+}
+</script>
+
 <div id='news' data-page=1 data-interval=<%= @newsInterval %> data-size=<%= @allNews.size %>></div>
 
 <div id='campaign' data-step=<%= current_user.isOnStep if current_user %> data-vote=-1></div>
 
-<div class="row header">
+<div class="row">
 	<div class="text-center">
-		<h2>Have your say on today's nominations!<h2>
-		<h4 id="counter"></h4>
-		<script>
+		<h2 style="margin-bottom: 30px;">Have your say on today's nominations!<h2>
 
-// set the date we're counting down to
-var target_date = new Date('<%= Round.first.endTime %>').getTime(); //new Date('Jan, 31, 2017').getTime(); <% Round.first.endTime.year %>, <% Round.first.endTime.month %>, <% Round.first.endTime.day %>, <% Round.first.endTime.hour %>, <% Round.first.endTime.min %>, <% Round.first.endTime.sec %>
- 
-// variables for time units
-var days, hours, minutes, seconds;
- 
-// get tag element
-var countdown = document.getElementById('counter');
- 
-// update the tag with id "countdown" every 1 second
-setInterval(function () {
- 
-    // find the amount of "seconds" between now and target
-    var current_date = new Date().getTime();
-    var seconds_left = (target_date - current_date) / 1000;
- 
-    // do some time calculations
-    days = parseInt(seconds_left / 86400);
-    seconds_left = seconds_left % 86400;
-     
-    hours = parseInt(seconds_left / 3600);
-    seconds_left = seconds_left % 3600;
-     
-    minutes = parseInt(seconds_left / 60);
-    seconds = parseInt(seconds_left % 60);
-     
-    // format countdown string + set tag value
-    document.getElementById("counter").innerHTML = "Votes are counted in "+
-    // '<span class="days">' + days + ' Days </span>' 
-    //'<span class="hours">' + hours + ' Hours </span>'
-    '<span class="minutes">' + minutes + ' Minutes. </span>' 
-    //+'<span class="seconds">' + seconds + ' Seconds </span>'
-    ;
+		<% if current_user != nil %>
+			<% if current_user.isOnStep > 0 %>
+				<button type="button" id="start-voting" class="btn btn-lg orange">START</button>
+			<% else %>
+				<div class="container">
+				  <!-- Trigger the modal with a button -->
+				  <button type="button" id="pledge-btn" class="btn btn-lg orange" data-toggle="modal" data-target="#pledge-modal">START</button>
 
-}, 1000);
-</script>
-		<!-- <a class="btn btn-success" id="pledge" href="pledge">pledge</a> -->
-		<a class="btn btn-success" id="start-voting">Pledge and Play</a> 
-		<a class="btn btn-success" id="back-voting" style="display: none;">Back</a>
+				  <!-- Modal -->
+				  <div class="modal fade" id="pledge-modal" role="dialog">
+				    <div class="modal-dialog">
+				    
+				      <!-- Modal content-->
+				      <div class="modal-content">
+				        <div class="modal-header">
+				          <button type="button" class="close" data-dismiss="modal">&times;</button>
+				          <h4 class="modal-title">Pledge</h4>
+				        </div>
+				        <div class="modal-body">
+				          <p>I pledge my allegiance to <b>mother earth</b> and all her inhabitants. I will only promote content that I find <b>just</b> and <b>awesome</b>.</p>
+				        </div>
+				        <div class="modal-footer">
+				          <button type="button" id="start-voting" class="btn btn-default orange" data-dismiss="modal" onclick="$('#pledge-btn').hide();">Pledge and Play</button>
+				        </div>
+				      </div>
+				    </div>
+				  </div>
+				</div>
+			<% end %>
+		<% end %>
+		<a class="btn btn-success" id="back-voting" style="display: none;" onclick="$('#pledge-btn').show();">Close</a>
 		<a class="btn btn-success" id="next-voting" style="display: none;">Next</a>
 	</div>
 </div>
@@ -59,7 +55,7 @@ setInterval(function () {
 	<div class="container" id="winner_container">
 		<h3>Round Winners</h3>
 		<hr class="campaigns-news-rule">
-		<div class="row text-center" id="winners">
+		<div class="row" id="winners" style="margin-left:150px">
 			<%= render partial: 'winners' %>
 		</div>
 	</div>

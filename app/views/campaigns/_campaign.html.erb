@@ -15,6 +15,9 @@
 								user_path(User.find(@campaign.user_id))%>
 								<%=  " - " + @campaign.created_at.to_s %>
 			</p>
+			<h5>Global Score: <%= @campaign.globalScore %></h5>
+			<h5>Round Score: <%= @campaign.roundScore %></h5>
+			<h5>Times seen in voting this round: <%= @campaign.timesShownInVoting %></h5>
 			<P id="campaign-description" ><%= @campaign.description %></p>
 			<p><%= link_to "Go to Campaign Site", @campaign.link, class: "btn btn-primary", id: "campaign-link", target: "_blank" %></p>
 			<div id="social_media">

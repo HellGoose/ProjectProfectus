@@ -20,6 +20,42 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <script>
+      // set the date we're counting down to
+      var target_date = new Date('<%= Round.first.endTime %>').getTime(); //new Date('Jan, 31, 2017').getTime(); <% Round.first.endTime.year %>, <% Round.first.endTime.month %>, <% Round.first.endTime.day %>, <% Round.first.endTime.hour %>, <% Round.first.endTime.min %>, <% Round.first.endTime.sec %>
+       
+      // variables for time units
+      var days, hours, minutes, seconds;
+       
+      // get tag element
+      var countdown = document.getElementById('counter');
+     
+      // update the tag with id "countdown" every 1 second
+      setInterval(function () {
+     
+        // find the amount of "seconds" between now and target
+        var current_date = new Date().getTime();
+        var seconds_left = (target_date - current_date) / 1000;
+     
+        // do some time calculations
+        days = parseInt(seconds_left / 86400);
+        seconds_left = seconds_left % 86400;
+         
+        hours = parseInt(seconds_left / 3600);
+        seconds_left = seconds_left % 3600;
+         
+        minutes = parseInt(seconds_left / 60);
+        seconds = parseInt(seconds_left % 60);
+         
+        // format countdown string + set tag value
+        document.getElementById("counter").innerHTML = 
+        // '<span class="days">' + days + ' Days </span>' 
+        //'<span class="hours">' + hours + ' Hours </span>'
+        '<span class="minutes">' + minutes + '</span>' + //' Minutes. </span>' 
+        ' : <span class="seconds">' + seconds + '</span>'//' Seconds </span>'
+        ;
+    }, 1000);
+    </script>
   </head>
   <body>
     <div class="navbar navbar-default navbar-static-top navbar-xs" id="header" role="navigation">
@@ -33,6 +69,11 @@
             <ul><img src="https://cloud.githubusercontent.com/assets/690017/4317652/8946bb80-3f15-11e4-8b1b-961d47232979.png" width="25px" align="middle"> Podium</ul>
           </a>
         </div> <!-- End navbar-header -->
+        <div>
+          <ul class="nav navbar-nav navbar-center">
+          <li><a href='#' id="counter" style="left: 45px;"></a></li>
+          </ul>
+        </div>
         <div class="navbar-collapse collapse">
         	<ul class="nav navbar-nav navbar-left">
         		<li class="<%= 'active' if params[:controller] == 'campaigns' %>">
@@ -44,7 +85,7 @@
         	</ul>
           <ul class="nav navbar-nav navbar-right">
               <% if current_user %>
-                <li><a style="padding-right: 5px;" href="<%= user_path(current_user) %>"> Submissions <%=current_user.additionsThisRound%>/<%=Round.first.maxAdditionsPerUser%> </a></li><!-- style="color: gold;" -->
+                <li><a style="padding-right: 5px;" href="<%= user_path(current_user) %>"> <i class="fa fa-file-text-o"></i> <%=current_user.additionsThisRound%>/<%=Round.first.maxAdditionsPerUser%> </a></li><!-- style="color: gold;" Submissions-->
                 <% if current_user.additionsThisRound == Round.first.maxAdditionsPerUser %>
                     <li><a style="padding-left: 0px;" href="<%= user_path(current_user) %>"> <i class="fa fa-check-square-o"></i></a></li>
                 <% else %>

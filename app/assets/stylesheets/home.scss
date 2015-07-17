@@ -16,10 +16,30 @@
 
 //Campaign display under the voting elements
 
-#start-voting {
+.orange {
 	background-color: #F05000;
 	border-color: #E54C00;
-	border-radius: 0px;
+	color: #FFF
+}
+
+.orange:hover {
+	background-color: #CB4400;
+	border-color: #BA3E00;
+	color: #FFF;
+}
+
+.orange:focus {
+	background-color: #F05000;
+	border-color: #E54C00;
+	color: #FFF;
+}
+
+#pledge-btn {
+	margin-bottom: 20px;
+}
+
+#start-voting {
+	margin-bottom: 20px;
 }
 
 /*#campaign-news:nth-child(odd) .container {
@@ -41,6 +61,10 @@
 }
 
 //Campaign voting
+
+.btn {
+	border-radius: 2px;
+}
 
 .image-vote-container {
 	width: 248px;
@@ -72,7 +96,6 @@
 	background-color: #fcfcfc;
 	border: 1px solid #ddd;
 	border-radius: 0px;
-	height: 300px;
 	width: 250px;
 	cursor: hand;
 	cursor: pointer;

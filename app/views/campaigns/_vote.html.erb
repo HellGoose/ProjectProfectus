@@ -1,18 +1,18 @@
 <% i = 0 %>
 <% @campaignVoting.each do |c| %>
-	<div class="col-xs-3 campaign-container">
+	<div class="col-xs-4 campaign-container">
 		<div class="text-center vote-star" id="<%= i %>">
 			<a role="button" class="btn btn-default btn-lg">
 				<span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
 			</a>
 		</div>
-		<div class="campaign-vote" id="<%= i %>">
+		<div class="campaign campaign-vote" id="<%= i %>" style="border: 0px;">
 			<% i += 1 %>
-			<div class="container">
-				<h4><%= c.title %></h4>
-				<div class="image-vote-container">
-					<%= image_tag c.image, class: "logo img-responsive" %>
+			<div class="campaign-box">
+				<div class="image-container">
+					<%= image_tag c.image, class: "logo img-responsive clip"%>
 				</div>
+				<h4 id="campaign-title"><%= c.title %></h4>
 			</div>
 		</div>
 	</div>
