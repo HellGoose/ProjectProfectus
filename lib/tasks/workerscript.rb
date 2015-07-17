@@ -25,7 +25,7 @@ def roundScript
 				round.endTime = Time.at(Time.now.to_i + round.duration).to_datetime
 				round.forceNewRound = false
 				round.save
-				cleanupDatabase
+				#cleanupDatabase
 			end
 			sleep 1
 			round = Round.first
