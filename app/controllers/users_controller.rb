@@ -12,7 +12,7 @@ class UsersController < ApplicationController
 	# Renders user#show.
 	def show
 		@userCampaigns = @user.campaigns.order('created_at DESC')
-		@userNominations = @user.nominations.where(nominated: true)
+		@userNominations = @user.nominations.where(nominated: true).order('created_at DESC')
 		@campaignsInterval = 8
 	end
 

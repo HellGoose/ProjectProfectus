@@ -31,7 +31,7 @@ class User < ActiveRecord::Base
 
 	#Callbacks
 	after_initialize :init
-	before_update :lvlUp, :achieveBadge
+	before_update :lvlUp
 
 	private
 		#Set default values
