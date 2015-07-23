@@ -56,7 +56,7 @@ def runNewRound (decayRate)
 		statDump.numberOfNominationsSeen = Campaign.where.not(timesShownInVoting: 0).count
 		statDump.numberOfVotes = CampaignVote.where.not(voteType: 0).count
 		statDump.numberOfFinalVotes = CampaignVote.where(voteType: 2).count
-		statDump.details = "Round: #{round.currentRound}, date: #{Time.now}"
+		details = "<b>Round:</b> #{round.currentRound}</br><b>Date:</b> #{Time.now}"
 
 		winnerCampaigns = campaigns.first(3)
 		winnerUsers = []
@@ -72,16 +72,16 @@ def runNewRound (decayRate)
 			roundWon: round.currentRound
 		)
 		i = 0
-		statDump.details += "\nWinnerUsers: "
+		details += "</br><b>WinnerUsers:</b> "
 		winnerUsers.each do |wu|
-			statDump.details += "#{wu.name}, "
+			details += "#{wu.name}, "
 			notification = PointsHistory.new(description: 'A nominee of yours have won the round!', points_received: usersOfTheRoundPoints[i])
 			wu.pointsHistories << notification
 			wu.points += usersOfTheRoundPoints[i]
 			wu.save
 			i+=1
 		end
-		statDump.details.slice!(-2,2)
+		details.slice!(-2,2)
 
 		#Top 3 campaigns
 		i = 0
@@ -96,11 +96,12 @@ def runNewRound (decayRate)
 		end
 
 		#Compute and reset scores
-		statDump.details += "\nCampaigns:"
+		details += "</br><b>Campaigns:</b></br><table class=\"table table-condensed table-responsive\">"
+		details += "<thead><tr><th>Title</th><th>Score</th><th>Seen</th></tr></thead><tbody>"
 		campaigns.each do |c|
 			c.globalScore = (c.globalScore * decayRate + c.roundScore).to_i
+			details += "<tr><td>#{c.title}</td><td>#{c.roundScore}</td><td>#{c.timesShownInVoting}</td></tr>"
 			if (c.roundScore*percentageOfRoundScore).to_i > 0
-				statDump.details += "\nScore: #{c.roundScore}||TimesSeen: #{c.timesShownInVoting}||Title: #{c.title}"
 				notification = PointsHistory.new(description: 'Your nominee received ' + c.roundScore.to_s + ' round points!', points_received: (c.roundScore*percentageOfRoundScore).to_i)
 				c.user.pointsHistories << notification
 				c.user.points += (c.roundScore*percentageOfRoundScore).to_i
@@ -116,9 +117,9 @@ def runNewRound (decayRate)
 			c.nominated = false
 			c.save
 		end
+		details += "</tbody></table>"
 
 		#Clear all votes and add scores
-
 		CampaignVote.all.each do |cv|
 			if cv.user.isOnStep == 0 or cv.user.isOnStep == 4
 				case cv.campaign.id
@@ -134,9 +135,10 @@ def runNewRound (decayRate)
 		end
 
 		#Reset user voting
-		statDump.details += "\nUsers:"
+		details += "</br><b>Users:</b></br><table class=\"table table-condensed table-responsive\">"
+		details += "<thead><tr><th>Name</th><th>Score</th><th>Nominations</th></tr></thead><tbody>"
 		users.each do |u|
-			statDump.details += "\nScore: #{u.points}||Nominated: #{u.additionsThisRound}||Name: #{u.name}"
+			details += "<tr><td>#{u.name}</td><td>#{u.points}</td><td>#{u.additionsThisRound}</td></tr>"
 			if u.isOnStep == 4
 				u.isOnStep = 0
 				u.hasLoggedInThisRound = false
@@ -144,10 +146,12 @@ def runNewRound (decayRate)
 				u.save
 			end
 		end
+		details += "</tbody></table>"
 
 		#Increment to next round
 		round.currentRound += 1
 		round.save
+		statDump.details = details
 		if statDump.save
 			puts "Stats dumped!"
 		end

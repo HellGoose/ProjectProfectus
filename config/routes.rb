@@ -39,6 +39,7 @@ Rails.application.routes.draw do
 	# Root
 	root 'home#index'
 
+	resources :stat_dump, only: [:show]
 	resources :pledge, only: [:index]
 	resources :news
 	resources :admin, only: [:index]
