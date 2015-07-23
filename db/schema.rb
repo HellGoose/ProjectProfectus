@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150715091933) do
+ActiveRecord::Schema.define(version: 20150722112624) do
 
   create_table "badges", force: :cascade do |t|
     t.string   "name",        limit: 255
@@ -35,19 +35,23 @@ ActiveRecord::Schema.define(version: 20150715091933) do
   add_index "campaign_votes", ["user_id"], name: "index_campaign_votes_on_user_id", using: :btree
 
   create_table "campaigns", force: :cascade do |t|
-    t.string   "title",       limit: 255
-    t.string   "link",        limit: 255
-    t.string   "description", limit: 255
-    t.integer  "user_id",     limit: 4
-    t.integer  "category_id", limit: 4
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
-    t.string   "image",       limit: 255
-    t.integer  "roundScore",  limit: 4
-    t.integer  "globalScore", limit: 4
+    t.string   "title",              limit: 255
+    t.string   "link",               limit: 255
+    t.string   "description",        limit: 255
+    t.integer  "user_id",            limit: 4
+    t.integer  "category_id",        limit: 4
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+    t.string   "image",              limit: 255
+    t.integer  "roundScore",         limit: 4
+    t.integer  "globalScore",        limit: 4
+    t.integer  "timesShownInVoting", limit: 4
+    t.boolean  "nominated",          limit: 1
+    t.integer  "nominator_id",       limit: 4
   end
 
   add_index "campaigns", ["category_id"], name: "index_campaigns_on_category_id", using: :btree
+  add_index "campaigns", ["nominator_id"], name: "fk_rails_3ea12c1987", using: :btree
   add_index "campaigns", ["user_id"], name: "index_campaigns_on_user_id", using: :btree
 
   create_table "categories", force: :cascade do |t|
@@ -135,6 +139,17 @@ ActiveRecord::Schema.define(version: 20150715091933) do
     t.integer  "maxAdditionsPerUser", limit: 4
   end
 
+  create_table "stat_dumps", force: :cascade do |t|
+    t.integer  "roundNumber",             limit: 4
+    t.text     "details",                 limit: 65535
+    t.integer  "numberOfNominations",     limit: 4
+    t.integer  "numberOfNominationsSeen", limit: 4
+    t.integer  "numberOfVotes",           limit: 4
+    t.integer  "numberOfFinalVotes",      limit: 4
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
+  end
+
   create_table "user_badges", force: :cascade do |t|
     t.integer  "user_id",       limit: 4, null: false
     t.integer  "badge_id",      limit: 4, null: false
@@ -169,5 +184,7 @@ ActiveRecord::Schema.define(version: 20150715091933) do
     t.integer  "additionsThisRound",     limit: 4
   end
 
+  add_foreign_key "campaigns", "users", column: "nominator_id"
+  add_foreign_key "campaigns", "users", name: "nominator_id"
   add_foreign_key "points_histories", "users"
 end

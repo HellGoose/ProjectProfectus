@@ -5,21 +5,22 @@
 <div class="col-xs-12">
 	<% i = 0 %>
 	<% @campaignVoting.each do |c| %>
-		<div class="col-xs-3 campaign-container">
+		<div class="col-xs-4 campaign-container">
 			<div class="text-center vote-star" id="<%= i %>">
-				<% if c == @votedFor[0].campaign %>
-					<span class="voting-done glyphicon glyphicon-star" aria-hidden="true"></span>
-				<% else %>
-					<span class="voting-done glyphicon glyphicon-star-empty" aria-hidden="true"></span>
-				<% end %>
+					<% if c == @votedFor[0].campaign %>
+						<span class="voting-done glyphicon glyphicon-star" aria-hidden="true"></span>
+					<% else %>
+						<span class="voting-done glyphicon glyphicon-star-empty" aria-hidden="true"></span>
+					<% end %>
+				</a>
 			</div>
-			<div class="campaign-vote" id="<%= i %>">
+			<div class="campaign campaign-vote" id="<%= i %>" style="border: 0px;">
 				<% i += 1 %>
-				<div class="text-center">
-					<h4><%= c.title %></h4>
-					<div class="image-vote-container">
-						<%= image_tag c.image, class: "logo img-responsive" %>
+				<div class="campaign-box">
+					<div class="image-container">
+						<%= image_tag c.image, class: "logo img-responsive clip", id: "vote-img" %>
 					</div>
+					<h4 id="campaign-title"><%= c.title %></h4>
 				</div>
 			</div>
 		</div>

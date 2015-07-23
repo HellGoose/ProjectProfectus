@@ -87,8 +87,6 @@ class CampaignsController < ApplicationController
 	def create
 		if current_user && current_user.additionsThisRound < Round.first.maxAdditionsPerUser
 			@campaign = Campaign.new(campaign_params)
-			@campaign.user_id = session[:user_id]
-
 			embedly = Embedly::API.new key: "0eef325249694df490605b1fd29147f5"
 			embedlyData = (embedly.extract url: @campaign.link).first
 			kickstarterURL = "https://www.kickstarter.com"
@@ -98,29 +96,58 @@ class CampaignsController < ApplicationController
 			case embedlyData.provider_url
 			when *whiteList
 				embedlyData.title.slice!("CLICK HERE to support ")
-				@campaign.title = embedlyData.title
-				description = embedlyData.description.encode('utf-8', 'binary', invalid: :replace, undef: :replace, replace: '')
-				@campaign.description = description[0, 255]
+				if !Campaign.exists?(title: embedlyData.title) 
+					@campaign.user_id = session[:user_id]
+					@campaign.nominator_id = session[:user_id]
+					@campaign.title = embedlyData.title
+					description = embedlyData.description.encode('utf-8', 'binary', invalid: :replace, undef: :replace, replace: '')
+					@campaign.description = description[0, 255]
 
-				respond_to do |format|
-					if @campaign.save
-						notification = PointsHistory.new(description: 'You successfully made a submission!', points_received: 5)
-						current_user.pointsHistories << notification
-						current_user.points +=5
-						current_user.additionsThisRound += 1
-						current_user.save
-						msg = "<span class=\"alert alert-success\">Campaign was successfully created.</span>"
-						format.html { redirect_to @campaign, notice: msg }
-						format.json { render :show, status: :created, location: @campaign }
+					respond_to do |format|
+						if @campaign.save
+							notification = PointsHistory.new(description: 'You successfully nominated a campaign!', points_received: 5)
+							current_user.pointsHistories << notification
+							current_user.points +=5
+							current_user.additionsThisRound += 1
+							current_user.save
+							msg = "<span class=\"alert alert-success\">Campaign was successfully nominated.</span>"
+							format.html { redirect_to current_user, notice: msg }
+							format.json { render :show, location: current_user }
+						else
+							format.html { render :new }
+							format.json { render json: @campaign.errors, status: :unprocessable_entity }
+						end
+					end
+				else
+					@campaign = Campaign.find_by(title: embedlyData.title)
+					if !@campaign.nominated
+						@campaign.nominated = true
+						@campaign.nominator_id = current_user.id
+						if @campaign.save
+							notification = PointsHistory.new(description: 'You successfully made a nomination!', points_received: 5)
+							current_user.pointsHistories << notification
+							current_user.points +=5
+							current_user.additionsThisRound += 1
+							current_user.save
+							respond_to do |format|
+								msg = "<span class=\"alert alert-success\">Campaign was successfully nominated.</span>"
+								format.html { redirect_to current_user, notice: msg }
+								format.json { render :show, location: current_user }
+							end
+						end
 					else
-						format.html { render :new }
-						format.json { render json: @campaign.errors, status: :unprocessable_entity }
+						respond_to do |format|
+							msg = "<span class=\"alert alert-warning\">This campaign has already been nominated.</span>"
+							format.html { redirect_to current_user, notice: msg }
+							format.json { render :show, location: current_user }
+						end
 					end
 				end
 			else
-				respond_to do |format|
-					format.html { render :new }
-					format.json { render json: @campaign.errors, status: :unprocessable_entity }
+				repond_to do |format|
+					msg = "<span class=\"alert alert-warning\">The site this URL is pointing at is not supported.</span>"
+					format.html { redirect_to current_user, notice: msg }
+					format.json { render :show, location: current_user }
 				end
 			end
 		else
@@ -128,6 +155,20 @@ class CampaignsController < ApplicationController
 				msg = "<span class=\"alert alert-warning\">You have exceeded your submission limit for this round.</span>"
 				format.html { redirect_to current_user, notice: msg }
 				format.json { render :show, location: current_user }
+			end
+		end
+	end
+
+	# Public: Checks if a campaign can be nominated
+	def check_if_can_add
+		campaign = Campaign.find_by(title: params[:title])
+		respond_to do |format|
+			if !current_user
+				format.json { render json: { 'User' => 'not logged in' } }
+			elsif !campaign
+				format.json { render json: { 'Campaign' => 'was not found' } }
+			else
+				format.json { render json: { 'Campaign' => 'nominated: ' + campaign.nominated.to_s } } #campaign.nominated } }
 			end
 		end
 	end
@@ -166,7 +207,7 @@ class CampaignsController < ApplicationController
 	# renders an error if the user is not logged in or there are not enough 
 	# campaigns in the database.
 	def vote
-		if Campaign.all.count < 15
+		if Campaign.where(nominated: true).count < 15
 			respond_to do |format|
 				format.js { render partial: "home/not_enough_campaigns"}
 			end
@@ -325,7 +366,7 @@ class CampaignsController < ApplicationController
 			campaignVotes[campaign_id].campaign.roundScore += 10
 			campaignVotes[campaign_id].campaign.save
 
-			notification = PointsHistory.new(description: 'Someone voted for your submission!', points_received: 1)
+			notification = PointsHistory.new(description: 'Someone voted for your nominee!', points_received: 1)
 			campaignVotes[campaign_id].campaign.user.pointsHistories << notification
 			campaignVotes[campaign_id].campaign.user.points += 1
 			campaignVotes[campaign_id].campaign.user.save
@@ -374,17 +415,26 @@ class CampaignsController < ApplicationController
 	# Returns the campaigns corresponding to the current step.
 	def genCampaignsForVoting
 		current_user.isOnStep = 0
-		campaignVotes = current_user.campaignVotes
+
+		campaigns = Campaign.where(nominated: true).order("timesShownInVoting DESC")
+		leastSeen = campaigns.last(campaigns.size * 0.2)
+		lessSeen = campaigns.slice((campaigns.size * 0.5)..(campaigns.size * 0.8))
+		mostSeen = campaigns.first(campaigns.size * 0.5)
+
 		genedCampaigns = []
+		genedCampaigns << leastSeen.sample(3)
+		genedCampaigns << lessSeen.sample(3)
+		genedCampaigns << mostSeen.sample(3)
 
-		campaigns = Campaign.order("(roundScore + globalScore) DESC")
-		genedCampaigns << campaigns.last(campaigns.size * 0.5).sample(3)
-		genedCampaigns << campaigns.slice((campaigns.size * 0.2)..(campaigns.size * 0.5)).sample(3)
-		genedCampaigns << campaigns.first(campaigns.size * 0.2).sample(3)
-
+		campaignVotes = current_user.campaignVotes
 		(0..8).each do |i|
 			step = (i / 3).to_i
-			campaignVotes.create(user_id: current_user.id, campaign_id: genedCampaigns[step][i % 3].id, step: step)
+			campaignVotes.create(
+				user_id: current_user.id, 
+				campaign_id: genedCampaigns[step][i % 3].id, 
+				step: step)
+			genedCampaigns[step][i % 3].timesShownInVoting += 1
+			genedCampaigns[step][i % 3].save
 		end
 
 		current_user.save

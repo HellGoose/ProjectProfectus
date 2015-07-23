@@ -28,14 +28,19 @@ Rails.application.routes.draw do
 
 	# Campaigns belonging to a user
 	get '/users/:id/campaigns/:page/:interval', to: 'users#campaignPage'
+	get '/campaigns/checkIfCanAdd/:title', to: 'campaigns#check_if_can_add'
 
 	# Round administrating
 	post '/admin/round/:type/:val', to: 'admin#round'
 
+	# Pledge
+	# get '/pledge', to: 'pledge#index'
+
 	# Root
 	root 'home#index'
 
-	resources :pledge, only: [:show]
+	resources :stat_dump, only: [:show]
+	resources :pledge, only: [:index]
 	resources :news
 	resources :admin, only: [:index]
 	resources :posts

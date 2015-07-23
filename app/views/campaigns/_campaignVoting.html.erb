@@ -2,7 +2,23 @@
 
 <div class="step-text text-center">
 	<% step = current_user.isOnStep + 1 if current_user %>
-	<h1><%= step <= 3 ? ("Step: " + step.to_s) : "Final Voting" %></h1>
+	<h1><%= step <= 3 ? ("Step " + step.to_s) : "Final Voting" %></h1>
+<!-- 	  <nav class="text-center">
+<div class="row" style="color: gray;">
+    <div class='col-xs-3'>Start</div>
+    <div class='col-xs-2'>Step 1</div>
+    <div class='col-xs-2'>Step 2</div>
+    <div class='col-xs-2'>Step 3</div>
+    <div class='col-xs-3'>Finish</div>
+  </div>  -->
+<!--   <ul class="pagination">
+    <li><a href="#">Start</a></li>
+    <li><a href="#">Step 1</a></li>
+    <li><a href="#">Step 2</a></li>
+    <li><a href="#">Step 3</a></li>
+    <li><a href="#">Finish</a></li>
+  </ul> -->
+  </nav>
 </div>
 <div class="col-xs-12">
 	<%= render partial: 'campaigns/vote' %>

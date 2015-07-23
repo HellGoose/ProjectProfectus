@@ -1,5 +1,7 @@
 class PledgeController < ApplicationController
-  def show
-    render params[:pledge]
+  def index
+  	# respond_to do |format| 
+  	# 	format.html {redirect_to "/pledge"}
+  	# end
   end
 end

@@ -12,6 +12,7 @@
 			<ul class="nav navbar-nav navbar-center">
 				<li class="active"><a href="#round-tab" data-toggle="tab">Round</a></li>
 				<li><a href="#news-tab" data-toggle="tab">News<i class="fa"></i></a></li>
+				<li><a href="#statistics-tab" data-toggle="tab">Statistics<i class="fa"></i></a></li>
 				<li><a href="#flagged_projects-tab" data-toggle="tab">Flagged Campaigns<i class="fa"></i></a></li>
 				<li><a href="#flagged_users-tab" data-toggle="tab">Flagged Users<i class="fa"></i></a></li>
 				<li><a href="#moderator-tab" data-toggle="tab">Moderator Center<i class="fa"></i></a></li>
@@ -49,8 +50,32 @@
 				<% end %>
 			</div>
 		</div>
-		<div class="tab-pane" id="flagged_campaigns-tab">
-
+		<div class="tab-pane" id="statistics-tab">
+			<table class="table table-hover table-condensed table-responsive">
+				<thead>
+					<tr>
+						<th>Date</th>
+						<th>RoundNumber</th>
+						<th>Nominations</th>
+						<th>Seen</th>
+						<th>Votes</th>
+						<th>FinalVotes</th>
+					</tr>
+				</thead>
+				<tbody>
+					<% @statDumps.each do |sd| %>
+						<tr>
+							<td><%= sd.created_at %></td>
+							<td><%= sd.roundNumber %></td>
+							<td><%= sd.numberOfNominations %></td>
+							<td><%= sd.numberOfNominationsSeen %></td>
+							<td><%= sd.numberOfVotes %></td>
+							<td><%= sd.numberOfFinalVotes %></td>
+							<td><%= link_to "Details", "/stat_dump/" + sd.id.to_s%>
+						</tr>
+					<%end%>
+				</tbody>
+			</table>
 		</div>
 	</div>
 </div>

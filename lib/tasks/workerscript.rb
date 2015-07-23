@@ -22,10 +22,10 @@ def roundScript
 			if Time.now.to_i >= round.endTime.to_i or round.forceNewRound == true
 				puts ('Starting a new Round!')
 				runNewRound(round.decayRate)
-				round.endTime = Time.at(Time.now.to_i + round.duration).to_datetime
+				round.endTime = Time.at(round.endTime.to_i + round.duration).to_datetime
 				round.forceNewRound = false
 				round.save
-				cleanupDatabase
+				#cleanupDatabase
 			end
 			sleep 1
 			round = Round.first
@@ -35,13 +35,14 @@ end
 
 private
 def runNewRound (decayRate)
-	if Campaign.all.empty?
-		puts "Failed to start round! There are no campaigns in the database."
+	if Campaign.where(nominated: true).empty?
+		puts "Failed to start new round! Not enough nominated campaigns."
+		puts "Extending the current round!"
 		return
 	end
 	round = Round.first
-	campaigns = Campaign.all.order('roundScore DESC')
-	users = User.all
+	campaigns = Campaign.where(nominated: true).order('roundScore DESC')
+	users = User.all.order('points DESC')
 
 	#Variables
 	usersOfTheRoundPoints = [25, 10, 5]
@@ -49,11 +50,20 @@ def runNewRound (decayRate)
 
 	#Declare Winners
 	if campaigns.first.roundScore > 0
+		statDump = StatDump.new
+		statDump.roundNumber = round.currentRound
+		statDump.numberOfNominations = Campaign.count(nominated: true)
+		statDump.numberOfNominationsSeen = Campaign.where.not(timesShownInVoting: 0).count
+		statDump.numberOfVotes = CampaignVote.where.not(voteType: 0).count
+		statDump.numberOfFinalVotes = CampaignVote.where(voteType: 2).count
+		details = "<b>Round:</b> #{round.currentRound}</br><b>Date:</b> #{Time.now}"
+
 		winnerCampaigns = campaigns.first(3)
 		winnerUsers = []
 		winnerCampaigns.each do |wc|
-			winnerUsers << wc.user
+			winnerUsers << wc.nominator
 		end
+	
 
 		#User of the round
 		round.winnerUsers.create(
@@ -62,13 +72,16 @@ def runNewRound (decayRate)
 			roundWon: round.currentRound
 		)
 		i = 0
+		details += "</br><b>WinnerUsers:</b> "
 		winnerUsers.each do |wu|
-			notification = PointsHistory.new(description: 'A submission of yours have won the round!', points_received: usersOfTheRoundPoints[i])
+			details += "#{wu.name}, "
+			notification = PointsHistory.new(description: 'A nominee of yours have won the round!', points_received: usersOfTheRoundPoints[i])
 			wu.pointsHistories << notification
 			wu.points += usersOfTheRoundPoints[i]
 			wu.save
 			i+=1
 		end
+		details.slice!(-2,2)
 
 		#Top 3 campaigns
 		i = 0
@@ -83,26 +96,36 @@ def runNewRound (decayRate)
 		end
 
 		#Compute and reset scores
+		details += "</br><b>Campaigns:</b></br><table class=\"table table-condensed table-responsive\">"
+		details += "<thead><tr><th>Title</th><th>Score</th><th>Seen</th></tr></thead><tbody>"
 		campaigns.each do |c|
 			c.globalScore = (c.globalScore * decayRate + c.roundScore).to_i
+			details += "<tr><td>#{c.title}</td><td>#{c.roundScore}</td><td>#{c.timesShownInVoting}</td></tr>"
 			if (c.roundScore*percentageOfRoundScore).to_i > 0
-				notification = PointsHistory.new(description: 'Your submission received ' + c.roundScore.to_s + ' round points!', points_received: (c.roundScore*percentageOfRoundScore).to_i)
+				notification = PointsHistory.new(description: 'Your nominee received ' + c.roundScore.to_s + ' round points!', points_received: (c.roundScore*percentageOfRoundScore).to_i)
 				c.user.pointsHistories << notification
 				c.user.points += (c.roundScore*percentageOfRoundScore).to_i
 				c.user.save
+				if c.user_id != c.nominator_id
+					c.nominator.pointsHistories << notification
+					c.nominator.points += (c.roundScore*percentageOfRoundScore).to_i
+					c.nominator.save
+				end
 			end
+			c.timesShownInVoting = 0
 			c.roundScore = 0
+			c.nominated = false
 			c.save
 		end
+		details += "</tbody></table>"
 
 		#Clear all votes and add scores
-
 		CampaignVote.all.each do |cv|
 			if cv.user.isOnStep == 0 or cv.user.isOnStep == 4
 				case cv.campaign.id
 				when winnerCampaigns[0].id, winnerCampaigns[1].id, winnerCampaigns[2].id
 					placing = RoundWinnerCampaign.find_by(roundWon: round.currentRound, campaign_id: cv.campaign_id).placing
-					notification = PointsHistory.new(description: 'A submission you voted for won the round!', points_received: (usersOfTheRoundPoints[placing]/5).to_i)
+					notification = PointsHistory.new(description: 'A nominee you voted for won the round!', points_received: (usersOfTheRoundPoints[placing]/5).to_i)
 					cv.user.pointsHistories << notification
 					cv.user.points += (usersOfTheRoundPoints[placing]/5).to_i
 					cv.user.save
@@ -112,7 +135,10 @@ def runNewRound (decayRate)
 		end
 
 		#Reset user voting
+		details += "</br><b>Users:</b></br><table class=\"table table-condensed table-responsive\">"
+		details += "<thead><tr><th>Name</th><th>Score</th><th>Nominations</th></tr></thead><tbody>"
 		users.each do |u|
+			details += "<tr><td>#{u.name}</td><td>#{u.points}</td><td>#{u.additionsThisRound}</td></tr>"
 			if u.isOnStep == 4
 				u.isOnStep = 0
 				u.hasLoggedInThisRound = false
@@ -120,13 +146,19 @@ def runNewRound (decayRate)
 				u.save
 			end
 		end
+		details += "</tbody></table>"
 
 		#Increment to next round
 		round.currentRound += 1
 		round.save
+		statDump.details = details
+		if statDump.save
+			puts "Stats dumped!"
+		end
 		puts "Done! New Round Started."
 	else
-		puts "Failed to start round! No scores found. Continuing with this round."
+		puts "Failed to start round! No scores found."
+		puts "Extending the current round."
 	end
 end
 

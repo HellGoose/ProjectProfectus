@@ -31,7 +31,7 @@
 	margin-bottom: 10px;
 }
 
-//Causes the catagory sites with no projects to have a simmilar look to those who have it.
+//Causes the catagory sites with no projects to have a similar look to those who have it.
 .noCampaign {
 	margin-top: 200px;
 	margin-bottom: 200px;
@@ -54,6 +54,8 @@
 }
 
 .image_container {
+	width: 250px;
+  height: 187px;
 	margin-bottom: 10px;
 	float: left;
 }
@@ -63,6 +65,25 @@
 	max-height: 100%;
 	width: 250px;
   margin: 10px;
+  position: absolute;
+  clip: rect(0px,250px,187px,0px);
+}
+
+.clip {
+	position: absolute;
+  clip: rect(0px,250px,187px,0px);
+}
+
+#campaign-title {
+	padding-top: 195px;
+}
+
+#vote-img:focus {
+	filter: blur(5px);
+}
+
+.main_campaign > .image_container {
+	margin-right: 5px;
 }
 
 .campaign_link {
@@ -104,15 +125,35 @@
 }
 
 .campaign-container {
+	border:0px;
 	padding: 0px;
 	margin: 10px;
 	min-width: 250px;
 	max-width: 250px;
 }
 
-.campaign-box {
+.image-container > h4 {
+
+}
+
+/*.campaign-box {
 	margin-top: -5px;
+}*/
+
+.campaign-vote {
+	border: 0px;
+}
+
+/*#winners > div:nth-child(even) > div.campaign > div{
+	background-color: #F7F7F7;
+}*/
+
+/*#winners > div:nth-child(odd) > div.campaign > div{
 	background-color: white;
+}*/
+
+#winner_container .campaign-box {
+	background-color: #F7F7F7;
 }
 
 .campaign-box > h4 {
@@ -126,11 +167,23 @@
 	margin-left: 0px;
 }
 
+
+
 .winner-campaign {
 	padding: 10px;
 	background-color: transparent;
 	border: 1px solid #ddd;
 	height: 400px;
+}
+
+#first_place {
+	/*text-align: center;*/
+}
+#second_place {
+	/*text-align: left;*/
+}
+#third_place {
+	/*text-align: right;*/
 }
 
 // Add Campaign

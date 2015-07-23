@@ -16,6 +16,7 @@
 //= require bootstrap-sprockets
 //= require social-share-button
 //= require tinymce
+//= require global
 
 // Makes notice messages disappear after a couple of seconds
 window.setTimeout((function() {

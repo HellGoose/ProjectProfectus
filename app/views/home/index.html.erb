@@ -1,15 +1,52 @@
 <%= javascript_include_tag "home" %>
 
+<script type="text/javascript">    
+function hideButton(buttonElement){
+	$('#pledge-modal').modal('hide');
+}
+</script>
+
 <div id='news' data-page=1 data-interval=<%= @newsInterval %> data-size=<%= @allNews.size %>></div>
 
 <div id='campaign' data-step=<%= current_user.isOnStep if current_user %> data-vote=-1></div>
 
-<div class="header">
+<div class="row">
 	<div class="text-center">
-		<h2>Have your say on today's nominations<h2>
-		<!-- <a class="btn btn-success" id="pledge" href="pledge">pledge</a> -->
-		<a class="btn btn-success" id="start-voting">START</a>
-		<a class="btn btn-success" id="back-voting" style="display: none;">Back</a>
+		<h2 style="margin-bottom: 30px;">Have your say on today's nominations!<h2>
+
+		<% if current_user != nil %>
+			<% if current_user.isOnStep > 0 %>
+				<button type="button" id="start-voting" class="btn btn-lg orange">START</button>
+			<% else %>
+				<div class="container">
+				  <!-- Trigger the modal with a button -->
+				  <button type="button" id="pledge-btn" class="btn btn-lg orange" data-toggle="modal" data-target="#pledge-modal">START</button>
+
+				  <!-- Modal -->
+				  <div class="modal fade" id="pledge-modal" role="dialog">
+				    <div class="modal-dialog">
+				    
+				      <!-- Modal content-->
+				      <div class="modal-content">
+				        <div class="modal-header">
+				          <button type="button" class="close" data-dismiss="modal">&times;</button>
+				          <h4 class="modal-title">Pledge</h4>
+				        </div>
+				        <div class="modal-body">
+				          <p>I pledge my allegiance to <b>mother earth</b> and all her inhabitants. I will only promote content that I find <b>just</b> and <b>awesome</b>.</p>
+				        </div>
+				        <div class="modal-footer">
+				          <button type="button" id="start-voting" class="btn btn-default orange" data-dismiss="modal" onclick="$('#pledge-btn').hide();">Pledge and Play</button>
+				        </div>
+				      </div>
+				    </div>
+				  </div>
+				</div>
+			<% end %>
+		<% else %>
+			<h3 style="margin-bottom: 30px;"> Please log in to continue </h3>
+		<% end %>
+		<a class="btn btn-success" id="back-voting" style="display: none;" onclick="$('#pledge-btn').show();">Close</a>
 		<a class="btn btn-success" id="next-voting" style="display: none;">Next</a>
 	</div>
 </div>
@@ -20,7 +57,7 @@
 	<div class="container" id="winner_container">
 		<h3>Round Winners</h3>
 		<hr class="campaigns-news-rule">
-		<div class="row text-center" id="winners">
+		<div class="row" id="winners">
 			<%= render partial: 'winners' %>
 		</div>
 	</div>
