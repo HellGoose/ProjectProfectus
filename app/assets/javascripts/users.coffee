@@ -19,8 +19,6 @@ $(document).ready ->
 			$('#more_campaigns').hide()
 		return
 
-	$('.user-notifications2').slideToggle 0
-
 	$('body').on 'click', '#show_notifications', ->
 		$('.user-notifications2').slideToggle 400
 		return
