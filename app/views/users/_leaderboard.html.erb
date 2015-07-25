@@ -4,9 +4,10 @@
 	<% last = 0 %>
 <% end %>
 
+<!-- 
 <% place = @page * @interval + 1 %>
 <% @users.last(last).first(@interval).each do |u| %>
-	<div class='leaderboard_element col-xs-12'>
+	<div class='leaderboard_element col-xs-12 table table-hover table-responsive'>
 		<a href='/users/<%= u.id %>'></a>
 		<div class='leaderboard_element_place col-xs-1'>
 			<h3><%= place %></h3>
@@ -20,3 +21,26 @@
 	</div>
 	<% place += 1 %>
 <% end %>
+-->
+
+<div class="col-xs-12">          
+  <table class="col-xs-10 table table-striped table-responsive table-hover">
+    <thead>
+      <tr>
+        <th>Place</th>
+        <th>User</th>
+        <th>Points</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% place = @page * @interval + 1 %>
+			<% @users.last(last).first(@interval).each do |u| %>
+					<tr onclick="document.location = '/users/<%= u.id %>';">
+						<td class="leaderboard_td"><%= place %></td>
+						<td class="leaderboard_td"><a href='/users/<%= u.id %>'><%= u.name %></a></td>
+						<td class="leaderboard_td"><%= u.points %></td>
+					</tr>
+				<% place += 1 %>
+			<% end %>
+    </tbody>
+  </table>

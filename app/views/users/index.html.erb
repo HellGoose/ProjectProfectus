@@ -3,22 +3,22 @@
 <div id='data' data-page=<%= @page %> data-interval=<%= @interval %> data-size=<%= @users.size %>>
 </div>
 
-<div class='text-center'>
+<div class='container text-center'>
 	<h1>Leaderboard</h1>
+	<hr>
 </div>
 
-<hr>
 
 <div class='container'>
-	<div class='col-md-3'>
+<!-- 	<div class='col-md-3'>
 	</div>
-	<div class='col-md-6'>
-		<div id='leaderboard'>
-			<%= render partial: 'leaderboard' %>
-		</div>
+	<div class='col-md-6'> -->
+	<div id='leaderboard'>
+		<%= render partial: 'leaderboard' %>
 	</div>
+<!-- 	</div>
 	<div class='container col-md-3'>
-	</div>
+	</div> -->
 </div>
 
 <div class="text-center" id="pageSelector">
