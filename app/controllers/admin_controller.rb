@@ -12,7 +12,7 @@ class AdminController < ApplicationController
 		@newsInterval = 5
 		@allNews = News.order("created_at DESC")
 		@news = News.new
-		@staDumps = []
+		@statDumps = []
 		if !StatDump.all.empty?
 			@statDumps = StatDump.order("created_at DESC")
 		end
