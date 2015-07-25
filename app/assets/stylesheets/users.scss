@@ -20,7 +20,9 @@
 }
 
 .user-notifications {
-	margin-left: 33px;
+	position: relative;
+	left: 50%;
+	margin-left: -265px;
 	margin-top: 10px;
 	margin-bottom: 10px;
 	width: 500px;
