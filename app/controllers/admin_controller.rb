@@ -12,7 +12,10 @@ class AdminController < ApplicationController
 		@newsInterval = 5
 		@allNews = News.order("created_at DESC")
 		@news = News.new
-		@statDumps = StatDump.order("created_at DESC")
+		@staDumps = []
+		if !StatDump.all.empty?
+			@statDumps = StatDump.order("created_at DESC")
+		end
 		#@flagged = Project.all.where("flagged > 0")
 		if !isAdmin
 			redirect_to "/"
