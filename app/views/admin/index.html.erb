@@ -63,16 +63,18 @@
 					</tr>
 				</thead>
 				<tbody>
-					<% @statDumps.each do |sd| %>
-						<tr>
-							<td><%= sd.created_at %></td>
-							<td><%= sd.roundNumber %></td>
-							<td><%= sd.numberOfNominations %></td>
-							<td><%= sd.numberOfNominationsSeen %></td>
-							<td><%= sd.numberOfVotes %></td>
-							<td><%= sd.numberOfFinalVotes %></td>
-							<td><%= link_to "Details", "/stat_dump/" + sd.id.to_s%>
-						</tr>
+					<% if @statDumps %>
+						<% @statDumps.each do |sd| %>
+							<tr>
+								<td><%= sd.created_at %></td>
+								<td><%= sd.roundNumber %></td>
+								<td><%= sd.numberOfNominations %></td>
+								<td><%= sd.numberOfNominationsSeen %></td>
+								<td><%= sd.numberOfVotes %></td>
+								<td><%= sd.numberOfFinalVotes %></td>
+								<td><%= link_to "Details", "/stat_dump/" + sd.id.to_s%>
+							</tr>
+						<%end%>
 					<%end%>
 				</tbody>
 			</table>
