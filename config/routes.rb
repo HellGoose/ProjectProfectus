@@ -33,18 +33,22 @@ Rails.application.routes.draw do
 	# Round administrating
 	post '/admin/round/:type/:val', to: 'admin#round'
 
+	#Leaderboard
+	get '/leaderboard/:page/:interval', to: 'users#page'
+
 	# Pledge
 	# get '/pledge', to: 'pledge#index'
 
 	# Root
 	root 'home#index'
 
+	resources :stat_dump, only: [:show]
 	resources :pledge, only: [:index]
 	resources :news
 	resources :admin, only: [:index]
 	resources :posts
 	resources :campaigns
-	resources :users, only: [:edit, :update, :show]
+	resources :users, only: [:index, :edit, :update, :show]
 
 	# The priority is based upon order of creation: first created -> highest priority.
 	# See how all your routes lay out with "rake routes".

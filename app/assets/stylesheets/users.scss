@@ -12,8 +12,54 @@
 
 .user-campaigns {
 	margin-top: 20px;
+	margin-bottom: 10px;
 }
 
 .user-campaigns .user-campaigns2 {
 	margin-left: 14px;
+}
+
+.user-notifications {
+	margin-left: 33px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	width: 500px;
+	max-height: 200px;
+	overflow: auto;
+	border: 1px solid #ddd;
+}
+
+#notification_button_container {
+	margin: 10px;
+	width: 450px;
+	margin-right: auto;
+}
+
+.user-notifications2 {
+	border: 1px solid black;
+	height: 90px;
+	background-color: #d6e9c6;
+	width: 450px;
+	margin-right: auto;
+	margin-bottom: 10px;
+	margin-left: 10px;
+}
+
+#leaderboard {
+	margin-bottom: 10px;
+	height: 405px;
+}
+
+.leaderboard_element {
+	width: 100%;
+	margin: 5px;
+	cursor: pointer;
+}
+
+.leaderboard_element_name {
+
+}
+
+.leaderboard_element_points > h3 {
+	float: right;
 }

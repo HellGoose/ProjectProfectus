@@ -11,6 +11,10 @@ class UsersController < ApplicationController
 	#
 	# Renders user#show.
 	def show
+		@notifications = []
+		if current_user == @user
+			@notifications = @user.pointsHistories.order('created_at DESC').first(10)
+		end
 		@userCampaigns = @user.campaigns.order('created_at DESC')
 		@userNominations = @user.nominations.where(nominated: true).order('created_at DESC')
 		@campaignsInterval = 8
@@ -34,21 +38,21 @@ class UsersController < ApplicationController
 	# 	:interval - Number of campaigns per page.
 	#
 	# page 		 			 - The current page to be shown.
-	# interval 			 - Number of campaigns before the "show more" button.
+	# interval 			 - Number of campaigns before the 'show more' button.
 	# @userCampaigns - The campaigns to be shown.
 	#
 	# Renders all the campaigns contained in @userCampaign.
 	def campaignPage
 		page = params[:page].to_i
- 		interval = params[:interval].to_i
- 		if (page * interval <= @user.campaigns.size)
- 			@userCampaigns = @user.campaigns.order('(globalScore + roundScore) DESC').first(page * interval).last(interval)
- 		else
- 			@userCampaigns = @user.campaigns.order('(globalScore + roundScore) DESC').last(@user.campaigns.size % interval)
- 		end
- 		respond_to do |format|
-    	format.js { render partial: 'userCampaigns' }
-    end
+		interval = params[:interval].to_i
+		if (page * interval <= @user.campaigns.size)
+			@userCampaigns = @user.campaigns.order('(globalScore + roundScore) DESC').first(page * interval).last(interval)
+		else
+			@userCampaigns = @user.campaigns.order('(globalScore + roundScore) DESC').last(@user.campaigns.size % interval)
+		end
+		respond_to do |format|
+			format.js { render partial: 'userCampaigns' }
+		end
 	end
 
 	# Public: Updates a user if the current user is this user.
@@ -68,6 +72,39 @@ class UsersController < ApplicationController
 				format.html { render :edit }
 				format.json { render json: @user.errors, status: :unprocessable_entity }
 			end
+		end
+	end
+
+	# Public: Displays the users leaderboard.
+	# Route: GET root/users/
+	#
+	# @page 		- The current page of the leaderboard.
+	# @interval - The interval determines how many users are displayed on each page.
+	# @users 		- A list of all users ordered by points.
+	#
+	# Renders users#index which is the leaderboard.
+	def index
+		@interval = 10
+		@page = 0
+		@users = User.all.order('points DESC')
+	end
+
+	# Public: Filters out which users to be rendered on a page.
+	# Route: GET rootleaderboard/:page/:interval
+	# 	:page 			 - The current page.
+	# 	:interval 	 - Users per page.
+	#
+	# @users 				 - All users present in the database.
+	#
+	# Renders the partial leaderboard with the page and interval variables.
+	def page
+		@page = params[:page].to_i
+		@interval = params[:interval].to_i
+
+		@users = User.all.order('points DESC')
+		
+		respond_to do |format|
+			format.html { render partial: 'leaderboard' }
 		end
 	end
 

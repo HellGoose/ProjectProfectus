@@ -47,6 +47,24 @@
 	<% end %>
 </div>
 
+<% if @notifications.count != 0 %>
+	<div class="col-sm-12 user-notifications">
+		<div class="text-center" id="notification_button_container">
+			<a class="btn btn-primary" id="show_notifications">Show Notifications</a>
+		</div>
+		<% @notifications.each do |n| %>
+			<div class="text-center user-notifications2">
+				<h5><%= n.description %></h5>
+				<h5>You received <%= n.points_received %> points</h5>
+				<h5>at <%= n.created_at %></h5>
+			</div>
+		<% end %>
+		<script>
+			$('.user-notifications2').slideToggle(0);
+		</script>
+	</div>
+<% end %>
+
 <div class="col-sm-12 user-nominations">
 	<% if @userNominations.count != 0 %>
 		<h4 class="text-center">My Nominations</h4>
@@ -84,4 +102,3 @@
 		</div>
 	<% end %>
 </div>
-
