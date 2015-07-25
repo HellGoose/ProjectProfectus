@@ -1,0 +1,22 @@
+<% first = @page * @interval %>
+<% last = @users.size - first %>
+<% if last <= 0 %>
+	<% last = 0 %>
+<% end %>
+
+<% place = @page * @interval + 1 %>
+<% @users.last(last).first(@interval).each do |u| %>
+	<div class='leaderboard_element col-xs-12'>
+		<a href='/users/<%= u.id %>'></a>
+		<div class='leaderboard_element_place col-xs-1'>
+			<h3><%= place %></h3>
+		</div>
+		<div class='leaderboard_element_name col-xs-6'>
+			<h3><%= u.name %></h3>
+		</div>
+		<div class='leaderboard_element_points col-xs-5'>
+			<h3><%= u.points %></h3>
+		</div>
+	</div>
+	<% place += 1 %>
+<% end %>
