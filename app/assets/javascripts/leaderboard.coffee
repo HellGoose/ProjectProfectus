@@ -35,10 +35,6 @@ $(document).ready ->
 			else
 				break
 		return
-
-	$('.leaderboard_element').click ->
-		window.location = $($(this).children()[0]).attr('href')
-		return
 	return
 
 # Changes pages for the leaderboard.

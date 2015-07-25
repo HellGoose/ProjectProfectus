@@ -24,23 +24,24 @@
 -->
 
 <div class="col-xs-12">          
-  <table class="col-xs-10 table table-striped table-responsive table-hover">
-    <thead>
-      <tr>
-        <th>Place</th>
-        <th>User</th>
-        <th>Points</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% place = @page * @interval + 1 %>
+	<table class="col-xs-10 table table-striped table-responsive table-hover">
+		<thead>
+			<tr>
+				<th>Place</th>
+				<th>User</th>
+				<th>Points</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% place = @page * @interval + 1 %>
 			<% @users.last(last).first(@interval).each do |u| %>
-					<tr onclick="document.location = '/users/<%= u.id %>';">
-						<td class="leaderboard_td"><%= place %></td>
-						<td class="leaderboard_td"><a href='/users/<%= u.id %>'><%= u.name %></a></td>
-						<td class="leaderboard_td"><%= u.points %></td>
-					</tr>
+				<tr onclick="document.location = '/users/<%= u.id %>';" style="cursor: pointer;">
+					<td class="leaderboard_td"><%= place %></td>
+					<td class="leaderboard_td"><%= u.name %></td>
+					<td class="leaderboard_td"><%= u.points %></td>
+				</tr>
 				<% place += 1 %>
 			<% end %>
-    </tbody>
-  </table>
+		</tbody>
+	</table>
+</div>
