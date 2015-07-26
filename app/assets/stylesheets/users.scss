@@ -47,6 +47,43 @@
 	margin-left: 10px;
 }
 
+#user-nominations-header {
+	margin-top: 20px;
+  background: #F7F7F7;
+}
+
+#user-nominations-rule {
+  border-color: #385559;
+  border-width: 3px;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
+#user-campaigns-container {
+	background: #F7F7F7;
+	padding-top: 20px;
+	padding-bottom: 20px;
+}
+
+#user-campaigns-header{
+	background: white;
+}
+
+#user-campaigns-rule {
+  border-color: #385559;
+  border-width: 3px;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
+.user-nominations > div > div > .campaign-box {
+	background: #F7F7F7;
+}
+
+.user-campaigns2 > div > .campaign-box {
+	background: white;
+}
+
 #leaderboard {
 	margin-bottom: 10px;
 	height: 405px;

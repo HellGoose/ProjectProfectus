@@ -5,7 +5,7 @@
 <div id="data" data-page="1" data-interval=<%= @campaignsInterval %> data-size=<%= @user.campaigns.size %>></div>
 
 <div class="container">
-	<h1>Profile</h1>
+	<h1 class="header text-center">Profile</h1>
 
 	<div class="col-sm-3">
 		<% if !@user.image || @user.image == '' %>
@@ -71,11 +71,12 @@
 
 <div class="col-sm-12 user-nominations">
 	<% if @userNominations.count != 0 %>
-		<h4 class="text-center">My Nominations</h4>
+		<h3 id="user-nominations-header">My Nominations</h4>
+		<hr id="user-nominations-rule">
 	<% end %>
 	<div class="user-nominations2">
 		<% @userNominations.each do |c| %>
-			<div class="col-sm-3 campaign">
+			<div class="col-sm-3 campaign-container">
 				<%= link_to "", "/campaigns/" + c.id.to_s, class: "campaign_link" %>
 				<% @campaign = c %>
 				<%= render partial: 'campaigns/campaignSmall' %>
@@ -84,15 +85,16 @@
 	</div>
 </div>
 
-<div class="col-sm-12 user-campaigns">
+<div class="col-sm-12 user-campaigns" id="user-campaigns-container">
 	<% if @userCampaigns.count != 0 %>
-		<h4 class="text-center">My Campagins</h4>
+		<h3 id="user-campaigns-header">My Campaigns</h4>
+		<hr id="user-campaigns-rule">
 	<% end %>
 	<% i = 0 %>
 	<div class="user-campaigns2">
 		<% @userCampaigns.each do |c| %>
 			<% break if i >= @campaignsInterval %>
-			<div class="col-sm-3 campaign">
+			<div class="col-sm-3 campaign-container">
 				<%= link_to "", "/campaigns/" + c.id.to_s, class: "campaign_link" %>
 				<% @campaign = c %>
 				<%= render partial: 'campaigns/campaignSmall' %>

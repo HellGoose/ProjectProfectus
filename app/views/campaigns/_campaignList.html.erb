@@ -11,7 +11,7 @@
 <% end %>
 
 <% @campaigns.last(last).first(campaignsPerPage.to_i).each do |c| %>
-	<div class="col-xs-3 campaign">
+	<div class="col-xs-3 campaign-container">
 		<%= link_to "", "/campaigns/" + c.id.to_s, class: "campaign_link" %>
 		<% @campaign = c %>
 		<%= render partial: 'campaigns/campaignSmall' %>

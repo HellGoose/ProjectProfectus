@@ -19,10 +19,10 @@
 
 #categories {
 	margin-top: 10px;
-	margin-bottom: 10px;
-	padding-top: 35px;
+	margin-bottom: 30px;
 	padding-left: 30px;
-	height: 180px;
+	padding-right: 30px;
+	height: 50px;
 }
 
 .catButton {
@@ -31,7 +31,11 @@
 	margin-bottom: 10px;
 }
 
-//Causes the catagory sites with no projects to have a similar look to those who have it.
+.campaign-list > div > .campaign-box {
+	background: #F7F7F7;
+}
+
+//Causes the category sites with no projects to have a similar look to those who have it.
 .noCampaign {
 	margin-top: 200px;
 	margin-bottom: 200px;
