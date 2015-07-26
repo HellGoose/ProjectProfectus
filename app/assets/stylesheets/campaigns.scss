@@ -176,6 +176,7 @@
 	height: 400px;
 }
 
+// Podium
 #first_place {
 	/*text-align: center;*/
 }
@@ -197,6 +198,10 @@
 #preview {
 	border-radius: 0px;
 	padding-left: 0px;
+}
+
+#campaign-img {
+	min-height: 187px;
 }
 
 #preview > div.image_container {
