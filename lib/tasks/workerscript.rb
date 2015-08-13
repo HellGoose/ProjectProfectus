@@ -141,12 +141,10 @@ def runNewRound (decayRate)
 		details += "<thead><tr><th>Name</th><th>Score</th><th>Nominations</th></tr></thead><tbody>"
 		users.each do |u|
 			details += "<tr><td>#{u.name}</td><td>#{u.points}</td><td>#{u.additionsThisRound}</td></tr>"
-			if u.isOnStep == 4
-				u.isOnStep = 0
-				u.hasLoggedInThisRound = false
-				u.additionsThisRound = 0
-				u.save
-			end
+			u.isOnStep = 0
+			u.hasLoggedInThisRound = false
+			u.additionsThisRound = 0
+			u.save
 		end
 		details += "</tbody></table>"
 
