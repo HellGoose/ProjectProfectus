@@ -21,6 +21,7 @@ Rails.application.routes.draw do
 	# Voting
 	post '/vote/post/:id/:dir', to: 'posts#vote'
 	get '/vote/campaign/:id/', to: 'campaigns#vote'
+	get '/refresh/campaigns/', to: 'campaigns#refresh_step'
 
 	# News
 	get '/news/page/:page/:interval', to: 'news#page'

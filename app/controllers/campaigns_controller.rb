@@ -219,9 +219,7 @@ class CampaignsController < ApplicationController
 			end
 
 			@campaignVoting = []
-			puts "setting up"
 			setUpNextVotingStep
-			puts "setup done"
 
 			if current_user.isOnStep == 4
 				respond_to do |format|
@@ -294,7 +292,20 @@ class CampaignsController < ApplicationController
 
 	def refresh_step
 		if current_user.isOnStep < 3
-			genCampaignsForVoting(current_user.isOnStep)
+			@campaignVoting = []
+			campaignVotes = genCampaignsForVoting(current_user.isOnStep)
+			for i in 0..2
+				next if campaignVotes[i].nil?
+				@campaignVoting << campaignVotes[i].campaign
+			end
+
+			respond_to do |format|
+				format.js { render partial: "campaignVoting"}
+			end
+		else
+			respond_to do |format|
+				format.js { render partial: "home/not_logged_in"}
+			end
 		end
 	end
 
