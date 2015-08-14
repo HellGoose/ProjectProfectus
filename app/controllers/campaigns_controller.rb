@@ -409,7 +409,6 @@ class CampaignsController < ApplicationController
 	def setUpNextVotingStep
 		step = current_user.isOnStep
 		if  step < 3 and current_user.campaignVotes.where(step: step).empty?
-			puts "step: #{step}"
 			campaignVotes = genCampaignsForVoting(step)
 		elsif step >= 3
 			campaignVotes = current_user.campaignVotes.where.not(voteType: 0)
@@ -431,13 +430,11 @@ class CampaignsController < ApplicationController
 	#
 	# Returns the campaigns corresponding to the current step.
 	def genCampaignsForVoting(step)
-		puts "Fetching all campaigns"
 		campaigns = Campaign.where(nominated: true).order("timesShownInVoting DESC")
 		genedCampaigns = []
 
 		case step
 		when 0
-			puts "Step zero"
 			genedCampaigns = campaigns.last(campaigns.size * 0.2)
 		when 1
 			genedCampaigns = campaigns.slice((campaigns.size * 0.5)..(campaigns.size * 0.8))
@@ -445,17 +442,12 @@ class CampaignsController < ApplicationController
 			genedCampaigns = campaigns.first(campaigns.size * 0.5)
 		end
 
-		puts "Fixing campaignvotes"
 		campaignVotes = current_user.campaignVotes
-		puts "Destroying"
 		campaignVotes.where(step: step).each{|cv| cv.destroy}
 		votedCampaigns = []
-		puts "anti-duplication"
 		campaignVotes.each{|cv| votedCampaigns << cv.campaign}
 
-		puts "Schetchy syntax"
 		genedCampaigns = (genedCampaigns - votedCampaigns).sample(3)
-		puts "syntax works :D"
 		genedCampaigns.each do |gc|
 			campaignVotes.create(
 				user_id: current_user.id, 
@@ -465,7 +457,6 @@ class CampaignsController < ApplicationController
 			gc.save
 		end
 
-		puts "saving"
 		current_user.save
 		current_user.campaignVotes.where(step: step)
 	end
