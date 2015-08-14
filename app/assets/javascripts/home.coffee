@@ -39,6 +39,10 @@ $(document).ready ->
 				$('#next-voting').show()
 			else
 				$('#next-voting').hide()
+			if $('#campaign').data('step') < 3
+				$('#refresh-voting').show()
+			else
+				$('#refresh-voting').hide()
 			$('#voting').slideToggle()
 			$('#campaigns-news').slideToggle()
 			return
@@ -51,6 +55,7 @@ $(document).ready ->
 		$('#start-voting').show()
 		$('#back-voting').hide()
 		$('#next-voting').hide()
+		$('#refresh-voting').hide()
 		$('#voting').slideToggle()
 		$('#campaigns-news').slideToggle()
 		return
@@ -64,6 +69,15 @@ $(document).ready ->
 		$('#campaign').data('vote', @id)
 		return
 
+	# Refreshes for 3 new campaigns for voting when the user clicks on the
+	# refresh button. Does not change the step.
+	$('#refresh-voting').on 'click', ->
+		$('#voting').load "/refresh/campaigns/", (response, status) ->
+			$('.campaign-display').slideUp(0)
+		return
+
+
+
 	# Loads the next voting set of campaigns when the user clicks on the
 	# vote button. Also sends the list id of the current voted campaign.
 	$('#next-voting').on 'click', ->
@@ -75,6 +89,10 @@ $(document).ready ->
 				$('#next-voting').show()
 			else
 				$('#next-voting').hide()
+			if $('#campaign').data('step') < 3
+				$('#refresh-voting').show()
+			else
+				$('#refresh-voting').hide()
 			return
 		return
 

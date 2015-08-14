@@ -225,12 +225,10 @@ class CampaignsController < ApplicationController
 				respond_to do |format|
 					format.js { render partial: "campaignVotingDone"}
 				end
-			elsif current_user.isOnStep < 4
+			else
 				respond_to do |format|
 					format.js { render partial: "campaignVoting"}
 				end
-			else
-				render nothing: true
 			end
 		else
 			respond_to do |format|
@@ -289,6 +287,25 @@ class CampaignsController < ApplicationController
 		
 		respond_to do |format|
 			format.html { render partial: "campaignList", locals: { page: page, campaignsPerPage: interval}}
+		end
+	end
+
+	def refresh_step
+		if current_user.isOnStep < 3
+			@campaignVoting = []
+			campaignVotes = genCampaignsForVoting(current_user.isOnStep)
+			for i in 0..2
+				next if campaignVotes[i].nil?
+				@campaignVoting << campaignVotes[i].campaign
+			end
+
+			respond_to do |format|
+				format.js { render partial: "campaignVoting"}
+			end
+		else
+			respond_to do |format|
+				format.js { render partial: "home/not_logged_in"}
+			end
 		end
 	end
 
@@ -352,7 +369,7 @@ class CampaignsController < ApplicationController
 		when 0..2
 			campaignVotes = current_user.campaignVotes.where(step: current_user.isOnStep)
 			(0..2).each do |i|
-				next if campaignVotes[i] == nil
+				next if campaignVotes[i].nil?
 				campaignVotes[i].voteType = 0
 				campaignVotes[i].save
 			end
@@ -378,8 +395,6 @@ class CampaignsController < ApplicationController
 			current_user.campaignVotes.where(voteType: 1).each do |v|
 				v.campaign.roundScore += 1
 				v.campaign.save
-				#v.campaign.user.points += 1
-				#v.campaign.user.save
 			end
 		end
 	end
@@ -392,17 +407,18 @@ class CampaignsController < ApplicationController
 	#
 	# Returns nothing.
 	def setUpNextVotingStep
-		if current_user.campaignVotes == [] and current_user.isOnStep <= 4
-			campaignVotes = genCampaignsForVoting
-		elsif current_user.isOnStep >= 3
+		step = current_user.isOnStep
+		if  step < 3 and current_user.campaignVotes.where(step: step).empty?
+			campaignVotes = genCampaignsForVoting(step)
+		elsif step >= 3
 			campaignVotes = current_user.campaignVotes.where.not(voteType: 0)
 			@votedFor = current_user.campaignVotes.where(voteType: 2)
 		else
-			campaignVotes = current_user.campaignVotes.where(step: current_user.isOnStep)
+			campaignVotes = current_user.campaignVotes.where(step: step)
 		end
 
 		for i in 0..2
-			next if (campaignVotes[i] == nil)
+			next if campaignVotes[i].nil?
 			@campaignVoting << campaignVotes[i].campaign
 		end
 	end
@@ -413,31 +429,35 @@ class CampaignsController < ApplicationController
 	# genedCampaigns - The campaigns generated.
 	#
 	# Returns the campaigns corresponding to the current step.
-	def genCampaignsForVoting
-		current_user.isOnStep = 0
-
+	def genCampaignsForVoting(step)
 		campaigns = Campaign.where(nominated: true).order("timesShownInVoting DESC")
-		leastSeen = campaigns.last(campaigns.size * 0.2)
-		lessSeen = campaigns.slice((campaigns.size * 0.5)..(campaigns.size * 0.8))
-		mostSeen = campaigns.first(campaigns.size * 0.5)
-
 		genedCampaigns = []
-		genedCampaigns << leastSeen.sample(3)
-		genedCampaigns << lessSeen.sample(3)
-		genedCampaigns << mostSeen.sample(3)
+
+		case step
+		when 0
+			genedCampaigns = campaigns.last(campaigns.size * 0.2)
+		when 1
+			genedCampaigns = campaigns.slice((campaigns.size * 0.5)..(campaigns.size * 0.8))
+		when 2
+			genedCampaigns = campaigns.first(campaigns.size * 0.5)
+		end
 
 		campaignVotes = current_user.campaignVotes
-		(0..8).each do |i|
-			step = (i / 3).to_i
+		campaignVotes.where(step: step).each{|cv| cv.destroy}
+		votedCampaigns = []
+		campaignVotes.each{|cv| votedCampaigns << cv.campaign}
+
+		genedCampaigns = (genedCampaigns - votedCampaigns).sample(3)
+		genedCampaigns.each do |gc|
 			campaignVotes.create(
 				user_id: current_user.id, 
-				campaign_id: genedCampaigns[step][i % 3].id, 
+				campaign_id: gc.id, 
 				step: step)
-			genedCampaigns[step][i % 3].timesShownInVoting += 1
-			genedCampaigns[step][i % 3].save
+			gc.timesShownInVoting += 1
+			gc.save
 		end
 
 		current_user.save
-		current_user.campaignVotes.where(step: current_user.isOnStep)
+		current_user.campaignVotes.where(step: step)
 	end
 end

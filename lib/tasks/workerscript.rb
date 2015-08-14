@@ -17,12 +17,15 @@ def roundScript
 	ActiveSupport.on_load(:after_initialize) do
 		puts ('Script started') if runScript == true
 		round = Round.first
-		round.forceNewRound = true
+		round.forceNewRound = false
 		while 1 do
 			if Time.now.to_i >= round.endTime.to_i or round.forceNewRound == true
 				puts ('Starting a new Round!')
 				runNewRound(round.decayRate)
-				round.endTime = Time.at(round.endTime.to_i + round.duration).to_datetime
+				if Time.now.to_i >= round.endTime.to_i
+					puts "Extending the current round."
+					round.endTime = Time.at(round.endTime.to_i + round.duration).to_datetime
+				end
 				round.forceNewRound = false
 				round.save
 				#cleanupDatabase
@@ -37,7 +40,6 @@ private
 def runNewRound (decayRate)
 	if Campaign.where(nominated: true).empty?
 		puts "Failed to start new round! Not enough nominated campaigns."
-		puts "Extending the current round!"
 		return
 	end
 	round = Round.first
@@ -139,12 +141,10 @@ def runNewRound (decayRate)
 		details += "<thead><tr><th>Name</th><th>Score</th><th>Nominations</th></tr></thead><tbody>"
 		users.each do |u|
 			details += "<tr><td>#{u.name}</td><td>#{u.points}</td><td>#{u.additionsThisRound}</td></tr>"
-			if u.isOnStep == 4
-				u.isOnStep = 0
-				u.hasLoggedInThisRound = false
-				u.additionsThisRound = 0
-				u.save
-			end
+			u.isOnStep = 0
+			u.hasLoggedInThisRound = false
+			u.additionsThisRound = 0
+			u.save
 		end
 		details += "</tbody></table>"
 
@@ -158,7 +158,6 @@ def runNewRound (decayRate)
 		puts "Done! New Round Started."
 	else
 		puts "Failed to start round! No scores found."
-		puts "Extending the current round."
 	end
 end
 
