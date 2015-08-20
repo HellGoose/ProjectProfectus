@@ -87,6 +87,27 @@ class CampaignsController < ApplicationController
 	def create
 		if current_user && current_user.additionsThisRound < Round.first.maxAdditionsPerUser
 			@campaign = Campaign.new(campaign_params)
+
+			api_key = '6cc89ec29944d6980a8635b0999dfa71'
+			url = URI.parse('http://api.diffbot.com/v3/article?token=' + api_key + '&url=' + URI.encode(@campaign.link, /\W/))
+			req = Net::HTTP::Get.new(url.to_s)
+			res = Net::HTTP.start(url.host, url.port) {|http|
+				http.request(req)
+			}
+
+			j = JSON.parse res.body
+			title = j['objects'][0]['title']
+			content = j['objects'][0]['html']
+			pledged = j['objects'][0]['pledged']
+			goal = j['objects'][0]['goal']
+			author = j['objects'][0]['author']
+			backers = j['objects'][0]['backers']
+			end_time = j['objects'][0]['date']
+		end
+
+		if false
+		if current_user && current_user.additionsThisRound < Round.first.maxAdditionsPerUser
+			@campaign = Campaign.new(campaign_params)
 			embedly = Embedly::API.new key: "0eef325249694df490605b1fd29147f5"
 			embedlyData = (embedly.extract url: @campaign.link).first
 			kickstarterURL = "https://www.kickstarter.com"
@@ -156,6 +177,7 @@ class CampaignsController < ApplicationController
 				format.html { redirect_to current_user, notice: msg }
 				format.json { render :show, location: current_user }
 			end
+		end
 		end
 	end
 
