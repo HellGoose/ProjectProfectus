@@ -85,99 +85,111 @@ class CampaignsController < ApplicationController
 	#
 	# Renders campaign#index.
 	def create
-		if current_user && current_user.additionsThisRound < Round.first.maxAdditionsPerUser
-			@campaign = Campaign.new(campaign_params)
-
-			api_key = '6cc89ec29944d6980a8635b0999dfa71'
-			url = URI.parse('http://api.diffbot.com/v3/article?token=' + api_key + '&url=' + URI.encode(@campaign.link, /\W/))
-			req = Net::HTTP::Get.new(url.to_s)
-			res = Net::HTTP.start(url.host, url.port) {|http|
-				http.request(req)
-			}
-
-			j = JSON.parse res.body
-			title = j['objects'][0]['title']
-			content = j['objects'][0]['html']
-			pledged = j['objects'][0]['pledged']
-			goal = j['objects'][0]['goal']
-			author = j['objects'][0]['author']
-			backers = j['objects'][0]['backers']
-			end_time = j['objects'][0]['date']
-		end
-
-		if false
-		if current_user && current_user.additionsThisRound < Round.first.maxAdditionsPerUser
-			@campaign = Campaign.new(campaign_params)
-			embedly = Embedly::API.new key: "0eef325249694df490605b1fd29147f5"
-			embedlyData = (embedly.extract url: @campaign.link).first
-			kickstarterURL = "https://www.kickstarter.com"
-			indigogoURL = "http://www.indiegogo.com"
-			whiteList = [kickstarterURL,indigogoURL]
-
-			case embedlyData.provider_url
-			when *whiteList
-				embedlyData.title.slice!("CLICK HERE to support ")
-				if !Campaign.exists?(title: embedlyData.title) 
-					@campaign.user_id = session[:user_id]
-					@campaign.nominator_id = session[:user_id]
-					@campaign.title = embedlyData.title
-					description = embedlyData.description.encode('utf-8', 'binary', invalid: :replace, undef: :replace, replace: '')
-					@campaign.description = description[0, 255]
-
-					respond_to do |format|
-						if @campaign.save
-							notification = PointsHistory.new(description: 'You successfully nominated a campaign!', points_received: 5)
-							current_user.pointsHistories << notification
-							current_user.points +=5
-							current_user.additionsThisRound += 1
-							current_user.save
-							msg = "<span class=\"alert alert-success\">Campaign was successfully nominated.</span>"
-							format.html { redirect_to current_user, notice: msg }
-							format.json { render :show, location: current_user }
-						else
-							format.html { render :new }
-							format.json { render json: @campaign.errors, status: :unprocessable_entity }
-						end
-					end
-				else
-					@campaign = Campaign.find_by(title: embedlyData.title)
-					if !@campaign.nominated
-						@campaign.nominated = true
-						@campaign.nominator_id = current_user.id
-						if @campaign.save
-							notification = PointsHistory.new(description: 'You successfully made a nomination!', points_received: 5)
-							current_user.pointsHistories << notification
-							current_user.points +=5
-							current_user.additionsThisRound += 1
-							current_user.save
-							respond_to do |format|
-								msg = "<span class=\"alert alert-success\">Campaign was successfully nominated.</span>"
-								format.html { redirect_to current_user, notice: msg }
-								format.json { render :show, location: current_user }
-							end
-						end
-					else
-						respond_to do |format|
-							msg = "<span class=\"alert alert-warning\">This campaign has already been nominated.</span>"
-							format.html { redirect_to current_user, notice: msg }
-							format.json { render :show, location: current_user }
-						end
-					end
-				end
-			else
-				repond_to do |format|
-					msg = "<span class=\"alert alert-warning\">The site this URL is pointing at is not supported.</span>"
-					format.html { redirect_to current_user, notice: msg }
-					format.json { render :show, location: current_user }
-				end
-			end
-		else
+		if !current_user || current_user.additionsThisRound >= Round.first.maxAdditionsPerUser
 			respond_to do |format|
 				msg = "<span class=\"alert alert-warning\">You have exceeded your submission limit for this round.</span>"
 				format.html { redirect_to current_user, notice: msg }
 				format.json { render :show, location: current_user }
 			end
+			return
 		end
+
+		@campaign = Campaign.new(campaign_params)
+
+		kickstarterURL = "https://www.kickstarter.com"
+		indigogoURL = "http://www.indiegogo.com"
+		whiteList = [kickstarterURL,indigogoURL]
+
+		embedly = Embedly::API.new key: "0eef325249694df490605b1fd29147f5"
+		embedlyData = (embedly.extract url: @campaign.link).first
+
+		api_key = '6cc89ec29944d6980a8635b0999dfa71'
+		url = URI.parse('http://api.diffbot.com/v3/article?token=' + api_key + '&url=' + URI.encode(@campaign.link, /\W/))
+		req = Net::HTTP::Get.new(url.to_s)
+		res = Net::HTTP.start(url.host, url.port) {|http|
+			http.request(req)
+		}
+
+		j = JSON.parse res.body
+
+		case embedlyData.provider_url
+		when *whiteList
+			if Campaign.exists?(title: j['objects'][0]['title']) 
+				@campaign = Campaign.find_by(title: j['objects'][0]['title'])
+
+				if @campaign.nominated
+					respond_to do |format|
+						msg = "<span class=\"alert alert-warning\">This campaign has already been nominated.</span>"
+						format.html { redirect_to current_user, notice: msg }
+						format.json { render :show, location: current_user }
+					end
+					return
+				end
+
+				@campaign.nominated = true
+				@campaign.nominator_id = current_user.id
+
+				if @campaign.save
+					notification = PointsHistory.new(description: 'You successfully made a nomination!', points_received: 5)
+
+					current_user.pointsHistories << notification
+					current_user.points +=5
+					current_user.additionsThisRound += 1
+					current_user.save
+
+					respond_to do |format|
+						msg = "<span class=\"alert alert-success\">Campaign was successfully nominated.</span>"
+						format.html { redirect_to current_user, notice: msg }
+						format.json { render :show, location: current_user }
+					end
+				end
+				return
+			end
+
+			@campaign.user_id = session[:user_id]
+			@campaign.nominator_id = session[:user_id]
+			@campaign.nominated = true
+			@campaign.title = j['objects'][0]['title']
+
+			description = embedlyData.description.encode('utf-8', 'binary', invalid: :replace, undef: :replace, replace: '')
+			@campaign.description = description[0, 255]
+
+			@campaign.content = j['objects'][0]['html']
+			@campaign.backers = j['objects'][0]['backers'].to_i
+			@campaign.pledged = j['objects'][0]['pledged'].delete(',').delete('$').to_i # only dollahs?
+			@campaign.goal = j['objects'][0]['goal'].delete(',').delete('$').to_i
+			@campaign.author = j['objects'][0]['author'] # needs proper parsing for kickstarter
+
+			#case embedlyData.provider_url
+			#when kickstarterURL
+			#	@campaign.end_time = j['objects'][0]['date']
+			#when indigogoURL
+			#	@campaign.end_time = j['objects'][0]['date']
+			#end
+
+			respond_to do |format|
+				if @campaign.save
+					notification = PointsHistory.new(description: 'You successfully nominated a campaign!', points_received: 5)
+
+					current_user.pointsHistories << notification
+					current_user.points +=5
+					current_user.additionsThisRound += 1
+					current_user.save
+
+					msg = "<span class=\"alert alert-success\">Campaign was successfully nominated.</span>"
+					format.html { redirect_to current_user, notice: msg }
+					format.json { render :show, location: current_user }
+				else
+					format.html { render :new }
+					format.json { render json: @campaign.errors, status: :unprocessable_entity }
+				end
+			end
+		else
+			repond_to do |format|
+				msg = "<span class=\"alert alert-warning\">The site this URL is pointing at is not supported.</span>"
+				format.html { redirect_to current_user, notice: msg }
+				format.json { render :show, location: current_user }
+			end
 		end
 	end
 
