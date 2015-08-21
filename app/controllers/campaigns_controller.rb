@@ -102,20 +102,13 @@ class CampaignsController < ApplicationController
 
 		embedly = Embedly::API.new key: "0eef325249694df490605b1fd29147f5"
 		embedlyData = (embedly.extract url: @campaign.link).first
-
-		api_key = '6cc89ec29944d6980a8635b0999dfa71'
-		url = URI.parse('http://api.diffbot.com/v3/article?token=' + api_key + '&url=' + URI.encode(@campaign.link, /\W/))
-		req = Net::HTTP::Get.new(url.to_s)
-		res = Net::HTTP.start(url.host, url.port) {|http|
-			http.request(req)
-		}
-
-		j = JSON.parse res.body
+		embedlyData.title.slice!("CLICK HERE to support ")
+		puts embedlyData.title + " = " + @campaign.title
 
 		case embedlyData.provider_url
 		when *whiteList
-			if Campaign.exists?(title: j['objects'][0]['title']) 
-				@campaign = Campaign.find_by(title: j['objects'][0]['title'])
+			if Campaign.exists?(title: embedlyData.title) 
+				@campaign = Campaign.find_by(title: embedlyData.title)
 
 				if @campaign.nominated
 					respond_to do |format|
@@ -142,46 +135,59 @@ class CampaignsController < ApplicationController
 						format.html { redirect_to current_user, notice: msg }
 						format.json { render :show, location: current_user }
 					end
-				end
-				return
-			end
-
-			@campaign.user_id = session[:user_id]
-			@campaign.nominator_id = session[:user_id]
-			@campaign.nominated = true
-			@campaign.title = j['objects'][0]['title']
-
-			description = embedlyData.description.encode('utf-8', 'binary', invalid: :replace, undef: :replace, replace: '')
-			@campaign.description = description[0, 255]
-
-			@campaign.content = j['objects'][0]['html']
-			@campaign.backers = j['objects'][0]['backers'].to_i
-			@campaign.pledged = j['objects'][0]['pledged'].delete(',').delete('$').to_i # only dollahs?
-			@campaign.goal = j['objects'][0]['goal'].delete(',').delete('$').to_i
-			@campaign.author = j['objects'][0]['author'] # needs proper parsing for kickstarter
-
-			#case embedlyData.provider_url
-			#when kickstarterURL
-			#	@campaign.end_time = j['objects'][0]['date']
-			#when indigogoURL
-			#	@campaign.end_time = j['objects'][0]['date']
-			#end
-
-			respond_to do |format|
-				if @campaign.save
-					notification = PointsHistory.new(description: 'You successfully nominated a campaign!', points_received: 5)
-
-					current_user.pointsHistories << notification
-					current_user.points +=5
-					current_user.additionsThisRound += 1
-					current_user.save
-
-					msg = "<span class=\"alert alert-success\">Campaign was successfully nominated.</span>"
-					format.html { redirect_to current_user, notice: msg }
-					format.json { render :show, location: current_user }
 				else
 					format.html { render :new }
 					format.json { render json: @campaign.errors, status: :unprocessable_entity }
+				end
+			else
+
+				api_key = '6cc89ec29944d6980a8635b0999dfa71'
+				url = URI.parse('http://api.diffbot.com/v3/article?token=' + api_key + '&url=' + URI.encode(@campaign.link, /\W/))
+				req = Net::HTTP::Get.new(url.to_s)
+				res = Net::HTTP.start(url.host, url.port) {|http|
+					http.request(req)
+				}
+
+				j = JSON.parse res.body
+
+				@campaign.user_id = session[:user_id]
+				@campaign.nominator_id = session[:user_id]
+				@campaign.nominated = true
+				@campaign.title = j['objects'][0]['title']
+
+				description = embedlyData.description.encode('utf-8', 'binary', invalid: :replace, undef: :replace, replace: '')
+				@campaign.description = description[0, 255]
+
+				@campaign.content = j['objects'][0]['html']
+				@campaign.backers = j['objects'][0]['backers'].to_i
+				@campaign.pledged = j['objects'][0]['pledged'].delete(',').delete('$').to_i # only dollahs?
+				@campaign.goal = j['objects'][0]['goal'].delete(',').delete('$').to_i
+				@campaign.author = j['objects'][0]['author'] # needs proper parsing for kickstarter
+
+				#case embedlyData.provider_url
+				#when kickstarterURL
+				#	@campaign.end_time = j['objects'][0]['date']
+				#when indigogoURL
+				#	@campaign.end_time = j['objects'][0]['date']
+				#end
+
+				respond_to do |format|
+					if @campaign.save
+						notification = PointsHistory.new(description: 'You successfully nominated a campaign!', points_received: 5)
+
+						current_user.pointsHistories << notification
+						current_user.points +=5
+						current_user.additionsThisRound += 1
+						current_user.save
+
+						msg = "<span class=\"alert alert-success\">Campaign was successfully nominated.</span>"
+						format.html { redirect_to current_user, notice: msg }
+						format.json { render :show, location: current_user }
+					else
+						puts "HERE!!!!!!!!!!!!!!!!!!!!!!!"
+						format.html { render :new }
+						format.json { render json: @campaign.errors, status: :unprocessable_entity }
+					end
 				end
 			end
 		else

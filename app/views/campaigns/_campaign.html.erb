@@ -19,9 +19,24 @@
 			<h5>Round Score: <%= @campaign.roundScore %></h5>
 			<h5>Times seen in voting this round: <%= @campaign.timesShownInVoting %></h5>
 			<P id="campaign-description" ><%= @campaign.description %></p>
-			<p><%= link_to "Go to Campaign Site", @campaign.link, class: "btn btn-primary", id: "campaign-link", target: "_blank" %></p>
+			<%= link_to "Go to Campaign Site", @campaign.link, class: "btn btn-primary", id: "campaign-link", target: "_blank" %>
+			<%= button_to "Nominate", 
+					{controller: "campaigns",
+					action: "create",
+					campaign: 
+						{title: @campaign.title, 
+						description: @campaign.description, 
+						image: @campaign.image, 
+						link: @campaign.link, 
+						category_id: @campaign.category_id}
+					}, 
+				class: "btn btn-primary", 
+				id: "nominate", 
+				disabled: @campaign.nominated
+			%>
 			<div id="social_media">
     			<%= social_share_button_tag(@campaign.title, :popup => "true", :image => @campaign.image, desc: @campaign.description) %>
   			</div>
 		</div>
 	</div>
+	
