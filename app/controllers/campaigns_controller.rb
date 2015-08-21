@@ -103,7 +103,6 @@ class CampaignsController < ApplicationController
 		embedly = Embedly::API.new key: "0eef325249694df490605b1fd29147f5"
 		embedlyData = (embedly.extract url: @campaign.link).first
 		embedlyData.title.slice!("CLICK HERE to support ")
-		puts embedlyData.title + " = " + @campaign.title
 
 		case embedlyData.provider_url
 		when *whiteList
