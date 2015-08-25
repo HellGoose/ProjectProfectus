@@ -1,9 +1,19 @@
-<div class="text-center" id="background-blur" style="background-image:url(<%=@campaign.image%>);"></div>
-<div class="container" id="campaign-content">
-	<div class="col-xs-12 main_campaign">
-		<div class="image_container2">
-			<%= image_tag @campaign.image, class: "logo img-responsive" %>
+<div style="overflow: hidden;"><div class="text-center" id="background-blur" style="background-image:url(<%=@campaign.image%>);"></div></div>
+<div class="container" id="campaign-content"><!-- main-campaign"> -->
+	<div class="row">
+		<%= image_tag @campaign.image, class: "col-xs-5 main-campaign-image logo img-responsive" %>
+		<div class="row col-xs-7">
+			<div class="col-xs-4" id="campaign-info-box" title="The amassed score in all rounds"><h5>Global Score</h5><%= @campaign.globalScore %></div>
+			<div class="col-xs-4" id="campaign-info-box" title="The amassed score in the current round"><h5>Round Score</h5><%= @campaign.roundScore %></div>
+			<div class="col-xs-4" id="campaign-info-box" title="Times seen by a user in voting in the current round"><h5>Times Shown</h5><%= @campaign.timesShownInVoting %></div>
 		</div>
+
+		<div class="row col-xs-7">
+			<div class="col-xs-4" id="campaign-info-box"><h5>Pledged</h5 ><%= @campaign.pledged %></div>
+			<div class="col-xs-4" id="campaign-info-box"><h5>Goal</h5><%= @campaign.goal %></div>
+			<div class="col-xs-4" id="campaign-info-box"><h5>Backers</h5><%= @campaign.backers %></div>
+		</div>
+	</div>
 		<div class="edit">
 			<% if @campaign.user_id == session[:user_id] || isAdmin %>
 				<%= link_to "Edit |", edit_campaign_path(@campaign)%> 
@@ -11,20 +21,10 @@
 			<% end %>
 		</div>
 		<div class="container">
-			<h2 id="campaign-title"><%= @campaign.title %></h2><h5>By <b><%= @campaign.author.split(" ")[0..1].join(" ") %></b></h5> <!-- Fix plz -->
+			<h2 id="campaign-title"><%= @campaign.title %></h2>
+			<% if @campaign.author != nil %><h5>By <b><%= @campaign.author.split(" ")[0..1].join(" ") %></b></h5> <!-- Fix plz -->
+			<% end %>
 			<div class="campaign-info">
-				<div class="row">
-					<div class="col-xs-4" id="campaign-info-box"><h5>Global Score</h5><%= @campaign.globalScore %></div>
-					<div class="col-xs-4" id="campaign-info-box"><h5>Round Score:</h5><%= @campaign.roundScore %></div>
-					<div class="col-xs-4" id="campaign-info-box"><h5>Times seen in voting this round</h5><%= @campaign.timesShownInVoting %></div>
-				</div>
-
-				<div class="row">
-					<div class="col-xs-4" id="campaign-info-box"><h5>Pledged</h5 ><%= @campaign.pledged %></div>
-					<div class="col-xs-4" id="campaign-info-box"><h5>Goal</h5><%= @campaign.goal %></div>
-					<div class="col-xs-4" id="campaign-info-box"><h5>Backers</h5><%= @campaign.backers %></div>
-				</div>
-
 				<div class="row">
 					<h5>
 						Added to Podium by <%= link_to User.find(@campaign.user_id).name, user_path(User.find(@campaign.user_id))%>
@@ -38,8 +38,11 @@
 			<div id="social_media">
 					<%= social_share_button_tag(@campaign.title, :popup => "true", :image => @campaign.image, desc: @campaign.description) %>
 			</div>
-			<%= render inline: @campaign.content %>
-			<p id="campaign-description" ><%= @campaign.description %></p>
+			<div class="container">
+				<%= if @campaign.content != nil 
+					render inline: @campaign.content 
+				end %>
+				<p id="campaign-description" ><%= @campaign.description %></p>
+			</div>
 		</div>
 	</div>
-</div>
