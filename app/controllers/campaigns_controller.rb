@@ -158,7 +158,7 @@ class CampaignsController < ApplicationController
 				@campaign.description = description[0, 255]
 
 				@campaign.content = j['objects'][0]['html']
-				@campaign.backers = j['objects'][0]['backers'].to_i
+				@campaign.backers = j['objects'][0]['backers'].delete(',').to_i
 				@campaign.pledged = j['objects'][0]['pledged'].delete(',').delete('$').to_i # only dollahs?
 				@campaign.goal = j['objects'][0]['goal'].delete(',').delete('$').to_i
 				@campaign.author = j['objects'][0]['author'] # needs proper parsing for kickstarter
