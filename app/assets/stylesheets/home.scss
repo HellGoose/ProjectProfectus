@@ -103,10 +103,18 @@
 	cursor: pointer;
 }
 
-#voting {
-	width: 73.68421%;
-	margin:0 auto;
+#vote-campaigns {
+	margin: auto; 
+	width: 63%; 
+	margin-bottom: 150px;
+	// border-bottom-style: solid; 
+	// border-bottom-width: 3px;
+	// border-bottom-color: #385559;
 }
+// #voting {
+// 	width: 73.68421%;
+// 	margin:0 auto;
+// }
 
 .vote-star {
 	margin: 5px;

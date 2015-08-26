@@ -1,27 +1,63 @@
-<div style="overflow: hidden;"><div class="text-center" id="background-blur" style="background-image:url(<%=@campaign.image%>);"></div></div>
+<div style="overflow: hidden;"><div class="text-center" id="background-blur" style="background-image:url(<%=@campaign.image%>);"></div><div id="bottom-block"></div></div>
 <div class="container" id="campaign-content"><!-- main-campaign"> -->
 	<div class="row">
 		<%= image_tag @campaign.image, class: "col-xs-5 main-campaign-image logo img-responsive" %>
-		<div class="row col-xs-7">
-			<div class="col-xs-4" id="campaign-info-box" title="The amassed score in all rounds"><h5>Global Score</h5><%= @campaign.globalScore %></div>
-			<div class="col-xs-4" id="campaign-info-box" title="The amassed score in the current round"><h5>Round Score</h5><%= @campaign.roundScore %></div>
-			<div class="col-xs-4" id="campaign-info-box" title="Times seen by a user in voting in the current round"><h5>Times Shown</h5><%= @campaign.timesShownInVoting %></div>
-		</div>
+		<div id="info-box-group">
+			<div class="row col-xs-7">
+				<div class="col-xs-2" id="campaign-info-box" title="The amassed score in all rounds">
+					<h4><small>Global Score</small></h4><b><%= @campaign.globalScore %></b></div>
 
+				<div class="col-xs-2" id="campaign-info-box" title="The amassed score in the current round">
+					<h4><small>Round Score</small></h4><b><%= @campaign.roundScore %></b></div>
+
+				<div class="col-xs-2" id="campaign-info-box" title="Times seen by a user in voting in the current round">
+					<h4><small>Times Shown</small></h4><b><%= @campaign.timesShownInVoting %></b></div>
+
+				<div class="col-xs-2" id="campaign-info-box">
+					<h4><small>Pledged</small></h4><b><%= @campaign.pledged %></b></div>
+
+				<div class="col-xs-2" id="campaign-info-box">
+					<h4><small>Goal</small></h4><b><%= @campaign.goal %></b></div>
+
+				<div class="col-xs-2" id="campaign-info-box">
+					<h4><small>Backers</small></h4><b><%= @campaign.backers %></b></div>
+			</div>
+		</div>
 		<div class="row col-xs-7">
-			<div class="col-xs-4" id="campaign-info-box"><h5>Pledged</h5 ><%= @campaign.pledged %></div>
-			<div class="col-xs-4" id="campaign-info-box"><h5>Goal</h5><%= @campaign.goal %></div>
-			<div class="col-xs-4" id="campaign-info-box"><h5>Backers</h5><%= @campaign.backers %></div>
+			<div class="col-xs-3" id="goto-site-button">
+				<p><%= link_to "Go to Campaign Site", @campaign.link, class: "btn btn-primary", id: "campaign-link", target: "_blank" %></p>
+				<div id="social_media">
+					<%= social_share_button_tag(@campaign.title, :popup => "true", :image => @campaign.image, desc: @campaign.description) %>
+				</div>
+			</div>
+			<div class="col-xs-2" id="nominate-button">
+				<%= button_to "Nominate", 
+					{controller: "campaigns",
+					action: "create",
+					campaign: 
+						{title: @campaign.title, 
+						description: @campaign.description, 
+						image: @campaign.image, 
+						link: @campaign.link, 
+						category_id: @campaign.category_id}
+					},
+				class: "btn btn-primary", 
+				id: "nominate", 
+				disabled: @campaign.nominated
+				%>
+			</div>
+			<div class="col-xs-7" id="edit">
+				<div class="edit">
+					<% if @campaign.user_id == session[:user_id] || isAdmin %>
+						<%= link_to "Edit |", edit_campaign_path(@campaign)%> 
+						<%= link_to "Delete", @campaign, method: :delete, data: {confirm: "Are you sure?"} %>
+					<% end %>
+				</div>
+			</div>
 		</div>
 	</div>
-		<div class="edit">
-			<% if @campaign.user_id == session[:user_id] || isAdmin %>
-				<%= link_to "Edit |", edit_campaign_path(@campaign)%> 
-				<%= link_to "Delete", @campaign, method: :delete, data: {confirm: "Are you sure?"} %>
-			<% end %>
-		</div>
 		<div class="container">
-			<h2 id="campaign-title"><%= @campaign.title %></h2>
+			<h2 id="campaign-title-main"><%= @campaign.title %></h2>
 			<% if @campaign.author != nil %><h5>By <b><%= @campaign.author.split(" ")[0..1].join(" ") %></b></h5> <!-- Fix plz -->
 			<% end %>
 			<div class="campaign-info">
@@ -33,26 +69,8 @@
 					</h5>
 				</div>
 			</div>
-			<h5>end_time <%= @campaign.end_time %></h5>
-			<p><%= link_to "Go to Campaign Site", @campaign.link, class: "btn btn-primary", id: "campaign-link", target: "_blank" %></p>
-			<%= button_to "Nominate", 
-					{controller: "campaigns",
-					action: "create",
-					campaign: 
-						{title: @campaign.title, 
-						description: @campaign.description, 
-						image: @campaign.image, 
-						link: @campaign.link, 
-						category_id: @campaign.category_id}
-					}, 
-				class: "btn btn-primary", 
-				id: "nominate", 
-				disabled: @campaign.nominated
-			%>
-			<div id="social_media">
-					<%= social_share_button_tag(@campaign.title, :popup => "true", :image => @campaign.image, desc: @campaign.description) %>
-			</div>
-			<div class="container">
+			<!-- <h5>end_time <%= @campaign.end_time %></h5> -->
+			<div class="container" id="external-content">
 				<%= if @campaign.content != nil 
 					render inline: @campaign.content 
 				end %>
