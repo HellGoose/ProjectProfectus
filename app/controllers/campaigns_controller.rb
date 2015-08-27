@@ -1,5 +1,6 @@
 class CampaignsController < ApplicationController
 	before_action :set_campaign, only: [:show, :edit, :update, :destroy]
+	skip_before_action :verify_authenticity_token
 
 	# Public: Prepares variables for campaign#index.
 	# Route: GET root/campaigns/
@@ -204,10 +205,14 @@ class CampaignsController < ApplicationController
 		respond_to do |format|
 			if !current_user
 				format.json { render json: { 'User' => 'not logged in' } }
+			elsif campaign.nominated
+				format.json { render json: { 'Campaign' => 'nominated: ' + campaign.nominated.to_s } }
+			elsif current_user.additionsThisRound >= Round.first.maxAdditionsPerUser
+				format.json { render json: { 'User' => 'too many campaigns nominated' } }
 			elsif !campaign
 				format.json { render json: { 'Campaign' => 'was not found' } }
 			else
-				format.json { render json: { 'Campaign' => 'nominated: ' + campaign.nominated.to_s } } #campaign.nominated } }
+				format.json { render json: { 'Campaign' => 'nominated: ' + campaign.nominated.to_s } }
 			end
 		end
 	end

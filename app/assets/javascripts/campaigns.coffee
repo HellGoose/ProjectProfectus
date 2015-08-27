@@ -163,6 +163,8 @@ $(document).ready ->
                       break
                 when 'User'
                   switch val
+                    when 'too many campaigns nominated'
+                      $('#submitButton').attr('disabled', false)
                     when 'not logged in'
                     else
                       break
