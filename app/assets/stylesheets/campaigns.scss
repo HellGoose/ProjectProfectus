@@ -14,7 +14,7 @@
 }
 
 #social_media {
-	margin: 5px;
+	// margin: 5px;
 }
 
 #categories {
@@ -79,7 +79,13 @@
 }
 
 #campaign-title {
-	padding-top: 195px;
+	padding-top: 190px;//20px;
+	margin-bottom: 10px;
+}
+
+#campaign-title-main {
+	padding-top: 20px;
+	margin-bottom: 10px;
 }
 
 #vote-img:focus {
@@ -156,8 +162,9 @@
 	background-color: white;
 }*/
 
+$gray: #F7F7F7;
 #winner_container .campaign-box {
-	background-color: #F7F7F7;
+	background-color: $gray;
 }
 
 .campaign-box > h4 {
@@ -170,8 +177,6 @@
 .campaign-container .text-center h3 {
 	margin-left: 0px;
 }
-
-
 
 .winner-campaign {
 	padding: 10px;
@@ -200,7 +205,7 @@
 }
 
 #preview {
-	border-radius: 0px;
+	border-radius: 2px;
 	padding-left: 0px;
 }
 
@@ -213,23 +218,131 @@
 }
 
 #campaign_link {
-	border-radius: 0px;
+	border-radius: 2px;
 }
 
 // Campaign Site
-.main_campaign {
-	margin: 10px 0px 10px 0px;
-	background-color: #fcfcfc;
-	border: 1px solid #ddd;
-	border-radius: 0px;
-	width: 100%;
-	padding: 10px;
+// #background-blur {
+// 	position: fixed;
+//   left: 0;
+//   right: 0;
+//   z-index: -1;
+//   display: block;
+//   -webkit-filter: blur(5px);
+//   -moz-filter: blur(5px);
+//   -o-filter: blur(5px);
+//   -ms-filter: blur(5px);
+//   filter: blur(5px);
+// }
+
+#background-blur {
+	position: absolute;
+  z-index: -1;
+  width: 110%;//100vw;
+  max-width: 99.6vw;
+  height: 350px;
+  
+  overflow: hidden;
+  -webkit-filter: blur(5px);
+  -moz-filter: blur(5px);
+  -o-filter: blur(5px);
+  -ms-filter: blur(5px);
+  filter: blur(5px);
+  margin: -5px -10px -5px -10px;
+  margin-top: -80px;
+  // transform: scale(1.1);
 }
+
+#background-blur::after {
+	border-bottom-style: solid; 
+	border-bottom-width: 3px;
+	border-bottom-color: black;
+}
+
+#bottom-block {
+	// height: 350px;
+	position: absolute;
+	border-top-style: solid; 
+	border-top-width: 3px;
+	border-top-color: #385559;
+	margin-top: 267px;
+	height: 212px;
+	background-color: $gray;
+	width: 100%;
+	z-index: -1;
+}
+
+#campaign-content {
+  z-index: 0;
+}
+
+.main-campaign {
+	margin: 40px 0px 10px 0px;
+	background-color: #FFFFFF;
+	border: 1px solid rgba(255,255,255,0.5);//#ddd;
+	border-radius: 2px;
+	// max-width: 900px;
+	padding: 0px;
+	-moz-box-shadow:    0px 0px 1px 1px #FFFFFF;
+  -webkit-box-shadow: 0px 0px 1px 1px #FFFFFF;
+  box-shadow:         0px 0px 1px 1px #FFFFFF;
+}
+
+// .container {
+//   max-width: 970px;
+// }
 
 #campaign > div > div.image_container > img {
 	margin-right: 10px;
+	border-radius: 2px;
+
 }
 
+#goto-site-button {
+	padding-left: 0px;
+}
+
+#nominate-button {
+	margin-top: 20px;
+}
+
+#edit {
+	margin-top: 20px;
+	padding-right: 0px;
+}
+
+.campaign-info > .row {
+	margin: 0px;
+}
+
+#campaign-info-box {
+	text-align: center;
+	// border: 1px solid #fcfcfc;
+	background-color: rgba(247,247,247,0.7);
+	// opacity: 0.5;
+	// margin: 5px;
+	padding: 5px;
+}
+
+#info-box-group {
+	min-height: 159px;
+	padding-top: 213px;
+}
+
+.main-campaign-image {
+	padding: 0px;
+	-moz-box-shadow:    0px 0px 1px 1px #385559;
+  -webkit-box-shadow: 0px 0px 1px 1px #385559;
+  box-shadow:         0px 0px 1px 1px #385559;
+}
+
+#external-content {
+	max-width: 800px;
+	// border-style: solid;
+	// border-radius: 2px;
+	// border-bottom-width: 3px;
+	// border-bottom-color: #385559;
+}
 
 /*.main_campaign {
 	margin: 10px 0px 10px 0px;

@@ -20,7 +20,7 @@
   </ul> -->
   </nav>
 </div>
-<div class="col-xs-12">
+<div class="container" id="vote-campaigns">
 	<%= render partial: 'campaigns/vote' %>
 </div>
 <% id = 0 %>
@@ -28,6 +28,6 @@
 	<div class="campaign-display" id=<%= id %>>
 		<% @campaign = c %>
 		<%= render partial: "campaigns/campaign" %>
-	</div>
+  </div>
 	<% id += 1 %>
 <% end %>

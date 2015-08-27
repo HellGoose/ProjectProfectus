@@ -38,6 +38,11 @@ html, body{
   border-radius: 2px;
 }
 
+.row {
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
 #menu {
 	float: right;
 }
@@ -48,6 +53,10 @@ html, body{
 
 #menubar {
 	height: 35px;
+}
+
+#content {
+  padding: 0px;
 }
 
 #footer {

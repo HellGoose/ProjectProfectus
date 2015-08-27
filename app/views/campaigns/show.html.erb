@@ -3,26 +3,25 @@
 
 <div class="text-center" id="notice"><%= sanitize notice %></div>
 
-<%= link_to "Back", campaigns_path %>
-
 <div id="data" data-page="1" data-interval=<%= @postsInterval %> data-size=<%= @posts.size() %> data-campaign=<%= @campaign.id %>></div>
 
 <div id="campaign">
 	<%= render partial: "campaign" %>
 </div>
-
-<% if current_user %>
-<div id="post">
-	<%= render partial: "posts/postForm" %>
-</div>
-<% end %>
-
-<div class="posts">
-	<%= render partial: "posts/posts", locals: { page: 1, postsPerPage: @postsInterval } %>
-</div>
-
-<% if @posts.size > @postsInterval %>
-	<div class="text-center">
-		<a class="btn btn-primary" id="more_posts">Show More</a>
+<div class="container">
+	<% if current_user %>
+	<div id="post">
+		<%= render partial: "posts/postForm" %>
 	</div>
-<% end %>
+	<% end %>
+
+	<div class="posts">
+		<%= render partial: "posts/posts", locals: { page: 1, postsPerPage: @postsInterval } %>
+	</div>
+
+	<% if @posts.size > @postsInterval %>
+		<div class="text-center">
+			<a class="btn btn-primary" id="more_posts">Show More</a>
+		</div>
+	<% end %>
+</div>

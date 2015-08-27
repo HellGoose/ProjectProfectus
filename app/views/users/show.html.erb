@@ -70,41 +70,45 @@
 <% end %>
 
 <div class="col-sm-12 user-nominations">
-	<% if @userNominations.count != 0 %>
+	<div class="container">
+		<% if @userNominations.count != 0 %>
 		<h3 id="user-nominations-header">My Nominations</h4>
 		<hr id="user-nominations-rule">
-	<% end %>
-	<div class="user-nominations2">
-		<% @userNominations.each do |c| %>
-			<div class="col-sm-3 campaign-container">
-				<%= link_to "", "/campaigns/" + c.id.to_s, class: "campaign_link" %>
-				<% @campaign = c %>
-				<%= render partial: 'campaigns/campaignSmall' %>
-			</div>
 		<% end %>
+		<div class="user-nominations2">
+			<% @userNominations.each do |c| %>
+				<div class="col-sm-3 campaign-container">
+					<%= link_to "", "/campaigns/" + c.id.to_s, class: "campaign_link" %>
+					<% @campaign = c %>
+					<%= render partial: 'campaigns/campaignSmall' %>
+				</div>
+			<% end %>
+		</div>
 	</div>
 </div>
 
 <div class="col-sm-12 user-campaigns" id="user-campaigns-container">
-	<% if @userCampaigns.count != 0 %>
+	<div class="container">
+		<% if @userCampaigns.count != 0 %>
 		<h3 id="user-campaigns-header">My Campaigns</h4>
 		<hr id="user-campaigns-rule">
-	<% end %>
-	<% i = 0 %>
-	<div class="user-campaigns2">
-		<% @userCampaigns.each do |c| %>
-			<% break if i >= @campaignsInterval %>
-			<div class="col-sm-3 campaign-container">
-				<%= link_to "", "/campaigns/" + c.id.to_s, class: "campaign_link" %>
-				<% @campaign = c %>
-				<%= render partial: 'campaigns/campaignSmall' %>
-			</div>
-			<% i += 1 %>
 		<% end %>
-	</div>
-	<% if i >= 8 %>
+		<% i = 0 %>
+		<div class="user-campaigns2">
+			<% @userCampaigns.each do |c| %>
+				<% break if i >= @campaignsInterval %>
+				<div class="col-sm-3 campaign-container">
+					<%= link_to "", "/campaigns/" + c.id.to_s, class: "campaign_link" %>
+					<% @campaign = c %>
+					<%= render partial: 'campaigns/campaignSmall' %>
+				</div>
+				<% i += 1 %>
+			<% end %>
+		</div>
+		<% if i >= 8 %>
 		<div class="text-center">
 			<a class="btn btn-primary" id="more_campaigns">Show More</a>
 		</div>
 	<% end %>
+	</div>
 </div>

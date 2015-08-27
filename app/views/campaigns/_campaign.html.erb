@@ -1,27 +1,80 @@
-	<div class="col-xs-12 main_campaign">
-		<div class="image_container">
-			<%= image_tag @campaign.image, class: "logo img-responsive" %>
-		</div>
+<div style="overflow: hidden;"><div class="text-center" id="background-blur" style="background-image:url(<%=@campaign.image%>);"></div><div id="bottom-block"></div></div>
+<div class="container" id="campaign-content"><!-- main-campaign"> -->
+	<div class="row">
+		<%= image_tag @campaign.image, class: "col-xs-5 main-campaign-image logo img-responsive" %>
+		<div id="info-box-group">
+			<div class="row col-xs-7">
+				<div class="col-xs-2" id="campaign-info-box" title="The amassed score in all rounds">
+					<h4><small>Global Score</small></h4><b><%= @campaign.globalScore %></b></div>
 
-		<div class="text_container">
-			<h3 id="campaign-title"><%= @campaign.title %></h4>
-			<div class="edit">
-				<% if @campaign.user_id == session[:user_id] || isAdmin %>
-					<%= link_to "Edit |", edit_campaign_path(@campaign)%> 
-					<%= link_to "Delete", @campaign, method: :delete, data: {confirm: "Are you sure?"} %>
-				<% end %>
+				<div class="col-xs-2" id="campaign-info-box" title="The amassed score in the current round">
+					<h4><small>Round Score</small></h4><b><%= @campaign.roundScore %></b></div>
+
+				<div class="col-xs-2" id="campaign-info-box" title="Times seen by a user in voting in the current round">
+					<h4><small>Times Shown</small></h4><b><%= @campaign.timesShownInVoting %></b></div>
+
+				<div class="col-xs-2" id="campaign-info-box">
+					<h4><small>Pledged</small></h4><b><%= @campaign.pledged %></b></div>
+
+				<div class="col-xs-2" id="campaign-info-box">
+					<h4><small>Goal</small></h4><b><%= @campaign.goal %></b></div>
+
+				<div class="col-xs-2" id="campaign-info-box">
+					<h4><small>Backers</small></h4><b><%= @campaign.backers %></b></div>
 			</div>
-			<p id="created_by"><%= link_to User.find(@campaign.user_id).name,
-								user_path(User.find(@campaign.user_id))%>
-								<%=  " - " + @campaign.created_at.to_s %>
-			</p>
-			<h5>Global Score: <%= @campaign.globalScore %></h5>
-			<h5>Round Score: <%= @campaign.roundScore %></h5>
-			<h5>Times seen in voting this round: <%= @campaign.timesShownInVoting %></h5>
-			<P id="campaign-description" ><%= @campaign.description %></p>
-			<p><%= link_to "Go to Campaign Site", @campaign.link, class: "btn btn-primary", id: "campaign-link", target: "_blank" %></p>
-			<div id="social_media">
-    			<%= social_share_button_tag(@campaign.title, :popup => "true", :image => @campaign.image, desc: @campaign.description) %>
-  			</div>
+		</div>
+		<div class="row col-xs-7">
+			<div class="col-xs-3" id="goto-site-button">
+				<p><%= link_to "Go to Campaign Site", @campaign.link, class: "btn btn-primary", id: "campaign-link", target: "_blank" %></p>
+				<div id="social_media">
+					<%= social_share_button_tag(@campaign.title, :popup => "true", :image => @campaign.image, desc: @campaign.description) %>
+				</div>
+			</div>
+			<div class="col-xs-2" id="nominate-button">
+				<%= button_to "Nominate", 
+					{controller: "campaigns",
+					action: "create",
+					campaign: 
+						{title: @campaign.title, 
+						description: @campaign.description, 
+						image: @campaign.image, 
+						link: @campaign.link, 
+						category_id: @campaign.category_id}
+					},
+				class: "btn btn-primary", 
+				id: "nominate", 
+				disabled: @campaign.nominated
+				%>
+			</div>
+			<div class="col-xs-7" id="edit">
+				<div class="edit">
+					<% if @campaign.user_id == session[:user_id] || isAdmin %>
+						<%= link_to "Edit |", edit_campaign_path(@campaign)%> 
+						<%= link_to "Delete", @campaign, method: :delete, data: {confirm: "Are you sure?"} %>
+					<% end %>
+				</div>
+			</div>
+		</div>
+	</div>
+		<div class="container">
+			<h2 id="campaign-title-main"><%= @campaign.title %></h2>
+			<% if @campaign.author != nil %><h5>By <b><%= @campaign.author.split(" ")[0..1].join(" ") %></b></h5> <!-- Fix plz -->
+			<% end %>
+			<div class="campaign-info">
+				<div class="row">
+					<h5>
+						Added to Podium by <%= link_to User.find(@campaign.user_id).name, user_path(User.find(@campaign.user_id))%>
+						from <%= @campaign.link.split("https://www.").join.split(".com").first.capitalize %> 
+						on <%= @campaign.created_at.strftime("%B %d, %Y") %>
+					</h5>
+				</div>
+			</div>
+			<!-- <h5>end_time <%= @campaign.end_time %></h5> -->
+			<div class="container" id="external-content">
+				<%= if @campaign.content != nil 
+					render inline: @campaign.content 
+				end %>
+				<p id="campaign-description" ><%= @campaign.description %></p>
+			</div>
 		</div>
 	</div>
