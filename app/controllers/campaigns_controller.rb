@@ -335,7 +335,17 @@ class CampaignsController < ApplicationController
 	end
 
 	def refresh_step
-		if current_user.isOnStep < 3
+		if Campaign.where(nominated: true).count <= 30
+			if campaign.where(nominated: true).count < 15
+				respond_to do |format|
+					format.js { render partial: "home/not_enough_campaigns"}
+				end
+			else
+				respond_to do |format|
+					format.js { render partial: "campaignVoting"}
+				end
+			end
+		elsif current_user.isOnStep < 3
 			@campaignVoting = []
 			campaignVotes = genCampaignsForVoting(current_user.isOnStep)
 			for i in 0..2
