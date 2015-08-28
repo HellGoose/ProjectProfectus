@@ -184,7 +184,6 @@ class CampaignsController < ApplicationController
 						format.html { redirect_to current_user, notice: msg }
 						format.json { render :show, location: current_user }
 					else
-						puts "HERE!!!!!!!!!!!!!!!!!!!!!!!"
 						format.html { render :new }
 						format.json { render json: @campaign.errors, status: :unprocessable_entity }
 					end
@@ -205,12 +204,12 @@ class CampaignsController < ApplicationController
 		respond_to do |format|
 			if !current_user
 				format.json { render json: { 'User' => 'not logged in' } }
+			elsif !campaign
+				format.json { render json: { 'Campaign' => 'was not found' } }
 			elsif campaign.nominated
 				format.json { render json: { 'Campaign' => 'nominated: ' + campaign.nominated.to_s } }
 			elsif current_user.additionsThisRound >= Round.first.maxAdditionsPerUser
 				format.json { render json: { 'User' => 'too many campaigns nominated' } }
-			elsif !campaign
-				format.json { render json: { 'Campaign' => 'was not found' } }
 			else
 				format.json { render json: { 'Campaign' => 'nominated: ' + campaign.nominated.to_s } }
 			end
