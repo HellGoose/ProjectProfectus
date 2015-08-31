@@ -205,12 +205,14 @@ class CampaignsController < ApplicationController
 		respond_to do |format|
 			if !current_user
 				format.json { render json: { 'User' => 'not logged in' } }
+			elsif !campaign && current_user.additionsThisRound >= Round.first.maxAdditionsPerUser
+				format.json { render json: { 'User' => 'too many campaigns nominated' } }
+			elsif !campaign && current_user.additionsThisRound < Round.first.maxAdditionsPerUser
+				format.json { render json: { 'Campaign' => 'was not found' } }
 			elsif campaign.nominated
 				format.json { render json: { 'Campaign' => 'nominated: ' + campaign.nominated.to_s } }
 			elsif current_user.additionsThisRound >= Round.first.maxAdditionsPerUser
 				format.json { render json: { 'User' => 'too many campaigns nominated' } }
-			elsif !campaign
-				format.json { render json: { 'Campaign' => 'was not found' } }
 			else
 				format.json { render json: { 'Campaign' => 'nominated: ' + campaign.nominated.to_s } }
 			end
