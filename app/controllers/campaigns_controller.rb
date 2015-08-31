@@ -204,7 +204,9 @@ class CampaignsController < ApplicationController
 		respond_to do |format|
 			if !current_user
 				format.json { render json: { 'User' => 'not logged in' } }
-			elsif !campaign
+			elsif !campaign && current_user.additionsThisRound >= Round.first.maxAdditionsPerUser
+				format.json { render json: { 'User' => 'too many campaigns nominated' } }
+			elsif !campaign && current_user.additionsThisRound < Round.first.maxAdditionsPerUser
 				format.json { render json: { 'Campaign' => 'was not found' } }
 			elsif campaign.nominated
 				format.json { render json: { 'Campaign' => 'nominated: ' + campaign.nominated.to_s } }
