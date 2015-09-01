@@ -10,7 +10,7 @@ class CampaignsController < ApplicationController
 	#
 	# Renders campaign#index.
 	def index
-		@campaigns = Campaign.all.order("(globalScore + roundScore) DESC")
+		@campaigns = Campaign.all.order("created_at DESC")
 		@campaignsInterval = 8
 	end
 
@@ -325,8 +325,8 @@ class CampaignsController < ApplicationController
 		sortBy = " "
 		searchText = " "
 		category = params[:category].to_i if params[:category] != nil
-		sortBy = params[:sortBy].tr("_", " ") if params[:sortBy] != nil
-		searchText = params[:searchText].tr("_", " ") if params[:searchText] != nil
+		sortBy = params[:sortBy].tr("-", " ") if params[:sortBy] != nil
+		searchText = params[:searchText].tr("-", " ") if params[:searchText] != nil
 
 		@campaigns = search(searchText, category).order(sortBy)
 		
