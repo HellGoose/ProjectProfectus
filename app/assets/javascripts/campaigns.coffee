@@ -15,8 +15,8 @@ changePage = (dir) ->
   size = $('#data').data('size')
   interval = $('#data').data('interval')
   category = $('#data').data('category')
-  sortBy = $('#data').data('sort-by').replace(/ /g, '_')
-  searchText = $('#data').data('search-text').replace(/ /g, '_')
+  sortBy = $('#data').data('sort-by').replace(/ /g, '-')
+  searchText = $('#data').data('search-text').replace(/ /g, '-')
 
   if (dir == '>')
     if page < (Math.ceil(size/interval))
