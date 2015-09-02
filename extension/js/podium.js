@@ -8,15 +8,28 @@ $.embedly.defaults.key = '0eef325249694df490605b1fd29147f5';
 $(document).ready(function() {
 	$('#nominate').attr('disabled', true);
 
+	checkUserStatus();
 	checkStatus();
-	setInterval(function() {
-		checkStatus();
-	}, 10000);
 
 	$('#nominate').on('click', function() {
 		nominate();
 	});
 });
+
+function checkUserStatus() {
+	$.get(scope + 'users/current_user', function(data) {
+		$.each(data, function(key, val) {
+			switch (key) {
+				case 'Name':
+					$('#name').html(val);
+					break;
+				case 'Image':
+					$('#image').attr('src', val);
+					break;
+			}
+		});
+	});
+}
 
 function checkStatus() {
 	chrome.tabs.getSelected(null,function(tab) {
@@ -117,6 +130,12 @@ function nominateCampaign(url, campaign) {
 
 	var request = new XMLHttpRequest();
 	request.open('POST', scope + 'campaigns', /* async = */ true);
+
+	request.onreadystatechange = function() {
+		if (request.readyState == 4) {
+			checkStatus();
+		}
+	}
 
 	var formData = new FormData();
 	formData.append('campaign[link]', url);
