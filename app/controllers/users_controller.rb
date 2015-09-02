@@ -108,6 +108,17 @@ class UsersController < ApplicationController
 		end
 	end
 
+	# Public: Get information about current_user
+	def current_user_info
+		respond_to do |format|
+			if !current_user
+				format.json { render json: { 'User' => 'not logged in' } }
+			else
+				format.json { render json: { 'Name' => current_user.name, 'Image' => getFacebookPicURL(current_user) } }
+			end
+		end
+	end
+
 	# Public: Redirects signup with referer to facebook login.
 	# Route: GET /signup/:referer
 	# 	:referer - The id of the user that refererd this user.
