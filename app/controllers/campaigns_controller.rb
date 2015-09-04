@@ -120,6 +120,7 @@ class CampaignsController < ApplicationController
 				end
 
 				@campaign.nominated = true
+				@campaign.roundNominatedFor = current_round+1
 				@campaign.nominator_id = current_user.id
 
 				if @campaign.save
@@ -153,6 +154,7 @@ class CampaignsController < ApplicationController
 				@campaign.user_id = session[:user_id]
 				@campaign.nominator_id = session[:user_id]
 				@campaign.nominated = true
+				@campaign.roundNominatedFor = current_round+1
 				@campaign.title = j['objects'][0]['title']
 
 				description = embedlyData.description.encode('utf-8', 'binary', invalid: :replace, undef: :replace, replace: '')
@@ -252,7 +254,7 @@ class CampaignsController < ApplicationController
 	# renders an error if the user is not logged in or there are not enough 
 	# campaigns in the database.
 	def vote
-		if Campaign.where(nominated: true).count < 15
+		if Campaign.where(roundNominatedFor: current_round).count < 15
 			respond_to do |format|
 				format.js { render partial: "home/not_enough_campaigns"}
 			end
@@ -336,8 +338,8 @@ class CampaignsController < ApplicationController
 	end
 
 	def refresh_step
-		if Campaign.where(nominated: true).count <= 30
-			if campaign.where(nominated: true).count < 15
+		if Campaign.where(roundNominatedFor: current_round).count <= 30
+			if campaign.where(roundNominatedFor: current_round).count < 15
 				respond_to do |format|
 					format.js { render partial: "home/not_enough_campaigns"}
 				end
@@ -485,7 +487,7 @@ class CampaignsController < ApplicationController
 	#
 	# Returns the campaigns corresponding to the current step.
 	def genCampaignsForVoting(step)
-		campaigns = Campaign.where(nominated: true).order("timesShownInVoting DESC")
+		campaigns = Campaign.where(roundNominatedFor: current_round).order("timesShownInVoting DESC")
 		genedCampaigns = []
 
 		case step
