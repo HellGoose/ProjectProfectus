@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150904144218) do
+ActiveRecord::Schema.define(version: 20150905152122) do
 
   create_table "badges", force: :cascade do |t|
     t.string   "name",        limit: 255
@@ -46,7 +46,6 @@ ActiveRecord::Schema.define(version: 20150904144218) do
     t.integer  "roundScore",         limit: 4
     t.integer  "globalScore",        limit: 4
     t.integer  "timesShownInVoting", limit: 4
-    t.boolean  "nominated",          limit: 1
     t.integer  "nominator_id",       limit: 4
     t.text     "content",            limit: 65535
     t.integer  "pledged",            limit: 4
