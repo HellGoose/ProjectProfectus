@@ -110,7 +110,7 @@ class CampaignsController < ApplicationController
 			if Campaign.exists?(title: embedlyData.title) 
 				@campaign = Campaign.find_by(title: embedlyData.title)
 
-				if @campaign.roundNominatedFor == current_round+1
+				if [current_round, current_round+1].include?(@campaign.roundNominatedFor)
 					respond_to do |format|
 						msg = "<span class=\"alert alert-warning\">This campaign has already been nominated.</span>"
 						format.html { redirect_to current_user, notice: msg }
@@ -208,7 +208,7 @@ class CampaignsController < ApplicationController
 				format.json { render json: { 'User' => 'too many campaigns nominated' } }
 			elsif !campaign && current_user.additionsThisRound < Round.first.maxAdditionsPerUser
 				format.json { render json: { 'Campaign' => 'was not found' } }
-			elsif campaign.roundNominatedFor == current_round+1
+			elsif [current_round, current_round+1].include?(campaign.roundNominatedFor)
 				format.json { render json: { 'Campaign' => 'nominated: true' } }
 			elsif current_user.additionsThisRound >= Round.first.maxAdditionsPerUser
 				format.json { render json: { 'User' => 'too many campaigns nominated' } }

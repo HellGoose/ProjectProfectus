@@ -38,28 +38,29 @@ end
 
 private
 def runNewRound (decayRate)
-	if Campaign.where(nominated: true).empty?
-		puts "Failed to start new round! Not enough nominated campaigns."
+	if Campaign.where(roundNominatedFor: Round.maximum(:currentRound)+1).empty?
+		puts "Failed to start new round! Not enough nominated campaigns for the next round."
 		return
 	end
 	round = Round.first
-	campaigns = Campaign.where(nominated: true).order('roundScore DESC')
+	campaigns = Campaign.where(roundNominatedFor: round.currentRound).order('roundScore DESC')
 	users = User.all.order('points DESC')
 
 	#Variables
 	usersOfTheRoundPoints = [25, 10, 5]
 	percentageOfRoundScore = 0.1
 
-	#Declare Winners
-	if campaigns.first.roundScore > 0
-		statDump = StatDump.new
-		statDump.roundNumber = round.currentRound
-		statDump.numberOfNominations = Campaign.count(nominated: true)
-		statDump.numberOfNominationsSeen = Campaign.where.not(timesShownInVoting: 0).count
-		statDump.numberOfVotes = CampaignVote.where.not(voteType: 0).count
-		statDump.numberOfFinalVotes = CampaignVote.where(voteType: 2).count
-		details = "<b>Round:</b> #{round.currentRound}</br><b>Date:</b> #{Time.now}"
+	
+	statDump = StatDump.new
+	statDump.roundNumber = round.currentRound
+	statDump.numberOfNominations = Campaign.count(roundNominatedFor: round.currentRound)
+	statDump.numberOfNominationsSeen = Campaign.where.not(timesShownInVoting: 0).count
+	statDump.numberOfVotes = CampaignVote.where.not(voteType: 0).count
+	statDump.numberOfFinalVotes = CampaignVote.where(voteType: 2).count
+	details = "<b>Round:</b> #{round.currentRound}</br><b>Date:</b> #{Time.now}"
 
+	#Declare Winners
+	if !campaigns && campaigns.first.roundScore > 0
 		winnerCampaigns = campaigns.first(3)
 		winnerUsers = []
 		winnerCampaigns.each do |wc|
@@ -114,9 +115,7 @@ def runNewRound (decayRate)
 					c.nominator.save
 				end
 			end
-			c.timesShownInVoting = 0
 			c.roundScore = 0
-			c.nominated = false
 			c.save
 		end
 		details += "</tbody></table>"
@@ -132,33 +131,32 @@ def runNewRound (decayRate)
 					cv.user.points += (usersOfTheRoundPoints[placing]/5).to_i
 					cv.user.save
 				end
-				cv.destroy
 			end
 		end
-
-		#Reset user voting
-		details += "</br><b>Users:</b></br><table class=\"table table-condensed table-responsive\">"
-		details += "<thead><tr><th>Name</th><th>Score</th><th>Nominations</th></tr></thead><tbody>"
-		users.each do |u|
-			details += "<tr><td>#{u.name}</td><td>#{u.points}</td><td>#{u.additionsThisRound}</td></tr>"
-			u.isOnStep = 0
-			u.hasLoggedInThisRound = false
-			u.additionsThisRound = 0
-			u.save
-		end
-		details += "</tbody></table>"
-
-		#Increment to next round
-		round.currentRound += 1
-		round.save
-		statDump.details = details
-		if statDump.save
-			puts "Stats dumped!"
-		end
-		puts "Done! New Round Started."
-	else
-		puts "Failed to start round! No scores found."
 	end
+
+	#Reset user voting
+	details += "</br><b>Users:</b></br><table class=\"table table-condensed table-responsive\">"
+	details += "<thead><tr><th>Name</th><th>Score</th><th>Nominations</th></tr></thead><tbody>"
+	users.each do |u|
+		details += "<tr><td>#{u.name}</td><td>#{u.points}</td><td>#{u.additionsThisRound}</td></tr>"
+		u.isOnStep = 0
+		u.hasLoggedInThisRound = false
+		u.additionsThisRound = 0
+		u.save
+	end
+	details += "</tbody></table>"
+
+	#Increment to next round
+	round.currentRound += 1
+	round.save
+	Campaign.update_all(timesShownInVoting: 0)
+	CampaignVote.destroy_all
+	statDump.details = details
+	if statDump.save
+		puts "Stats dumped!"
+	end
+	puts "Done! New Round Started."
 end
 
 def cleanupDatabase
