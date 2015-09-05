@@ -16,7 +16,7 @@ class UsersController < ApplicationController
 			@notifications = @user.pointsHistories.order('created_at DESC').first(10)
 		end
 		@userCampaigns = @user.campaigns.order('created_at DESC')
-		@userNominations = @user.nominations.where(nominated: true).order('created_at DESC')
+		@userNominations = @user.nominations.where(roundNominatedFor: current_round+1).order('created_at DESC')
 		@campaignsInterval = 8
 	end
 

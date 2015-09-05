@@ -43,7 +43,7 @@
 					},
 				class: "btn btn-primary", 
 				id: "nominate", 
-				disabled: @campaign.nominated
+				disabled: @campaign.roundNominatedFor == current_round+1
 				%>
 			</div>
 			<div class="col-xs-7" id="edit">
