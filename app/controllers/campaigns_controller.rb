@@ -11,7 +11,7 @@ class CampaignsController < ApplicationController
 	# Renders campaign#index.
 	def index
 		@campaigns = Campaign.all.order("created_at DESC")
-		@campaignsInterval = 8
+		@campaignsInterval = 16
 	end
 
 	# Public: Prepares variables for campaign#new.
