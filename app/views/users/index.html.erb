@@ -3,6 +3,12 @@
 <div id='data' data-page=<%= @page %> data-interval=<%= @interval %> data-size=<%= @users.size %>>
 </div>
 
+<%
+page=nil
+interval=nil
+users=nil
+%>
+
 <div class='container text-center'>
 	<h1>Leaderboard</h1>
 	<hr>
@@ -14,7 +20,7 @@
 	</div>
 	<div class='col-md-6'> -->
 	<div id='leaderboard'>
-		<%= render partial: 'leaderboard' %>
+		<%= render partial: 'users/leaderboard', locals: {page:0, interval:10, users:User.all.order('points DESC')}%>
 	</div>
 <!-- 	</div>
 	<div class='container col-md-3'>
