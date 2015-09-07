@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 	get '/auth/:provider/callback', to: 'sessions#create'
 	get '/auth/failure', to: redirect('/')
 	get '/signout', to: 'sessions#destroy', as: 'signout'
+	get '/users/current_user', to: 'users#current_user_info'
 
 	# Posts and comments
 	get '/posts/answer/:campaign_id/:post_id', to: 'posts#answer'
@@ -33,6 +34,8 @@ Rails.application.routes.draw do
 
 	# Round administrating
 	post '/admin/round/:type/:val', to: 'admin#round'
+	post '/admin/clear_all/', to: 'admin#clear_all'
+	post '/admin/nominate_all', to: 'admin#nominate_all'
 
 	#Leaderboard
 	get '/leaderboard/:page/:interval', to: 'users#page'

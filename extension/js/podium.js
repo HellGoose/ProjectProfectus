@@ -1,22 +1,35 @@
 var validURLs = ['kickstarter.com', 'indiegogo.com'];
 var urlregex = new RegExp('^(http|https)://([a-zA-Z0-9.-]+(:[a-zA-Z0-9.&amp;%$-]+)*@)*(([a-zA-Z0-9-]+.)*[a-zA-Z0-9-]+.(com|net|org|[a-zA-Z]{2}))');
 
-var scope = 'http://localhost:5000/';
+var scope = 'http://stianerkul.me/';
 
 $.embedly.defaults.key = '0eef325249694df490605b1fd29147f5';
 
 $(document).ready(function() {
 	$('#nominate').attr('disabled', true);
 
+	checkUserStatus();
 	checkStatus();
-	setInterval(function() {
-		checkStatus();
-	}, 10000);
 
 	$('#nominate').on('click', function() {
 		nominate();
 	});
 });
+
+function checkUserStatus() {
+	$.get(scope + 'users/current_user', function(data) {
+		$.each(data, function(key, val) {
+			switch (key) {
+				case 'Name':
+					$('#name').html(val);
+					break;
+				case 'Image':
+					$('#image').attr('src', val);
+					break;
+			}
+		});
+	});
+}
 
 function checkStatus() {
 	chrome.tabs.getSelected(null,function(tab) {
@@ -26,6 +39,7 @@ function checkStatus() {
 				campaignData.title = campaignData.title.replace('CLICK HERE to support ', '');
 				$.get(scope + 'campaigns/checkIfCanAdd/' + campaignData.title, function(data) {
 					$.each(data, function(key, val) {
+						console.log(key + ", " + val);
 						switch (key) {
 							case 'Campaign':
 								switch(val) {
@@ -116,6 +130,12 @@ function nominateCampaign(url, campaign) {
 
 	var request = new XMLHttpRequest();
 	request.open('POST', scope + 'campaigns', /* async = */ true);
+
+	request.onreadystatechange = function() {
+		if (request.readyState == 4) {
+			checkStatus();
+		}
+	}
 
 	var formData = new FormData();
 	formData.append('campaign[link]', url);

@@ -10,7 +10,7 @@ class CampaignsController < ApplicationController
 	#
 	# Renders campaign#index.
 	def index
-		@campaigns = Campaign.all.order("(globalScore + roundScore) DESC")
+		@campaigns = Campaign.all.order("created_at DESC")
 		@campaignsInterval = 8
 	end
 
@@ -184,7 +184,6 @@ class CampaignsController < ApplicationController
 						format.html { redirect_to current_user, notice: msg }
 						format.json { render :show, location: current_user }
 					else
-						puts "HERE!!!!!!!!!!!!!!!!!!!!!!!"
 						format.html { render :new }
 						format.json { render json: @campaign.errors, status: :unprocessable_entity }
 					end
@@ -205,12 +204,14 @@ class CampaignsController < ApplicationController
 		respond_to do |format|
 			if !current_user
 				format.json { render json: { 'User' => 'not logged in' } }
+			elsif !campaign && current_user.additionsThisRound >= Round.first.maxAdditionsPerUser
+				format.json { render json: { 'User' => 'too many campaigns nominated' } }
+			elsif !campaign && current_user.additionsThisRound < Round.first.maxAdditionsPerUser
+				format.json { render json: { 'Campaign' => 'was not found' } }
 			elsif campaign.nominated
 				format.json { render json: { 'Campaign' => 'nominated: ' + campaign.nominated.to_s } }
 			elsif current_user.additionsThisRound >= Round.first.maxAdditionsPerUser
 				format.json { render json: { 'User' => 'too many campaigns nominated' } }
-			elsif !campaign
-				format.json { render json: { 'Campaign' => 'was not found' } }
 			else
 				format.json { render json: { 'Campaign' => 'nominated: ' + campaign.nominated.to_s } }
 			end
@@ -324,8 +325,8 @@ class CampaignsController < ApplicationController
 		sortBy = " "
 		searchText = " "
 		category = params[:category].to_i if params[:category] != nil
-		sortBy = params[:sortBy].tr("_", " ") if params[:sortBy] != nil
-		searchText = params[:searchText].tr("_", " ") if params[:searchText] != nil
+		sortBy = params[:sortBy].tr("-", " ") if params[:sortBy] != nil
+		searchText = params[:searchText].tr("-", " ") if params[:searchText] != nil
 
 		@campaigns = search(searchText, category).order(sortBy)
 		
@@ -335,7 +336,17 @@ class CampaignsController < ApplicationController
 	end
 
 	def refresh_step
-		if current_user.isOnStep < 3
+		if Campaign.where(nominated: true).count <= 30
+			if campaign.where(nominated: true).count < 15
+				respond_to do |format|
+					format.js { render partial: "home/not_enough_campaigns"}
+				end
+			else
+				respond_to do |format|
+					format.js { render partial: "campaignVoting"}
+				end
+			end
+		elsif current_user.isOnStep < 3
 			@campaignVoting = []
 			campaignVotes = genCampaignsForVoting(current_user.isOnStep)
 			for i in 0..2
