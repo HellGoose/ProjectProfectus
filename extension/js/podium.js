@@ -1,7 +1,7 @@
 var validURLs = ['kickstarter.com', 'indiegogo.com'];
 var urlregex = new RegExp('^(http|https)://([a-zA-Z0-9.-]+(:[a-zA-Z0-9.&amp;%$-]+)*@)*(([a-zA-Z0-9-]+.)*[a-zA-Z0-9-]+.(com|net|org|[a-zA-Z]{2}))');
 
-var scope = 'http://stianerkul.me/';
+var scope = 'http://localhost:5000/';
 
 $.embedly.defaults.key = '0eef325249694df490605b1fd29147f5';
 
@@ -37,6 +37,7 @@ function checkStatus() {
 		if (urlregex.test(url) && new RegExp(validURLs.join("|")).test(url)) {
 			$.embedly.extract(url).progress(function(campaignData) {
 				campaignData.title = campaignData.title.replace('CLICK HERE to support ', '');
+				campaignData.title = encodeURIComponent(campaignData.title).replace(/\./g, '');
 				$.get(scope + 'campaigns/checkIfCanAdd/' + campaignData.title, function(data) {
 					$.each(data, function(key, val) {
 						console.log(key + ", " + val);
@@ -90,6 +91,7 @@ function nominate() {
 		if (urlregex.test(url) && new RegExp(validURLs.join("|")).test(url)) {
 			$.embedly.extract(url).progress(function(campaignData) {
 				campaignData.title = campaignData.title.replace('CLICK HERE to support ', '');
+				campaignData.title = encodeURIComponent(campaignData.title).replace(/\./g, '');
 				$.get(scope + 'campaigns/checkIfCanAdd/' + campaignData.title, function(data) {
 					$.each(data, function(key, val) {
 						switch (key) {

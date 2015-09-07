@@ -153,7 +153,7 @@ class CampaignsController < ApplicationController
 				@campaign.user_id = session[:user_id]
 				@campaign.nominator_id = session[:user_id]
 				@campaign.nominated = true
-				@campaign.title = j['objects'][0]['title']
+				@campaign.title = j['objects'][0]['title'].delete('.')
 
 				description = embedlyData.description.encode('utf-8', 'binary', invalid: :replace, undef: :replace, replace: '')
 				@campaign.description = description[0, 255]
@@ -200,7 +200,7 @@ class CampaignsController < ApplicationController
 
 	# Public: Checks if a campaign can be nominated
 	def check_if_can_add
-		campaign = Campaign.find_by(title: params[:title])
+		campaign = Campaign.find_by(title: decodeURIComponent(params[:title]))
 		respond_to do |format|
 			if !current_user
 				format.json { render json: { 'User' => 'not logged in' } }
