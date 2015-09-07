@@ -144,6 +144,7 @@ $(document).ready ->
         $.embedly.extract(campaign, key: '0eef325249694df490605b1fd29147f5').progress (data) ->
           if data.title?
             renderCampaignPreview(data)
+          data.title = encodeURIComponent(data.title).replace(/\./g, '')
           $.getJSON '/campaigns/checkIfCanAdd/' + data.title, (data) ->
             $.each data, (key, val) ->
               switch key
