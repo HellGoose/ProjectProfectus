@@ -58,14 +58,14 @@ class AdminController < ApplicationController
 	def clear_all_nominations
 		if isAdmin
 			User.update_all(additionsThisRound: 0)
-			Campaign.where(roundNominatedFor: current_round+1).update_all(roundNominatedfor: 0)
+			Campaign.update_all(nominated: false)
 			redirect_to "/admin/"
 		end
 	end
 
 	def nominate_all
 		if isAdmin
-			Campaign.where.not(roundNominatedFor: current_round).update_all(roundNominatedfor: current_round+1)
+			Campaign.update_all(nominated: true)
 			redirect_to "/admin/"
 		end
 	end
