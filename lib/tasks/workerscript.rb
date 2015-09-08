@@ -38,12 +38,12 @@ end
 
 private
 def runNewRound (decayRate)
-	if Campaign.where(roundNominatedFor: Round.maximum(:currentRound)+1).empty?
+	if Campaign.where(nominated: true).empty?
 		puts "Failed to start new round! Not enough nominated campaigns for the next round."
 		return
 	end
 	round = Round.first
-	campaigns = Campaign.where(roundNominatedFor: round.currentRound).order('roundScore DESC')
+	campaigns = Campaign.where(votable: true).order('roundScore DESC')
 	users = User.all.order('points DESC')
 
 	#Variables
@@ -53,14 +53,14 @@ def runNewRound (decayRate)
 	
 	statDump = StatDump.new
 	statDump.roundNumber = round.currentRound
-	statDump.numberOfNominations = Campaign.count(roundNominatedFor: round.currentRound)
+	statDump.numberOfNominations = Campaign.count(votable: true)
 	statDump.numberOfNominationsSeen = Campaign.where.not(timesShownInVoting: 0).count
 	statDump.numberOfVotes = CampaignVote.where.not(voteType: 0).count
 	statDump.numberOfFinalVotes = CampaignVote.where(voteType: 2).count
 	details = "<b>Round:</b> #{round.currentRound}</br><b>Date:</b> #{Time.now}"
 
 	#Declare Winners
-	if !campaigns && campaigns.first.roundScore > 0
+	if campaigns && campaigns.first.roundScore > 0
 		winnerCampaigns = campaigns.first(3)
 		winnerUsers = []
 		winnerCampaigns.each do |wc|
@@ -150,7 +150,8 @@ def runNewRound (decayRate)
 	#Increment to next round
 	round.currentRound += 1
 	round.save
-	Campaign.update_all(timesShownInVoting: 0)
+	Campaign.update_all(timesShownInVoting: 0, votable: false)
+	Campaign.where(nominated: true).update_all(nominated: false, votable: true)
 	CampaignVote.destroy_all
 	statDump.details = details
 	if statDump.save
