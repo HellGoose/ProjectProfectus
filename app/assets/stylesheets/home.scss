@@ -46,15 +46,6 @@
     background-color: #F7F7F7;
 }*/
 
-#winner_container {
-	padding-left: 150px;
-	padding-right: 150px;
-}
-
-#winner_container > h3 {
-	background: #F7F7F7;
-}
-
 #top8_container {
 	background-color: #F7F7F7;
 }
@@ -130,6 +121,19 @@
 	margin-top: 2px;
 	margin-bottom: 2px;
 }*/
+
+#leaderboards-title {
+	margin-top: 75px;
+}
+
+#winner_container {
+	padding-left: 150px;
+	padding-right: 150px;
+}
+
+#winner_container > h3 {
+	background: #F7F7F7;
+}
 
 .campaigns-news-rule {
 	border-color: #385559;
