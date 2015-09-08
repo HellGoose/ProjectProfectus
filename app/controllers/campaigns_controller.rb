@@ -104,6 +104,7 @@ class CampaignsController < ApplicationController
 		embedly = Embedly::API.new key: "0eef325249694df490605b1fd29147f5"
 		embedlyData = (embedly.extract url: @campaign.link).first
 		embedlyData.title.slice!("CLICK HERE to support ")
+		embedlyData.title = embedlyData.title.delete('.')
 
 		case embedlyData.provider_url
 		when *whiteList
@@ -122,7 +123,6 @@ class CampaignsController < ApplicationController
 				@campaign.nominated = true
 				@campaign.votable = false
 				@campaign.nominator_id = current_user.id
-				puts "HERE"
 
 				if @campaign.save
 					notification = PointsHistory.new(description: 'You successfully made a nomination!', points_received: 5)
