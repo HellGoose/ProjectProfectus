@@ -122,6 +122,7 @@ class CampaignsController < ApplicationController
 				@campaign.nominated = true
 				@campaign.votable = false
 				@campaign.nominator_id = current_user.id
+				puts "HERE"
 
 				if @campaign.save
 					notification = PointsHistory.new(description: 'You successfully made a nomination!', points_received: 5)

@@ -60,7 +60,7 @@ def runNewRound (decayRate)
 	details = "<b>Round:</b> #{round.currentRound}</br><b>Date:</b> #{Time.now}"
 
 	#Declare Winners
-	if campaigns && campaigns.first.roundScore > 0
+	if !campaigns.first.nil? && campaigns.first.roundScore > 0
 		winnerCampaigns = campaigns.first(3)
 		winnerUsers = []
 		winnerCampaigns.each do |wc|
