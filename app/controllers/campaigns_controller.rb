@@ -110,7 +110,7 @@ class CampaignsController < ApplicationController
 			if Campaign.exists?(title: embedlyData.title) 
 				@campaign = Campaign.find_by(title: embedlyData.title)
 
-				if [current_round, current_round+1].include?(@campaign.roundNominatedFor)
+				if @campaign.nominated
 					respond_to do |format|
 						msg = "<span class=\"alert alert-warning\">This campaign has already been nominated.</span>"
 						format.html { redirect_to current_user, notice: msg }
@@ -119,7 +119,8 @@ class CampaignsController < ApplicationController
 					return
 				end
 
-				@campaign.roundNominatedFor = current_round+1
+				@campaign.nominated = true
+				@campaign.votable = false
 				@campaign.nominator_id = current_user.id
 
 				if @campaign.save
@@ -153,7 +154,8 @@ class CampaignsController < ApplicationController
 				@campaign.user_id = session[:user_id]
 				@campaign.nominator_id = session[:user_id]
 
-				@campaign.roundNominatedFor = current_round+1
+				@campaign.nominated = true
+				@campaign.votable = false
 				@campaign.title = j['objects'][0]['title'].delete('.')
 
 				description = embedlyData.description.encode('utf-8', 'binary', invalid: :replace, undef: :replace, replace: '')
@@ -209,7 +211,7 @@ class CampaignsController < ApplicationController
 				format.json { render json: { 'User' => 'too many campaigns nominated' } }
 			elsif !campaign && current_user.additionsThisRound < Round.first.maxAdditionsPerUser
 				format.json { render json: { 'Campaign' => 'was not found' } }
-			elsif [current_round, current_round+1].include?(campaign.roundNominatedFor)
+			elsif campaign.nominated
 				format.json { render json: { 'Campaign' => 'nominated: true' } }
 			elsif current_user.additionsThisRound >= Round.first.maxAdditionsPerUser
 				format.json { render json: { 'User' => 'too many campaigns nominated' } }
@@ -253,7 +255,7 @@ class CampaignsController < ApplicationController
 	# renders an error if the user is not logged in or there are not enough 
 	# campaigns in the database.
 	def vote
-		if Campaign.where(roundNominatedFor: current_round).count < 15
+		if Campaign.where(votable: true).count < 15
 			respond_to do |format|
 				format.js { render partial: "home/not_enough_campaigns"}
 			end
@@ -337,8 +339,8 @@ class CampaignsController < ApplicationController
 	end
 
 	def refresh_step
-		if Campaign.where(roundNominatedFor: current_round).count <= 30
-			if campaign.where(roundNominatedFor: current_round).count < 15
+		if Campaign.where(votable: true).count <= 30
+			if campaign.where(votable: true).count < 15
 				respond_to do |format|
 					format.js { render partial: "home/not_enough_campaigns"}
 				end
@@ -486,7 +488,7 @@ class CampaignsController < ApplicationController
 	#
 	# Returns the campaigns corresponding to the current step.
 	def genCampaignsForVoting(step)
-		campaigns = Campaign.where(roundNominatedFor: current_round).order("timesShownInVoting DESC")
+		campaigns = Campaign.where(votable: true).order("timesShownInVoting DESC")
 		genedCampaigns = []
 
 		case step

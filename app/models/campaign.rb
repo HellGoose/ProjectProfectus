@@ -25,6 +25,7 @@ class Campaign < ActiveRecord::Base
 		self.roundScore ||= 0 if self.has_attribute? :roundScore
 		self.globalScore ||= 0 if self.has_attribute? :globalScore
 		self.timesShownInVoting ||= 0 if self.has_attribute? :timesShownInVoting
-		self.roundNominatedFor ||= current_round+1 if self.has_attribute? :nominated
+		self.nominated = true if self.has_attribute? :nominated && self.nominated.nil?
+		self.votable = false if self.has_attribute? :votable && self.votable.nil?
 	end
 end
