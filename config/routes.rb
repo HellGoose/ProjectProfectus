@@ -34,7 +34,7 @@ Rails.application.routes.draw do
 
 	# Round administrating
 	post '/admin/round/:type/:val', to: 'admin#round'
-	post '/admin/clear_all/', to: 'admin#clear_all'
+	post '/admin/clear_all_nominations/', to: 'admin#clear_all_nominations'
 	post '/admin/nominate_all', to: 'admin#nominate_all'
 
 	#Leaderboard

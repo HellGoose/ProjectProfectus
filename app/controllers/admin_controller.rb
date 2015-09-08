@@ -55,11 +55,10 @@ class AdminController < ApplicationController
 		end
 	end
 
-	def clear_all
+	def clear_all_nominations
 		if isAdmin
-			User.update_all(additionsThisRound: 0, hasLoggedInThisRound: false, isOnStep: 0)
-			Campaign.update_all(nominated: false, roundScore: 0, timesShownInVoting: 0)
-			CampaignVote.destroy_all
+			User.update_all(additionsThisRound: 0)
+			Campaign.update_all(nominated: false)
 			redirect_to "/admin/"
 		end
 	end
