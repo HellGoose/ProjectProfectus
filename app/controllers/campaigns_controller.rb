@@ -97,17 +97,13 @@ class CampaignsController < ApplicationController
 
 		@campaign = Campaign.new(campaign_params)
 
-		kickstarterURL = "https://www.kickstarter.com"
-		indigogoURL = "http://www.indiegogo.com"
-		whiteList = [kickstarterURL,indigogoURL]
-
 		embedly = Embedly::API.new key: "0eef325249694df490605b1fd29147f5"
 		embedlyData = (embedly.extract url: @campaign.link).first
 		embedlyData.title.slice!("CLICK HERE to support ")
 		embedlyData.title = embedlyData.title.delete('.')
 
-		case embedlyData.provider_url
-		when *whiteList
+		case embedlyData.provider_display
+		when *Crowdfunding_site.pluck(:domain)
 			if Campaign.exists?(title: embedlyData.title) 
 				@campaign = Campaign.find_by(title: embedlyData.title)
 
@@ -123,6 +119,9 @@ class CampaignsController < ApplicationController
 				@campaign.nominated = true
 				@campaign.votable = false
 				@campaign.nominator_id = current_user.id
+				if @campaign.crowdfunding_site_id.nil?
+					@campaign.crowdfunding_site_id = Crowdfunding_site.find_by(domain: embedlyData.provider_display).id
+				end
 
 				if @campaign.save
 					notification = PointsHistory.new(description: 'You successfully made a nomination!', points_received: 5)
@@ -138,8 +137,10 @@ class CampaignsController < ApplicationController
 						format.json { render :show, location: current_user }
 					end
 				else
-					format.html { render :new }
-					format.json { render json: @campaign.errors, status: :unprocessable_entity }
+					respond_to do |format|
+						format.html { render :new }
+						format.json { render json: @campaign.errors, status: :unprocessable_entity }
+					end
 				end
 			else
 
@@ -151,9 +152,11 @@ class CampaignsController < ApplicationController
 				}
 
 				j = JSON.parse res.body
+				puts j
 
 				@campaign.user_id = session[:user_id]
 				@campaign.nominator_id = session[:user_id]
+				@campaign.crowdfunding_site_id = Crowdfunding_site.find_by(domain: embedlyData.provider_display).id
 
 				@campaign.nominated = true
 				@campaign.votable = false
