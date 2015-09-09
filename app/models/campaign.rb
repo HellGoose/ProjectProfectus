@@ -1,12 +1,13 @@
 class Campaign < ActiveRecord::Base
 	#Restrictions
-	validates :link, :user_id, presence: true
+	validates :link, :user_id, :nominator_id, :crowdfunding_site_id, presence: true
 	validates_uniqueness_of :title
 
 	#Relations (Used like: ClassName.relation):
 	belongs_to :user
 	belongs_to :nominator, class_name: "User"
 	belongs_to :category
+	belongs_to :crowdfunding_site
 	has_many :posts, :dependent => :destroy
 	has_many :votes, class_name: "CampaignVote", :dependent => :delete_all
 	has_many :usersVoted, class_name: "User", through: "campaign_votes"

@@ -9,6 +9,9 @@ def databaseInit
 		if Badge.all.empty?
 			initBadges()
 		end
+		if Crowdfunding_site.all.empty?
+			initCrowdfunding_sites()
+		end
 	end
 end
 
@@ -190,4 +193,17 @@ def initBadges
 		description: 'Created 10 campaigns.', 
 		imageUrl: 'http://badgemonkey.com/images/iamawesombadge.jpg', 
 		points: 50)
+end
+
+def initCrowdfunding_sites
+	Crowdfunding_site.create(
+		name: 'Kickstarter',
+		logo: 'https://www.kickstarter.com/download/kickstarter-logo-k-color.png',
+		link: 'https://www.kickstarter.com',
+		domain: 'www.kickstarter.com')
+	Crowdfunding_site.create(
+		name: 'Indiegogo',
+		logo: 'https://g1.iggcdn.com/assets/site/brand/IGG_Logo_Frame_GOgenta_RGB-2-f8565fa188a9dd16fb6c67321150b94e.png',
+		link: 'https://www.indiegogo.com',
+		domain: 'www.indiegogo.com')
 end
