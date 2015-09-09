@@ -152,7 +152,6 @@ class CampaignsController < ApplicationController
 				}
 
 				j = JSON.parse res.body
-				puts j
 
 				@campaign.user_id = session[:user_id]
 				@campaign.nominator_id = session[:user_id]
