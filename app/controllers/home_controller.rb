@@ -9,7 +9,7 @@ class HomeController < ApplicationController
 	#
 	# Renders home#index.
 	def index
-		orderedCampaigns = Campaign.order("(roundScore + globalScore) DESC");
+		orderedCampaigns = Campaign.order("created_at DESC");
 		@campaigns = orderedCampaigns.first(8)
 		@allNews = News.order("created_at DESC")
 		@newsInterval = 5

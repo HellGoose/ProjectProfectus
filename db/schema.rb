@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150819173432) do
+ActiveRecord::Schema.define(version: 20150909094342) do
 
   create_table "badges", force: :cascade do |t|
     t.string   "name",        limit: 255
@@ -35,33 +35,45 @@ ActiveRecord::Schema.define(version: 20150819173432) do
   add_index "campaign_votes", ["user_id"], name: "index_campaign_votes_on_user_id", using: :btree
 
   create_table "campaigns", force: :cascade do |t|
-    t.string   "title",              limit: 255
-    t.string   "link",               limit: 255
-    t.string   "description",        limit: 255
-    t.integer  "user_id",            limit: 4
-    t.integer  "category_id",        limit: 4
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
-    t.string   "image",              limit: 255
-    t.integer  "roundScore",         limit: 4
-    t.integer  "globalScore",        limit: 4
-    t.integer  "timesShownInVoting", limit: 4
-    t.boolean  "nominated",          limit: 1
-    t.integer  "nominator_id",       limit: 4
-    t.text     "content",            limit: 65535
-    t.integer  "pledged",            limit: 4
-    t.integer  "goal",               limit: 4
-    t.string   "author",             limit: 255
-    t.integer  "backers",            limit: 4
+    t.string   "title",                limit: 255
+    t.string   "link",                 limit: 255
+    t.string   "description",          limit: 255
+    t.integer  "user_id",              limit: 4
+    t.integer  "category_id",          limit: 4
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+    t.string   "image",                limit: 255
+    t.integer  "roundScore",           limit: 4
+    t.integer  "globalScore",          limit: 4
+    t.integer  "timesShownInVoting",   limit: 4
+    t.integer  "nominator_id",         limit: 4
+    t.text     "content",              limit: 65535
+    t.integer  "pledged",              limit: 4
+    t.integer  "goal",                 limit: 4
+    t.string   "author",               limit: 255
+    t.integer  "backers",              limit: 4
     t.date     "end_time"
+    t.boolean  "nominated",            limit: 1
+    t.boolean  "votable",              limit: 1
+    t.integer  "crowdfunding_site_id", limit: 4
   end
 
   add_index "campaigns", ["category_id"], name: "index_campaigns_on_category_id", using: :btree
+  add_index "campaigns", ["crowdfunding_site_id"], name: "index_campaigns_on_crowdfunding_site_id", using: :btree
   add_index "campaigns", ["nominator_id"], name: "fk_rails_d8d6273771", using: :btree
   add_index "campaigns", ["user_id"], name: "index_campaigns_on_user_id", using: :btree
 
   create_table "categories", force: :cascade do |t|
     t.string   "name",       limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  create_table "crowdfunding_sites", force: :cascade do |t|
+    t.string   "name",       limit: 255
+    t.string   "logo",       limit: 255
+    t.string   "link",       limit: 255
+    t.string   "domain",     limit: 255
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
   end

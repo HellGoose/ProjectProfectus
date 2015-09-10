@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
 	protect_from_forgery with: :exception
-	helper_method :current_user, :isAdmin, :getFacebookPicURL
+	helper_method :current_user, :isAdmin, :getFacebookPicURL, :current_round
 	
 	# Public: Makes the current user globally accessible.
 	#
@@ -27,6 +27,10 @@ class ApplicationController < ActionController::Base
 	# Returns the profile picture.
 	def getFacebookPicURL(user)
 		'http://graph.facebook.com/' + user.uid + '/picture?type=large'
+	end
+
+	def current_round
+		Round.maximum(:currentRound)
 	end
 
 	# printable ASCII chars (between 32 and 126) without 0..9, A..Z, a..z

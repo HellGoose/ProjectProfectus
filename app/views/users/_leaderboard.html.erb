@@ -1,3 +1,9 @@
+<% if page != nil %>
+<% 	@page = page %>
+<% 	@interval = interval %>
+<% 	@users = users %>
+<% end %>
+
 <% first = @page * @interval %>
 <% last = @users.size - first %>
 <% if last <= 0 %>
@@ -23,7 +29,7 @@
 <% end %>
 -->
 
-<div class="col-xs-12">          
+<div class="row">          
 	<table class="col-xs-10 table table-striped table-responsive table-hover">
 		<thead>
 			<tr>

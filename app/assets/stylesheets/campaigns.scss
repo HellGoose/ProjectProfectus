@@ -2,6 +2,10 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+// Global color variables
+$gray: #F7F7F7;
+$green: #385559;
+
 .top-buffer {
 	margin-top: 20px;
 }
@@ -162,7 +166,6 @@
 	background-color: white;
 }*/
 
-$gray: #F7F7F7;
 #winner_container .campaign-box {
 	background-color: $gray;
 }
