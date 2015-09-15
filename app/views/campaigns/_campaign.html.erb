@@ -1,7 +1,32 @@
-<div style="overflow: hidden;"><div class="text-center" id="background-blur" style="background-image:url(<%=@campaign.image%>);"></div><div id="bottom-block"></div></div>
+<% if @campaign.author != nil %>
+<%	@campaign_author_split = @campaign.author.split(" ")[0..1].join(" ") %> <!-- Fix plz, wrong for authors over/under 2 words -->
+<% 	@campaign_link_split = @campaign.link.split("https://www.").join.split(".com").first %>
+<% end %>
+<div style="overflow: hidden;"><div class="text-center" id="background-blur" ></div><div id="bottom-block"></div></div> <!-- style="background-image:url(<%=@campaign.image%>);" -->
 <div class="container" id="campaign-content"><!-- main-campaign"> -->
 	<div class="row">
 		<%= image_tag @campaign.image, class: "col-xs-5 main-campaign-image logo img-responsive" %>
+		
+		<div class="container col-xs-2 pull-right">
+		<% if @campaign.crowdfunding_site_id.nil? %>
+			<%  
+			case @campaign_link_split
+				when "kickstarter"
+			  	@campaign_site_logo = Crowdfunding_site.all[0].logo
+				when "indiegogo"
+			  	@campaign_site_logo = Crowdfunding_site.all[1].logo
+				else
+			  	@campaign_site_logo = "no_image"
+			end
+			%>
+		<% else %>
+			<% @campaign_site_logo = Crowdfunding_site.all[@campaign.crowdfunding_site_id-1].logo %>
+		<% end %>
+		<a href="<%= @campaign.link %>">
+		<img class="crowdfunding-site-logo"  src="<%=@campaign_site_logo%>">
+		</a>
+		</div>
+
 		<div id="info-box-group">
 			<div class="row col-xs-7">
 <!-- 				<div class="col-xs-2" id="campaign-info-box" title="The amassed score in all rounds">
@@ -57,24 +82,13 @@
 		</div>
 	</div>
 	<h2 id="campaign-title-main"><%= @campaign.title %></h2>
-	<% if @campaign.author != nil %><h5>By <b><%= @campaign.author.split(" ")[0..1].join(" ") %></b></h5> <!-- Fix plz, wrong for authors over/under 2 words -->
-	<% end %>
-	<% @campaign_site = @campaign.link.split("https://www.").join.split(".com").first %>
-	<% 
-	# case @campaign_site
-	# 	when "kickstarter"
-	#   	@campaign_site_logo = "https://d297h9he240fqh.cloudfront.net/assets/logo/ksr-logo-sprite-005cc4a6ae198f0690a8998d3605f7f5bba743745dc0be09f7165961b2a0439a.svg"
-	# 	when "indiegogo"
-	#   	@campaign_site_logo =
-	# 	else
-	#   	nil
-	# end 
-	%>
+	<h5>By <b><%= @campaign_author_split %></b></h5>
+
 	<div class="campaign-info">
 		<div class="row">
 			<h5>
 				Added to Podium by <%= link_to User.find(@campaign.user_id).name, user_path(User.find(@campaign.user_id))%>
-				from <%= @campaign_site.capitalize %> 
+				<% if !@campaign_link_split.nil? then %> from <a href="%=@campaign.link%>"><%= @campaign_link_split.capitalize %></a> <% end %>
 				on <%= @campaign.created_at.strftime("%B %d, %Y") %>
 			</h5>
 		</div>

@@ -239,6 +239,7 @@ $green: #385559;
 // }
 
 #background-blur {
+	background-color: $gray;
 	position: absolute;
   z-index: -1;
   width: 110%;//100vw;
@@ -345,6 +346,11 @@ $green: #385559;
 	// border-radius: 2px;
 	// border-bottom-width: 3px;
 	// border-bottom-color: #385559;
+}
+
+.crowdfunding-site-logo {
+	max-height: 100px;
+	max-width: 100px;
 }
 
 /*.main_campaign {
