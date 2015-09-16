@@ -86,6 +86,7 @@ class CampaignsController < ApplicationController
 	#
 	# Renders campaign#index.
 	def create
+		t2 = Time.now
 		if !current_user || current_user.additionsThisRound >= Round.first.maxAdditionsPerUser
 			respond_to do |format|
 				msg = "<span class=\"alert alert-warning\">You have exceeded your submission limit for this round.</span>"
@@ -97,10 +98,14 @@ class CampaignsController < ApplicationController
 
 		@campaign = Campaign.new(campaign_params)
 
+		t1 = Time.now
+
 		embedly = Embedly::API.new key: "0eef325249694df490605b1fd29147f5"
 		embedlyData = (embedly.extract url: @campaign.link).first
 		embedlyData.title.slice!("CLICK HERE to support ")
 		embedlyData.title = embedlyData.title.delete('.')
+
+		p "Embedly: " + (Time.now - t1).to_s
 
 		case embedlyData.provider_display
 		when *Crowdfunding_site.pluck(:domain)
@@ -144,12 +149,17 @@ class CampaignsController < ApplicationController
 				end
 			else
 
+				t1 = Time.now
+
 				api_key = '6cc89ec29944d6980a8635b0999dfa71'
 				url = URI.parse('http://api.diffbot.com/v3/article?token=' + api_key + '&url=' + URI.encode(@campaign.link, /\W/))
 				req = Net::HTTP::Get.new(url.to_s)
 				res = Net::HTTP.start(url.host, url.port) {|http|
 					http.request(req)
 				}
+
+				p "Diffbot: " + (Time.now - t1).to_s
+				t1 = Time.now
 
 				j = JSON.parse res.body
 
@@ -169,6 +179,8 @@ class CampaignsController < ApplicationController
 				@campaign.pledged = j['objects'][0]['pledged'].delete(',').delete('$').to_i # only dollahs?
 				@campaign.goal = j['objects'][0]['goal'].delete(',').delete('$').to_i
 				@campaign.author = j['objects'][0]['author'] # needs proper parsing for kickstarter
+
+				p "Parsing: " + (Time.now - t1).to_s
 
 				#case embedlyData.provider_url
 				#when kickstarterURL
@@ -202,6 +214,7 @@ class CampaignsController < ApplicationController
 				format.json { render :show, location: current_user }
 			end
 		end
+		p "Everything: " + (Time.now - t2).to_s
 	end
 
 	# Public: Checks if a campaign can be nominated
