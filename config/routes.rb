@@ -9,6 +9,7 @@ Rails.application.routes.draw do
 	get '/auth/failure', to: redirect('/')
 	get '/signout', to: 'sessions#destroy', as: 'signout'
 	get '/users/current_user', to: 'users#current_user_info'
+	get '/mobile/login', to: 'sessions#mobile_login'
 
 	# Posts and comments
 	get '/posts/answer/:campaign_id/:post_id', to: 'posts#answer'
