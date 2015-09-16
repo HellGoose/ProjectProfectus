@@ -1,8 +1,14 @@
 <script>$('#campaign').data('step', <%= current_user.isOnStep %>);</script>
-<div class="step-text text-center">
-	<h1>Done Voting</h1>
+
+<div class="row container text-center step-indicator">
+    <div class="col-xs-3 pull-left start-step">Step 1</div>
+    <div class="col-xs-2 col-centered step">Step 2</div>
+    <div class="col-xs-2 col-centered step">Step 3</div>
+    <div class="col-xs-2 col-centered step">Final Vote</div>
+    <div class="col-xs-3 pull-right current-end-step">Finished!</div>
 </div>
-<div class="col-xs-12">
+
+<div class="container" id="vote-campaigns">
 	<% i = 0 %>
 	<% @campaignVoting.each do |c| %>
 		<div class="col-xs-4 campaign-container">

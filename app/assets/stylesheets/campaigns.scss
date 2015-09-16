@@ -364,3 +364,199 @@ $green: #385559;
 .main_campaign .image_container {
 	height: 250px;
 }*/
+
+// Step-indicator ----------------
+
+.step-indicator {
+	margin-top: 5px;
+	margin-right: auto;
+	margin-left: auto;
+	float: none;
+	width: 63%;
+}
+
+.col-centered {
+    display:inline-block;
+    float:none;
+    /* reset the text-align */
+    text-align:center;
+    /* inline-block space fix */
+    margin-right:-4px;
+}
+
+div.start-step,
+div.step,
+div.end-step,
+div.current-step,
+div.current-start-step, 
+div.current-end-step {
+  display: inline-block;
+  // font-size: 22px;
+  margin-top: 9px;
+  position: relative;
+  width: 120px;
+}
+
+div.start-step:before,
+div.start-step:after,
+div.step:before,
+div.step:after,
+div.end-step:before,
+div.end-step:after,
+div.current-start-step:before,
+div.current-start-step:after,
+div.current-step:before,
+div.current-step:after,
+div.current-end-step:before,
+div.current-end-step:after {
+  content: "";
+  border-style: solid;
+  border-width: 0;
+  height: 0;
+  position: absolute;
+  width: 0;
+}
+
+div.start-step,
+div.step,
+div.end-step {
+  background-color: $gray;
+  color: black;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+div.current-start-step,
+div.start-step{
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+div.current-end-step,
+div.end-step{
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+div.current-step {
+  background-color: $green;
+  color: white;
+  margin-top: 0px;
+  margin-left: 20px;
+  margin-right: 20px;
+  line-height: 38px;
+}
+
+div.current-step:after,
+div.current-step:before {
+  border-width: 19px 0 19px 19px;
+}
+
+div.current-step:before {
+  border-color: $green transparent; 
+  left: -19px;
+}
+
+div.current-step:after {
+  border-color: transparent $green;
+  right: -19px;
+}
+
+// -----------------------------
+
+div.step:after,
+div.step:before {
+  border-width: 10px 0 10px 10px;
+}
+
+div.step:before {
+  border-color: $gray transparent; 
+  left: -10px;
+}
+
+div.step:after {
+  border-color: transparent $gray;
+  right: -10px;
+}
+
+// ------------------------------
+
+div.start-step:after,
+div.step:before {
+  border-width: 10px 0 10px 10px;
+}
+
+div.start-step:before {
+  border-color: $gray transparent;
+}
+
+div.start-step:after {
+  border-color: transparent $gray;
+  right: -10px;
+}
+
+// ------------------------------
+
+div.end-step:after,
+div.end-step:before {
+  border-width: 10px 0 10px 10px;
+}
+
+div.end-step:before {
+  border-color: $gray transparent; 
+  left: -10px;
+}
+
+div.end-step:after {
+  border-color: transparent $gray;
+}
+
+// -------------------------------
+
+div.current-start-step {
+  background-color: $green;
+  color: white;
+  margin-top: 0px;
+  margin-left: 20px;
+  margin-right: 20px;
+  line-height: 38px;
+}
+
+div.current-start-step:after,
+div.current-start-step:before {
+  border-width: 19px 0 19px 19px;
+}
+
+div.current-start-step:before {
+  border-color: $green transparent;
+  left: 3px;
+}
+
+div.current-start-step:after {
+  border-color: transparent $green;
+  right: -19px;
+}
+
+// --------------------------------
+
+div.current-end-step {
+  background-color: $green;
+  color: white;
+  margin-top: 0px;
+  margin-left: 20px;
+  margin-right: 20px;
+  line-height: 38px;
+}
+
+div.current-end-step:after,
+div.current-end-step:before {
+  border-width: 19px 0 19px 19px;
+}
+
+div.current-end-step:before {
+  border-color: $green transparent; 
+  left: -19px;
+}
+
+div.current-end-step:after {
+  border-color: transparent $green;
+}

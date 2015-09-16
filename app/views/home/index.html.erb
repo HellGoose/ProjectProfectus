@@ -12,7 +12,11 @@ function hideButton(buttonElement){
 
 <div class="row">
 	<div class="text-center">
-		<h2 style="margin-bottom: 30px;">Have your say on today's nominations!<h2>
+		<% if current_user != nil %>
+			<% if current_user.isOnStep < 3 %>
+				<h2 id="vote-message" style="margin-bottom: 30px;">Have your say on today's nominations!<h2>
+			<% end %>
+		<% end %>
 
 		<% if current_user != nil %>
 			<% if current_user.isOnStep > 0 %>
@@ -36,7 +40,7 @@ function hideButton(buttonElement){
 				          <p>I pledge my allegiance to <b>mother earth</b> and all her inhabitants. I will only promote content that I find <b>just</b> and <b>awesome</b>.</p>
 				        </div>
 				        <div class="modal-footer">
-				          <button type="button" id="start-voting" class="btn btn-default orange" data-dismiss="modal" onclick="$('#pledge-btn').hide();">Pledge and Play</button>
+				          <button type="button" id="start-voting" class="btn btn-default orange" data-dismiss="modal" onclick="$('#pledge-btn').hide(); $('#vote-message').hide();">Pledge and Play</button>
 				        </div>
 				      </div>
 				    </div>

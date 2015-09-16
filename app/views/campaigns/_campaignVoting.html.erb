@@ -1,25 +1,15 @@
 <script>$('#campaign').data('step', <%= current_user.isOnStep %>);</script>
 
-<div class="step-text text-center">
-	<% step = current_user.isOnStep + 1 if current_user %>
-	<h1><%= step <= 3 ? ("Step " + step.to_s) : "Final Voting" %></h1>
-<!-- 	  <nav class="text-center">
-<div class="row" style="color: gray;">
-    <div class='col-xs-3'>Start</div>
-    <div class='col-xs-2'>Step 1</div>
-    <div class='col-xs-2'>Step 2</div>
-    <div class='col-xs-2'>Step 3</div>
-    <div class='col-xs-3'>Finish</div>
-  </div>  -->
-<!--   <ul class="pagination">
-    <li><a href="#">Start</a></li>
-    <li><a href="#">Step 1</a></li>
-    <li><a href="#">Step 2</a></li>
-    <li><a href="#">Step 3</a></li>
-    <li><a href="#">Finish</a></li>
-  </ul> -->
-  </nav>
+<% @step = current_user.isOnStep + 1 if current_user %>
+
+<div class="row container text-center step-indicator">
+    <div class="col-xs-3 pull-left <%=if @step==1 then "current-" end%>start-step">Step 1</div>
+    <div class="col-xs-2 col-centered <%=if @step==2 then "current-" end%>step">Step 2</div>
+    <div class="col-xs-2 col-centered <%=if @step==3 then "current-" end%>step">Step 3</div>
+    <div class="col-xs-2 col-centered <%=if @step==4 then "current-" end%>step">Final Vote</div>
+    <div class="col-xs-3 pull-right <%=if @step==5 then "current-" end%>end-step">Finished</div>
 </div>
+
 <div class="container" id="vote-campaigns">
 	<%= render partial: 'campaigns/vote' %>
 </div>
