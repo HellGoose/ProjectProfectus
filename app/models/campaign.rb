@@ -28,5 +28,6 @@ class Campaign < ActiveRecord::Base
 		self.timesShownInVoting ||= 0 if self.has_attribute? :timesShownInVoting
 		self.nominated = true if self.has_attribute? :nominated && self.nominated.nil?
 		self.votable = false if self.has_attribute? :votable && self.votable.nil?
+		self.status ||= "ready" if self.has_attribute? :status
 	end
 end

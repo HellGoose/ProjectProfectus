@@ -10,7 +10,7 @@ class CampaignsController < ApplicationController
 	#
 	# Renders campaign#index.
 	def index
-		@campaigns = Campaign.all.order("created_at DESC")
+		@campaigns = Campaign.where(status: "ready").order("created_at DESC")
 		@campaignsInterval = 16
 	end
 
@@ -109,103 +109,10 @@ class CampaignsController < ApplicationController
 
 		case embedlyData.provider_display
 		when *Crowdfunding_site.pluck(:domain)
-			if Campaign.exists?(title: embedlyData.title) 
-				@campaign = Campaign.find_by(title: embedlyData.title)
-
-				if @campaign.nominated
-					respond_to do |format|
-						msg = "<span class=\"alert alert-warning\">This campaign has already been nominated.</span>"
-						format.html { redirect_to current_user, notice: msg }
-						format.json { render :show, location: current_user }
-					end
-					return
-				end
-
-				@campaign.nominated = true
-				@campaign.votable = false
-				@campaign.nominator_id = current_user.id
-				if @campaign.crowdfunding_site_id.nil?
-					@campaign.crowdfunding_site_id = Crowdfunding_site.find_by(domain: embedlyData.provider_display).id
-				end
-
-				if @campaign.save
-					notification = PointsHistory.new(description: 'You successfully made a nomination!', points_received: 5)
-
-					current_user.pointsHistories << notification
-					current_user.points +=5
-					current_user.additionsThisRound += 1
-					current_user.save
-
-					respond_to do |format|
-						msg = "<span class=\"alert alert-success\">Campaign was successfully nominated.</span>"
-						format.html { redirect_to current_user, notice: msg }
-						format.json { render :show, location: current_user }
-					end
-				else
-					respond_to do |format|
-						format.html { render :new }
-						format.json { render json: @campaign.errors, status: :unprocessable_entity }
-					end
-				end
+			if Campaign.exists?(title: embedlyData.title)
+				nominate(embedlyData)
 			else
-
-				t1 = Time.now
-
-				api_key = '6cc89ec29944d6980a8635b0999dfa71'
-				url = URI.parse('http://api.diffbot.com/v3/article?token=' + api_key + '&url=' + URI.encode(@campaign.link, /\W/))
-				req = Net::HTTP::Get.new(url.to_s)
-				res = Net::HTTP.start(url.host, url.port) {|http|
-					http.request(req)
-				}
-
-				p "Diffbot: " + (Time.now - t1).to_s
-				t1 = Time.now
-
-				j = JSON.parse res.body
-
-				@campaign.user_id = session[:user_id]
-				@campaign.nominator_id = session[:user_id]
-				@campaign.crowdfunding_site_id = Crowdfunding_site.find_by(domain: embedlyData.provider_display).id
-
-				@campaign.nominated = true
-				@campaign.votable = false
-				@campaign.title = j['objects'][0]['title'].delete('.')
-
-				description = embedlyData.description.encode('utf-8', 'binary', invalid: :replace, undef: :replace, replace: '')
-				@campaign.description = description[0, 255]
-
-				@campaign.content = j['objects'][0]['html']
-				@campaign.backers = j['objects'][0]['backers'].delete(',').to_i
-				@campaign.pledged = j['objects'][0]['pledged'].delete(',').delete('$').to_i # only dollahs?
-				@campaign.goal = j['objects'][0]['goal'].delete(',').delete('$').to_i
-				@campaign.author = j['objects'][0]['author'] # needs proper parsing for kickstarter
-
-				p "Parsing: " + (Time.now - t1).to_s
-
-				#case embedlyData.provider_url
-				#when kickstarterURL
-				#	@campaign.end_time = j['objects'][0]['date']
-				#when indigogoURL
-				#	@campaign.end_time = j['objects'][0]['date']
-				#end
-
-				respond_to do |format|
-					if @campaign.save
-						notification = PointsHistory.new(description: 'You successfully nominated a campaign!', points_received: 5)
-
-						current_user.pointsHistories << notification
-						current_user.points +=5
-						current_user.additionsThisRound += 1
-						current_user.save
-
-						msg = "<span class=\"alert alert-success\">Campaign was successfully nominated.</span>"
-						format.html { redirect_to current_user, notice: msg }
-						format.json { render :show, location: current_user }
-					else
-						format.html { render :new }
-						format.json { render json: @campaign.errors, status: :unprocessable_entity }
-					end
-				end
+				add(embedlyData)
 			end
 		else
 			repond_to do |format|
@@ -424,10 +331,128 @@ class CampaignsController < ApplicationController
 		stmntSQL = "title LIKE ? OR description LIKE ? COLLATE utf8_general_ci"
 		if category > 0
 			category = Category.find(category)
-			category.campaigns.where(stmntSQL, text, text)
+			category.campaigns.where(stmntSQL, text, text).where(status: "ready")
 		else
-			Campaign.where(stmntSQL, text, text)
+			Campaign.where(stmntSQL, text, text).where(status: "ready")
 		end
+	end
+
+	def nominate(embedlyData)
+		@campaign = Campaign.find_by(title: embedlyData.title) 
+
+		if @campaign.nominated
+			respond_to do |format|
+				msg = "<span class=\"alert alert-warning\">This campaign has already been nominated.</span>"
+				format.html { redirect_to current_user, notice: msg }
+				format.json { render :show, location: current_user }
+			end
+			return
+		end
+
+		@campaign.nominated = true
+		@campaign.nominator_id = current_user.id
+		if @campaign.crowdfunding_site_id.nil?
+			@campaign.crowdfunding_site_id = Crowdfunding_site.find_by(domain: embedlyData.provider_display).id
+		end
+
+		if @campaign.save
+			notification = PointsHistory.new(description: 'You successfully made a nomination!', points_received: 5)
+
+			current_user.pointsHistories << notification
+			current_user.points +=5
+			current_user.additionsThisRound += 1
+			current_user.save
+
+			respond_to do |format|
+				msg = "<span class=\"alert alert-success\">Campaign was successfully nominated.</span>"
+				format.html { redirect_to current_user, notice: msg }
+				format.json { render :show, location: current_user }
+			end
+		else
+			respond_to do |format|
+				format.html { render :new }
+				format.json { render json: @campaign.errors, status: :unprocessable_entity }
+			end
+		end
+	end
+
+	def add(embedlyData)
+		@campaign.status = "adding"
+		@campaign.nominated = true
+		@campaign.votable = false
+		@campaign.user_id = session[:user_id]
+		@campaign.nominator_id = session[:user_id]
+		@campaign.crowdfunding_site_id = Crowdfunding_site.find_by(domain: embedlyData.provider_display).id
+		if @campaign.save
+			current_user.additionsThisRound += 1
+			current_user.save
+			threaded_diffbot_add(embedlyData)
+			respond_to do |format|
+				msg = "<span class=\"alert alert-success\">Your campaign is beeing added. This may take some time.</span>"
+				format.html { redirect_to current_user, notice: msg }
+				format.json { render :show, location: current_user }
+			end
+		else
+			respond_to do |format|
+				format.html { render :new }
+				format.json { render json: @campaign.errors, status: :unprocessable_entity }
+			end
+			return
+		end
+	end
+
+	def threaded_diffbot_add(embedlyData)
+		t = Thread.new {
+			t1 = Time.now
+
+			api_key = '6cc89ec29944d6980a8635b0999dfa71'
+			url = URI.parse('http://api.diffbot.com/v3/article?token=' + api_key + '&url=' + URI.encode(@campaign.link, /\W/))
+			req = Net::HTTP::Get.new(url.to_s)
+			res = Net::HTTP.start(url.host, url.port) {|http|
+				http.request(req)
+			}
+
+			p "Diffbot: " + (Time.now - t1).to_s
+			t1 = Time.now
+
+			j = JSON.parse res.body
+
+			@campaign.lock!
+			@campaign.title = j['objects'][0]['title'].delete('.')
+			description = embedlyData.description.encode('utf-8', 'binary', invalid: :replace, undef: :replace, replace: '')
+			@campaign.description = description[0, 255]
+			@campaign.content = j['objects'][0]['html']
+			@campaign.backers = j['objects'][0]['backers'].delete(',').to_i
+			@campaign.pledged = j['objects'][0]['pledged'].delete(',').delete('$').to_i # only dollahs?
+			@campaign.goal = j['objects'][0]['goal'].delete(',').delete('$').to_i
+			@campaign.author = j['objects'][0]['author'] # needs proper parsing for kickstarter
+			
+			#case embedlyData.provider_url
+			#when kickstarterURL
+			#	@campaign.end_time = j['objects'][0]['date']
+			#when indigogoURL
+			#	@campaign.end_time = j['objects'][0]['date']
+			#end
+
+			p "Parsing: " + (Time.now - t1).to_s
+			@campaign.status = "ready"
+			if @campaign.save
+				notification = PointsHistory.new(description: 'Campaign successfully nominated!', points_received: 5)
+				user = current_user.lock!
+				user.pointsHistories << notification
+				user.points +=5
+				user.save
+			else
+				notification = PointsHistory.new(description: 'Campaign was not nominated! Something went wrong.', points_received: 0)
+				user = current_user.lock!
+				user.pointsHistories << notification
+				user.additionsThisRound -= 1
+				user.save
+				@campaign.destroy
+			end
+			ActiveRecord::Base.connection.close
+		}
+		at_exit {t.join}
 	end
 
 	# Private: Processes a campaign vote.

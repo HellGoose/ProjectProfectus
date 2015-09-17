@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150909094342) do
+ActiveRecord::Schema.define(version: 20150916115304) do
 
   create_table "badges", force: :cascade do |t|
     t.string   "name",        limit: 255
@@ -56,6 +56,7 @@ ActiveRecord::Schema.define(version: 20150909094342) do
     t.boolean  "nominated",            limit: 1
     t.boolean  "votable",              limit: 1
     t.integer  "crowdfunding_site_id", limit: 4
+    t.string   "status",               limit: 255
   end
 
   add_index "campaigns", ["category_id"], name: "index_campaigns_on_category_id", using: :btree
