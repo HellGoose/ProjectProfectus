@@ -377,6 +377,7 @@ class CampaignsController < ApplicationController
 	end
 
 	def add(embedlyData)
+		@campaign.title = embedlyData.title
 		@campaign.status = "adding"
 		@campaign.nominated = true
 		@campaign.votable = false
@@ -418,7 +419,7 @@ class CampaignsController < ApplicationController
 			j = JSON.parse res.body
 
 			@campaign.lock!
-			@campaign.title = j['objects'][0]['title'].delete('.')
+			#@campaign.title = j['objects'][0]['title'].delete('.')
 			description = embedlyData.description.encode('utf-8', 'binary', invalid: :replace, undef: :replace, replace: '')
 			@campaign.description = description[0, 255]
 			@campaign.content = j['objects'][0]['html']
