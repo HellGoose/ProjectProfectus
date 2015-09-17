@@ -10,7 +10,7 @@ class CampaignsController < ApplicationController
 	#
 	# Renders campaign#index.
 	def index
-		@campaigns = Campaign.all.order("created_at DESC")
+		@campaigns = Campaign.where(status: "ready").order("created_at DESC")
 		@campaignsInterval = 16
 	end
 
@@ -109,10 +109,10 @@ class CampaignsController < ApplicationController
 
 		case embedlyData.provider_display
 		when *Crowdfunding_site.pluck(:domain)
-			if Campaign.exists?(title: embedlyData.title) 
-				nominate
+			if Campaign.exists?(title: embedlyData.title)
+				nominate(embedlyData)
 			else
-				add
+				add(embedlyData)
 			end
 		else
 			repond_to do |format|
@@ -331,14 +331,14 @@ class CampaignsController < ApplicationController
 		stmntSQL = "title LIKE ? OR description LIKE ? COLLATE utf8_general_ci"
 		if category > 0
 			category = Category.find(category)
-			category.campaigns.where(stmntSQL, text, text)
+			category.campaigns.where(stmntSQL, text, text).where(status: "ready")
 		else
-			Campaign.where(stmntSQL, text, text)
+			Campaign.where(stmntSQL, text, text).where(status: "ready")
 		end
 	end
 
-	def nominate
-		@campaign = Campaign.find_by(title: embedlyData.title)
+	def nominate(embedlyData)
+		@campaign = Campaign.find_by(title: embedlyData.title) 
 
 		if @campaign.nominated
 			respond_to do |format|
@@ -376,20 +376,32 @@ class CampaignsController < ApplicationController
 		end
 	end
 
-	def add
-		respond_to do |format|
-			@campaign.status = "adding"
-			if @campaign.save
+	def add(embedlyData)
+		@campaign.status = "adding"
+		@campaign.nominated = true
+		@campaign.votable = false
+		@campaign.user_id = session[:user_id]
+		@campaign.nominator_id = session[:user_id]
+		@campaign.crowdfunding_site_id = Crowdfunding_site.find_by(domain: embedlyData.provider_display).id
+		if @campaign.save
+			current_user.additionsThisRound += 1
+			current_user.save
+			threaded_diffbot_add(embedlyData)
+			respond_to do |format|
 				msg = "<span class=\"alert alert-success\">Your campaign is beeing added. This may take some time.</span>"
 				format.html { redirect_to current_user, notice: msg }
 				format.json { render :show, location: current_user }
-			else
+			end
+		else
+			respond_to do |format|
 				format.html { render :new }
 				format.json { render json: @campaign.errors, status: :unprocessable_entity }
-				return
 			end
+			return
 		end
+	end
 
+	def threaded_diffbot_add(embedlyData)
 		t = Thread.new {
 			t1 = Time.now
 
@@ -406,13 +418,6 @@ class CampaignsController < ApplicationController
 			j = JSON.parse res.body
 
 			@campaign.lock!
-			@campaign.user_id = session[:user_id]
-			@campaign.nominator_id = session[:user_id]
-			@campaign.crowdfunding_site_id = Crowdfunding_site.find_by(domain: embedlyData.provider_display).id
-
-			@campaign.nominated = true
-			@campaign.votable = false
-			
 			@campaign.title = j['objects'][0]['title'].delete('.')
 			description = embedlyData.description.encode('utf-8', 'binary', invalid: :replace, undef: :replace, replace: '')
 			@campaign.description = description[0, 255]
@@ -430,18 +435,18 @@ class CampaignsController < ApplicationController
 			#end
 
 			p "Parsing: " + (Time.now - t1).to_s
-
+			@campaign.status = "ready"
 			if @campaign.save
 				notification = PointsHistory.new(description: 'Campaign successfully nominated!', points_received: 5)
 				user = current_user.lock!
 				user.pointsHistories << notification
 				user.points +=5
-				user.additionsThisRound += 1
 				user.save
 			else
 				notification = PointsHistory.new(description: 'Campaign was not nominated! Something went wrong.', points_received: 0)
 				user = current_user.lock!
 				user.pointsHistories << notification
+				user.additionsThisRound -= 1
 				user.save
 				@campaign.destroy
 			end
