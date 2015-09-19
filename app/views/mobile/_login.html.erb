@@ -1,0 +1,15 @@
+<div class="text-center">
+	<% if current_user %>
+		<div id="mobile_welcome">
+			<h3>You are logged in as <%= current_user.name %></h3>
+		</div>
+	<% else %>
+		<div id="mobile_welcome">
+			<h3>Welcome to Podium!</h3>
+		</div>
+		<div id"mobile_login">
+			<h4>In order to use Podium, you have to login with your Facebook account.</h4>
+			<a class="btn btn-primary" href="/auth/facebook">Login using Facebook</a>
+    </div>
+	<% end %>
+</div>

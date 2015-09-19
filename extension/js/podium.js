@@ -1,7 +1,7 @@
 var validURLs = ['kickstarter.com', 'indiegogo.com'];
 var urlregex = new RegExp('^(http|https)://([a-zA-Z0-9.-]+(:[a-zA-Z0-9.&amp;%$-]+)*@)*(([a-zA-Z0-9-]+.)*[a-zA-Z0-9-]+.(com|net|org|[a-zA-Z]{2}))');
 
-var scope = 'http://localhost:5000/';
+var scope = 'http://stianerkul.me/';
 
 $.embedly.defaults.key = '0eef325249694df490605b1fd29147f5';
 

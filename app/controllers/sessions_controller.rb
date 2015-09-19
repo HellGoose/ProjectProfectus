@@ -40,6 +40,10 @@ class SessionsController < ApplicationController
 		redirect_to root_path
 	end
 
+	def mobile_login
+		render partial: 'mobile/login', layout: 'windowed'
+	end
+
 	# Public: Resets the user_id.
 	# Route: DELETE root/signout
 	#

@@ -15,9 +15,9 @@ class UsersController < ApplicationController
 		if current_user == @user
 			@notifications = @user.pointsHistories.order('created_at DESC').first(10)
 		end
-		@userCampaigns = @user.campaigns.order('created_at DESC')
-		@userNominations = @user.nominations.where(nominated: true).order('created_at DESC')
-		@campaignsInterval = 8
+		@userCampaigns = @user.campaigns.where(status: "ready").order('created_at DESC')
+		@userNominations = @user.nominations.where(nominated: true, status: "ready").order('created_at DESC')
+		@campaignsInterval = 16
 	end
 
 	# Public: Prepares variables for user#edit.
@@ -46,9 +46,9 @@ class UsersController < ApplicationController
 		page = params[:page].to_i
 		interval = params[:interval].to_i
 		if (page * interval <= @user.campaigns.size)
-			@userCampaigns = @user.campaigns.order('(globalScore + roundScore) DESC').first(page * interval).last(interval)
+			@userCampaigns = @user.campaigns.where(status: "ready").order('created_at DESC').first(page * interval).last(interval)
 		else
-			@userCampaigns = @user.campaigns.order('(globalScore + roundScore) DESC').last(@user.campaigns.size % interval)
+			@userCampaigns = @user.campaigns.where(status: "ready").order('created_at DESC').last(@user.campaigns.size % interval)
 		end
 		respond_to do |format|
 			format.js { render partial: 'userCampaigns' }
