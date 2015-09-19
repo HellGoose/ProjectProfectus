@@ -2,12 +2,18 @@
 
 <% @step = current_user.isOnStep + 1 if current_user %>
 
+<div class="row container reroll-close">
+  <div class="col-xs-1 pull-left"><i type="button" id="refresh-voting-small" class="btn fa fa-repeat" title="Reroll for 3 new campaigns"></i></div>
+  <div class="col-xs-1 pull-right close-voting"><i type="button" id="back-voting-small" class="btn fa fa-times-circle" title="Close" onclick="$('#pledge-btn').show();"></i></div>
+</div>
+
+
 <div class="row container text-center step-indicator">
     <div class="col-xs-3 pull-left <%=if @step==1 then "current-" end%>start-step">Step 1</div>
     <div class="col-xs-2 col-centered <%=if @step==2 then "current-" end%>step">Step 2</div>
     <div class="col-xs-2 col-centered <%=if @step==3 then "current-" end%>step">Step 3</div>
     <div class="col-xs-2 col-centered <%=if @step==4 then "current-" end%>step">Final Vote</div>
-    <div class="col-xs-3 pull-right <%=if @step==5 then "current-" end%>end-step">Finished</div>
+    <div class="col-xs-3 pull-right <%=if @step==5 then "current-" end%>end-step">Finish</div>
 </div>
 
 <div class="container" id="vote-campaigns">
