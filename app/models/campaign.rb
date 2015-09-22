@@ -1,7 +1,7 @@
 class Campaign < ActiveRecord::Base
 	#Restrictions
 	validates :link, :user_id, :nominator_id, :crowdfunding_site_id, presence: true
-	validates_uniqueness_of :title
+	validates_uniqueness_of :link
 
 	#Relations (Used like: ClassName.relation):
 	belongs_to :user
