@@ -1,4 +1,6 @@
-var validURLs = ['kickstarter.com', 'indiegogo.com'];
+var kickstarter = 'kickstarter.com';
+var indiegogo = 'indiegogo.com';
+
 var urlregex = new RegExp('^(http|https)://([a-zA-Z0-9.-]+(:[a-zA-Z0-9.&amp;%$-]+)*@)*(([a-zA-Z0-9-]+.)*[a-zA-Z0-9-]+.(com|net|org|[a-zA-Z]{2}))');
 
 var scope = 'http://stianerkul.me/';
@@ -34,117 +36,114 @@ function checkUserStatus() {
 function checkStatus() {
 	chrome.tabs.getSelected(null,function(tab) {
 		var url = tab.url;
-		if (urlregex.test(url) && new RegExp(validURLs.join("|")).test(url)) {
-			$.embedly.extract(url).progress(function(campaignData) {
-				campaignData.title = campaignData.title.replace('CLICK HERE to support ', '');
-				campaignData.title = encodeURIComponent(campaignData.title).replace(/\./g, '');
-				$.get(scope + 'campaigns/checkIfCanAdd/' + campaignData.title, function(data) {
-					$.each(data, function(key, val) {
-						console.log(key + ", " + val);
-						switch (key) {
-							case 'Campaign':
-								switch(val) {
-									case 'nominated: true':
-										$('#status').html('Nominated');
-										$('#nominate').attr('disabled', true);
-										break;
-
-									case 'nominated: false':
-										$('#status').html('Not yet nominated');
-										$('#nominate').attr('disabled', false);
-										break;
-
-									case 'was not found':
-										$('#status').html('Not yet nominated');
-										$('#nominate').attr('disabled', false);
-										break;
-								}
-								break;
-
-							case 'User':
-								switch(val) {
-									case 'not logged in':
-										$('#status').html('You are not logged in');
-										$('#nominate').attr('disabled', true);
-										break;
-
-									case 'too many campaigns nominated':
-										$('#status').html('You have nominated too many campaigns this round');
-										$('#nominate').attr('disabled', true);
-										break;
-								}
-								break;
-						}
-					});
-				});
-			});
-		} else {
-			$('#status').html('Unsupported site');
+		if (!urlregex.test(url)) {
+			return;
 		}
+
+		url = url.replace('https://', '');
+		url = url.replace('http://', '');
+
+		if (new RegExp(kickstarter).test(url)) {
+			var splitSlashes = url.split('/');
+			if (!splitSlashes[1].includes('projects')) {
+				$('#status').html('Unsupported site/campaign.');
+				return;
+			}
+
+			var removeParams = splitSlashes[3].split('?');
+			var title = removeParams[0];
+			checkCampaignStatus(title);
+			return;
+		}
+
+		if (new RegExp(indiegogo).test(url)) {
+			var splitSlashes = url.split('/');
+			if (!splitSlashes[1].includes('projects')) {
+				$('#status').html('Unsupported site/campaign.');
+				return;
+			}
+
+			var removeParams = splitSlashes[2].split('#');
+			var title = removeParams[0];
+			checkCampaignStatus(title);
+			return;
+		}
+
+		$('#status').html('Unsupported site/campaign.');
+	});
+}
+
+function checkCampaignStatus(title) {
+	$.get(scope + 'campaigns/checkIfCanAdd/' + title, function(data) {
+		$.each(data, function(key, val) {
+			console.log(key + ": " + val);
+			switch (key) {
+				case 'Campaign':
+					switch(val) {
+						case 'nominated: true':
+							$('#status').html('Nominated');
+							$('#nominate').attr('disabled', true);
+							break;
+
+						case 'nominated: false':
+							$('#status').html('Not yet nominated');
+							$('#nominate').attr('disabled', false);
+							break;
+
+						case 'was not found':
+							$('#status').html('Not yet nominated');
+							$('#nominate').attr('disabled', false);
+							break;
+					}
+					break;
+
+				case 'User':
+					switch(val) {
+						case 'not logged in':
+							$('#status').html('You are not logged in');
+							$('#nominate').attr('disabled', true);
+							break;
+
+						case 'too many campaigns nominated':
+							$('#status').html('You have nominated too many campaigns this round');
+							$('#nominate').attr('disabled', true);
+							break;
+					}
+					break;
+			}
+		});
 	});
 }
 
 function nominate() {
-	$('#status').html('Nominating...');
 	chrome.tabs.getSelected(null, function(tab) {
 		var url = tab.url;
-		if (urlregex.test(url) && new RegExp(validURLs.join("|")).test(url)) {
-			$.embedly.extract(url).progress(function(campaignData) {
-				campaignData.title = campaignData.title.replace('CLICK HERE to support ', '');
-				campaignData.title = encodeURIComponent(campaignData.title).replace(/\./g, '');
-				$.get(scope + 'campaigns/checkIfCanAdd/' + campaignData.title, function(data) {
-					$.each(data, function(key, val) {
-						switch (key) {
-							case 'Campaign':
-								switch(val) {
-									case 'nominated: true':
-										break;
+		switch ($('#status').html()) {
+			case 'Not yet nominated':
+				$('#status').html('Nominating...');
+				$('#nominate').attr('disabled', true);
+				nominateCampaign(url);
+				break;
 
-									case 'nominated: false':
-										nominateCampaign(url, campaignData);
-										break;
-
-									case 'was not found':
-										nominateCampaign(url, campaignData);
-										break;
-								}
-								break;
-
-							case 'User':
-								switch(val) {
-									case 'not logged in':
-										break;
-
-									case 'too many campaigns nominated':
-										break;
-								}
-								break;
-						}
-					});
-				});
-			});
+			default:
+				break;
 		}
 	});
 }
 
-function nominateCampaign(url, campaign) {
-	$('#nominate').attr('disabled', true);
-
+function nominateCampaign(url) {
 	var request = new XMLHttpRequest();
 	request.open('POST', scope + 'campaigns', /* async = */ true);
 
 	request.onreadystatechange = function() {
 		if (request.readyState == 4) {
-			checkStatus();
+			setTimeout(checkStatus(), 2000);
 		}
 	}
 
 	var formData = new FormData();
 	formData.append('campaign[link]', url);
 	formData.append('campaign[category_id]', 1);
-	formData.append('campaign[description]', campaign.description);
-	formData.append('campaign[title]', campaign.title);
-	formData.append('campaign[image]', campaign.images[0].url);
 
 	request.send(formData);
 }

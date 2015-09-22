@@ -135,49 +135,94 @@ $(document).ready ->
     # the Submit button will be enabled. The Submit button will be disabled
     # if the link is invalid.
     $('#campaign_link').on 'input', ->
+      clearCampaignPreview()
       $('#submitButton').attr('disabled', true)
       campaign = $('#campaign_link').val().split('?')[0]
-      validURLs = ['kickstarter.com', 'indiegogo.com']
+
+      kickstarter = 'kickstarter.com'
+      indiegogo = 'indiegogo.com'
 
       urlregex = new RegExp('^(http|https)://([a-zA-Z0-9.-]+(:[a-zA-Z0-9.&amp;%$-]+)*@)*(([a-zA-Z0-9-]+.)*[a-zA-Z0-9-]+.(com|net|org|[a-zA-Z]{2}))')
-      if urlregex.test(campaign) and new RegExp(validURLs.join("|")).test(campaign)
-        $.embedly.extract(campaign, key: '0eef325249694df490605b1fd29147f5').progress (data) ->
+      
+      if !urlregex.test(campaign)
+        return
+
+      campaign = campaign.replace('https://', '');
+      campaign = campaign.replace('http://', '');
+
+      if new RegExp(kickstarter).test(campaign)
+        splitSlashes = campaign.split('/')
+        if splitSlashes.length <= 3 || !splitSlashes[1].includes('projects')
+          $('#notice').html('<span class="alert alert-warning">Unsupported site/campaign.</span>')
+          $('#notice').slideUp 0
+          $('#notice').slideToggle 400
+          $('#notice').delay(2000)
+          $('#notice').slideToggle 400
+          return
+
+        removeParams = splitSlashes[3].split('[?#]')
+        title = removeParams[0]
+        if title.length
+          checkCampaignStatus(title)
+
+        $.embedly.extract('https://' + campaign, key: '0eef325249694df490605b1fd29147f5').progress (data) ->
           if data.title?
             renderCampaignPreview(data)
-          data.title = encodeURIComponent(data.title).replace(/\./g, '')
-          $.getJSON '/campaigns/checkIfCanAdd/' + data.title, (data) ->
-            $.each data, (key, val) ->
-              switch key
-                when 'Campaign'
-                  switch val
-                    when 'nominated: true'
-                      $('#notice').html('<span class="alert alert-warning">Campaign is already nominated.</span>')
-                      $('#notice').slideUp 0
-                      $('#notice').slideToggle 400
-                      $('#notice').delay(2000)
-                      $('#notice').slideToggle 400
-                    when 'nominated: false'
-                      $('#submitButton').attr('disabled', false)
-                    when 'was not found'
-                      $('#submitButton').attr('disabled', false)
-                    else
-                      break
-                when 'User'
-                  switch val
-                    when 'too many campaigns nominated'
-                      $('#submitButton').attr('disabled', true)
-                    when 'not logged in'
-                    else
-                      break
-                else
-                  break
-              return
-            return
           return
-      else
-        clearCampaignPreview()
+        return
+
+      if new RegExp(indiegogo).test(campaign)
+        splitSlashes = campaign.split('/')
+        if splitSlashes.length <= 2 || !splitSlashes[1].includes('projects')
+          $('#notice').html('<span class="alert alert-warning">Unsupported site/campaign.</span>')
+          $('#notice').slideUp 0
+          $('#notice').slideToggle 400
+          $('#notice').delay(2000)
+          $('#notice').slideToggle 400
+          return
+
+        removeParams = splitSlashes[2].split('[?#]')
+        title = removeParams[0]
+        if title.length > 0
+          checkCampaignStatus(title)
+
+        $.embedly.extract('https://' + campaign, key: '0eef325249694df490605b1fd29147f5').progress (data) ->
+          if data.title?
+            renderCampaignPreview(data)
+          return
         return
       return
+  return
+
+checkCampaignStatus = (title) ->
+  $.getJSON '/campaigns/checkIfCanAdd/' + title, (data) ->
+    $.each data, (key, val) ->
+      switch key
+        when 'Campaign'
+          switch val
+            when 'nominated: true'
+              $('#notice').html('<span class="alert alert-warning">Campaign is already nominated.</span>')
+              $('#notice').slideUp 0
+              $('#notice').slideToggle 400
+              $('#notice').delay(2000)
+              $('#notice').slideToggle 400
+            when 'nominated: false'
+              $('#submitButton').attr('disabled', false)
+            when 'was not found'
+              $('#submitButton').attr('disabled', false)
+            else
+              break
+        when 'User'
+          switch val
+            when 'too many campaigns nominated'
+              $('#submitButton').attr('disabled', true)
+            when 'not logged in'
+            else
+              break
+        else
+          break
+      return
+    return
   return
 
 # Renders a preview of the campaign the scraper received.
