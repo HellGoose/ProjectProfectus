@@ -2,51 +2,12 @@
 <% @campaignVoting.each do |c| %>
 	<div class="col-xs-4 campaign-container">
 		<div class="text-center vote-star" id="<%= i %>">
-		<script type="text/javascript">
-				$(function() {                       //run when the DOM is ready
-			  	$("#<%='star-'+i.to_s%>").click(function() {  //use a class, since your ID gets mangled
-			  		var $nextCampaignBox = $(this).closest('div').next().find(".campaign-box");
-  					if ($nextCampaignBox.hasClass("darken")){
-							// $nextCampaignBox.removeClass("darken");
-							// $("#<%='continue-'+i.to_s%>").fadeOut(250);
-  					} else {
-  						$(".campaign-box").each(function() {
-								$(this).removeClass("darken");
-	  					});
-							$nextCampaignBox.addClass("darken");								//add the class to the clicked element
-							$("#continue-0").fadeOut(250);
-							$("#continue-1").fadeOut(250);
-							$("#continue-2").fadeOut(250);
-							$("#<%='continue-'+i.to_s%>").fadeIn(250);
-							// console.log(<%=i%>);
-							//	$('#dialog_confirm_map').modal();										
-							//  $('.modal-backdrop').appendTo($nextCampaignBox);	//appending modal background inside the bigform-content
-							//	$('body').removeClass();														//removing body classes to able click events
-						}
-			  	});
-				});
-			</script>
-			<a role="button" id="<%= 'star-'+i.to_s %>" class="btn vote-star-button">
-				<span class="fa fa-star" style="color: white;" aria-hidden="true"></span><!-- <i class="fa fa-star" style="color: gold;"> -->
+			<a role="button" class="btn btn-default btn-lg">
+				<span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
 			</a>
 		</div>
 		<div class="campaign campaign-vote" id="<%= i %>" style="border: 0px;">
 			<% i += 1 %>
-			<script type="text/javascript">
-				$(function() {                       //run when the DOM is ready
-			  	$(".campaign-box").click(function() {  //use a class, since your ID gets mangled
-  					if ($(this).hasClass("down-arrow")){
-							$(this).removeClass("down-arrow");
-  					} else {
-  						$(".campaign-box").each(function() {
-								$(this).removeClass("down-arrow");
-	  					});
-							$(this).addClass("down-arrow");      //add the class to the clicked element
-  					}
-			  	});
-				});
-			</script>
-			<button id="<%='continue-'+(i-1).to_s %>" class="btn orange continue-button" style="display:none;"><h3>CONTINUE</h3></button>
 			<div class="campaign-box">
 				<div class="image-container">
 					<%= image_tag c.image, class: "logo img-responsive clip"%>

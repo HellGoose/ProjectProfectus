@@ -57,25 +57,16 @@ $(document).ready ->
 		$('#next-voting').hide()
 		$('#refresh-voting').hide()
 		$('#voting').slideToggle()
-		$('#campaigns-news').fadeIn()
-		return
-
-	$('body').on 'click', '#back-voting-small', ->
-		$('#start-voting').show()
-		$('#back-voting').hide()
-		$('#next-voting').hide()
-		$('#refresh-voting').hide()
-		$('#voting').slideToggle()
-		$('#campaigns-news').fadeIn()
+		$('#campaigns-news').slideToggle()
 		return
 
 	# Sets the custom data value vote to the current selected star,
 	# sets the star to active and removes the active class 
 	# from the other stars.
-	$('body').on 'click', '.vote-star-button', ->
+	$('body').on 'click', '.vote-star', ->
 		$('.vote-star').children().removeClass('active')
-		$(this).addClass('active')
-		$('#campaign').data('vote', parseInt(@id.slice(-1)))
+		$(this).children().addClass('active')
+		$('#campaign').data('vote', @id)
 		return
 
 	# Refreshes for 3 new campaigns for voting when the user clicks on the
@@ -85,10 +76,7 @@ $(document).ready ->
 			$('.campaign-display').slideUp(0)
 		return
 
-	$('body').on 'click', '#refresh-voting-small', ->
-		$('#voting').load "/refresh/campaigns/", (response, status) ->
-			$('.campaign-display').slideUp(0)
-		return
+
 
 	# Loads the next voting set of campaigns when the user clicks on the
 	# vote button. Also sends the list id of the current voted campaign.
@@ -101,24 +89,6 @@ $(document).ready ->
 				$('#next-voting').show()
 			else
 				$('#next-voting').hide()
-			if $('#campaign').data('step') < 3
-				$('#refresh-voting').show()
-			else
-				$('#refresh-voting').hide()
-			return
-		return
-
-	# Loads the next voting set of campaigns when the user clicks on the
-	# vote button. Also sends the list id of the current voted campaign.
-	$('body').on 'click', '.continue-button', ->
-		campaign = $('#campaign').data('vote')
-		$('#campaign').data('vote', -1)
-		$('#voting').load "/vote/campaign/" + campaign, (response, status) ->
-			$('.campaign-display').slideUp(0)
-			if $('#campaign').data('step') < 4
-				$('.continue-button').hide()
-			else
-				$('.continue-button').hide()
 			if $('#campaign').data('step') < 3
 				$('#refresh-voting').show()
 			else

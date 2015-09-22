@@ -97,15 +97,22 @@
 #vote-campaigns {
 	margin: auto; 
 	width: 63%; 
-	margin-bottom: 100px;
+	margin-bottom: 150px;
 	// border-bottom-style: solid; 
 	// border-bottom-width: 3px;
 	// border-bottom-color: #385559;
 }
-#voting {
-	padding-top: 20px;
-  // margin-top: -110px;
-  // box-shadow: inset 0 15px 15px -15px black;
+// #voting {
+// 	width: 73.68421%;
+// 	margin:0 auto;
+// }
+
+.vote-star {
+	margin: 5px;
+}
+
+.voting-done {
+	font-size: 35px;
 }
 
 /*#campaigns-news > hr {
@@ -163,15 +170,4 @@
 
 .blue {
 	color: blue;
-}
-
-.reroll-close {
-	margin-left: auto;
-	margin-right: auto;
-	width: 63%;	
-	font-size: large;
-}
-
-.close-voting {
-	text-align: right;
 }
