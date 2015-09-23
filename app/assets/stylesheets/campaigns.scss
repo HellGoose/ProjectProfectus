@@ -150,9 +150,33 @@ $green: #385559;
 
 }
 
-/*.campaign-box {
-	margin-top: -5px;
-}*/
+.campaign-box {
+	text-align: center;
+}
+
+
+//  {
+//     position:relative;
+//     display:inline-block;
+//     text-align:center;
+//     border:1px solid red;
+//     /* background:url('http://jsfiddle.net/img/initializing.png') no-repeat;
+//     width:186px;
+//     height:157px;*/
+// }
+
+
+.continue-button {
+	padding-top: 2px;
+	position: absolute;
+  margin-right: auto;
+  margin-left: auto;
+  width: 200px;
+  height: 40px;
+  top: 135px;
+  left: 25px;
+  z-index: 2;
+}
 
 .campaign-vote {
 	border: 0px;
@@ -559,4 +583,94 @@ div.current-end-step:before {
 
 div.current-end-step:after {
   border-color: transparent $green;
+}
+
+// Down-arrow
+
+.down-arrow {
+	//display: inline-block;
+	position: relative;
+	background: $gray;
+	//padding: 15px 0;
+	//width: 200px;
+	text-align: center;
+}
+.down-arrow:after {
+	content: '';
+	display: block;  
+	position: absolute;
+	z-index: -1;
+	left: 25px;
+	top: 90%;
+	width: 0;
+	height: 0;
+	border-top: 50px solid $gray;
+	border-right: 100px solid transparent;
+	border-bottom: 0 solid transparent;
+	border-left: 100px solid transparent;
+}
+
+// Vote star
+
+.vote-star-button {
+	vertical-align: top;
+	padding-top: 0px;
+	font-size: x-large;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	background-color: lightgray;
+	border-radius: 2px;
+	border-width: 0px;
+	width: 75px;
+	height: 31px;
+}
+
+.vote-star-button:active {
+	background-color: #F05000;
+	-webkit-box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0);
+  box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0);
+  border-style: solid;
+  border-width: 1px;
+  border-color: #E54C00;
+}
+
+.vote-star-button.active {
+	background-color: #F05000;
+	-webkit-box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0);
+  box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0);
+}
+
+.darken {
+	background-color: gray;
+	-webkit-filter: grayscale(100%);
+	filter: grayscale(100%);
+}
+
+.darken:after {
+	border-top-color: gray;
+}
+
+.bigform-content {
+    border: solid 5px #DDD;
+    margin: 30px 20px;
+    overflow: hidden;
+    padding:20px;
+    position:relative;
+}
+.modal, .modal-backdrop {
+    position: absolute !important;
+}
+.bigform-content h1 {
+    margin:0;
+}
+.bigform-content input[type=submit] {
+    margin-top:10px;
+}
+
+.star-finished {
+	color: #F05000;
+}
+
+.star-finished-win {
+	color: #F05000;
 }
