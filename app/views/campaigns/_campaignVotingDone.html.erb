@@ -1,7 +1,6 @@
 <script>$('#campaign').data('step', <%= current_user.isOnStep %>);</script>
 
 <div class="row container reroll-close">
-  <div class="col-xs-1 pull-left"><i type="button" id="refresh-voting-small" class="btn fa fa-repeat" title="Reroll for 3 new campaigns"></i></div>
   <div class="col-xs-1 pull-right close-voting"><i type="button" id="back-voting-small" class="btn fa fa-times-circle" title="Close" onclick="$('#pledge-btn').show();"></i></div>
 </div>
 
@@ -52,6 +51,7 @@
 	<% end %>
 </div>
 
+<div class="campaign-display-all">
 <% id = 0 %>
 <% @campaignVoting.each do |c| %>
 	<div class="campaign-display" id=<%= id %>>
@@ -60,3 +60,4 @@
 	</div>
 	<% id += 1 %>
 <% end %>
+</div>
