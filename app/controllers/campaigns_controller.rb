@@ -98,21 +98,15 @@ class CampaignsController < ApplicationController
 
 		@campaign = Campaign.new(campaign_params)
 
-		t1 = Time.now
+		link = campaign_params[:link]
+		provider = link.sub("https://", "").sub("http://", "").split("/")[0]
 
-		embedly = Embedly::API.new key: "0eef325249694df490605b1fd29147f5"
-		embedlyData = (embedly.extract url: @campaign.link).first
-		embedlyData.title.slice!("CLICK HERE to support ")
-		embedlyData.title = embedlyData.title.delete('.')
-
-		p "Embedly: " + (Time.now - t1).to_s
-
-		case embedlyData.provider_display
+		case provider
 		when *Crowdfunding_site.pluck(:domain)
-			if Campaign.exists?(title: embedlyData.title)
-				nominate(embedlyData)
+			if Campaign.exists?(link: link)
+				nominate(link, provider)
 			else
-				add(embedlyData)
+				add(provider)
 			end
 		else
 			repond_to do |format|
@@ -126,7 +120,7 @@ class CampaignsController < ApplicationController
 
 	# Public: Checks if a campaign can be nominated
 	def check_if_can_add
-		campaign = Campaign.find_by(title: decodeURIComponent(params[:title]))
+		campaign = Campaign.where("link REGEXP ?", "[/]#{params[:title]}([/#?]|$)")[0]
 		respond_to do |format|
 			if !current_user
 				format.json { render json: { 'User' => 'not logged in' } }
@@ -337,8 +331,8 @@ class CampaignsController < ApplicationController
 		end
 	end
 
-	def nominate(embedlyData)
-		@campaign = Campaign.find_by(title: embedlyData.title) 
+	def nominate(link, provider)
+		@campaign = Campaign.find_by(link: link) 
 
 		if @campaign.nominated
 			respond_to do |format|
@@ -352,7 +346,7 @@ class CampaignsController < ApplicationController
 		@campaign.nominated = true
 		@campaign.nominator_id = current_user.id
 		if @campaign.crowdfunding_site_id.nil?
-			@campaign.crowdfunding_site_id = Crowdfunding_site.find_by(domain: embedlyData.provider_display).id
+			@campaign.crowdfunding_site_id = Crowdfunding_site.find_by(domain: provider).id
 		end
 
 		if @campaign.save
@@ -376,18 +370,17 @@ class CampaignsController < ApplicationController
 		end
 	end
 
-	def add(embedlyData)
-		@campaign.title = embedlyData.title
+	def add(provider)
 		@campaign.status = "adding"
 		@campaign.nominated = true
 		@campaign.votable = false
 		@campaign.user_id = session[:user_id]
 		@campaign.nominator_id = session[:user_id]
-		@campaign.crowdfunding_site_id = Crowdfunding_site.find_by(domain: embedlyData.provider_display).id
+		@campaign.crowdfunding_site_id = Crowdfunding_site.find_by(domain: provider).id
 		if @campaign.save
 			current_user.additionsThisRound += 1
 			current_user.save
-			threaded_diffbot_add(embedlyData)
+			threaded_diffbot_add(@campaign, provider)
 			respond_to do |format|
 				msg = "<span class=\"alert alert-success\">Your campaign is beeing added. This may take some time.</span>"
 				format.html { redirect_to current_user, notice: msg }
@@ -402,12 +395,12 @@ class CampaignsController < ApplicationController
 		end
 	end
 
-	def threaded_diffbot_add(embedlyData)
+	def threaded_diffbot_add(campaign, provider)
 		t = Thread.new {
 			t1 = Time.now
 
 			api_key = '6cc89ec29944d6980a8635b0999dfa71'
-			url = URI.parse('http://api.diffbot.com/v3/article?token=' + api_key + '&url=' + URI.encode(@campaign.link, /\W/))
+			url = URI.parse('http://api.diffbot.com/v3/article?token=' + api_key + '&url=' + URI.encode(campaign.link, /\W/))
 			req = Net::HTTP::Get.new(url.to_s)
 			res = Net::HTTP.start(url.host, url.port) {|http|
 				http.request(req)
@@ -418,16 +411,44 @@ class CampaignsController < ApplicationController
 
 			j = JSON.parse res.body
 
-			@campaign.lock!
-			#@campaign.title = j['objects'][0]['title'].delete('.')
-			description = embedlyData.description.encode('utf-8', 'binary', invalid: :replace, undef: :replace, replace: '')
-			@campaign.description = description[0, 255]
-			@campaign.content = j['objects'][0]['html']
-			@campaign.backers = j['objects'][0]['backers'].delete(',').to_i
-			@campaign.pledged = j['objects'][0]['pledged'].delete(',').delete('$').to_i # only dollahs?
-			@campaign.goal = j['objects'][0]['goal'].delete(',').delete('$').to_i
-			@campaign.author = j['objects'][0]['author'] # needs proper parsing for kickstarter
-			
+			campaign.lock!
+			campaign.title = j['objects'][0]['title'].delete('.')
+			campaign.content = j['objects'][0]['html']
+			campaign.backers = j['objects'][0]['backers'].delete(',').to_i
+			campaign.pledged = j['objects'][0]['pledged'].delete(',').delete('$').to_i # only dollahs?
+			campaign.goal = j['objects'][0]['goal'].delete(',').delete('$').to_i
+			campaign.author = j['objects'][0]['author'] # needs proper parsing for kickstarter
+			campaign.image = j['objects'][0]['image']
+			campaign.description = j['objects'][0]['description']
+
+			p provider
+
+			if provider.include? "indiegogo"
+				link = campaign.link.sub "/projects/", "/project/"
+				link = link.split("#")[0] + "/embedded"
+
+				url = URI.parse('http://api.diffbot.com/v3/article?token=' + api_key + '&url=' + URI.encode(link, /\W/))
+				req = Net::HTTP::Get.new(url.to_s)
+				res = Net::HTTP.start(url.host, url.port) {|http|
+					http.request(req)
+				}
+
+				k = JSON.parse res.body
+
+				image = k['objects'][0]['image']
+
+				if !image.nil?
+					image.sub! "h_220", "h_355"
+					image.sub! "w_220", "w_475"
+				end
+
+				campaign.image = image
+			end
+
+			if campaign.image.nil?
+				campaign.image = j['objects'][0]['images'][0]['url']
+			end
+
 			#case embedlyData.provider_url
 			#when kickstarterURL
 			#	@campaign.end_time = j['objects'][0]['date']
@@ -436,8 +457,8 @@ class CampaignsController < ApplicationController
 			#end
 
 			p "Parsing: " + (Time.now - t1).to_s
-			@campaign.status = "ready"
-			if @campaign.save
+			campaign.status = "ready"
+			if campaign.save
 				notification = PointsHistory.new(description: 'Campaign successfully nominated!', points_received: 5)
 				user = current_user.lock!
 				user.pointsHistories << notification

@@ -15,6 +15,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private void loadWebPage() {
         WebView myWebView = (WebView) findViewById(R.id.webview);
-        myWebView.loadUrl("http://www.example.com");
+        myWebView.loadUrl("http://stianerkul.me/mobile/login");
     }
 }
