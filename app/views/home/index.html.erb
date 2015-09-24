@@ -15,17 +15,12 @@ function hideButton(buttonElement){
 <div class="row start-voting-row">
 	<div class="text-center">
 		<% if current_user != nil %>
-			<% if current_user.isOnStep < 3 %>
-				<h2 id="vote-message" style="margin-bottom: 30px;">Have your say on today's nominations!</h2>
-			<% end %>
-		<% end %>
-
-		<% if current_user != nil %>
 			<% if current_user.isOnStep > 0 %>
 				<button type="button" id="start-voting" class="btn btn-lg orange">START</button>
 			<% else %>
 				<div class="container">
 				  <!-- Trigger the modal with a button -->
+				  <h2 id="vote-message" style="margin-bottom: 30px;">Have your say on today's nominations!</h2>
 				  <button type="button" id="pledge-btn" class="btn btn-lg orange" data-toggle="modal" data-target="#pledge-modal">START</button>
 
 				  <!-- Modal -->
@@ -42,7 +37,7 @@ function hideButton(buttonElement){
 				          <h2>I pledge my allegiance to <b>mother earth</b> and all her inhabitants. I will only promote content that I find <b>just</b> and <b>awesome</b>.</h2>
 				        </div>
 				        <div class="modal-footer">
-				          <button type="button" id="start-voting" class="btn btn-default orange" data-dismiss="modal" onclick="$('#pledge-btn').hide(); $('#vote-message').hide();">Pledge and Play</button>
+				          <button type="button" id="start-voting" class="btn btn-default orange" data-dismiss="modal">Pledge and Play</button>
 				        </div>
 				      </div>
 				    </div>

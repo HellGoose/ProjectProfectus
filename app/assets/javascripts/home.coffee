@@ -10,7 +10,7 @@ $(document).ready ->
 	# Slides up the campaign-display div.
 	$('.campaign-display').hide()
 
-	# Load voting at once, to prevent lag on start-voting
+	# Load voting at once, to prevent lag on start-voting (although lags front page a little)
 	$('#voting').load("/vote/campaign/-1")
 
 
@@ -37,7 +37,7 @@ $(document).ready ->
 	$('#start-voting').on 'click', ->
 		$('.campaign-display').hide()
 		$('#voting').slideDown(400)
-		$('#start-voting').fadeOut()
+		$('.start-voting-row').fadeOut()
 		$('#campaigns-news').fadeOut()
 		return
 
@@ -47,7 +47,7 @@ $(document).ready ->
 	$('body').on 'click', '#back-voting-small', ->
 		$('.campaign-display').hide()
 		$('#voting').slideUp(400)
-		$('#start-voting').delay(100).fadeIn()
+		$('.start-voting-row').delay(100).fadeIn()
 		$('#campaigns-news').delay(100).fadeIn()
 		$('.campaign-box').each ->
   		$(this).removeClass 'down-arrow'
