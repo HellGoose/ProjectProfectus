@@ -21,7 +21,15 @@ function hideButton(buttonElement){
 				<div class="container">
 				  <!-- Trigger the modal with a button -->
 				  <h2 id="vote-message" style="margin-bottom: 30px;">Have your say on today's nominations!</h2>
-				  <button type="button" id="pledge-btn" class="btn btn-lg orange" data-toggle="modal" data-target="#pledge-modal">START</button>
+				  
+				  <!-- Start button -->
+				  <button type="button" id="pledge-btn" data-toggle="modal" data-target="#pledge-modal"
+				  <% if Campaign.where(votable: true).count<15 then %> 
+				  	class="btn btn-lg orange disabled" title"There is not enough nominations to start voting. (<%= Campaign.where(votable: true).count %>/15)" disabled 
+				  <% else %> 
+				  	class="btn btn-lg orange" 
+				  <% end %>>START</button>
+				  <!-- Start button end -->
 
 				  <!-- Modal -->
 				  <div class="modal fade" id="pledge-modal" role="dialog">
