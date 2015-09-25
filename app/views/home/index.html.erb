@@ -25,7 +25,9 @@ function hideButton(buttonElement){
 				  <!-- Start button -->
 				  <button type="button" id="pledge-btn" data-toggle="modal" data-target="#pledge-modal"
 				  <% if Campaign.where(votable: true).count<15 then %> 
-				  	class="btn btn-lg orange disabled" title"There is not enough nominations to start voting. (<%= Campaign.where(votable: true).count %>/15)" disabled 
+				  	class="btn btn-lg orange disabled" 
+				  	title="There is not enough nominations (<%= Campaign.where(votable: true).count %>/15) to start voting" 
+				  	disabled 
 				  <% else %> 
 				  	class="btn btn-lg orange" 
 				  <% end %>>START</button>
