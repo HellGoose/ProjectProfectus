@@ -41,7 +41,7 @@ end
 
 private
 def runNewRound (decayRate)
-	if Campaign.where(nominated: true).empty?
+	if Campaign.where(nominated: true).count < 15
 		puts "Failed to start new round! Not enough nominated campaigns for the next round."
 		return
 	end

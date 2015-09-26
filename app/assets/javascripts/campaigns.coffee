@@ -168,6 +168,8 @@ $(document).ready ->
         $.embedly.extract('https://' + campaign, key: '0eef325249694df490605b1fd29147f5').progress (data) ->
           if data.title?
             renderCampaignPreview(data)
+          else
+            renderNoPreview()
           return
         return
 
@@ -189,6 +191,8 @@ $(document).ready ->
         $.embedly.extract('https://' + campaign, key: '0eef325249694df490605b1fd29147f5').progress (data) ->
           if data.title?
             renderCampaignPreview(data)
+          else
+            renderNoPreview()
           return
         return
       return
@@ -245,4 +249,12 @@ clearCampaignPreview = ->
   $('#campaign-image').attr('src', '')
   $('#campaign-title').html('')
   $('#campaign-description').html('')
+  return
+
+renderNoPreview = ->
+  $('#description-field').val('None')
+  $('#image-field').val('None')
+  $('#title-field').val('None')
+
+  $('#campaign-description').html('<h2>We could not get you a preview. Sorry :(</h2><p>But you can still nominate the campaign :)</p>')
   return
