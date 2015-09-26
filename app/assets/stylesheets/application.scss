@@ -22,6 +22,7 @@
 // Global color variables
 $gray: #F7F7F7;
 $green: #385559;
+$orange: #F05000;
 
 html, body{ 
 	height:100%;
@@ -61,10 +62,14 @@ html, body{
 
 #content {
   padding: 0px;
+  margin-bottom: 100px;
+  min-height: 600px;
+  // border-bottom-style: solid;
+  // border-bottom-color: $gray;
+  // border-bottom-width: 5px;
 }
 
 #footer {
-  margin-top: 200px; 
   border-radius: 0px;
 }
 
@@ -120,6 +125,8 @@ html, body{
 .navbar-default {
   background-color: #385559;
   border-color: #273638;
+  border-bottom-color: $gray;
+  border-bottom-width: 5px;
 }
 .navbar-default .navbar-brand {
   color: #ecf0f1;

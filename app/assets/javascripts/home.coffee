@@ -5,68 +5,53 @@
 # Runs the code after the document is ready
 $(document).ready ->
 	# Slides up the voting div
-	$('#voting').slideUp 0
+	$('#voting').hide()
 
 	# Slides up the campaign-display div.
-	$('.campaign-display').slideUp 0
+	$('.campaign-display').hide()
+
+	# Load voting at once, to prevent lag on start-voting (although lags front page a little)
+	$('#voting').load("/vote/campaign/-1")
+
 
 	# Slides down the preview of the current campaign and slides up
 	# the others.
 	$('body').on 'click', '.campaign-vote', ->
 		if @id == '0'
-			$('#0.campaign-display').slideToggle()
-			$('#1.campaign-display').slideUp(0)
-			$('#2.campaign-display').slideUp(0)
+			$('#1.campaign-display').fadeOut(100)
+			$('#2.campaign-display').fadeOut(100)
+			$('#0.campaign-display').delay(100).fadeToggle()
 		if @id == '1'
-			$('#1.campaign-display').slideToggle()
-			$('#0.campaign-display').slideUp(0)
-			$('#2.campaign-display').slideUp(0)
+			$('#0.campaign-display').fadeOut(100)
+			$('#2.campaign-display').fadeOut(100)
+			$('#1.campaign-display').delay(100).fadeToggle()
 		if @id == '2'
-			$('#2.campaign-display').slideToggle()
-			$('#1.campaign-display').slideUp(0)
-			$('#0.campaign-display').slideUp(0)
+			$('#1.campaign-display').fadeOut(100)
+			$('#0.campaign-display').fadeOut(100)
+			$('#2.campaign-display').delay(100).fadeToggle()
 		return
 
 	# Loads the voting div when the user clicks on the Make a Difference
 	# button. Also slides up the news, the top 8 campaigns and
 	# replaces the Make a Difference button with a back and a next button.
 	$('#start-voting').on 'click', ->
-		$('#start-voting').hide()
-		$('#back-voting').show()
-		$('#voting').load "/vote/campaign/-1", (response, status) ->
-			$('.campaign-display').slideUp(0)
-			if $('#campaign').data('step') < 4
-				$('#next-voting').show()
-			else
-				$('#next-voting').hide()
-			if $('#campaign').data('step') < 3
-				$('#refresh-voting').show()
-			else
-				$('#refresh-voting').hide()
-			$('#voting').slideToggle()
-			$('#campaigns-news').slideToggle()
-			return
+		$('.campaign-display').hide()
+		$('#voting').slideDown(400)
+		$('.start-voting-row').fadeOut()
+		$('#campaigns-news').fadeOut()
 		return
 
 	# Hides the back button, next button and displays the Make a Difference
 	# button when the user clicks on the back button.
 	# Also slides down news, top 8 campaigns and slides up the voting div.
-	$('#back-voting').on 'click', ->
-		$('#start-voting').show()
-		$('#back-voting').hide()
-		$('#next-voting').hide()
-		$('#refresh-voting').hide()
-		$('#voting').slideToggle()
-		$('#campaigns-news').fadeIn()
-		return
-
 	$('body').on 'click', '#back-voting-small', ->
-		$('#start-voting').show()
-		$('#back-voting').hide()
-		$('#next-voting').hide()
-		$('#refresh-voting').hide()
-		$('#voting').slideToggle()
-		$('#campaigns-news').fadeIn()
+		$('.campaign-display').hide()
+		$('#voting').slideUp(400)
+		$('.start-voting-row').delay(100).fadeIn()
+		$('#campaigns-news').delay(100).fadeIn()
+		$('.campaign-box').each ->
+  		$(this).removeClass 'down-arrow'
+  		return
 		return
 
 	# Sets the custom data value vote to the current selected star,
@@ -82,12 +67,12 @@ $(document).ready ->
 	# refresh button. Does not change the step.
 	$('#refresh-voting').on 'click', ->
 		$('#voting').load "/refresh/campaigns/", (response, status) ->
-			$('.campaign-display').slideUp(0)
+			$('.campaign-display').slideUp()
 		return
 
 	$('body').on 'click', '#refresh-voting-small', ->
 		$('#voting').load "/refresh/campaigns/", (response, status) ->
-			$('.campaign-display').slideUp(0)
+			$('.campaign-display').slideUp()
 		return
 
 	# Loads the next voting set of campaigns when the user clicks on the
@@ -96,7 +81,7 @@ $(document).ready ->
 		campaign = $('#campaign').data('vote')
 		$('#campaign').data('vote', -1)
 		$('#voting').load "/vote/campaign/" + campaign, (response, status) ->
-			$('.campaign-display').slideUp(0)
+			$('.campaign-display').slideUp()
 			if $('#campaign').data('step') < 4
 				$('#next-voting').show()
 			else
@@ -114,7 +99,7 @@ $(document).ready ->
 		campaign = $('#campaign').data('vote')
 		$('#campaign').data('vote', -1)
 		$('#voting').load "/vote/campaign/" + campaign, (response, status) ->
-			$('.campaign-display').slideUp(0)
+			$('.campaign-display').slideUp()
 			if $('#campaign').data('step') < 4
 				$('.continue-button').hide()
 			else

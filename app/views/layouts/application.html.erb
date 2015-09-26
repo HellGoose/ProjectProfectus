@@ -1,6 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+  <!-- Favicon :O -->
+  <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+  <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="/favicon-194x194.png" sizes="194x194">
+  <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+  <link rel="icon" type="image/png" href="/android-chrome-192x192.png" sizes="192x192">
+  <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="msapplication-TileColor" content="#00aba9">
+  <meta name="msapplication-TileImage" content="/mstile-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+  <!-- Favicon end -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -47,14 +67,27 @@
         minutes = parseInt(seconds_left / 60);
         seconds = parseInt(seconds_left % 60);
 
-        // format countdown string + set tag value
-        document.getElementById("counter").innerHTML = 
-        // '<span class="days">' + days + ' Days </span>' 
-        '<span class="hours">' + hours + '</span>' + //' Hours </span>'
-        ' : <span class="minutes">' + minutes + '</span>' + //' Minutes. </span>' 
-        ' : <span class="seconds">' + seconds + '</span> '//' Seconds </span>'
-        ;
-    }, 1000);
+        if (hours <= 0 && minutes <= 0 && seconds < 0) {
+          document.getElementById("counter").innerHTML = '<span>A new round has started!</span>';
+        } else {
+          if (hours < 10) {
+            hours = "0" + hours;
+          }
+          if (minutes < 10) {
+            minutes = "0" + minutes;
+          }
+          if (seconds < 10) {
+            seconds = "0" + seconds;
+          }
+          // format countdown string + set tag value
+          document.getElementById("counter").innerHTML = 
+          // '<span class="days">' + days + ' Days </span>' 
+          '<span class="hours">' + hours + '</span>' + //' Hours </span>'
+          ' : <span class="minutes">' + minutes + '</span>' + //' Minutes. </span>' 
+          ' : <span class="seconds">' + seconds + '</span> '//' Seconds </span>'
+          ;
+        }
+      }, 1000);
     </script>
   </head>
   <body>
@@ -71,7 +104,7 @@
         </div> <!-- End navbar-header -->
         <div>
           <ul class="nav navbar-nav navbar-center">
-          <li><a href='#' id="counter" style="left: 45px;"></a></li>
+          <li><a href='#' id="counter" style="left: 35px;"></a></li>
           </ul>
         </div>
         <div class="navbar-collapse collapse">
@@ -122,9 +155,7 @@
 	  </div> <!-- End navbar -->
 
     <div class="container-fluid" id="content">
-      <div class="notification-container">
-        <div class="text-center" id="notifications" style="display:none"></div>
-      </div>
+      <div class="notification-container"><div class="text-center" id="notifications" style="display:none"></div></div>
       <%= yield %>
     </div><!-- End content -->
 

@@ -19,6 +19,8 @@
 <div class="container" id="vote-campaigns">
 	<%= render partial: 'campaigns/vote' %>
 </div>
+
+<div class="campaign-display-all">
 <% id = 0 %>
 <% @campaignVoting.each do |c| %>
 	<div class="campaign-display" id=<%= id %>>
@@ -27,3 +29,4 @@
   </div>
 	<% id += 1 %>
 <% end %>
+</div>
