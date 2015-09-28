@@ -411,6 +411,16 @@ class CampaignsController < ApplicationController
 
 			j = JSON.parse res.body
 
+			if j['objects'].nil?
+				notification = PointsHistory.new(description: 'Campaign was not nominated! Something went wrong.', points_received: 0)
+				user = current_user.lock!
+				user.pointsHistories << notification
+				user.additionsThisRound -= 1
+				user.save
+				@campaign.destroy
+				return
+			end
+
 			campaign.lock!
 			campaign.title = j['objects'][0]['title'].delete('.')
 			campaign.content = j['objects'][0]['html']
