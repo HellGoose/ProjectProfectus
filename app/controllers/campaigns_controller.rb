@@ -411,7 +411,9 @@ class CampaignsController < ApplicationController
 
 			j = JSON.parse res.body
 
-			if j['objects'].nil?
+			if j['error']
+				p 'ERROR.THREAD: Diffbot could not fetch the objects'
+				p j['error']
 				notification = PointsHistory.new(description: 'Campaign was not nominated! Something went wrong.', points_received: 0)
 				user = current_user.lock!
 				user.pointsHistories << notification
@@ -475,6 +477,8 @@ class CampaignsController < ApplicationController
 				user.points +=5
 				user.save
 			else
+				p 'ERROR.THREAD: Could not save the campaign'
+				p campaign.errors
 				notification = PointsHistory.new(description: 'Campaign was not nominated! Something went wrong.', points_received: 0)
 				user = current_user.lock!
 				user.pointsHistories << notification
