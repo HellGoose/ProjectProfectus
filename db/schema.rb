@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150928082331) do
+ActiveRecord::Schema.define(version: 20150929222345) do
 
   create_table "badges", force: :cascade do |t|
     t.string   "name",        limit: 255
@@ -61,7 +61,7 @@ ActiveRecord::Schema.define(version: 20150928082331) do
 
   add_index "campaigns", ["category_id"], name: "index_campaigns_on_category_id", using: :btree
   add_index "campaigns", ["crowdfunding_site_id"], name: "index_campaigns_on_crowdfunding_site_id", using: :btree
-  add_index "campaigns", ["nominator_id"], name: "fk_rails_d8d6273771", using: :btree
+  add_index "campaigns", ["nominator_id"], name: "fk_rails_a24f47bdc4", using: :btree
   add_index "campaigns", ["user_id"], name: "index_campaigns_on_user_id", using: :btree
 
   create_table "categories", force: :cascade do |t|
@@ -201,6 +201,13 @@ ActiveRecord::Schema.define(version: 20150928082331) do
     t.integer  "isOnStep",               limit: 4
     t.boolean  "hasLoggedInThisRound",   limit: 1
     t.integer  "additionsThisRound",     limit: 4
+  end
+
+  create_table "website_logs", force: :cascade do |t|
+    t.string   "website",    limit: 255
+    t.integer  "tried",      limit: 4
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   add_foreign_key "campaigns", "users", column: "nominator_id"

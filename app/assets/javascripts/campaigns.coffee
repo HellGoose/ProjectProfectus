@@ -195,6 +195,9 @@ $(document).ready ->
             renderNoPreview()
           return
         return
+
+      $.get '/campaigns/log/' + campaign, (data) ->
+        return
       return
   return
 
