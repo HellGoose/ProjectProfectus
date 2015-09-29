@@ -138,6 +138,25 @@ class CampaignsController < ApplicationController
 		end
 	end
 
+	# Public: Logs an unsupported website to the database
+	def log_unsupported_site
+		if !current_user
+			return
+		end
+
+		website = URI.parse("http://" + params[:website]).host
+		log = WebsiteLog.where(website: website)[0]
+
+		if !log
+			log = WebsiteLog.new(website: website)
+		else
+			log.tried += 1
+		end
+		log.save
+
+		render :nothing => true
+	end
+
 	# Public: Deletes a campaign from the database.
 	# Route: DELETE root/campaigns/:id
 	# 	:id - The id of the campaign in the database.

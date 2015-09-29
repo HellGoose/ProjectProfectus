@@ -3,7 +3,7 @@ var indiegogo = 'indiegogo.com';
 
 var urlregex = new RegExp('^(http|https)://([a-zA-Z0-9.-]+(:[a-zA-Z0-9.&amp;%$-]+)*@)*(([a-zA-Z0-9-]+.)*[a-zA-Z0-9-]+.(com|net|org|[a-zA-Z]{2}))');
 
-var scope = 'http://www.stianerkul.me/';
+var scope = 'http://stianerkul.me/';
 
 $.embedly.defaults.key = '0eef325249694df490605b1fd29147f5';
 
@@ -43,13 +43,13 @@ function checkStatus() {
 		url = url.replace('https://', '');
 		url = url.replace('http://', '');
 
+		var splitSlashes = url.split('\/');
+
 		if (new RegExp(kickstarter).test(url)) {
-			var splitSlashes = url.split('/');
 			if (!splitSlashes[1].includes('projects')) {
 				$('#status').html('Unsupported site/campaign.');
 				return;
 			}
-
 			var removeParams = splitSlashes[3].split('?');
 			var title = removeParams[0];
 			checkCampaignStatus(title);
@@ -57,12 +57,10 @@ function checkStatus() {
 		}
 
 		if (new RegExp(indiegogo).test(url)) {
-			var splitSlashes = url.split('/');
 			if (!splitSlashes[1].includes('projects')) {
 				$('#status').html('Unsupported site/campaign.');
 				return;
 			}
-
 			var removeParams = splitSlashes[2].split('#');
 			var title = removeParams[0];
 			checkCampaignStatus(title);
@@ -70,6 +68,7 @@ function checkStatus() {
 		}
 
 		$('#status').html('Unsupported site/campaign.');
+		$.get(scope + 'campaigns/log/' + splitSlashes[0], function(data) {});
 	});
 }
 
@@ -105,7 +104,7 @@ function checkCampaignStatus(title) {
 							break;
 
 						case 'too many campaigns nominated':
-							$('#status').html('You have nominated too many campaigns this round');
+							$('#status').html('You have already nominated your three nominations for today!');
 							$('#nominate').attr('disabled', true);
 							break;
 					}
