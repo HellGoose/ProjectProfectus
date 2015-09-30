@@ -22,7 +22,7 @@
     </div>
     <div class="form-group">
       <%= f.label :description, "Pitch" %>
-      <%= f.text_area :description, class: "form-control", id: "description-field", rows: "5", placeholder: "Why this will make a difference." %>
+      <%= f.text_field :description, class: "form-control", id: "description-field", maxLength: 90, placeholder: "Why do you believe that this will make a difference?" %>
     </div>
     <div class="form-group" style="display: none;">
       <%= f.text_field :title, class: "form-control", id: "title-field" %>
