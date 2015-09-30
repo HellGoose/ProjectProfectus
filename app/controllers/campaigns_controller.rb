@@ -53,6 +53,9 @@ class CampaignsController < ApplicationController
 	#
 	# Renders campaign#edit.
 	def edit
+		if !(isCampaignOwner or isAdmin)
+			redirect_to campaigns_path
+		end
 	end
 
 	# Public: Updates a campaign iff the current user is the campaign owner or an admin.
