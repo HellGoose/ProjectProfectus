@@ -234,7 +234,6 @@ checkCampaignStatus = (title) ->
 
 # Renders a preview of the campaign the scraper received.
 renderCampaignPreview = (data) ->
-  $('#description-field').val(data.description)
   $('#image-field').val(data.images[0].url)
   $('#title-field').val(data.title.replace('CLICK HERE to support ', ''))
 
@@ -245,7 +244,6 @@ renderCampaignPreview = (data) ->
 
 # Clears the campaign preview area
 clearCampaignPreview = ->
-  $('#description-field').val('')
   $('#image-field').val('')
   $('#title-field').val('')
 
@@ -254,10 +252,12 @@ clearCampaignPreview = ->
   $('#campaign-description').html('')
   return
 
+# Renders an empty preview with a warning that no preview could be retrieved.
 renderNoPreview = ->
-  $('#description-field').val('None')
   $('#image-field').val('None')
   $('#title-field').val('None')
 
+  $('#campaign-image').attr('src', '')
+  $('#campaign-title').html('')
   $('#campaign-description').html('<h2>We could not get you a preview. Sorry :(</h2><p>But you can still nominate the campaign :)</p>')
   return

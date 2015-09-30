@@ -61,7 +61,7 @@ ActiveRecord::Schema.define(version: 20150929222345) do
 
   add_index "campaigns", ["category_id"], name: "index_campaigns_on_category_id", using: :btree
   add_index "campaigns", ["crowdfunding_site_id"], name: "index_campaigns_on_crowdfunding_site_id", using: :btree
-  add_index "campaigns", ["nominator_id"], name: "fk_rails_a24f47bdc4", using: :btree
+  add_index "campaigns", ["nominator_id"], name: "fk_rails_d8d6273771", using: :btree
   add_index "campaigns", ["user_id"], name: "index_campaigns_on_user_id", using: :btree
 
   create_table "categories", force: :cascade do |t|

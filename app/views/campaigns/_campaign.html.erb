@@ -70,14 +70,14 @@
 				disabled: @campaign.nominated
 				%>
 			</div>
-<!-- 			<div class="col-xs-7" id="edit">
+ 			<div class="col-xs-7" id="edit">
 				<div class="edit">
 					<% if @campaign.user_id == session[:user_id] || isAdmin %>
-						<%= link_to "Edit |", edit_campaign_path(@campaign)%> 
-						<%= link_to "Delete", @campaign, method: :delete, data: {confirm: "Are you sure?"} %>
+						<%= link_to "Edit", edit_campaign_path(@campaign)%> 
+						<!--<%= link_to "Delete", @campaign, method: :delete, data: {confirm: "Are you sure?"} %>-->
 					<% end %>
 				</div>
-			</div> -->
+			</div>
 		</div>
 	</div>
 	<h2 id="campaign-title-main"><%= @campaign.title %></h2>
