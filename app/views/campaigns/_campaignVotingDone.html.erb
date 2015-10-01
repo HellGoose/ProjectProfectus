@@ -4,18 +4,19 @@
   <div class="col-xs-1 pull-right close-voting"><i type="button" id="back-voting-small" class="btn fa fa-times-circle" title="Close" onclick="$('#pledge-btn').show();"></i></div>
 </div>
 
-<div class="row container text-center step-indicator">
-    <div class="col-xs-3 pull-left start-step">Step 1</div>
+<div class="row row-centered text-center step-indicator">
+    <div class="col-xs-3 col-centered start-step">Step 1</div>
     <div class="col-xs-2 col-centered step">Step 2</div>
     <div class="col-xs-2 col-centered step">Step 3</div>
     <div class="col-xs-2 col-centered step">Final Vote</div>
-    <div class="col-xs-3 pull-right current-end-step">Finished!</div>
+    <div class="col-xs-3 col-centered current-end-step">Finished!</div>
 </div>
 
-<div class="container" id="vote-campaigns">
+<!-- Vote-campaigns -->
+<div class="row row-centered" id="vote-campaigns">
 	<% i = 0 %>
 	<% @campaignVoting.each do |c| %>
-		<div class="col-xs-4 campaign-container">
+		<div class="col-xs-4 col-centered campaign">
 			<div class="text-center vote-star" id="<%= i %>">
 					<% if c == @votedFor[0].campaign %>
 						<span class="fa fa-star star-finished-win" style="font-size: xx-large;" aria-hidden="true"></span>
@@ -24,7 +25,7 @@
 					<% end %>
 				</a>
 			</div>
-			<div class="campaign campaign-vote" id="<%= i %>" style="border: 0px;">
+			<div class="campaign-vote" id="<%= i %>" style="border: 0px;">
 				<% i += 1 %>
 					<script type="text/javascript">
 					$(function() {                       //run when the DOM is ready
@@ -41,16 +42,18 @@
 					});
 				</script>
 				<div class="campaign-box">
-					<div class="image-container">
-						<%= image_tag c.image, class: "logo img-responsive clip", id: "vote-img" %>
+					<div class="row">
+						<%= image_tag c.image, class: "logo img-responsive clip", id: "campaign-img" %>
 					</div>
-					<h4 id="campaign-title"><%= c.title %></h4>
+					<h4><%= c.title %></h4>
 				</div>
 			</div>
 		</div>
 	<% end %>
 </div>
 
+
+<!-- Campaign-view -->
 <div class="campaign-display-all">
 <% id = 0 %>
 <% @campaignVoting.each do |c| %>

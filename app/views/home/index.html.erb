@@ -64,16 +64,27 @@ function hideButton(buttonElement){
 </div>
 
 <div class="empty" id="campaigns-news">
-	<div class="container" id="winner_container">
-		<h3 class="styled-title">Round Winners</h3>
-		<hr class="campaigns-news-rule">
-		<div class="row" id="winners">
-			<%= render partial: 'winners' %>
-		</div>
-		<h3 id="leaderboards-title" class="styled-title">Leaderboards</h3>
-		<hr class="campaigns-news-rule">
-		<div class="leaderboard">
-			<%= render partial: 'users/leaderboard', locals: {page:0, interval:10, users:User.all.order('points DESC')}%>
-		</div>
+<!-- Podium -->
+<div class="container winners"> 
+	<div class="row title-container">
+		<h3>Round Winners</h3>
+		<hr>
 	</div>
+	<div class="row row-centered"> <!-- id="winners" -->
+		<%= render partial: 'winners' %>
+	</div>
+</div>
+<!-- Podium end -->
+
+<!-- Leaderboards -->
+<div class="container leaderboards">
+	<div class="row title-container">
+		<h3>Leaderboards</h3>
+		<hr>
+	</div>
+	<div class="row leaderboard">
+		<%= render partial: 'users/leaderboard', locals: {page:0, interval:10, users:User.all.order('points DESC')}%>
+	</div>
+</div>
+<!-- Leaderboards end -->
 </div>

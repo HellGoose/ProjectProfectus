@@ -92,12 +92,15 @@
 	width: 250px;
 	cursor: hand;
 	cursor: pointer;
+	min-width: 250px;
+  max-width: 250px;
+  height: 260px;
+  margin-top: 10px;
 }
 
 #vote-campaigns {
-	margin: auto; 
-	width: 63%; 
-	margin-bottom: 100px;
+	height: 375px;
+	// margin-bottom: 100px;
 	// border-bottom-style: solid; 
 	// border-bottom-width: 3px;
 	// border-bottom-color: #385559;
@@ -114,30 +117,45 @@
 	margin-bottom: 2px;
 }*/
 
-#leaderboards-title {
-	margin-top: 75px;
-}
+// #leaderboards-title {
+// 	margin-top: 75px;
+// }
 
-.styled-title {
+// .styled-title {
+// 	padding-left: 5px;
+// 	padding-top: 3px;
+// }
+
+.title-container > h3 {
 	padding-left: 5px;
 	padding-top: 3px;
-}
-
-#winner_container {
-	padding-left: 150px;
-	padding-right: 150px;
-}
-
-#winner_container > h3 {
 	background: #F7F7F7;
 }
 
-.campaigns-news-rule {
+.title-container > hr {
 	border-color: #385559;
 	border-width: 3px;
 	margin-top: 2px;
 	margin-bottom: 2px;
 }
+
+// .campaigns-news-rule {
+// 	border-color: #385559;
+// 	border-width: 3px;
+// 	margin-top: 2px;
+// 	margin-bottom: 2px;
+// }
+
+// #winner_container {
+// 	padding-left: 150px;
+// 	padding-right: 150px;
+// }
+
+// #winner_container > h3 {
+// 	background: #F7F7F7;
+// }
+
+
 
 //News
 
@@ -167,15 +185,4 @@
 
 .blue {
 	color: blue;
-}
-
-.reroll-close {
-	margin-left: auto;
-	margin-right: auto;
-	width: 63%;	
-	font-size: large;
-}
-
-.close-voting {
-	text-align: right;
 }

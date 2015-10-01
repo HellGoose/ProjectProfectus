@@ -20,15 +20,15 @@ $(document).ready ->
 		if @id == '0'
 			$('#1.campaign-display').fadeOut(100)
 			$('#2.campaign-display').fadeOut(100)
-			$('#0.campaign-display').delay(100).fadeToggle()
+			$('#0.campaign-display').fadeToggle()
 		if @id == '1'
 			$('#0.campaign-display').fadeOut(100)
 			$('#2.campaign-display').fadeOut(100)
-			$('#1.campaign-display').delay(100).fadeToggle()
+			$('#1.campaign-display').fadeToggle()
 		if @id == '2'
 			$('#1.campaign-display').fadeOut(100)
 			$('#0.campaign-display').fadeOut(100)
-			$('#2.campaign-display').delay(100).fadeToggle()
+			$('#2.campaign-display').fadeToggle()
 		return
 
 	# Loads the voting div when the user clicks on the Make a Difference
@@ -95,19 +95,12 @@ $(document).ready ->
 
 	# Loads the next voting set of campaigns when the user clicks on the
 	# vote button. Also sends the list id of the current voted campaign.
-	$('body').on 'click', '.continue-button', ->
+	$('body').on 'click', '.continue-button', (event) ->
+		event.stopPropagation()
 		campaign = $('#campaign').data('vote')
 		$('#campaign').data('vote', -1)
 		$('#voting').load "/vote/campaign/" + campaign, (response, status) ->
-			$('.campaign-display').slideUp()
-			if $('#campaign').data('step') < 4
-				$('.continue-button').hide()
-			else
-				$('.continue-button').hide()
-			if $('#campaign').data('step') < 3
-				$('#refresh-voting').show()
-			else
-				$('#refresh-voting').hide()
+			$('.campaign-display').hide()
 			return
 		return
 

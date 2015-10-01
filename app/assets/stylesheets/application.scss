@@ -28,6 +28,14 @@ html, body{
 	height:100%;
 }
 
+.disabled {
+  cursor: default !important;
+}
+
+.btn[disabled] {
+  cursor:default !important;
+}
+
 .selected {
   background: linear-gradient(to bottom right, #AAAAAA, #999999) !important;
   border-radius: 5px;
@@ -118,7 +126,6 @@ html, body{
 }
 
 .navbar {
-
   margin-bottom: 0px;
 }
 
@@ -198,4 +205,17 @@ html, body{
     color: #f7f7f7;
     background-color: #273638;
   }
+}
+
+#navbar-counter {
+  width: 100%;
+  position: absolute;
+  padding-top: 15px;
+  height: 50px;
+  z-index: -1;
+}
+
+#counter {
+  color: #ecf0f1 !important;
+  text-decoration: none !important;
 }

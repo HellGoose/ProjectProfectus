@@ -1,6 +1,6 @@
 <% i = 0 %>
 <% @campaignVoting.each do |c| %>
-	<div class="col-xs-4 campaign-container">
+	<div class="col-xs-4 col-centered campaign">
 		<div class="text-center vote-star" id="<%= i %>">
 		<script type="text/javascript">
 				$(function() {                       //run when the DOM is ready
@@ -30,7 +30,7 @@
 				<span class="fa fa-star" style="color: white;" aria-hidden="true"></span><!-- <i class="fa fa-star" style="color: gold;"> -->
 			</a>
 		</div>
-		<div class="campaign campaign-vote" id="<%= i %>" style="border: 0px;">
+		<div class="campaign-vote" id="<%= i %>" style="border: 0px;">
 			<% i += 1 %>
 			<script type="text/javascript">
 				$(function() {                       //run when the DOM is ready
@@ -48,10 +48,10 @@
 			</script>
 			<button id="<%='continue-'+(i-1).to_s %>" class="btn orange continue-button" style="display:none;"><h3>CONTINUE</h3></button>
 			<div class="campaign-box">
-				<div class="image-container">
-					<%= image_tag c.image, class: "logo img-responsive clip"%>
+				<div class="row">
+					<%= image_tag c.image, class: "logo img-responsive clip", id: "campaign-img"%>
 				</div>
-				<h4 id="campaign-title"><%= c.title %></h4>
+				<h4><%= c.title %></h4>
 			</div>
 		</div>
 	</div>
