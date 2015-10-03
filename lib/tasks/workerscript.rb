@@ -152,6 +152,7 @@ def runNewRound (decayRate)
 
 	#Increment to next round
 	round.currentRound += 1
+	round.numberOfVotersLastRound = CampaignVote.where(voteType: 2).select(:user_id).count
 	round.save
 	Campaign.update_all(timesShownInVoting: 0, votable: false)
 	Campaign.where(nominated: true).update_all(nominated: false, votable: true)
@@ -175,7 +176,8 @@ def initRound
 	Round.create(
 		duration: 3600, 
 		decayRate: 0.75,
-		maxAdditionsPerUser: 3)
+		maxAdditionsPerUser: 3,
+		numberOfVotersLastRound: 0)
 end
 
 def initCategories
