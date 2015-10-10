@@ -450,7 +450,6 @@ class CampaignsController < ApplicationController
 			campaign.goal = j['objects'][0]['goal'].delete(',').delete('$').to_i
 			campaign.author = j['objects'][0]['author'] # needs proper parsing for kickstarter
 			campaign.image = j['objects'][0]['image']
-			campaign.description = j['objects'][0]['description']
 
 			p provider
 
