@@ -69,4 +69,13 @@ class AdminController < ApplicationController
 			redirect_to "/admin/"
 		end
 	end
+
+	def reset_voting
+		if isAdmin
+			CampaignVote.destroy_all
+			Campaign.update_all(timesShownInVoting: 0, roundScore: 0)
+			User.update_all(isOnStep: 0)
+			redirect_to "/admin/"
+		end
+	end
 end
