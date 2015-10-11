@@ -102,16 +102,24 @@ html, body{
   margin-right: auto;
 }
 
-#profile-pic {
+.profile-pic {
+  // display: block;
+  max-width: 30px !important;
+  max-height: 30px !important;
+  width: auto;
+  height: auto;
+}
+
+#navbar-pic {
   margin-top: -100%;
   margin-bottom: -100%;
 }
 
-#center-cropped {
+.center-cropped {
   object-fit: none; /* Do not scale the image */
   object-position: center; /* Center the image within the element */
-  height: 100px;
-  width: 100px;
+  // height: 100px;
+  // width: 100px;
 }
 
 .my-submissions {

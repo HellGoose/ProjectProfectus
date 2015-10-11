@@ -124,10 +124,7 @@
                 <% end %>
                 <li><a href="/users/"><i class="fa fa-star" style="color: gold;"></i> <%= current_user.points %></a></li>
                 <li><a href="<%= user_path(current_user) %>">
-                  <img class="img-circle center-cropped" id="profile-pic" height="30" width="30" src="<%= getFacebookPicURL(current_user) %>" style="
-                  margin-top: -100%;
-                  margin-bottom: -100%;
-                  "> <%= current_user.name.split(' ', 2).first %></a></li>
+                  <img class="img-circle profile-pic" id="navbar-pic" src="<%= getFacebookPicURL(current_user) %>"> <%= current_user.name.split(' ', 2).first %></a></li>
               <% else %>
                 <li><a href="/auth/facebook">Login</a></li>
               <% end %>

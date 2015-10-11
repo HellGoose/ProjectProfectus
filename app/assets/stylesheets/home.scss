@@ -85,19 +85,6 @@
 	margin-top: -5px;
 }
 
-.campaign-vote {
-	background-color: #fcfcfc;
-	border: 1px solid #ddd;
-	border-radius: 0px;
-	width: 250px;
-	cursor: hand;
-	cursor: pointer;
-	min-width: 250px;
-  max-width: 250px;
-  height: 260px;
-  margin-top: 10px;
-}
-
 #vote-campaigns {
 	height: 375px;
 	// margin-bottom: 100px;
@@ -125,6 +112,13 @@
 // 	padding-left: 5px;
 // 	padding-top: 3px;
 // }
+.leaderboards {
+	margin-top: 15px;
+}
+
+.title-container {
+	margin-bottom: 10px;
+}
 
 .title-container > h3 {
 	padding-left: 5px;
@@ -154,8 +148,6 @@
 // #winner_container > h3 {
 // 	background: #F7F7F7;
 // }
-
-
 
 //News
 

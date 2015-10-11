@@ -8,11 +8,7 @@
 	<h1 class="header text-center">Profile</h1>
 
 	<div class="col-sm-3">
-		<% if !@user.image || @user.image == '' %>
-		<%= image_tag getFacebookPicURL(@user), class: "img-responsive img-thumbnail" %>
-		<% else %>
-		<%= image_tag @user.image, class: "img-responsive img-thumbnail" %>
-		<% end %>
+		<img class="img-responsive" src="<%=getPic(@user)%>">
 	</div>
 	<div class="col-sm-5">
 		<h3 class="name-header">

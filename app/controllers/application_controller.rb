@@ -29,6 +29,17 @@ class ApplicationController < ActionController::Base
 		'http://graph.facebook.com/' + user.uid + '/picture?type=large'
 	end
 
+	# Public: Gets the users profile picture.
+	#
+	# Returns the profile picture.
+	def getPic(user)
+		if !user.image || user.image == ''
+			'http://graph.facebook.com/' + user.uid + '/picture?type=large'
+		else
+			user.image
+		end
+	end
+
 	def current_round
 		Round.maximum(:currentRound)
 	end

@@ -48,7 +48,7 @@ $green: #385559;
 
 #searchBar {
 	height: 30px;
-	width: 100%;
+	// width: 100%;
 	padding: 0 25px 0 25px;
 }
 
@@ -118,16 +118,35 @@ $green: #385559;
 	color: #363632;
 }
 
-#campaigns, #winners {
-	margin: 14px;
-	margin-top: 5px;
-}
-
-@media (min-width: 1200px) {
+@media (min-width: 900px) {
 	.winners {
 	  width: 878px;
 	  padding-left: 0px;
 	  padding-right: 0px;
+	  height: 520px;
+	}
+
+	#first_place {
+		margin-top:0px; 
+		border-bottom: 466px solid lightgrey;
+		margin-left: 0.5px !important;
+		margin-right: 0.5px !important;
+	}
+
+	#second_place {
+		margin-top: 50px; 
+		border-bottom: 416px solid lightgrey;
+		margin-right: 0.5px !important;
+		margin-left: 63px;
+		float: left !important;
+	}
+
+	#third_place {
+		margin-top: 100px;
+		border-bottom: 366px solid lightgrey;
+		margin-left: 0.5px !important;
+		margin-right: 63px !important;
+		float: right !important;
 	}
 
 	.leaderboards {
@@ -135,6 +154,10 @@ $green: #385559;
 	  padding-left: 0px;
 	  padding-right: 0px;
 	}
+}
+
+.placing-info {
+	min-height: 50px;
 }
 
 .campaign {
@@ -145,7 +168,7 @@ $green: #385559;
 	/*border: 1px solid #ddd;*/
 	min-width: 250px;
 	max-width: 250px;
-	height: 260px;
+	height: 316px;
 	vertical-align: top;
 }
 
@@ -175,13 +198,20 @@ $green: #385559;
   margin-left: auto;
   width: 200px;
   height: 40px;
-  top: 135px;
+  top: 60%;
   left: 25px;
   z-index: 2;
 }
 
 .campaign-vote {
 	border: 0px;
+	width: 250px;
+	cursor: hand;
+	cursor: pointer;
+	min-width: 250px;
+  max-width: 250px;
+  height: 316px;
+  margin-top: 10px;
 }
 
 /*#winners > div:nth-child(even) > div.campaign > div{
@@ -198,13 +228,40 @@ $green: #385559;
   margin-top: 0px;
   margin-bottom: 0px;
   padding: 5px;
-  height: 75px;
+  height: 44px;
   text-align: left;
 }
 
 .campaign-box {
+	background-color: #fcfcfc;
 	width: 250px;
-	height: 260px;
+	height: 316px;
+	-webkit-transition: all 0.5s ease;
+	-moz-transition: all 0.5s ease;
+	-o-transition: all 0.5s ease;
+	transition: all 0.5s ease;
+}
+
+.box-content-pitch {
+	margin-top: 5px;
+	margin-bottom: 3px;
+	padding: 0px;
+	text-align: left;
+	height: 52px;
+	padding-left: 3px;
+	padding-right: 3px;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	// background: url(quote.png) no-repeat;
+}
+
+.box-content-icon {
+	margin-left: 2px;
+	margin-right: 2px;	
+	margin-top: 10px;
+	max-width: 27px;
+	max-height: 27px;
+	padding: 0px;
 }
 
 .campaign-container .text-center h3 {
@@ -301,7 +358,7 @@ $green: #385559;
 	border-top-color: #385559;
 	margin-top: 267px;
 	height: 212px;
-	background-color: $gray;
+	background-color: white;//$gray;
 	width: 100%;
 	z-index: -1;
 }
@@ -346,6 +403,7 @@ $green: #385559;
 
 .campaign-info > .row {
 	margin: 0px;
+	padding-bottom: 20px;
 }
 
 #campaign-info-box {
@@ -710,5 +768,5 @@ div.current-end-step:after {
 }
 
 .campaign-display-all{
-	padding-top: 70px;
+	padding-top: 160px;
 }
