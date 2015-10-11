@@ -97,6 +97,8 @@ def runNewRound (decayRate)
 				round_id: round.id,
 				roundWon: round.currentRound,
 				placing: i
+				numberOfVoters: CampaignVote.where.not(voteType: 0).where(campaign_id: c.id).count
+				score: c.roundScore
 			)
 			i+=1
 		end
