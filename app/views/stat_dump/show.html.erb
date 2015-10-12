@@ -1,0 +1,26 @@
+<table class="table table-hover table-condensed table-responsive">
+	<thead>
+		<tr>
+			<th>Date</th>
+			<th>RoundNumber</th>
+			<th>Nominations</th>
+			<th>Seen</th>
+			<th>Votes</th>
+			<th>FinalVotes</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><%= @statDump.created_at %></td>
+			<td><%= @statDump.roundNumber %></td>
+			<td><%= @statDump.numberOfNominations %></td>
+			<td><%= @statDump.numberOfNominationsSeen %></td>
+			<td><%= @statDump.numberOfVotes %></td>
+			<td><%= @statDump.numberOfFinalVotes %></td>
+			<td><%= link_to "Back", "/admin/"%>
+		</tr>
+	</tbody>
+</table>
+<div id="details">
+	<%= @statDump.details.html_safe %>
+</div>

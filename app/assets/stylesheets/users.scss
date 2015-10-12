@@ -1,0 +1,104 @@
+// Place all the styles related to the user controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.name-header {
+	margin: 0 0 10px 0;
+}
+
+.badges {
+	margin-top: 10px;
+}
+
+.user-campaigns {
+	margin-top: 20px;
+	margin-bottom: 10px;
+}
+
+.user-campaigns .user-campaigns2 {
+	margin-left: 14px;
+}
+
+.user-notifications {
+	position: relative;
+	left: 50%;
+	margin-left: -265px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	width: 500px;
+	max-height: 200px;
+	overflow: auto;
+	border: 1px solid #ddd;
+}
+
+#notification_button_container {
+	margin: 10px;
+	width: 450px;
+	margin-right: auto;
+}
+
+.user-notifications2 {
+	border: 1px solid black;
+	height: 90px;
+	background-color: #d6e9c6;
+	width: 450px;
+	margin-right: auto;
+	margin-bottom: 10px;
+	margin-left: 10px;
+}
+
+#user-nominations-header {
+	margin-top: 20px;
+  background: #F7F7F7;
+}
+
+#user-nominations-rule {
+  border-color: #385559;
+  border-width: 3px;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
+#user-campaigns-container {
+	background: #F7F7F7;
+	padding-top: 20px;
+	padding-bottom: 20px;
+}
+
+#user-campaigns-header{
+	background: white;
+}
+
+#user-campaigns-rule {
+  border-color: #385559;
+  border-width: 3px;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
+.user-nominations > div > div > .campaign-box {
+	background: #F7F7F7;
+}
+
+.user-campaigns2 > div > .campaign-box {
+	background: white;
+}
+
+#leaderboard {
+	margin-bottom: 10px;
+	height: 405px;
+}
+
+#mobile_welcome {
+	margin: 10px;
+}
+
+#mobile_login > img {
+	height: 200px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#mobile_login > .btn {
+	margin: 10px;
+}

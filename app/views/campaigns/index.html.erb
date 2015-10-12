@@ -1,0 +1,41 @@
+<%= javascript_include_tag "campaigns" %>
+<div class="text-center" id="notice"><%= sanitize notice %></div>
+
+<!-- 	<div id="categories">
+	<%= render partial: 'categories'%>
+</div> -->
+
+<div class="container" id="searchBar">
+	<div class="col-xs-6">
+		<div class="col-xs-6">
+			<input type="text" id="searchText" class="form-control" placeholder="Search"></input>
+		</div>
+		<button id="searchButton" class="btn btn-success">Search</button>
+	</div>
+	<div class="col-xs-6">
+		<div class="col-xs-6" style="float: right">
+			<select name="sortBy" id="sortBy" class="form-control">
+				<option value="created_at DESC">Newest</option>
+				<option value="title ASC">Title</option>
+				<option value='pledged DESC'>Pledged</option>
+				<option value='goal DESC'>Goal</option>
+				<option value='backers DESC'>Backers</option>
+				<option value='end_time ASC'>Time Left</option>
+				<option value='nominated DESC'>Nominated</option>
+				<option value='votable DESC'>Votable</option>
+			</select>
+		</div>
+	</div>
+</div>
+
+<div id='data' data-page=1 data-interval=<%= @campaignsInterval %> data-size=<%= @campaigns.size() %> data-category="0" data-search-text=" " data-sort-by="created_at DESC">
+</div>
+
+<div class="row row-centered campaign-list" id="campaigns">
+	<%= render partial: 'campaignList', locals: { page: 1, campaignsPerPage: @campaignsInterval } %>
+</div>
+
+<div class="text-center" id="pageSelector">
+	<button id="prev" class="btn btn-success glyphicon glyphicon-menu-left" aria-hidden="true"></button>
+	<button id="next" class="btn btn-success glyphicon glyphicon-menu-right" aria-hidden="true"></button>
+</div>

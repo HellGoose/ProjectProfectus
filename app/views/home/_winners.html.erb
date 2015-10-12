@@ -1,0 +1,45 @@
+<div class="podium-container">
+<% round = Round.first
+if round != nil
+	lastRound = round.currentRound-1
+	winnerCampaigns = round.winnerCampaigns.where(roundWon: lastRound)
+	winnerCampaigns.each do |wc| 
+		next if wc.campaign == nil%>
+
+		<% if (wc.placing+1) == 1 %>
+			<div class="col-xs-4 col-centered campaign" id="first_place"> <!-- campaign-container -->
+					<% c = wc.campaign %>
+					<%= link_to "", "/campaigns/" + c.id.to_s, class: "campaign_link" %>
+					<% @campaign = c %>
+					<%= render partial: 'campaigns/campaignSmall'%>
+					<div class="placing-info" id="first-place-podium">
+						<h2>1st place</h2>
+						<!-- <h4>53</h4> -->
+					</div>
+			</div>
+		<% elsif (wc.placing+1) == 2 %>
+			<div class="col-xs-4 col-centered campaign" id="second_place">
+					<% c = wc.campaign %>
+					<%= link_to "", "/campaigns/" + c.id.to_s, class: "campaign_link" %>
+					<% @campaign = c %>
+					<%= render partial: 'campaigns/campaignSmall'%>
+					<div class="placing-info" id="second-place-podium">
+						<h2>2nd place</h2>
+						<!-- <h4>45</h4> -->
+						</div>
+			</div>
+		<% elsif (wc.placing+1) == 3 %>
+			<div class="col-xs-4 col-centered campaign" id="third_place">
+					<% c = wc.campaign %>
+					<%= link_to "", "/campaigns/" + c.id.to_s, class: "campaign_link" %>
+					<% @campaign = c %>
+					<%= render partial: 'campaigns/campaignSmall'%>
+					<div class="placing-info" id="third-place-podium">
+						<h2>3rd place</h2>
+						<!-- <h5>WinnerCampaign.all[-1].votes</h5> -->
+						</div>
+			</div>
+		<% end %>
+	<% end %>
+<% end %>
+</div>

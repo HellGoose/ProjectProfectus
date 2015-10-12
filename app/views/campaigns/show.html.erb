@@ -1,0 +1,27 @@
+<%= javascript_include_tag "campaigns" %>
+<%= javascript_include_tag "posts" %>
+
+<div class="text-center" id="notice"><%= sanitize notice %></div>
+
+<div id="data" data-page="1" data-interval=<%= @postsInterval %> data-size=<%= @posts.size() %> data-campaign=<%= @campaign.id %>></div>
+
+<div id="campaign">
+	<%= render partial: "campaign" %>
+</div>
+<div class="container">
+	<% if current_user %>
+	<div id="post">
+		<%= render partial: "posts/postForm" %>
+	</div>
+	<% end %>
+
+	<div class="posts">
+		<%= render partial: "posts/posts", locals: { page: 1, postsPerPage: @postsInterval } %>
+	</div>
+
+	<% if @posts.size > @postsInterval %>
+		<div class="text-center">
+			<a class="btn btn-primary" id="more_posts">Show More</a>
+		</div>
+	<% end %>
+</div>

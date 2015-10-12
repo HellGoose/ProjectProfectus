@@ -1,0 +1,37 @@
+<script>$('#campaign').data('step', <%= current_user.isOnStep %>);</script>
+
+<% @step = current_user.isOnStep + 1 if current_user %>
+
+<div class="row container reroll-close">
+  <% if Campaign.where(votable: true).count>=30 then %> 
+  <div class="col-xs-1 pull-left"><i type="button" id="refresh-voting-small" class="btn fa fa-repeat" title="Reroll for 3 new campaigns"></i></div>
+  <% else %>
+  <div class="col-xs-1 pull-left"><i type="button" id="refresh-voting-small" class="btn fa fa-repeat disabled" 
+  title="Reroll disabled for less than 30 nominations" disabled></i></div>
+  <% end %>
+  <div class="col-xs-1 pull-right close-voting"><i type="button" id="back-voting-small" class="btn fa fa-times-circle" title="Close" onclick="$('#pledge-btn').show();"></i></div>
+</div>
+
+
+<div class="row row-centered text-center step-indicator">
+    <div class="col-xs-3 col-centered <%=if @step==1 then "current-" end%>start-step">Step 1</div>
+    <div class="col-xs-2 col-centered <%=if @step==2 then "current-" end%>step">Step 2</div>
+    <div class="col-xs-2 col-centered <%=if @step==3 then "current-" end%>step">Step 3</div>
+    <div class="col-xs-2 col-centered <%=if @step==4 then "current-" end%>step">Final Vote</div>
+    <div class="col-xs-3 col-centered <%=if @step==5 then "current-" end%>end-step">Finish</div>
+</div>
+
+<div class="row row-centered" id="vote-campaigns">
+	<%= render partial: 'campaigns/vote' %>
+</div>
+
+<div class="campaign-display-all">
+<% id = 0 %>
+<% @campaignVoting.each do |c| %>
+	<div class="campaign-display" id=<%= id %>>
+		<% @campaign = c %>
+		<%= render partial: "campaigns/campaign" %>
+  </div>
+	<% id += 1 %>
+<% end %>
+</div>

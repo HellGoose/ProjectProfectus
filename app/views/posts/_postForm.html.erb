@@ -1,0 +1,32 @@
+<%= form_for(@post) do |f| %>
+	<% if @post.errors.any? %>
+		<div id="error_explanation">
+			<h2><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h2>
+
+			<ul>
+			<% @post.errors.full_messages.each do |message| %>
+				<li><%= message %></li>
+			<% end %>
+			</ul>
+		</div>
+	<% end %>
+
+	<form>
+		<div class="form-group">
+			<%= f.text_area :content, class: "form-control", id: "content-editor", rows: "10", placeholder: "What do you think about this campaign?" %>
+		</div>
+			<div class="form-group" style="display: none;">
+				<%= f.text_field :campaign_id, value: @campaign.id  if @campaign != nil %>
+			</div>
+
+		<div class="form-group" style="display: none;">
+			<%= f.text_field :post_id, value: @op.id if @op != nil %>
+		</div>
+
+		<%= f.submit class: "btn btn-primary" %>
+
+		<% if @op != nil %>
+			<a class="btn btn-default cancel">Cancel</a>
+		<% end %>
+	</form>
+<% end %>

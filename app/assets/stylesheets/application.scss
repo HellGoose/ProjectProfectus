@@ -1,0 +1,229 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+ *= require_self
+ *= require social-share-button
+ *= require_tree .
+ */
+
+// "bootstrap-sprockets" must be imported before "bootstrap" and "bootstrap/variables"
+@import "bootstrap-sprockets";
+@import "bootstrap";
+
+// Global color variables
+$gray: #F7F7F7;
+$green: #385559;
+$orange: #F05000;
+
+html, body{ 
+	height:100%;
+}
+
+.disabled {
+  cursor: default !important;
+}
+
+.btn[disabled] {
+  cursor:default !important;
+}
+
+.selected {
+  background: linear-gradient(to bottom right, #AAAAAA, #999999) !important;
+  border-radius: 5px;
+}
+
+.page {
+	width: 900px;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: #F6F5F2;
+}
+.btn {
+  border-radius: 2px;
+}
+
+.row {
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+#menu {
+	float: right;
+}
+
+#home {
+	float: left;
+}
+
+#menubar {
+	height: 35px;
+}
+
+#content {
+  padding: 0px;
+  margin-bottom: 100px;
+  min-height: 600px;
+  // border-bottom-style: solid;
+  // border-bottom-color: $gray;
+  // border-bottom-width: 5px;
+}
+
+#footer {
+  border-radius: 0px;
+}
+
+#footer > div {
+  margin-top: 70px;
+}
+
+.notification-container {
+  height: 75px;
+  padding: 2px;
+  // z-index: 3;
+  // position: absolute;
+}
+
+.notification-container > #notifications {
+  border: 1px solid #ddd;
+  width: 500px;
+  height: 70px;
+  background-color: #d6e9c6;
+  overflow: hidden;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.profile-pic {
+  // display: block;
+  max-width: 30px !important;
+  max-height: 30px !important;
+  width: auto;
+  height: auto;
+}
+
+#navbar-pic {
+  margin-top: -100%;
+  margin-bottom: -100%;
+}
+
+.center-cropped {
+  object-fit: none; /* Do not scale the image */
+  object-position: center; /* Center the image within the element */
+  // height: 100px;
+  // width: 100px;
+}
+
+.my-submissions {
+  margin: 0px;
+}
+
+// Navbar
+
+.navbar-text > a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.navbar {
+  margin-bottom: 0px;
+}
+
+.navbar-default {
+  background-color: #385559;
+  border-color: #273638;
+  border-bottom-color: $gray;
+  border-bottom-width: 5px;
+}
+.navbar-default .navbar-brand {
+  color: #ecf0f1;
+}
+.navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus {
+  color: #f7f7f7;
+}
+.navbar-default .navbar-text {
+  color: #ecf0f1;
+}
+.navbar-default .navbar-nav > li > a {
+  color: #ecf0f1;
+}
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+  color: #f7f7f7;
+}
+.navbar-default .navbar-nav > li > .dropdown-menu {
+  background-color: #385559;
+  border-radius: 2px;
+}
+.navbar-default .navbar-nav > li > .dropdown-menu > li > a {
+  color: #ecf0f1;
+}
+.navbar-default .navbar-nav > li > .dropdown-menu > li > a:hover,
+.navbar-default .navbar-nav > li > .dropdown-menu > li > a:focus {
+  color: #f7f7f7;
+  background-color: #273638;
+}
+.navbar-default .navbar-nav > li > .dropdown-menu > li > .divider {
+  background-color: #385559;
+}
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {
+  color: #f7f7f7;
+  background-color: #273638;
+}
+.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
+  color: #f7f7f7;
+  background-color: #273638;
+}
+.navbar-default .navbar-toggle {
+  border-color: #ecf0f1;//#273638;
+}
+.navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
+  background-color: #273638;
+}
+.navbar-default .navbar-toggle .icon-bar {
+  background-color: #ecf0f1;
+}
+.navbar-default .navbar-collapse,
+.navbar-default .navbar-form {
+  border-color: #ecf0f1;
+  border-radius: 0px;
+}
+.navbar-default .navbar-link {
+  color: #ecf0f1;
+}
+.navbar-default .navbar-link:hover {
+  color: #f7f7f7;
+}
+
+@media (max-width: 767px) {
+  .navbar-default .navbar-nav .open .dropdown-menu > li > a {
+    color: #ecf0f1;
+  }
+  .navbar-default .navbar-nav .open .dropdown-menu > li > a:hover, .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus {
+    color: #f7f7f7;
+  }
+  .navbar-default .navbar-nav .open .dropdown-menu > .active > a, .navbar-default .navbar-nav .open .dropdown-menu > .active > a:hover, .navbar-default .navbar-nav .open .dropdown-menu > .active > a:focus {
+    color: #f7f7f7;
+    background-color: #273638;
+  }
+}
+
+#navbar-counter {
+  width: 100%;
+  position: absolute;
+  padding-top: 15px;
+  height: 50px;
+  z-index: -1;
+}
+
+#counter {
+  color: #ecf0f1 !important;
+  text-decoration: none !important;
+}

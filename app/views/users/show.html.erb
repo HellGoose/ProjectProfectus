@@ -1,0 +1,110 @@
+<%= javascript_include_tag "users" %>
+
+<div class="text-center" id="notice"><%= sanitize notice %></div>
+
+<div id="data" data-page="1" data-interval=<%= @campaignsInterval %> data-size=<%= @user.campaigns.size %>></div>
+
+<div class="container">
+	<h1 class="header text-center">Profile</h1>
+
+	<div class="col-sm-3">
+		<img class="img-responsive" src="<%=getPic(@user)%>">
+	</div>
+	<div class="col-sm-5">
+		<h3 class="name-header">
+			<%= @user.name %>
+			<%= if @user.username != "" then "(" + @user.username + ")" end %>
+			<% if @user == current_user %>
+			<%= link_to "edit", edit_user_path(@user) %>
+			<% end %>
+		</h3>
+		User created: <%= @user.created_at.strftime("%B %d, %Y") %><br />
+		<% if @user.email != "" %>
+			Email: <%= @user.email %><br />
+		<% end %>
+		<% if @user.location != "" %>
+			Location: <%= @user.location %><br />
+		<% end %>
+		<% if @user.address != "" %>
+			Address: <%= @user.address %><br />
+		<% end %>
+		<% if @user.phone != "" %>
+			Phone: <%= @user.phone %><br />
+		<% end %>
+		Level: <%= @user.level %><br/>
+		Experience: <%= @user.points %><br/>
+		Number of Campaigns: <%= @user.campaigns.count %><br />
+		Number of Forum Posts: <%= @user.posts.count %><br/>
+		Number of Badges: <%= @user.badges.sum(:timesAchieved) %><br/>
+		Submissions this round: <%=  @user.additionsThisRound %>/<%= Round.first.maxAdditionsPerUser %>
+	</div>
+	<div class="col-sm-4 badges">
+		<% @user.badges.each do |b| %>
+		<%= image_tag b.badge.imageUrl, class: "img-responsive img-thumbnail", width: "100px", style: "margin-top: 4px", title: b.badge.description, alt: b.badge.name %>
+		<% end %>
+	</div>
+</div>
+
+<% if @notifications.count != 0 %>
+	<div class="container">
+		<div class="col-sm-12 user-notifications">
+			<div class="text-center" id="notification_button_container">
+				<a class="btn btn-primary" id="show_notifications">Show Notifications</a>
+			</div>
+			<% @notifications.each do |n| %>
+				<div class="text-center user-notifications2">
+					<h5><%= n.description %></h5>
+					<h5>You received <%= n.points_received %> points</h5>
+					<h5>at <%= n.created_at %></h5>
+				</div>
+			<% end %>
+			<script>
+				$('.user-notifications2').slideToggle(0);
+			</script>
+		</div>
+	</div>
+<% end %>
+
+<div class="col-sm-12 user-nominations">
+	<div class="container">
+		<% if @userNominations.count != 0 %>
+		<h3 id="user-nominations-header">My Nominations</h4>
+		<hr id="user-nominations-rule">
+		<% end %>
+		<div class="user-nominations2">
+			<% @userNominations.each do |c| %>
+				<div class="col-sm-3 campaign-container">
+					<%= link_to "", "/campaigns/" + c.id.to_s, class: "campaign_link" %>
+					<% @campaign = c %>
+					<%= render partial: 'campaigns/campaignSmall' %>
+				</div>
+			<% end %>
+		</div>
+	</div>
+</div>
+
+<div class="col-sm-12 user-campaigns" id="user-campaigns-container">
+	<div class="container">
+		<% if @userCampaigns.count != 0 %>
+		<h3 id="user-campaigns-header">My Campaigns</h4>
+		<hr id="user-campaigns-rule">
+		<% end %>
+		<% i = 0 %>
+		<div class="user-campaigns2">
+			<% @userCampaigns.each do |c| %>
+				<% break if i >= @campaignsInterval %>
+				<div class="col-sm-3 campaign-container">
+					<%= link_to "", "/campaigns/" + c.id.to_s, class: "campaign_link" %>
+					<% @campaign = c %>
+					<%= render partial: 'campaigns/campaignSmall' %>
+				</div>
+				<% i += 1 %>
+			<% end %>
+		</div>
+		<% if i >= 16 %>
+		<div class="text-center">
+			<a class="btn btn-primary" id="more_campaigns">Show More</a>
+		</div>
+	<% end %>
+	</div>
+</div>

@@ -1,0 +1,35 @@
+apply plugin: 'com.android.application'
+
+android {
+    signingConfigs {
+        Podium {
+            keyAlias 'Podium'
+            keyPassword 'podium'
+            storeFile file('/home/runar/Dropbox/Development/Web/railsworkspace/profectus/mobile/keystore/key.jks')
+            storePassword 'podium'
+        }
+    }
+    compileSdkVersion 23
+    buildToolsVersion "23.0.1"
+    defaultConfig {
+        applicationId "io.podium"
+        minSdkVersion 15
+        targetSdkVersion 23
+        versionCode 3
+        versionName '1.02'
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    productFlavors {
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile project(':volley')
+    compile 'com.android.support:appcompat-v7:23.+'
+}

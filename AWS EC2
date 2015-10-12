@@ -1,0 +1,27 @@
+
+Connect:	chmod 600 Profectus.pem
+			ssh -i Profectus.pem ec2-user@52.17.193.124
+			Start unicorn daemon: 
+				cd /home/ec2-user/Profectus/
+				bundle exec unicorn -E production -c config/unicorn.rb -D
+
+DB:			ssh -i Profectus.pem ec2-user@52.17.85.163
+			ssh -i Profectus.pem -f ec2-user@52.17.85.163 -L 9999:52.17.85.163:3306 -N -4
+			Master user: 	root
+			Master pw:		357c87rq93m8xow734
+			Database name: 	profectus_database
+			User:			profectus
+			Pw:				profectusdatabase
+			Host:			172.31.35.247
+			Port:			3306
+
+Server:		chmod 600 Profectus.pem
+					ssh -i Profectus.pem ubuntu@54.154.145.68
+					Database:
+						Master user: 	root
+						Master pw:		357c87rq93m8xow734
+						User:			profectus
+						Pw:				profectusdatabase
+					Start unicorn daemon: 
+						cd /home/ubuntu/Profectus/
+						bundle exec unicorn -E production -c config/unicorn.rb -D

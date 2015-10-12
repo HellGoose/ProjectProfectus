@@ -1,0 +1,785 @@
+// Place all the styles related to the campaign controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+// Global color variables
+$gray: #F7F7F7;
+$green: #385559;
+
+.top-buffer {
+	margin-top: 20px;
+}
+
+.border-around {
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    padding: 10px;
+}
+
+#social_media {
+	// margin: 5px;
+}
+
+#categories {
+	margin-top: 10px;
+	margin-bottom: 30px;
+	padding-left: 30px;
+	padding-right: 30px;
+	height: 50px;
+}
+
+.catButton {
+	width: 120px !important;
+	min-height: 50px !important;
+	margin-bottom: 10px;
+}
+
+.campaign-list > div > .campaign-box {
+	background: #F7F7F7;
+}
+
+.campaign-list {
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 1300px;
+}
+
+@media(min-width: 1300px){
+	.campaign-list {
+		width: 1300px;
+	}
+}
+
+//Causes the category sites with no projects to have a similar look to those who have it.
+.noCampaign {
+	margin-top: 200px;
+	margin-bottom: 200px;
+	text-align: center;
+}
+
+#searchBar {
+	height: 30px;
+	// width: 100%;
+	padding: 0 25px 0 25px;
+}
+
+#filter {
+	width: 140px;
+}
+
+//Makes disabled buttons 50% transgendered
+#pageSelector button:disabled{
+	opacity: .5;
+}
+
+// .image_container {
+// 	width: 250px;
+//   height: 187px;
+// 	margin-bottom: 10px;
+// 	float: left;
+// }
+
+.image_container img {
+	// max-width: 100%;
+	// max-height: 100%;
+	// width: 250px;
+ //  margin: 10px;
+  position: absolute;
+  clip: rect(0px,250px,187px,0px);
+}
+
+.clip {
+  clip: rect(0px,250px,187px,0px);
+}
+
+#campaign-title {
+	padding-top: 190px;//20px;
+	margin-bottom: 10px;
+}
+
+#campaign-title-main {
+	padding-top: 20px;
+	margin-bottom: 10px;
+}
+
+#vote-img:focus {
+	filter: blur(5px);
+}
+
+.campaign_link {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	min-height: 316px;
+	top: 0;
+	left: 0;
+	text-decoration: none; 
+    z-index: 10;
+    opacity: 0;
+}
+
+.campaign_link:link {
+	color: #363632;
+}
+
+.campaign_link:visited {
+	color: #363632;
+}
+
+.campaign_link:hover {
+	color: #363632;
+}
+
+@media (min-width: 900px) {
+	.winners {
+	  width: 878px;
+	  padding-left: 0px;
+	  padding-right: 0px;
+	  height: 520px;
+	}
+
+	#first_place {
+		margin-top:0px; 
+		border-bottom: 466px solid lightgrey;
+		margin-left: 0.5px !important;
+		margin-right: 0.5px !important;
+	}
+
+	#second_place {
+		margin-top: 50px; 
+		border-bottom: 416px solid lightgrey;
+		margin-right: 0.5px !important;
+		margin-left: 63px;
+		float: left !important;
+	}
+
+	#third_place {
+		margin-top: 100px;
+		border-bottom: 366px solid lightgrey;
+		margin-left: 0.5px !important;
+		margin-right: 63px !important;
+		float: right !important;
+	}
+
+	.leaderboards {
+	  width: 878px;
+	  padding-left: 0px;
+	  padding-right: 0px;
+	}
+}
+
+.placing-info {
+	min-height: 50px;
+}
+
+.campaign {
+	margin: 20px;
+	margin-right: 20px !important;
+	padding: 0px;
+	background-color: transparent;
+	/*border: 1px solid #ddd;*/
+	min-width: 250px;
+	max-width: 250px;
+	height: 316px;
+	vertical-align: top;
+}
+
+.campaign-container {
+	// border:0px;
+	// padding: 0px;
+	margin-top: 10px;
+	// min-width: 250px;
+	// max-width: 250px;
+}
+
+//  {
+//     position:relative;
+//     display:inline-block;
+//     text-align:center;
+//     border:1px solid red;
+//     /* background:url('http://jsfiddle.net/img/initializing.png') no-repeat;
+//     width:186px;
+//     height:157px;*/
+// }
+
+
+.continue-button {
+	padding-top: 2px;
+	position: absolute;
+  margin-right: auto;
+  margin-left: auto;
+  width: 200px;
+  height: 40px;
+  top: 60%;
+  left: 25px;
+  z-index: 2;
+}
+
+.campaign-vote {
+	border: 0px;
+	width: 250px;
+	cursor: hand;
+	cursor: pointer;
+	min-width: 250px;
+  max-width: 250px;
+  height: 316px;
+  margin-top: 10px;
+}
+
+/*#winners > div:nth-child(even) > div.campaign > div{
+	background-color: #F7F7F7;
+}*/
+
+/*#winners > div:nth-child(odd) > div.campaign > div{
+	background-color: white;
+}*/
+
+
+.campaign-box > h4 {
+	// background-color: $gray;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding: 5px;
+  height: 44px;
+  text-align: left;
+}
+
+.campaign-box {
+	background-color: #fcfcfc;
+	width: 250px;
+	height: 316px;
+	-webkit-transition: all 0.5s ease;
+	-moz-transition: all 0.5s ease;
+	-o-transition: all 0.5s ease;
+	transition: all 0.5s ease;
+}
+
+.box-content-pitch {
+	margin-top: 5px;
+	margin-bottom: 3px;
+	padding: 0px;
+	text-align: left;
+	height: 52px;
+	padding-left: 3px;
+	padding-right: 3px;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	// background: url(quote.png) no-repeat;
+}
+
+.box-content-icon {
+	margin-left: 2px;
+	margin-right: 2px;	
+	margin-top: 10px;
+	max-width: 27px;
+	max-height: 27px;
+	padding: 0px;
+}
+
+.campaign-container .text-center h3 {
+	margin-left: 0px;
+}
+
+// .winner-campaign {
+// 	padding: 10px;
+// 	background-color: transparent;
+// 	border: 1px solid #ddd;
+// 	height: 400px;
+// }
+
+// Podium ...
+#first_place {
+	/*text-align: center;*/
+}
+#second_place {
+	/*text-align: left;*/
+}
+#third_place {
+	/*text-align: right;*/
+}
+
+// Add Campaign
+#preview {
+	margin: 10px 0px 10px 0px;
+	background-color: #fcfcfc;
+	border: 1px solid #ddd;
+	width: 100%;
+}
+
+#preview {
+	border-radius: 2px;
+	padding: 5px;
+}
+
+#campaign-img {
+	min-height: 187px;
+}
+
+// #preview > div.image_container {
+// 	margin: 5px;
+// }
+
+#campaign_link {
+	border-radius: 2px;
+}
+
+// Campaign Site
+// #background-blur {
+// 	position: fixed;
+//   left: 0;
+//   right: 0;
+//   z-index: -1;
+//   display: block;
+//   -webkit-filter: blur(5px);
+//   -moz-filter: blur(5px);
+//   -o-filter: blur(5px);
+//   -ms-filter: blur(5px);
+//   filter: blur(5px);
+// }
+
+#background-blur {
+	background-color: $gray;
+	position: absolute;
+  z-index: -1;
+  width: 110%;//100vw;
+  max-width: 99.6vw;
+  height: 350px;
+  
+  overflow: hidden;
+  -webkit-filter: blur(5px);
+  -moz-filter: blur(5px);
+  -o-filter: blur(5px);
+  -ms-filter: blur(5px);
+  filter: blur(5px);
+  margin: -5px -10px -5px -10px;
+  margin-top: -80px;
+  // transform: scale(1.1);
+}
+
+#background-blur::after {
+	border-bottom-style: solid; 
+	border-bottom-width: 3px;
+	border-bottom-color: black;
+}
+
+#bottom-block {
+	// height: 350px;
+	position: absolute;
+	border-top-style: solid; 
+	border-top-width: 3px;
+	border-top-color: #385559;
+	margin-top: 267px;
+	height: 212px;
+	background-color: white;//$gray;
+	width: 100%;
+	z-index: -1;
+}
+
+#campaign-content {
+  z-index: 0;
+}
+
+.main-campaign {
+	margin: 40px 0px 10px 0px;
+	background-color: #FFFFFF;
+	border: 1px solid rgba(255,255,255,0.5);//#ddd;
+	border-radius: 2px;
+	// max-width: 900px;
+	padding: 0px;
+	-moz-box-shadow:    0px 0px 1px 1px #FFFFFF;
+  -webkit-box-shadow: 0px 0px 1px 1px #FFFFFF;
+  box-shadow:         0px 0px 1px 1px #FFFFFF;
+}
+
+// .container {
+//   max-width: 970px;
+// }
+
+#campaign > div > div.image_container > img {
+	margin-right: 10px;
+	border-radius: 2px;
+}
+
+#goto-site-button {
+	padding-left: 0px;
+}
+
+#nominate-button {
+	margin-top: 20px;
+}
+
+#edit {
+	margin-top: 20px;
+	padding-right: 0px;
+}
+
+.campaign-info > .row {
+	margin: 0px;
+	padding-bottom: 20px;
+}
+
+#campaign-info-box {
+	text-align: center;
+	// border: 1px solid #fcfcfc;
+	background-color: rgba(247,247,247,0.7);
+	// opacity: 0.5;
+	// margin: 5px;
+	padding: 5px;
+}
+
+#info-box-group {
+	min-height: 159px;
+	padding-top: 213px;
+}
+
+.main-campaign-image {
+	padding: 0px;
+	-moz-box-shadow:    0px 0px 1px 1px #385559;
+  -webkit-box-shadow: 0px 0px 1px 1px #385559;
+  box-shadow:         0px 0px 1px 1px #385559;
+}
+
+#external-content {
+	max-width: 800px;
+	// border-style: solid;
+	// border-radius: 2px;
+	// border-bottom-width: 3px;
+	// border-bottom-color: #385559;
+}
+
+.crowdfunding-site-logo {
+	max-height: 100px;
+	max-width: 100px;
+}
+
+/*.main_campaign {
+	margin: 10px 0px 10px 0px;
+	background-color: #fcfcfc;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+	width: 100%;
+}
+
+.main_campaign .image_container {
+	height: 250px;
+}*/
+
+// Step-indicator ----------------
+
+
+.reroll-close {
+	margin-left: auto;
+	margin-right: auto;
+	width: 63%;	
+	font-size: large;
+}
+
+.close-voting {
+	text-align: right;
+}
+
+.step-indicator {
+	// margin-top: 5px;
+	// margin-right: auto;
+	// margin-left: auto;
+	// float: none;
+	// width: 63%;
+}
+
+.row-centered {
+    text-align:center;
+}
+
+.col-centered {
+    display:inline-block;
+    float:none;
+    /* reset the text-align */
+    text-align:center;
+    /* inline-block space fix */
+    margin-right:-4px;
+}
+
+div.start-step,
+div.step,
+div.end-step,
+div.current-step,
+div.current-start-step, 
+div.current-end-step {
+  display: inline-block;
+  // font-size: 22px;
+  margin-top: 9px;
+  position: relative;
+  width: 120px;
+}
+
+div.start-step:before,
+div.start-step:after,
+div.step:before,
+div.step:after,
+div.end-step:before,
+div.end-step:after,
+div.current-start-step:before,
+div.current-start-step:after,
+div.current-step:before,
+div.current-step:after,
+div.current-end-step:before,
+div.current-end-step:after {
+  content: "";
+  border-style: solid;
+  border-width: 0;
+  height: 0;
+  position: absolute;
+  width: 0;
+}
+
+div.start-step,
+div.step,
+div.end-step {
+  background-color: $gray;
+  color: black;
+  margin-left: 25px;
+  margin-right: 25px;
+}
+
+div.current-start-step,
+div.start-step{
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+div.current-end-step,
+div.end-step{
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+div.current-step {
+  background-color: $green;
+  color: white;
+  margin-top: 0px;
+  margin-left: 36px;
+  margin-right: 36px;
+  line-height: 38px;
+}
+
+div.current-step:after,
+div.current-step:before {
+  border-width: 19px 0 19px 19px;
+}
+
+div.current-step:before {
+  border-color: $green transparent; 
+  left: -19px;
+}
+
+div.current-step:after {
+  border-color: transparent $green;
+  right: -19px;
+}
+
+// -----------------------------
+
+div.step:after,
+div.step:before {
+  border-width: 10px 0 10px 10px;
+}
+
+div.step:before {
+  border-color: $gray transparent; 
+  left: -10px;
+}
+
+div.step:after {
+  border-color: transparent $gray;
+  right: -10px;
+}
+
+// ------------------------------
+
+div.start-step:after,
+div.step:before {
+  border-width: 10px 0 10px 10px;
+}
+
+div.start-step:before {
+  border-color: $gray transparent;
+}
+
+div.start-step:after {
+  border-color: transparent $gray;
+  right: -10px;
+}
+
+// ------------------------------
+
+div.end-step:after,
+div.end-step:before {
+  border-width: 10px 0 10px 10px;
+}
+
+div.end-step:before {
+  border-color: $gray transparent; 
+  left: -10px;
+}
+
+div.end-step:after {
+  border-color: transparent $gray;
+}
+
+// -------------------------------
+
+.start-step{
+	margin-left: 0px !important;
+}
+
+div.current-start-step {
+  background-color: $green;
+  color: white;
+  margin-top: 0px;
+  margin-left: 0px;
+  margin-right: 44px;
+  line-height: 38px;
+}
+
+div.current-start-step:after,
+div.current-start-step:before {
+  border-width: 19px 0 19px 19px;
+}
+
+div.current-start-step:before {
+  border-color: $green transparent;
+  left: 3px;
+}
+
+div.current-start-step:after {
+  border-color: transparent $green;
+  right: -19px;
+}
+
+// --------------------------------
+
+.end-step {
+	margin-right: 0px !important;
+}
+
+div.current-end-step {
+  background-color: $green;
+  color: white;
+  margin-top: 0px;
+  margin-left: 44px;
+  margin-right: 0px;
+  line-height: 38px;
+}
+
+div.current-end-step:after,
+div.current-end-step:before {
+  border-width: 19px 0 19px 19px;
+}
+
+div.current-end-step:before {
+  border-color: $green transparent; 
+  left: -19px;
+}
+
+div.current-end-step:after {
+  border-color: transparent $green;
+}
+
+// Down-arrow
+
+.down-arrow {
+	//display: inline-block;
+	position: relative;
+	background: $gray;
+	//padding: 15px 0;
+	//width: 200px;
+	text-align: center;
+}
+.down-arrow:after {
+	content: '';
+	display: block;  
+	position: absolute;
+	z-index: -1;
+	left: 25px;
+	top: 90%;
+	width: 0;
+	height: 0;
+	border-top: 50px solid $gray;
+	border-right: 100px solid transparent;
+	border-bottom: 0 solid transparent;
+	border-left: 100px solid transparent;
+}
+
+// Vote star
+.vote-star {
+	width: 250px;
+	margin-bottom: 10px;
+	margin-bottom: 10px;
+}
+
+.vote-star-button {
+	vertical-align: top;
+	padding-top: 0px;
+	font-size: x-large;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	background-color: lightgray;
+	border-radius: 2px;
+	border-width: 0px;
+	width: 75px;
+	height: 31px;
+}
+
+.vote-star-button:active {
+	background-color: #F05000;
+	-webkit-box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0);
+  box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0);
+  border-style: solid;
+  border-width: 1px;
+  border-color: #E54C00;
+}
+
+.vote-star-button.active {
+	background-color: #F05000;
+	-webkit-box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0);
+  box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0);
+}
+
+.darken {
+	background-color: gray;
+	-webkit-filter: grayscale(100%);
+	filter: grayscale(100%);
+}
+
+.darken:after {
+	border-top-color: gray;
+}
+
+.bigform-content {
+    border: solid 5px #DDD;
+    margin: 30px 20px;
+    overflow: hidden;
+    padding:20px;
+    position:relative;
+}
+.modal, .modal-backdrop {
+    position: absolute !important;
+}
+.bigform-content h1 {
+    margin:0;
+}
+.bigform-content input[type=submit] {
+    margin-top:10px;
+}
+
+.star-finished {
+	color: #F05000;
+}
+
+.star-finished-win {
+	color: #F05000;
+}
+
+.campaign-display-all{
+	padding-top: 160px;
+}

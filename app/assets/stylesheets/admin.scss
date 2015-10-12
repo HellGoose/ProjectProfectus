@@ -1,0 +1,70 @@
+// Place all the styles related to the about controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.navbar-center {
+	margin-left: -230px;
+	position: relative;
+	left: 50%;
+}
+
+.flagged_project {
+	background-color: #fcfcfc;
+	border: 1px solid #ddd;
+	border-radius: 10px;
+	margin: 10px;
+	width: 100%;
+}
+
+.project_link {
+	position: absolute;
+	width: 90%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	text-decoration: none; 
+    z-index: 1;
+    opacity: 0;
+}
+
+.edit {
+	float: right;
+}
+
+.news {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.news .text-news-container {
+	margin-right: auto;
+	margin-left: auto;
+	background-color: #fcfcfc;
+	border: 1px solid #ddd;
+	border-radius: 10px;
+	width: 425px;
+}
+
+.news .text-news-container .edit {
+	margin-top: 5px;
+	margin-right: 5px;
+	float: right;
+	position: absolute;
+	left: 700px;
+}
+
+.news .text-news-container p {
+	word-wrap: break-word;
+}
+
+#start-round, #stop-round {
+	margin: 5px;
+	margin-right: 2px;
+	margin-left: 2px;
+}
+
+.round-duration {
+	width: 150px;
+	margin-right: auto;
+	margin-left: auto;
+}

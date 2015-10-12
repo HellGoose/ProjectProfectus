@@ -1,0 +1,36 @@
+<script>
+tinymce.editors = []
+</script>
+
+<%= form_for(@news) do |n| %>
+  <% if @news.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@news.errors.count, "error") %> prohibited this news from being saved:</h2>
+      <ul>
+      <% @news.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <form>
+    <div class="form-group">
+      <%= n.label :title %>
+      <%= n.text_field :title, class: "form-control", placeholder: "Enter title" %>
+    </div>
+
+    <div class="form-group">
+      <%= n.label :sticky %>
+      <%= n.select(:sticky, [['False', 0], ['True', 1]]) %>
+    </div>
+
+    <div class="form-group">
+      <%= n.label :content %>
+      <%= n.text_area :content, class: "form-control tinymce", id: "content-editor", rows: "30", placeholder: "Content" %>
+      <%= tinymce %>
+    </div>
+
+    <%= n.submit class: "btn btn-primary" %>
+  </form>
+<% end %>

@@ -1,0 +1,84 @@
+<%= javascript_include_tag "admin" %>
+<% round = Round.first %>
+
+<div class="text-center" id="notice"><%= sanitize notice %></div>
+<div class="text-center" id="feedback"></div><br />
+
+<div id='news' data-page=1 data-interval=<%= @newsInterval %> data-size=<%= @allNews.size %>></div>
+
+<div id="tabs">
+	<nav class="navbar navbar-default">
+		<div class="collapse navbar-collapse">
+			<ul class="nav navbar-nav navbar-center">
+				<li class="active"><a href="#round-tab" data-toggle="tab">Round</a></li>
+				<li><a href="#news-tab" data-toggle="tab">News<i class="fa"></i></a></li>
+				<li><a href="#statistics-tab" data-toggle="tab">Statistics<i class="fa"></i></a></li>
+				<li><a href="#flagged_projects-tab" data-toggle="tab">Flagged Campaigns<i class="fa"></i></a></li>
+				<li><a href="#flagged_users-tab" data-toggle="tab">Flagged Users<i class="fa"></i></a></li>
+				<li><a href="#moderator-tab" data-toggle="tab">Moderator Center<i class="fa"></i></a></li>
+			</ul>
+		</div>
+	</nav>
+	<div id="my-tab-content" class="tab-content">
+		<div class="tab-pane active" id="round-tab">
+			<div class="content text-center">
+				<h5>Next round in: <%= distance_of_time_in_words_to_now(round.endTime) %></h5>
+				<h5>Round duration: <%= distance_of_time_in_words(round.duration) %></h5>
+				<div id="time-input">
+					<input class="round-duration form-control" placeholder="Days" type="text" id="days" size="5" />
+					<input class="round-duration form-control" placeholder="Hours" type="text" id="hours" size="5" />
+				</div><br />
+				<a class="btn btn-primary" id="update-duration">Update Duration</a>
+				<a class="btn btn-primary" id="force-new-round">Force New Round</a>
+				<%= button_to "Nominate All", "/admin/nominate_all", class: "btn btn-primary" %>
+				<%= button_to "Clear All Nominations", "/admin/clear_all_nominations", class: "btn btn-primary" %>
+				<%= button_to "Reset Voting", "/admin/reset_voting", class: "btn btn-primary" %>
+			</div>
+		</div>
+		<div class="tab-pane" id="news-tab">
+			<div class="content">
+				<div class="text-center">
+					<a class="btn btn-primary" id="post_news">Post News</a>
+				</div>
+				<div id="news_form">
+					<%= render partial: 'news/newsForm' %>
+				</div>
+				<div class="news_container">
+					<%= render partial: 'news/news', locals: { page: 1, newsPerPage: @newsInterval }  %>
+				</div>
+				<% if @allNews.size > @newsInterval %>
+					<div class="text-center">
+						<a class="btn btn-primary" id="more_news">Show More</a>
+					</div>
+				<% end %>
+			</div>
+		</div>
+		<div class="tab-pane" id="statistics-tab">
+			<table class="table table-hover table-condensed table-responsive">
+				<thead>
+					<tr>
+						<th>Date</th>
+						<th>RoundNumber</th>
+						<th>Nominations</th>
+						<th>Seen</th>
+						<th>Votes</th>
+						<th>FinalVotes</th>
+					</tr>
+				</thead>
+				<tbody>
+					<% @statDumps.each do |sd| %>
+						<tr>
+							<td><%= sd.created_at %></td>
+							<td><%= sd.roundNumber %></td>
+							<td><%= sd.numberOfNominations %></td>
+							<td><%= sd.numberOfNominationsSeen %></td>
+							<td><%= sd.numberOfVotes %></td>
+							<td><%= sd.numberOfFinalVotes %></td>
+							<td><%= link_to "Details", "/stat_dump/" + sd.id.to_s%>
+						</tr>
+					<%end%>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
