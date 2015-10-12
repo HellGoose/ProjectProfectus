@@ -48,7 +48,7 @@ $green: #385559;
 
 #searchBar {
 	height: 30px;
-	width: 100%;
+	// width: 100%;
 	padding: 0 25px 0 25px;
 }
 
@@ -61,24 +61,23 @@ $green: #385559;
 	opacity: .5;
 }
 
-.image_container {
-	width: 250px;
-  height: 187px;
-	margin-bottom: 10px;
-	float: left;
-}
+// .image_container {
+// 	width: 250px;
+//   height: 187px;
+// 	margin-bottom: 10px;
+// 	float: left;
+// }
 
 .image_container img {
-	max-width: 100%;
-	max-height: 100%;
-	width: 250px;
-  margin: 10px;
+	// max-width: 100%;
+	// max-height: 100%;
+	// width: 250px;
+ //  margin: 10px;
   position: absolute;
   clip: rect(0px,250px,187px,0px);
 }
 
 .clip {
-	position: absolute;
   clip: rect(0px,250px,187px,0px);
 }
 
@@ -94,10 +93,6 @@ $green: #385559;
 
 #vote-img:focus {
 	filter: blur(5px);
-}
-
-.main_campaign > .image_container {
-	margin-right: 5px;
 }
 
 .campaign_link {
@@ -123,37 +118,67 @@ $green: #385559;
 	color: #363632;
 }
 
-#campaigns, #winners {
-	margin: 14px;
-	margin-top: 5px;
+@media (min-width: 900px) {
+	.winners {
+	  width: 878px;
+	  padding-left: 0px;
+	  padding-right: 0px;
+	  height: 520px;
+	}
+
+	#first_place {
+		margin-top:0px; 
+		border-bottom: 466px solid lightgrey;
+		margin-left: 0.5px !important;
+		margin-right: 0.5px !important;
+	}
+
+	#second_place {
+		margin-top: 50px; 
+		border-bottom: 416px solid lightgrey;
+		margin-right: 0.5px !important;
+		margin-left: 63px;
+		float: left !important;
+	}
+
+	#third_place {
+		margin-top: 100px;
+		border-bottom: 366px solid lightgrey;
+		margin-left: 0.5px !important;
+		margin-right: 63px !important;
+		float: right !important;
+	}
+
+	.leaderboards {
+	  width: 878px;
+	  padding-left: 0px;
+	  padding-right: 0px;
+	}
+}
+
+.placing-info {
+	min-height: 50px;
 }
 
 .campaign {
-	margin: 0px;
+	margin: 20px;
+	margin-right: 20px !important;
 	padding: 0px;
 	background-color: transparent;
 	/*border: 1px solid #ddd;*/
 	min-width: 250px;
 	max-width: 250px;
-	height: 260px;
+	height: 316px;
+	vertical-align: top;
 }
 
 .campaign-container {
-	border:0px;
-	padding: 0px;
-	margin: 10px;
-	min-width: 250px;
-	max-width: 250px;
+	// border:0px;
+	// padding: 0px;
+	margin-top: 10px;
+	// min-width: 250px;
+	// max-width: 250px;
 }
-
-.image-container > h4 {
-
-}
-
-.campaign-box {
-	text-align: center;
-}
-
 
 //  {
 //     position:relative;
@@ -173,13 +198,20 @@ $green: #385559;
   margin-left: auto;
   width: 200px;
   height: 40px;
-  top: 135px;
+  top: 60%;
   left: 25px;
   z-index: 2;
 }
 
 .campaign-vote {
 	border: 0px;
+	width: 250px;
+	cursor: hand;
+	cursor: pointer;
+	min-width: 250px;
+  max-width: 250px;
+  height: 316px;
+  margin-top: 10px;
 }
 
 /*#winners > div:nth-child(even) > div.campaign > div{
@@ -190,27 +222,58 @@ $green: #385559;
 	background-color: white;
 }*/
 
-#winner_container .campaign-box {
-	background-color: $gray;
-}
 
 .campaign-box > h4 {
-	height: 260px;
-  margin-left: 5px;
-  margin-right: 5px;
-  margin-bottom: 20px;
+	// background-color: $gray;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding: 5px;
+  height: 44px;
+  text-align: left;
+}
+
+.campaign-box {
+	background-color: #fcfcfc;
+	width: 250px;
+	height: 316px;
+	-webkit-transition: all 0.5s ease;
+	-moz-transition: all 0.5s ease;
+	-o-transition: all 0.5s ease;
+	transition: all 0.5s ease;
+}
+
+.box-content-pitch {
+	margin-top: 5px;
+	margin-bottom: 3px;
+	padding: 0px;
+	text-align: left;
+	height: 52px;
+	padding-left: 3px;
+	padding-right: 3px;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	// background: url(quote.png) no-repeat;
+}
+
+.box-content-icon {
+	margin-left: 2px;
+	margin-right: 2px;	
+	margin-top: 10px;
+	max-width: 27px;
+	max-height: 27px;
+	padding: 0px;
 }
 
 .campaign-container .text-center h3 {
 	margin-left: 0px;
 }
 
-.winner-campaign {
-	padding: 10px;
-	background-color: transparent;
-	border: 1px solid #ddd;
-	height: 400px;
-}
+// .winner-campaign {
+// 	padding: 10px;
+// 	background-color: transparent;
+// 	border: 1px solid #ddd;
+// 	height: 400px;
+// }
 
 // Podium ...
 #first_place {
@@ -233,16 +296,16 @@ $green: #385559;
 
 #preview {
 	border-radius: 2px;
-	padding-left: 0px;
+	padding: 5px;
 }
 
 #campaign-img {
 	min-height: 187px;
 }
 
-#preview > div.image_container {
-	margin: 5px;
-}
+// #preview > div.image_container {
+// 	margin: 5px;
+// }
 
 #campaign_link {
 	border-radius: 2px;
@@ -295,7 +358,7 @@ $green: #385559;
 	border-top-color: #385559;
 	margin-top: 267px;
 	height: 212px;
-	background-color: $gray;
+	background-color: white;//$gray;
 	width: 100%;
 	z-index: -1;
 }
@@ -323,7 +386,6 @@ $green: #385559;
 #campaign > div > div.image_container > img {
 	margin-right: 10px;
 	border-radius: 2px;
-
 }
 
 #goto-site-button {
@@ -341,6 +403,7 @@ $green: #385559;
 
 .campaign-info > .row {
 	margin: 0px;
+	padding-bottom: 20px;
 }
 
 #campaign-info-box {
@@ -391,12 +454,28 @@ $green: #385559;
 
 // Step-indicator ----------------
 
-.step-indicator {
-	margin-top: 5px;
-	margin-right: auto;
+
+.reroll-close {
 	margin-left: auto;
-	float: none;
-	width: 63%;
+	margin-right: auto;
+	width: 63%;	
+	font-size: large;
+}
+
+.close-voting {
+	text-align: right;
+}
+
+.step-indicator {
+	// margin-top: 5px;
+	// margin-right: auto;
+	// margin-left: auto;
+	// float: none;
+	// width: 63%;
+}
+
+.row-centered {
+    text-align:center;
 }
 
 .col-centered {
@@ -446,8 +525,8 @@ div.step,
 div.end-step {
   background-color: $gray;
   color: black;
-  margin-left: 20px;
-  margin-right: 20px;
+  margin-left: 25px;
+  margin-right: 25px;
 }
 
 div.current-start-step,
@@ -465,8 +544,8 @@ div.current-step {
   background-color: $green;
   color: white;
   margin-top: 0px;
-  margin-left: 20px;
-  margin-right: 20px;
+  margin-left: 36px;
+  margin-right: 36px;
   line-height: 38px;
 }
 
@@ -536,12 +615,16 @@ div.end-step:after {
 
 // -------------------------------
 
+.start-step{
+	margin-left: 0px !important;
+}
+
 div.current-start-step {
   background-color: $green;
   color: white;
   margin-top: 0px;
-  margin-left: 20px;
-  margin-right: 20px;
+  margin-left: 0px;
+  margin-right: 44px;
   line-height: 38px;
 }
 
@@ -562,12 +645,16 @@ div.current-start-step:after {
 
 // --------------------------------
 
+.end-step {
+	margin-right: 0px !important;
+}
+
 div.current-end-step {
   background-color: $green;
   color: white;
   margin-top: 0px;
-  margin-left: 20px;
-  margin-right: 20px;
+  margin-left: 44px;
+  margin-right: 0px;
   line-height: 38px;
 }
 
@@ -611,6 +698,11 @@ div.current-end-step:after {
 }
 
 // Vote star
+.vote-star {
+	width: 250px;
+	margin-bottom: 10px;
+	margin-bottom: 10px;
+}
 
 .vote-star-button {
 	vertical-align: top;
@@ -673,4 +765,8 @@ div.current-end-step:after {
 
 .star-finished-win {
 	color: #F05000;
+}
+
+.campaign-display-all{
+	padding-top: 160px;
 }

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150929222345) do
+ActiveRecord::Schema.define(version: 20151011144249) do
 
   create_table "badges", force: :cascade do |t|
     t.string   "name",        limit: 255
@@ -131,12 +131,14 @@ ActiveRecord::Schema.define(version: 20150929222345) do
   add_index "posts", ["user_id"], name: "index_posts_on_user_id", using: :btree
 
   create_table "round_winner_campaigns", force: :cascade do |t|
-    t.integer  "roundWon",    limit: 4
-    t.integer  "placing",     limit: 4
-    t.integer  "campaign_id", limit: 4
-    t.integer  "round_id",    limit: 4
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
+    t.integer  "roundWon",       limit: 4
+    t.integer  "placing",        limit: 4
+    t.integer  "campaign_id",    limit: 4
+    t.integer  "round_id",       limit: 4
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+    t.integer  "numberOfVoters", limit: 4
+    t.integer  "score",          limit: 4
   end
 
   create_table "round_winner_users", force: :cascade do |t|
@@ -148,14 +150,15 @@ ActiveRecord::Schema.define(version: 20150929222345) do
   end
 
   create_table "rounds", force: :cascade do |t|
-    t.integer  "duration",            limit: 4
-    t.boolean  "forceNewRound",       limit: 1
-    t.float    "decayRate",           limit: 24
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
-    t.integer  "currentRound",        limit: 4
+    t.integer  "duration",                limit: 4
+    t.boolean  "forceNewRound",           limit: 1
+    t.float    "decayRate",               limit: 24
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+    t.integer  "currentRound",            limit: 4
     t.datetime "endTime"
-    t.integer  "maxAdditionsPerUser", limit: 4
+    t.integer  "maxAdditionsPerUser",     limit: 4
+    t.integer  "numberOfVotersLastRound", limit: 4
   end
 
   create_table "stat_dumps", force: :cascade do |t|

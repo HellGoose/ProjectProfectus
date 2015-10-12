@@ -40,7 +40,8 @@
         <p id="campaign-description" ></p>
       </div>
     </div>
-    <%= f.submit "Add Campaign", class: "btn btn-primary", id: "submitButton", disabled: true %>
+    <%= f.submit "Add Campaign", class: "btn btn-primary", id: "submitButton", disabled: true, onclick:"$('#submitButton').attr('disabled', true);  $(this).parent('form').submit();" %>
+    <!-- $(this).html('Adding.. <i class='fa fa-spinner fa-spin'></i>'); -->
   </form>
 
 <% end %>

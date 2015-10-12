@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
 	before_action :set_user, only: [:show, :edit, :update, :campaignPage]
-	helper_method :getFacebookPicURL
+	helper_method :getFacebookPicURL, :getPic
 
 	# Public: Prepares variables for user#show.
 	# Route: GET root/users/:id

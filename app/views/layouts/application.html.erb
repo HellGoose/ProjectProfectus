@@ -92,6 +92,9 @@
   </head>
   <body>
     <div class="navbar navbar-default navbar-static-top navbar-xs" id="header" role="navigation">
+      <div class="row text-center" id="navbar-counter">
+        <a href='#' id="counter"></a> <!-- Counter -->
+      </div>
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -102,11 +105,6 @@
             <ul><img src="https://cloud.githubusercontent.com/assets/690017/4317652/8946bb80-3f15-11e4-8b1b-961d47232979.png" width="25px" align="middle"> Podium</ul>
           </a>
         </div> <!-- End navbar-header -->
-        <div>
-          <ul class="nav navbar-nav navbar-center">
-          <li><a href='#' id="counter" style="left: 35px;"></a></li>
-          </ul>
-        </div>
         <div class="navbar-collapse collapse">
         	<ul class="nav navbar-nav navbar-left">
         		<li class="<%= 'active' if params[:controller] == 'campaigns' %>">
@@ -126,10 +124,7 @@
                 <% end %>
                 <li><a href="/users/"><i class="fa fa-star" style="color: gold;"></i> <%= current_user.points %></a></li>
                 <li><a href="<%= user_path(current_user) %>">
-                  <img class="img-circle center-cropped" id="profile-pic" height="30" width="30" src="<%= getFacebookPicURL(current_user) %>" style="
-                  margin-top: -100%;
-                  margin-bottom: -100%;
-                  "> <%= current_user.name.split(' ', 2).first %></a></li>
+                  <img class="img-circle profile-pic" id="navbar-pic" src="<%= getFacebookPicURL(current_user) %>"> <%= current_user.name.split(' ', 2).first %></a></li>
               <% else %>
                 <li><a href="/auth/facebook">Login</a></li>
               <% end %>

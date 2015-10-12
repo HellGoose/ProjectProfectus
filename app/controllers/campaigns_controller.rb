@@ -278,24 +278,21 @@ class CampaignsController < ApplicationController
 	end
 
 	def refresh_step
-		if Campaign.where(votable: true).count <= 30
-			if campaign.where(votable: true).count < 15
-				respond_to do |format|
-					format.js { render partial: "home/not_enough_campaigns"}
-				end
-			else
-				respond_to do |format|
-					format.js { render partial: "campaignVoting"}
-				end
+		if Campaign.where(votable: true).count < 15
+			respond_to do |format|
+				format.js { render partial: "home/not_enough_campaigns"}
 			end
-		elsif current_user.isOnStep < 3
+			return
+		end
+
+		if current_user && current_user.isOnStep < 3
+			campaignVotes = genCampaignsForVoting(-1)
+
 			@campaignVoting = []
-			campaignVotes = genCampaignsForVoting(current_user.isOnStep)
 			for i in 0..2
 				next if campaignVotes[i].nil?
 				@campaignVoting << campaignVotes[i].campaign
 			end
-
 			respond_to do |format|
 				format.js { render partial: "campaignVoting"}
 			end
@@ -453,7 +450,6 @@ class CampaignsController < ApplicationController
 			campaign.goal = j['objects'][0]['goal'].delete(',').delete('$').to_i
 			campaign.author = j['objects'][0]['author'] # needs proper parsing for kickstarter
 			campaign.image = j['objects'][0]['image']
-			campaign.description = j['objects'][0]['description']
 
 			p provider
 
@@ -589,8 +585,9 @@ class CampaignsController < ApplicationController
 	def genCampaignsForVoting(step)
 		campaigns = Campaign.where(votable: true).order("timesShownInVoting DESC")
 		genedCampaigns = []
-
 		case step
+		when (-1) #refresh
+			genedCampaigns = campaigns.last(campaigns.size * 0.5)
 		when 0
 			genedCampaigns = campaigns.last(campaigns.size * 0.2)
 		when 1
@@ -600,21 +597,19 @@ class CampaignsController < ApplicationController
 		end
 
 		campaignVotes = current_user.campaignVotes
-		campaignVotes.where(step: step).each{|cv| cv.destroy}
 		votedCampaigns = []
 		campaignVotes.each{|cv| votedCampaigns << cv.campaign}
+		campaignVotes.where(step: current_user.isOnStep).each{|cv| cv.destroy}
 
 		genedCampaigns = (genedCampaigns - votedCampaigns).sample(3)
 		genedCampaigns.each do |gc|
 			campaignVotes.create(
 				user_id: current_user.id, 
 				campaign_id: gc.id, 
-				step: step)
-			gc.timesShownInVoting += 1
-			gc.save
+				step: current_user.isOnStep)
 		end
 
 		current_user.save
-		current_user.campaignVotes.where(step: step)
+		current_user.campaignVotes.where(step: current_user.isOnStep)
 	end
 end

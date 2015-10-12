@@ -86,10 +86,11 @@
 	<div class="campaign-info">
 		<div class="row">
 			<h5>
-				Added to Podium by <%= link_to User.find(@campaign.user_id).name, user_path(User.find(@campaign.user_id))%>
+				Added by <%= link_to User.find(@campaign.user_id).name, user_path(User.find(@campaign.user_id))%>
 				<% if !@campaign_link_split.nil? then %> from <a href="%=@campaign.link%>"><%= @campaign_link_split.capitalize %></a> <% end %>
-				on <%= @campaign.created_at.strftime("%B %d, %Y") %>
+				<%= distance_of_time_in_words(DateTime.now, @campaign.created_at) %> ago.
 			</h5>
+			<p id="campaign-description" >- "<%= @campaign.description %>"</p>
 		</div>
 	</div>
 	<!-- <h5>end_time <%= @campaign.end_time %></h5> -->
@@ -97,6 +98,5 @@
 		<%= if @campaign.content != nil 
 			render inline: @campaign.content 
 		end %>
-		<p id="campaign-description" ><%= @campaign.description %></p>
 	</div>
 </div>

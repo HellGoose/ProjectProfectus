@@ -38,6 +38,7 @@ Rails.application.routes.draw do
 	post '/admin/round/:type/:val', to: 'admin#round'
 	post '/admin/clear_all_nominations/', to: 'admin#clear_all_nominations'
 	post '/admin/nominate_all', to: 'admin#nominate_all'
+	post '/admin/reset_voting', to: 'admin#reset_voting'
 
 	#Leaderboard
 	get '/leaderboard/:page/:interval', to: 'users#page'
