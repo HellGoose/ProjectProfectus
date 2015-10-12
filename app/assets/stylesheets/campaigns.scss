@@ -39,6 +39,18 @@ $green: #385559;
 	background: #F7F7F7;
 }
 
+.campaign-list {
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 1300px;
+}
+
+@media(min-width: 1300px){
+	.campaign-list {
+		width: 1300px;
+	}
+}
+
 //Causes the category sites with no projects to have a similar look to those who have it.
 .noCampaign {
 	margin-top: 200px;
@@ -99,6 +111,7 @@ $green: #385559;
 	position: absolute;
 	width: 100%;
 	height: 100%;
+	min-height: 316px;
 	top: 0;
 	left: 0;
 	text-decoration: none; 
