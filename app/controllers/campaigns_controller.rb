@@ -442,9 +442,9 @@ class CampaignsController < ApplicationController
 
 			j = JSON.parse res.body
 
-			if j['error']
+			if j['error'] or !j['objects'] or !j['objects'][0]
 				p 'ERROR.THREAD: Diffbot could not fetch the objects'
-				p j['error']
+				p (j['error'] or "An unkown error with Diffbot occured.")
 				notification = PointsHistory.new(description: 'Campaign was not nominated! Something went wrong.', points_received: 0)
 				user = current_user.lock!
 				user.pointsHistories << notification
@@ -455,11 +455,18 @@ class CampaignsController < ApplicationController
 			end
 
 			campaign.lock!
-			campaign.title = j['objects'][0]['title'].delete('.')
+			#Defaults
+			campaign.title = nil
+			campaign.content = nil
+			campaign.backers = -1
+			campaign.pledged = -1
+			campaign.goal = -1
+
+			campaign.title = j['objects'][0]['title'].delete('.') if j['objects'][0]['title']
 			campaign.content = j['objects'][0]['html']
-			campaign.backers = j['objects'][0]['backers'].delete(',').to_i
-			campaign.pledged = j['objects'][0]['pledged'].delete(',').delete('$').to_i # only dollahs?
-			campaign.goal = j['objects'][0]['goal'].delete(',').delete('$').to_i
+			campaign.backers = j['objects'][0]['backers'].delete(',').to_i if j['objects'][0]['backers']
+			campaign.pledged = j['objects'][0]['pledged'].delete(',').delete('$').to_i if j['objects'][0]['pledged']
+			campaign.goal = j['objects'][0]['goal'].delete(',').delete('$').to_i if j['objects'][0]['goal']
 			campaign.author = j['objects'][0]['author'] # needs proper parsing for kickstarter
 			campaign.image = j['objects'][0]['image']
 
@@ -488,7 +495,7 @@ class CampaignsController < ApplicationController
 			end
 
 			if campaign.image.nil?
-				campaign.image = j['objects'][0]['images'][0]['url']
+				campaign.image = (j['objects'][0]['images'][0]['url'] or nil)
 			end
 
 			#case embedlyData.provider_url
@@ -500,12 +507,13 @@ class CampaignsController < ApplicationController
 
 			p "Parsing: " + (Time.now - t1).to_s
 			campaign.status = "ready"
-			if campaign.save
+			if !campaign.title.nil? && !campaign.content.nil? && !campaign.image.nil? && campaign.save
 				notification = PointsHistory.new(description: 'Campaign successfully nominated!', points_received: 5)
 				user = current_user.lock!
 				user.pointsHistories << notification
 				user.points +=5
 				user.save
+				p "Campaign saved!"
 			else
 				p 'ERROR.THREAD: Could not save the campaign'
 				p campaign.errors
