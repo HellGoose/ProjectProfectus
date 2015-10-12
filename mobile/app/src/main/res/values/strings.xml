@@ -1,8 +1,0 @@
-<resources>
-    <string name="app_name">Podium</string>
-
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
-    <string name="sharing">Sharing on Podium!</string>
-    <string name="cancel">Cancel</string>
-</resources>
