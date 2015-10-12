@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151011144249) do
+ActiveRecord::Schema.define(version: 20151012085311) do
 
   create_table "badges", force: :cascade do |t|
     t.string   "name",        limit: 255
@@ -61,7 +61,7 @@ ActiveRecord::Schema.define(version: 20151011144249) do
 
   add_index "campaigns", ["category_id"], name: "index_campaigns_on_category_id", using: :btree
   add_index "campaigns", ["crowdfunding_site_id"], name: "index_campaigns_on_crowdfunding_site_id", using: :btree
-  add_index "campaigns", ["nominator_id"], name: "fk_rails_d8d6273771", using: :btree
+  add_index "campaigns", ["nominator_id"], name: "fk_rails_3ea12c1987", using: :btree
   add_index "campaigns", ["user_id"], name: "index_campaigns_on_user_id", using: :btree
 
   create_table "categories", force: :cascade do |t|
@@ -161,6 +161,15 @@ ActiveRecord::Schema.define(version: 20151011144249) do
     t.integer  "numberOfVotersLastRound", limit: 4
   end
 
+  create_table "stared_campaigns", force: :cascade do |t|
+    t.integer "campaign_id", limit: 4
+    t.integer "user_id",     limit: 4
+    t.integer "round",       limit: 4
+  end
+
+  add_index "stared_campaigns", ["campaign_id"], name: "index_stared_campaigns_on_campaign_id", using: :btree
+  add_index "stared_campaigns", ["user_id"], name: "index_stared_campaigns_on_user_id", using: :btree
+
   create_table "stat_dumps", force: :cascade do |t|
     t.integer  "roundNumber",             limit: 4
     t.text     "details",                 limit: 65535
@@ -214,5 +223,6 @@ ActiveRecord::Schema.define(version: 20151011144249) do
   end
 
   add_foreign_key "campaigns", "users", column: "nominator_id"
+  add_foreign_key "campaigns", "users", name: "nominator_id"
   add_foreign_key "points_histories", "users"
 end

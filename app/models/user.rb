@@ -12,8 +12,10 @@ class User < ActiveRecord::Base
 	has_many :badges, class_name: "UserBadge"
 	has_many :postVotes, class_name: "PostVote"
 	has_many :campaignVotes, class_name: "CampaignVote"
-	has_many :postsVoted, class_name: "Post", through: "PostVote"
-	has_many :campaignsVoted, class_name: "Campaign", :through => :campaignVotes, :source => :campaign
+	has_many :postsVoted, class_name: "Post", through: "postVotes", source: "post"
+	has_many :campaignsVoted, class_name: "Campaign", through: "campaignVote", source: "campaign"
+	has_many :stars, class_name: "StaredCampaign"
+	has_many :staredCampaigns, class_name: "Campaign", through: "stars", source: "campaign"
 
 
 	#Authentication

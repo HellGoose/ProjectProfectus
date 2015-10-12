@@ -1,5 +1,5 @@
 class CampaignsController < ApplicationController
-	before_action :set_campaign, only: [:show, :edit, :update, :destroy]
+	before_action :set_campaign, only: [:show, :edit, :update, :destroy, :star]
 	skip_before_action :verify_authenticity_token
 
 	# Public: Prepares variables for campaign#index.
@@ -303,6 +303,18 @@ class CampaignsController < ApplicationController
 		end
 	end
 
+	def star
+		return if !current_user || current_user.stars.exists?(campaign_id: @campaign.id) || current_user.stars.where(round: current_round+1).count >= 3
+
+		current_user.stars.create(
+			user_id: current_user.id,
+			campaign_id: @campaign.id,
+			round: current_round + 1
+			)
+
+		redirect_to "/campaigns/#{@campaign.id}"
+	end
+
 	private
 
 	# Private: Checks if the current user owns the given campaign.
@@ -597,11 +609,11 @@ class CampaignsController < ApplicationController
 		end
 
 		campaignVotes = current_user.campaignVotes
-		votedCampaigns = []
-		campaignVotes.each{|cv| votedCampaigns << cv.campaign}
-		campaignVotes.where(step: current_user.isOnStep).each{|cv| cv.destroy}
+		votedCampaigns = current_user.camapignsVoted
+		staredCampaigns = current_user.staredCamapaigns.where(round: current_round)
+		campaignVotes.destroy_all(step: current_user.isOnStep)
 
-		genedCampaigns = (genedCampaigns - votedCampaigns).sample(3)
+		genedCampaigns = ((genedCampaigns | staredCampaigns) - votedCampaigns).sample(3)
 		genedCampaigns.each do |gc|
 			campaignVotes.create(
 				user_id: current_user.id, 

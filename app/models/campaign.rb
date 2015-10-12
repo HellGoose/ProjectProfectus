@@ -8,9 +8,11 @@ class Campaign < ActiveRecord::Base
 	belongs_to :nominator, class_name: "User"
 	belongs_to :category
 	belongs_to :crowdfunding_site
+	has_many :stars, class_name: "StaredCampaign"
+	has_many :staredBy, class_name: "User", through: "stars", source: "user"
 	has_many :posts, :dependent => :destroy
 	has_many :votes, class_name: "CampaignVote", :dependent => :delete_all
-	has_many :usersVoted, class_name: "User", through: "campaign_votes"
+	has_many :usersVoted, class_name: "User", through: "votes", source: "user"
 	has_many :roundsWon, class_name: "RoundWinnerCampaign", :dependent => :delete_all
 
 	#Callbacks
