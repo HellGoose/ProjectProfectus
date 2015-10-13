@@ -304,13 +304,13 @@ class CampaignsController < ApplicationController
 	end
 
 	def star
-		return if !current_user || current_user.stars.exists?(campaign_id: @campaign.id) || current_user.stars.where(round: current_round+1).count >= 3
-
-		current_user.stars.create(
-			user_id: current_user.id,
-			campaign_id: @campaign.id,
-			round: current_round + 1
-			)
+		if current_user && !current_user.stars.exists?(campaign_id: @campaign.id) && !(current_user.stars.where(round: current_round+1).count >= 3)
+			current_user.stars.create(
+				user_id: current_user.id,
+				campaign_id: @campaign.id,
+				round: current_round + 1
+				)
+		end
 
 		redirect_to "/campaigns/#{@campaign.id}"
 	end
@@ -456,8 +456,8 @@ class CampaignsController < ApplicationController
 
 			campaign.lock!
 			#Defaults
-			campaign.title = nil
-			campaign.content = nil
+			campaign.title = ""
+			campaign.content = ""
 			campaign.backers = -1
 			campaign.pledged = -1
 			campaign.goal = -1
@@ -507,13 +507,13 @@ class CampaignsController < ApplicationController
 
 			p "Parsing: " + (Time.now - t1).to_s
 			campaign.status = "ready"
-			if !campaign.title.nil? && !campaign.content.nil? && !campaign.image.nil? && campaign.save
+			if campaign.title.present? && campaign.content.present? && campaign.image.present? && campaign.save
+				p "Campaign saved!"
 				notification = PointsHistory.new(description: 'Campaign successfully nominated!', points_received: 5)
 				user = current_user.lock!
 				user.pointsHistories << notification
 				user.points +=5
 				user.save
-				p "Campaign saved!"
 			else
 				p 'ERROR.THREAD: Could not save the campaign'
 				p campaign.errors
@@ -615,12 +615,21 @@ class CampaignsController < ApplicationController
 		when 2
 			genedCampaigns = campaigns.first(campaigns.size * 0.5)
 		end
-
+		p "Gathering Campaigns"
 		campaignVotes = current_user.campaignVotes
-		votedCampaigns = current_user.camapignsVoted
-		staredCampaigns = current_user.staredCamapaigns.where(round: current_round)
-		campaignVotes.destroy_all(step: current_user.isOnStep)
+		p "voted"
+		votedCampaigns = []
+		current_user.campaignsVoted.each{ |c| votedCampaigns << c}
+		p "stared"
+		staredCampaigns = [] 
+		current_user.stars.where(round: current_round).each{ |s| staredCampaigns << s.campaign}
+		p "destroy"
+		campaignVotes.where(step: current_user.isOnStep).each{ |cv| cv.destroy}
 
+		p "set addition"
+		p "Stared: #{staredCampaigns}"
+		p "Gened: #{genedCampaigns}"
+		p "Voted: #{votedCampaigns}"
 		genedCampaigns = ((genedCampaigns | staredCampaigns) - votedCampaigns).sample(3)
 		genedCampaigns.each do |gc|
 			campaignVotes.create(
