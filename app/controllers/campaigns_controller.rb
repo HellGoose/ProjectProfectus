@@ -615,21 +615,13 @@ class CampaignsController < ApplicationController
 		when 2
 			genedCampaigns = campaigns.first(campaigns.size * 0.5)
 		end
-		p "Gathering Campaigns"
 		campaignVotes = current_user.campaignVotes
-		p "voted"
 		votedCampaigns = []
 		current_user.campaignsVoted.each{ |c| votedCampaigns << c}
-		p "stared"
 		staredCampaigns = [] 
 		current_user.stars.where(round: current_round).each{ |s| staredCampaigns << s.campaign}
-		p "destroy"
 		campaignVotes.where(step: current_user.isOnStep).each{ |cv| cv.destroy}
 
-		p "set addition"
-		p "Stared: #{staredCampaigns}"
-		p "Gened: #{genedCampaigns}"
-		p "Voted: #{votedCampaigns}"
 		genedCampaigns = ((genedCampaigns | staredCampaigns) - votedCampaigns).sample(3)
 		genedCampaigns.each do |gc|
 			campaignVotes.create(
