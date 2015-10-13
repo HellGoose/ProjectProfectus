@@ -38,10 +38,10 @@
 					<h4><small>Times Shown</small></h4><b><%= @campaign.timesShownInVoting %></b></div> -->
 
 				<div class="col-xs-2" id="campaign-info-box">
-					<h4><small>Pledged</small></h4><b><%= @campaign.pledged %></b></div>
+					<h4><small>Pledged</small></h4><b><%= if @campaign.pledged >= 0 then @campaign.pledged else "Funding" end %></b></div>
 
 				<div class="col-xs-2" id="campaign-info-box">
-					<h4><small>Goal</small></h4><b><%= @campaign.goal %></b></div>
+					<h4><small>Goal</small></h4><b><%= if @campaign.goal >= 0 then @campaign.goal else "Complete" end %></b></div>
 
 				<div class="col-xs-2" id="campaign-info-box">
 					<h4><small>Backers</small></h4><b><%= @campaign.backers %></b></div>
@@ -70,7 +70,20 @@
 				disabled: @campaign.nominated
 				%>
 			</div>
- 			<div class="col-xs-7" id="edit">
+			<div class= "col-xs-2" id="star-button">
+				<% if @campaign.nominated && !current_user.stars.exists?(campaign_id: @campaign.id) && !(current_user.stars.where(round: current_round+1).count >= 3) %>
+					<%= link_to("", "/campaigns/star/#{@campaign.id}", 
+					class: "fa fa-heart-o fa-2x", 
+					id: "star", 
+					method: "post",
+					title: "Fav this campaign to increase the chances of getting it in your next voting pool.") %>
+				<% else %>
+					<% heart = ""
+					heart = "-o" if !current_user.stars.exists?(campaign_id: @campaign.id)%>
+					<%=raw "<i class=\"fa fa-heart#{heart} fa-2x></i>" %>
+				<% end %>
+			</div>
+ 			<div class="col-xs-5" id="edit">
 				<div class="edit">
 					<% if @campaign.user_id == session[:user_id] || isAdmin %>
 						<%= link_to "Edit", edit_campaign_path(@campaign)%> 

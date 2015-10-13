@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151011144249) do
+ActiveRecord::Schema.define(version: 20151012085311) do
 
   create_table "badges", force: :cascade do |t|
     t.string   "name",        limit: 255
@@ -160,6 +160,15 @@ ActiveRecord::Schema.define(version: 20151011144249) do
     t.integer  "maxAdditionsPerUser",     limit: 4
     t.integer  "numberOfVotersLastRound", limit: 4
   end
+
+  create_table "stared_campaigns", force: :cascade do |t|
+    t.integer "campaign_id", limit: 4
+    t.integer "user_id",     limit: 4
+    t.integer "round",       limit: 4
+  end
+
+  add_index "stared_campaigns", ["campaign_id"], name: "index_stared_campaigns_on_campaign_id", using: :btree
+  add_index "stared_campaigns", ["user_id"], name: "index_stared_campaigns_on_user_id", using: :btree
 
   create_table "stat_dumps", force: :cascade do |t|
     t.integer  "roundNumber",             limit: 4

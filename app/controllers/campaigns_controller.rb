@@ -1,5 +1,5 @@
 class CampaignsController < ApplicationController
-	before_action :set_campaign, only: [:show, :edit, :update, :destroy]
+	before_action :set_campaign, only: [:show, :edit, :update, :destroy, :star]
 	skip_before_action :verify_authenticity_token
 
 	# Public: Prepares variables for campaign#index.
@@ -303,6 +303,18 @@ class CampaignsController < ApplicationController
 		end
 	end
 
+	def star
+		if current_user && !current_user.stars.exists?(campaign_id: @campaign.id) && !(current_user.stars.where(round: current_round+1).count >= 3)
+			current_user.stars.create(
+				user_id: current_user.id,
+				campaign_id: @campaign.id,
+				round: current_round + 1
+				)
+		end
+
+		redirect_to "/campaigns/#{@campaign.id}"
+	end
+
 	private
 
 	# Private: Checks if the current user owns the given campaign.
@@ -430,9 +442,9 @@ class CampaignsController < ApplicationController
 
 			j = JSON.parse res.body
 
-			if j['error']
+			if j['error'] or !j['objects'] or !j['objects'][0]
 				p 'ERROR.THREAD: Diffbot could not fetch the objects'
-				p j['error']
+				p (j['error'] or "An unkown error with Diffbot occured.")
 				notification = PointsHistory.new(description: 'Campaign was not nominated! Something went wrong.', points_received: 0)
 				user = current_user.lock!
 				user.pointsHistories << notification
@@ -443,11 +455,18 @@ class CampaignsController < ApplicationController
 			end
 
 			campaign.lock!
-			campaign.title = j['objects'][0]['title'].delete('.')
+			#Defaults
+			campaign.title = ""
+			campaign.content = ""
+			campaign.backers = -1
+			campaign.pledged = -1
+			campaign.goal = -1
+
+			campaign.title = j['objects'][0]['title'].delete('.') if j['objects'][0]['title']
 			campaign.content = j['objects'][0]['html']
-			campaign.backers = j['objects'][0]['backers'].delete(',').to_i
-			campaign.pledged = j['objects'][0]['pledged'].delete(',').delete('$').to_i # only dollahs?
-			campaign.goal = j['objects'][0]['goal'].delete(',').delete('$').to_i
+			campaign.backers = j['objects'][0]['backers'].delete(',').to_i if j['objects'][0]['backers']
+			campaign.pledged = j['objects'][0]['pledged'].delete(',').delete('$').to_i if j['objects'][0]['pledged']
+			campaign.goal = j['objects'][0]['goal'].delete(',').delete('$').to_i if j['objects'][0]['goal']
 			campaign.author = j['objects'][0]['author'] # needs proper parsing for kickstarter
 			campaign.image = j['objects'][0]['image']
 
@@ -476,7 +495,7 @@ class CampaignsController < ApplicationController
 			end
 
 			if campaign.image.nil?
-				campaign.image = j['objects'][0]['images'][0]['url']
+				campaign.image = (j['objects'][0]['images'][0]['url'] or nil)
 			end
 
 			#case embedlyData.provider_url
@@ -488,7 +507,8 @@ class CampaignsController < ApplicationController
 
 			p "Parsing: " + (Time.now - t1).to_s
 			campaign.status = "ready"
-			if campaign.save
+			if campaign.title.present? && campaign.content.present? && campaign.image.present? && campaign.save
+				p "Campaign saved!"
 				notification = PointsHistory.new(description: 'Campaign successfully nominated!', points_received: 5)
 				user = current_user.lock!
 				user.pointsHistories << notification
@@ -595,13 +615,14 @@ class CampaignsController < ApplicationController
 		when 2
 			genedCampaigns = campaigns.first(campaigns.size * 0.5)
 		end
-
 		campaignVotes = current_user.campaignVotes
 		votedCampaigns = []
-		campaignVotes.each{|cv| votedCampaigns << cv.campaign}
-		campaignVotes.where(step: current_user.isOnStep).each{|cv| cv.destroy}
+		current_user.campaignsVoted.each{ |c| votedCampaigns << c}
+		staredCampaigns = [] 
+		current_user.stars.where(round: current_round).each{ |s| staredCampaigns << s.campaign}
+		campaignVotes.where(step: current_user.isOnStep).each{ |cv| cv.destroy}
 
-		genedCampaigns = (genedCampaigns - votedCampaigns).sample(3)
+		genedCampaigns = ((genedCampaigns | staredCampaigns) - votedCampaigns).sample(3)
 		genedCampaigns.each do |gc|
 			campaignVotes.create(
 				user_id: current_user.id, 

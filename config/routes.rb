@@ -33,6 +33,7 @@ Rails.application.routes.draw do
 	get '/users/:id/campaigns/:page/:interval', to: 'users#campaignPage'
 	get '/campaigns/checkIfCanAdd/:title', to: 'campaigns#check_if_can_add'
 	get '/campaigns/log/:website', to: 'campaigns#log_unsupported_site', :website => /.*/
+	post '/campaigns/star/:id', to: 'campaigns#star'
 
 	# Round administrating
 	post '/admin/round/:type/:val', to: 'admin#round'

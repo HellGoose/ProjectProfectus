@@ -41,7 +41,7 @@ end
 
 private
 def runNewRound (decayRate)
-	if Campaign.where(nominated: true).count <= 30
+	if Campaign.where(nominated: true).count < 30
 		puts "Failed to start new round! Not enough nominated campaigns for the next round."
 		return
 	end
@@ -159,6 +159,7 @@ def runNewRound (decayRate)
 	Campaign.update_all(timesShownInVoting: 0, votable: false)
 	Campaign.where(nominated: true).update_all(nominated: false, votable: true)
 	CampaignVote.destroy_all
+	StaredCampaign.destroy_all(round: round.currentRound - 1)
 	statDump.details = details
 	if statDump.save
 		puts "Stats dumped!"
