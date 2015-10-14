@@ -53,10 +53,10 @@ changePage = (dir) ->
 		if page < (Math.ceil(size/interval) - 1)
 			page += 1
 		$('#prev').attr('disabled', false)
-		if page == Math.ceil(size/interval)
+		if page == Math.ceil(size/interval) - 1
 			$('#next').attr('disabled', true)
 		else
-			$('#next').attr('disabled', true)
+			$('#next').attr('disabled', false)
 	else if (dir == '<')
 		if page > 0
 			page -= 1
@@ -64,7 +64,7 @@ changePage = (dir) ->
 		if page == 0
 			$('#prev').attr('disabled', true)
 		else
-			$('#prev').attr('disabled', true)
+			$('#prev').attr('disabled', false)
 		if size > interval
 			$('#next').attr('disabled', false)
 	else
