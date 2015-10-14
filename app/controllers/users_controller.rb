@@ -98,13 +98,13 @@ class UsersController < ApplicationController
 	#
 	# Renders the partial leaderboard with the page and interval variables.
 	def page
-		@page = params[:page].to_i
-		@interval = params[:interval].to_i
+		page = params[:page].to_i
+		interval = params[:interval].to_i
 
-		@users = User.all.order('points DESC')
+		users = User.all.order('points DESC')
 		
 		respond_to do |format|
-			format.html { render partial: 'leaderboard' }
+			format.html { render partial: 'leaderboard', locals: { page: page, interval: interval, users: users } }
 		end
 	end
 
