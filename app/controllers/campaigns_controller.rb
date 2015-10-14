@@ -318,12 +318,22 @@ class CampaignsController < ApplicationController
 	end
 
 	def star
-		if current_user && !current_user.stars.exists?(campaign_id: @campaign.id) && !(current_user.stars.where(round: current_round+1).count >= 3)
+		if !current_user
+			redirect_to "/campaigns/#{@campaign.id}"
+			return
+		end
+
+		allreadyStared = current_user.stars.exists?(campaign_id: @campaign.id)
+		haveStarSlotsLeft = current_user.stars.where(round: current_round+1).count < 3
+
+		if  !allreadyStared && haveStarSlotsLeft
 			current_user.stars.create(
 				user_id: current_user.id,
 				campaign_id: @campaign.id,
 				round: current_round + 1
 				)
+		elsif allreadyStared
+			current_user.stars.destroy_all(round: current_round + 1, campaign_id: @campaign_id)
 		end
 
 		redirect_to "/campaigns/#{@campaign.id}"
@@ -456,7 +466,7 @@ class CampaignsController < ApplicationController
 
 			j = JSON.parse res.body
 
-			if j['error'] or !j['objects'] or !j['objects'][0]
+			if j['error'] || !j['objects'] || !j['objects'][0]
 				p 'ERROR.THREAD: Diffbot could not fetch the objects'
 				p (j['error'] or "An unkown error with Diffbot occured.")
 				notification = PointsHistory.new(description: 'Campaign was not nominated! Something went wrong.', points_received: 0)
@@ -509,7 +519,7 @@ class CampaignsController < ApplicationController
 			end
 
 			if campaign.image.nil?
-				campaign.image = (j['objects'][0]['images'][0]['url'] or nil)
+				campaign.image = (j['objects'][0]['images'][0]['url'] or "")
 			end
 
 			#case embedlyData.provider_url
