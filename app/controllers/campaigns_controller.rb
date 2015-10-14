@@ -323,7 +323,7 @@ class CampaignsController < ApplicationController
 			return
 		end
 
-		allreadyStared = current_user.stars.exists?(campaign_id: @campaign.id)
+		allreadyStared = current_user.stars.exists?(round: current_round + 1, campaign_id: @campaign.id)
 		haveStarSlotsLeft = current_user.stars.where(round: current_round+1).count < 3
 
 		if  !allreadyStared && haveStarSlotsLeft
@@ -333,7 +333,7 @@ class CampaignsController < ApplicationController
 				round: current_round + 1
 				)
 		elsif allreadyStared
-			current_user.stars.destroy_all(round: current_round + 1, campaign_id: @campaign_id)
+			current_user.stars.find_by(round: current_round + 1, campaign_id: @campaign.id).destroy
 		end
 
 		redirect_to "/campaigns/#{@campaign.id}"
