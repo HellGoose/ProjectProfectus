@@ -21,7 +21,11 @@ class CampaignsController < ApplicationController
 	#
 	# Renders campaign#new.
 	def new
-		if current_user && current_user.additionsThisRound < Round.first.maxAdditionsPerUser
+		if !current_user
+			redirect_to '/'
+			return
+		end
+		if current_user.additionsThisRound < Round.first.maxAdditionsPerUser
 			@campaign = Campaign.new
 		else
 			respond_to do |format|
@@ -67,6 +71,10 @@ class CampaignsController < ApplicationController
 	# Renders campaign#show iff the update succeeds, 
 	# otherwise rerenders campaign#edit with the error.
 	def update
+		if !current_user
+			redirect_to '/'
+			return
+		end
 		respond_to do |format|
 			if (isCampaignOwner or isAdmin) and @campaign.update(campaign_params)
 				msg = "<span class=\"alert alert-success\">Campaign was successfully updated.</span>"
@@ -89,8 +97,11 @@ class CampaignsController < ApplicationController
 	#
 	# Renders campaign#index.
 	def create
-		t2 = Time.now
-		if !current_user || current_user.additionsThisRound >= Round.first.maxAdditionsPerUser
+		if !current_user
+			redirect_to '/'
+			return
+		end
+		if current_user.additionsThisRound >= Round.first.maxAdditionsPerUser
 			respond_to do |format|
 				msg = "<span class=\"alert alert-warning\">You have exceeded your submission limit for this round.</span>"
 				format.html { redirect_to current_user, notice: msg }
@@ -118,7 +129,6 @@ class CampaignsController < ApplicationController
 				format.json { render :show, location: current_user }
 			end
 		end
-		p "Everything: " + (Time.now - t2).to_s
 	end
 
 	# Public: Checks if a campaign can be nominated
@@ -169,6 +179,10 @@ class CampaignsController < ApplicationController
 	# Renders user#show iff the deletion succeeded,
 	# otherwise renders campaign#show with the error.
 	def destroy
+		if !current_user
+			redirect_to '/'
+			return
+		end
 		respond_to do |format|
 			if (isCampaignOwner or isAdmin) and @campaign.destroy
 				msg = "<span class=\"alert alert-success\">Campaign was successfully destroyed.</span>"

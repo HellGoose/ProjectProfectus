@@ -64,6 +64,10 @@ class UsersController < ApplicationController
 	# Renders user#show if the update succeeds, 
 	# otherwise rerenders user#edit with the error.
 	def update
+		if !current_user
+			redirect_to '/'
+			return
+		end
 		respond_to do |format|
 			if current_user && is_this_user && @user.update(user_params)
 				format.html { redirect_to @user, notice: '<span class="alert alert-success">User was successfully updated.</span>' }
@@ -137,6 +141,10 @@ class UsersController < ApplicationController
 	#
 	# Redirects to session#destroy.
 	def destroy
+		if !isAdmin
+			redirect_to @user
+			return
+		end
 		@user.destroy
 		respond_to do |format|
 			format.html { redirect_to '/signout', notice: '<span class="alert alert-success">User was deleted.</span>' }

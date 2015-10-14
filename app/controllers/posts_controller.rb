@@ -52,13 +52,15 @@ class PostsController < ApplicationController
 	#
 	# Renders the "new comment" form.
 	def answer
-		if current_user
-			@post = Post.new
-			@campaign = Campaign.find(params[:campaign_id])
-			@op = Post.find(params[:post_id])
-			respond_to do |format|
-				format.js { render partial: "posts/postForm" }
-			end
+		if !current_user
+			redirect_to '/'
+			return
+		end
+		@post = Post.new
+		@campaign = Campaign.find(params[:campaign_id])
+		@op = Post.find(params[:post_id])
+		respond_to do |format|
+			format.js { render partial: "posts/postForm" }
 		end
 	end
 
@@ -110,10 +112,12 @@ class PostsController < ApplicationController
 	#
 	# Renders the "new post" form.
 	def new
-		if current_user
-			@post = Post.new
-			@op = nil
+		if !current_user
+			redirect_to '/'
+			return
 		end
+		@post = Post.new
+		@op = nil
 	end
 
 	# Public: Prepares variables for post#edit.
@@ -173,6 +177,10 @@ class PostsController < ApplicationController
 	# Renders campaign#show iff the update succeeds, 
 	# otherwise rerenders post#edit with the error.
 	def update
+		if !current_user
+			redirect_to '/'
+			return
+		end
 		campaign = Campaign.find(@post.campaign_id)
 		respond_to do |format|
 			if (isPostOwner || isAdmin) && @post.update(post_params)
@@ -196,6 +204,10 @@ class PostsController < ApplicationController
 	# Renders campaign#show iff the deletion succeeded,
 	# otherwise renders campaign#show with the error.
 	def destroy
+		if !current_user
+			redirect_to '/'
+			return
+		end
 		campaign = Campaign.find(@post.campaign_id)
 		respond_to do |format|
 			if isPostOwner && @post.destroy
