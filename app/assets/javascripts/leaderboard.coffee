@@ -52,21 +52,21 @@ changePage = (dir) ->
 	if (dir == '>')
 		if page < (Math.ceil(size/interval) - 1)
 			page += 1
-		$('#prev').attr('disabled', false)
-		if page == Math.ceil(size/interval)
-			$('#next').attr('disabled', true)
+			$('#prev').attr('disabled', false)
+			if page == Math.ceil(size/interval) - 1
+				$('#next').attr('disabled', true)
 		else
 			$('#next').attr('disabled', true)
 	else if (dir == '<')
 		if page > 0
 			page -= 1
-		$('#next').attr('disabled', false)
-		if page == 0
-			$('#prev').attr('disabled', true)
-		else
-			$('#prev').attr('disabled', true)
-		if size > interval
 			$('#next').attr('disabled', false)
+			if page == 0
+				$('#prev').attr('disabled', true)
+		else
+			$('#prev').attr('disabled', false)
+			if size > interval
+				$('#next').attr('disabled', false)
 	else
 		page = 0
 

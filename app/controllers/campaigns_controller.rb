@@ -21,7 +21,11 @@ class CampaignsController < ApplicationController
 	#
 	# Renders campaign#new.
 	def new
-		if current_user && current_user.additionsThisRound < Round.first.maxAdditionsPerUser
+		if !current_user
+			redirect_to '/'
+			return
+		end
+		if current_user.additionsThisRound < Round.first.maxAdditionsPerUser
 			@campaign = Campaign.new
 		else
 			respond_to do |format|
@@ -67,6 +71,10 @@ class CampaignsController < ApplicationController
 	# Renders campaign#show iff the update succeeds, 
 	# otherwise rerenders campaign#edit with the error.
 	def update
+		if !current_user
+			redirect_to '/'
+			return
+		end
 		respond_to do |format|
 			if (isCampaignOwner or isAdmin) and @campaign.update(campaign_params)
 				msg = "<span class=\"alert alert-success\">Campaign was successfully updated.</span>"
@@ -89,8 +97,11 @@ class CampaignsController < ApplicationController
 	#
 	# Renders campaign#index.
 	def create
-		t2 = Time.now
-		if !current_user || current_user.additionsThisRound >= Round.first.maxAdditionsPerUser
+		if !current_user
+			redirect_to '/'
+			return
+		end
+		if current_user.additionsThisRound >= Round.first.maxAdditionsPerUser
 			respond_to do |format|
 				msg = "<span class=\"alert alert-warning\">You have exceeded your submission limit for this round.</span>"
 				format.html { redirect_to current_user, notice: msg }
@@ -118,7 +129,6 @@ class CampaignsController < ApplicationController
 				format.json { render :show, location: current_user }
 			end
 		end
-		p "Everything: " + (Time.now - t2).to_s
 	end
 
 	# Public: Checks if a campaign can be nominated
@@ -169,6 +179,10 @@ class CampaignsController < ApplicationController
 	# Renders user#show iff the deletion succeeded,
 	# otherwise renders campaign#show with the error.
 	def destroy
+		if !current_user
+			redirect_to '/'
+			return
+		end
 		respond_to do |format|
 			if (isCampaignOwner or isAdmin) and @campaign.destroy
 				msg = "<span class=\"alert alert-success\">Campaign was successfully destroyed.</span>"
@@ -304,12 +318,22 @@ class CampaignsController < ApplicationController
 	end
 
 	def star
-		if current_user && !current_user.stars.exists?(campaign_id: @campaign.id) && !(current_user.stars.where(round: current_round+1).count >= 3)
+		if !current_user
+			redirect_to "/campaigns/#{@campaign.id}"
+			return
+		end
+
+		allreadyStared = current_user.stars.exists?(round: current_round + 1, campaign_id: @campaign.id)
+		haveStarSlotsLeft = current_user.stars.where(round: current_round+1).count < 3
+
+		if  !allreadyStared && haveStarSlotsLeft
 			current_user.stars.create(
 				user_id: current_user.id,
 				campaign_id: @campaign.id,
 				round: current_round + 1
 				)
+		elsif allreadyStared
+			current_user.stars.find_by(round: current_round + 1, campaign_id: @campaign.id).destroy
 		end
 
 		redirect_to "/campaigns/#{@campaign.id}"
@@ -442,7 +466,7 @@ class CampaignsController < ApplicationController
 
 			j = JSON.parse res.body
 
-			if j['error'] or !j['objects'] or !j['objects'][0]
+			if j['error'] || !j['objects'] || !j['objects'][0]
 				p 'ERROR.THREAD: Diffbot could not fetch the objects'
 				p (j['error'] or "An unkown error with Diffbot occured.")
 				notification = PointsHistory.new(description: 'Campaign was not nominated! Something went wrong.', points_received: 0)
@@ -495,7 +519,7 @@ class CampaignsController < ApplicationController
 			end
 
 			if campaign.image.nil?
-				campaign.image = (j['objects'][0]['images'][0]['url'] or nil)
+				campaign.image = (j['objects'][0]['images'][0]['url'] or "")
 			end
 
 			#case embedlyData.provider_url

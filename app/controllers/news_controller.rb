@@ -8,6 +8,10 @@ class NewsController < ApplicationController
 	#
 	# Renders admin#index iff creation succeeds, otherwise renders news#new.
 	def create
+		if !current_user
+			redirect_to '/'
+			return
+		end
 		@news = News.new(news_params)
 
 		respond_to do |format|
@@ -53,7 +57,11 @@ class NewsController < ApplicationController
 	#
 	# Renders admin#index iff the update succeeds, else rerenders news#edit with the error.
 	def update
-			respond_to do |format|
+		if !current_user
+			redirect_to '/'
+			return
+		end
+		respond_to do |format|
 			if isAdmin && @news.update(news_params)
 				msg = "<span class=\"alert alert-success\">News was successfully updated.</span>"
 				format.html { redirect_to "/admin/", notice: msg }
@@ -71,6 +79,10 @@ class NewsController < ApplicationController
 	#
 	# Renders admin#index iff the user is an admin, else renders root.
 	def destroy
+		if !current_user
+			redirect_to '/'
+			return
+		end
 		respond_to do |format|
 			if !isAdmin
 				format.html { redirect_to "/" }

@@ -9,6 +9,10 @@ class AdminController < ApplicationController
 	#
 	# If the user is an admin, renders admin#index. Else, redirects to root.
 	def index
+		if !isAdmin
+			redirect_to '/'
+			return
+		end
 		@newsInterval = 5
 		@allNews = News.order("created_at DESC")
 		@news = News.new
@@ -17,9 +21,6 @@ class AdminController < ApplicationController
 			@statDumps = StatDump.order("created_at DESC")
 		end
 		#@flagged = Project.all.where("flagged > 0")
-		if !isAdmin
-			redirect_to "/"
-		end
 	end
 
 	# Handles requests for administrating round variables.
@@ -32,50 +33,58 @@ class AdminController < ApplicationController
 	#
 	# Handles requests for administrating round variables
 	def round
-		if isAdmin
-			round = Round.lock.first
-
-			case params[:type]
-			when "update"
-				round.duration = params[:val].to_i
-				durationInWords = view_context.distance_of_time_in_words(round.duration)
-				respond_to do |format|
-					msg = "<span class=\"alert alert-success\">Duration updated to #{durationInWords}</span>"
-					format.json { render json: { status: "ok", message: msg } }
-				end
-			when "force"
-				round.forceNewRound = true
-				respond_to do |format|
-					msg = "<span class=\"alert alert-success\">Forcing new round!</span>"
-					format.json { render json: { status: "ok", message: msg } }
-				end
-			end
-
-			round.save
+		if !isAdmin
+			redirect_to '/'
+			return
 		end
+		round = Round.lock.first
+
+		case params[:type]
+		when "update"
+			round.duration = params[:val].to_i
+			durationInWords = view_context.distance_of_time_in_words(round.duration)
+			respond_to do |format|
+				msg = "<span class=\"alert alert-success\">Duration updated to #{durationInWords}</span>"
+				format.json { render json: { status: "ok", message: msg } }
+			end
+		when "force"
+			round.forceNewRound = true
+			respond_to do |format|
+				msg = "<span class=\"alert alert-success\">Forcing new round!</span>"
+				format.json { render json: { status: "ok", message: msg } }
+			end
+		end
+
+		round.save
 	end
 
 	def clear_all_nominations
-		if isAdmin
-			User.update_all(additionsThisRound: 0)
-			Campaign.update_all(nominated: false)
-			redirect_to "/admin/"
+		if !isAdmin
+			redirect_to '/'
+			return
 		end
+		User.update_all(additionsThisRound: 0)
+		Campaign.update_all(nominated: false)
+		redirect_to "/admin/"
 	end
 
 	def nominate_all
-		if isAdmin
-			Campaign.update_all(nominated: true)
-			redirect_to "/admin/"
+		if !isAdmin
+			redirect_to '/'
+			return
 		end
+		Campaign.update_all(nominated: true)
+		redirect_to "/admin/"
 	end
 
 	def reset_voting
-		if isAdmin
-			CampaignVote.destroy_all
-			Campaign.update_all(timesShownInVoting: 0, roundScore: 0)
-			User.update_all(isOnStep: 0)
-			redirect_to "/admin/"
+		if !isAdmin
+			redirect_to '/'
+			return
 		end
+		CampaignVote.destroy_all
+		Campaign.update_all(timesShownInVoting: 0, roundScore: 0)
+		User.update_all(isOnStep: 0)
+		redirect_to "/admin/"
 	end
 end
