@@ -13,6 +13,11 @@ class HomeController < ApplicationController
 		@campaigns = orderedCampaigns.first(8)
 		@allNews = News.order("created_at DESC")
 		@newsInterval = 5
+		redirect_to :controller => 'home', :action => 'landing' and return if current_user.nil?
+	end
+
+	def landing
+		# render :layout => false
 	end
 
 	# Public: Renders a view containing information about refer-a-friend

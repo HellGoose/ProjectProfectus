@@ -70,8 +70,8 @@ html, body{
 
 #content {
   padding: 0px;
-  margin-bottom: 100px;
-  min-height: 600px;
+  // margin-bottom: 100px;
+  // min-height: 600px;
   // border-bottom-style: solid;
   // border-bottom-color: $gray;
   // border-bottom-width: 5px;
@@ -88,8 +88,10 @@ html, body{
 .notification-container {
   height: 75px;
   padding: 2px;
-  // z-index: 3;
-  // position: absolute;
+  z-index: 3;
+  position: absolute;
+  top: 50px;
+  left: 31%;
 }
 
 .notification-container > #notifications {
