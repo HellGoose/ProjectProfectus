@@ -1,5 +1,5 @@
 class CampaignsController < ApplicationController
-	before_action :set_campaign, only: [:show, :edit, :update, :destroy, :star]
+	before_action :set_campaign, only: [:show, :edit, :update, :destroy, :star, :report]
 	skip_before_action :verify_authenticity_token
 
 	# Public: Prepares variables for campaign#index.
@@ -334,6 +334,26 @@ class CampaignsController < ApplicationController
 				)
 		elsif allreadyStared
 			current_user.stars.find_by(round: current_round + 1, campaign_id: @campaign.id).destroy
+		end
+
+		redirect_to "/campaigns/#{@campaign.id}"
+	end
+
+	def report
+		if !current_user
+			redirect_to '/'
+			return
+		end
+
+		if !current_user.reports.exists?(campaign_id: @campaign.id)
+			current_user.reports.create(
+				user_id: current_user.id,
+				campaign_id: @campaign.id,
+				round: current_round + 1,
+				nominated: @campaign.nominated
+				)
+			@campaign.reported += 1
+			@campaign.save
 		end
 
 		redirect_to "/campaigns/#{@campaign.id}"

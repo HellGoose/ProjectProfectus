@@ -20,7 +20,7 @@ class AdminController < ApplicationController
 		if !StatDump.all.empty?
 			@statDumps = StatDump.order("created_at DESC")
 		end
-		#@flagged = Project.all.where("flagged > 0")
+		@reportedCampaigns = Campaign.where("reported > 0").order("reported DESC").first(20)
 	end
 
 	# Handles requests for administrating round variables.
@@ -86,5 +86,15 @@ class AdminController < ApplicationController
 		Campaign.update_all(timesShownInVoting: 0, roundScore: 0)
 		User.update_all(isOnStep: 0)
 		redirect_to "/admin/"
+	end
+
+	def clear_campaign
+		campaign = Campaign.find(params[:id])
+		campaign.reported = 0
+		campaign.reportedBy.destroy_all
+		campaign.save
+
+		@reportedCampaigns = Campaign.where("reported > 0").order("reported DESC").first(20)
+		render partial: "reported_campaigns"
 	end
 end

@@ -1,0 +1,30 @@
+<table class="table table-hover table-condensed table-responsive">
+  <thead>
+    <tr>
+      <th>Campaign</th>
+      <th>Times reported</th>
+      <th>Nominated</th>
+      <th>Score</th>
+      <th>Added</th>
+      <th>Added By</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @reportedCampaigns.each do |r| %>
+      <tr>
+        <td><%= link_to(r.title, r) %></td>
+        <td><%= r.reported %></td>
+        <td><%= r.nominated %></td>
+        <td><%= r.globalScore + r.roundScore %></td>
+        <td><%= r.created_at %></td>
+        <% user = User.find(r.user_id) %>
+        <td><%= link_to(user.name, user) %></td>
+        <td>
+          <button class="btn btn-success btn-xs report_action_button clear_button" id="<%= r.id %>">Clear</button>
+          <button class="btn btn-danger btn-xs report_action_button delete_button" id="<%= r.id %>">Delete</button>
+        </td>
+      </tr>
+    <%end%>
+  </tbody>
+</table>

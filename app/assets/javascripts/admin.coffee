@@ -76,4 +76,8 @@ $(document).ready ->
 			$('#feedback').slideToggle 400
 			return
 		return
+
+	$('body').on 'click', '.clear_button', ->
+		$('#flagged_projects-tab').load '/admin/clear_campaign/' + @id
+		return
 	return
