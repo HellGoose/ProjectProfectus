@@ -44,13 +44,13 @@ class AdminController < ApplicationController
 			round.duration = params[:val].to_i
 			durationInWords = view_context.distance_of_time_in_words(round.duration)
 			respond_to do |format|
-				msg = "<span class=\"alert alert-success\">Duration updated to #{durationInWords}</span>"
+				msg = "Duration updated to #{durationInWords}"
 				format.json { render json: { status: "ok", message: msg } }
 			end
 		when "force"
 			round.forceNewRound = true
 			respond_to do |format|
-				msg = "<span class=\"alert alert-success\">Forcing new round!</span>"
+				msg = "Forcing new round!"
 				format.json { render json: { status: "ok", message: msg } }
 			end
 		end

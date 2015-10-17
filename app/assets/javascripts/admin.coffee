@@ -38,11 +38,7 @@ $(document).ready ->
 		if (isNaN(days) or parseInt(days) < 0) or (isNaN(hours) or parseInt(hours) < 0) or (days == '' and hours == '')
 			$('#days').val('')
 			$('#hours').val('')
-			$('#feedback').html('<span class="alert alert-warning">Invalid input. Only positive numbers.</span>')
-			$('#feedback').slideUp 0
-			$('#feedback').slideToggle 400
-			$('#feedback').delay(2000)
-			$('#feedback').slideToggle 400
+			display_notification('<h3>Invalid input. Only positive numbers.</h3>')
 		else
 			if (days == '')
 				days_in_seconds = 0
@@ -57,11 +53,7 @@ $(document).ready ->
 			$.post '/admin/round/update/'+duration.toString(), (data, status) ->
 				$('#days').val('')
 				$('#hours').val('')
-				$('#feedback').html(data.message)
-				$('#feedback').slideUp 0
-				$('#feedback').slideToggle 400
-				$('#feedback').delay(2000)
-				$('#feedback').slideToggle 400
+				display_notification('<h3>' + data.message + '</h3>')
 				return
 		return
 
@@ -69,11 +61,7 @@ $(document).ready ->
 	# Sends a POST request and recieves a feedback message.
 	$('#force-new-round').on 'click', ->
 		$.post '/admin/round/force/true', (data, status) ->
-			$('#feedback').html(data.message)
-			$('#feedback').slideUp 0
-			$('#feedback').slideToggle 400
-			$('#feedback').delay(2000)
-			$('#feedback').slideToggle 400
+			display_notification('<h3>' + data.message + '</h3>')
 			return
 		return
 

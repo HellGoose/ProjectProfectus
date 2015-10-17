@@ -35,6 +35,7 @@ Rails.application.routes.draw do
 	get '/campaigns/log/:website', to: 'campaigns#log_unsupported_site', :website => /.*/
 	post '/campaigns/star/:id', to: 'campaigns#star'
 	post '/campaigns/:id/report', to: 'campaigns#report'
+	get '/campaigns/:id/nominate', to: 'campaigns#nominate_campaign'
 
 	# Admin
 	post '/admin/round/:type/:val', to: 'admin#round'
