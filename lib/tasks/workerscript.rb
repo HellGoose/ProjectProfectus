@@ -51,7 +51,7 @@ def runNewRound (decayRate)
 
 	#Variables
 	usersOfTheRoundPoints = [25, 10, 5]
-	percentageOfRoundScore = 0.1
+	percentageOfRoundScore = 1/(User.count + 1)
 
 	
 	statDump = StatDump.new

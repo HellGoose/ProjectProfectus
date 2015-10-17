@@ -71,21 +71,25 @@
 				%>
 			</div>
 			<div class= "col-xs-2" style="padding-top: 20px;">
-				<% if current_user %>
-						<% if @campaign.nominated && !current_user.stars.exists?(campaign_id: @campaign.id) && !(current_user.stars.where(round: current_round+1).count >= 3) %>
-						<%= link_to("", "/campaigns/star/#{@campaign.id}", 
+				<% if current_user && @campaign.nominated%>
+					<% if !current_user.stars.exists?(round: current_round + 1, campaign_id: @campaign.id) && current_user.stars.where(round: current_round+1).count < 3%>
+					<%= link_to("", "/campaigns/star/#{@campaign.id}", 
 						class: "fa fa-heart-o fa-2x btn btn-default", 
 						id: "star", 
 						method: "post",
 						title: "Fav this campaign to increase the chances of getting it in your next voting pool.") %>
+					<% else %>
+						<% if current_user.stars.exists?(round: current_round + 1, campaign_id: @campaign.id) %>
+							<%= link_to("", "/campaigns/star/#{@campaign.id}", 
+								class: "fa fa-heart fa-2x btn btn-default", 
+								id: "star", 
+								method: "post",
+								title: "Remove from favourites.") %>
 						<% else %>
-							<% if !(current_user.stars.where(round: current_round+1).count >= 3) %>
-								<i class="fa fa-heart<%='-o' if !current_user.stars.exists?(campaign_id: @campaign.id)%> fa-2x"></i>
-							<% else %>
-							<i title="You cannot favourite more campaigns this round. Sorry." class="fa fa-heart<%='-o' if !current_user.stars.exists?(campaign_id: @campaign.id)%> fa-2x"></i>
-							<% end %>
+							<i title="You have allready favourited 3 campaigns this round." class="fa fa-heart-o fa-2x"></i>
 						<% end %>
 					<% end %>
+				<% end %>
 			</div>
  			<div class="col-xs-5" id="edit">
  				<div id="report_link">
