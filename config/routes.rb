@@ -42,6 +42,7 @@ Rails.application.routes.draw do
 	post '/admin/nominate_all', to: 'admin#nominate_all'
 	post '/admin/reset_voting', to: 'admin#reset_voting'
 	get '/admin/clear_campaign/:id', to: 'admin#clear_campaign'
+	get '/admin/delete_campaign/:id', to: 'admin#delete_campaign'
 
 	#Leaderboard
 	get '/leaderboard/:page/:interval', to: 'users#page'

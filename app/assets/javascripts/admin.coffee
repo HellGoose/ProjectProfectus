@@ -80,4 +80,8 @@ $(document).ready ->
 	$('body').on 'click', '.clear_button', ->
 		$('#flagged_projects-tab').load '/admin/clear_campaign/' + @id
 		return
+
+	$('body').on 'click', '.delete_button', ->
+		$('#flagged_projects-tab').load '/admin/delete_campaign/' + @id
+		return
 	return
