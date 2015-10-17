@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151012085311) do
+ActiveRecord::Schema.define(version: 20151017105007) do
 
   create_table "badges", force: :cascade do |t|
     t.string   "name",        limit: 255
@@ -57,11 +57,12 @@ ActiveRecord::Schema.define(version: 20151012085311) do
     t.boolean  "votable",              limit: 1
     t.integer  "crowdfunding_site_id", limit: 4
     t.string   "status",               limit: 255
+    t.integer  "reported",             limit: 4
   end
 
   add_index "campaigns", ["category_id"], name: "index_campaigns_on_category_id", using: :btree
   add_index "campaigns", ["crowdfunding_site_id"], name: "index_campaigns_on_crowdfunding_site_id", using: :btree
-  add_index "campaigns", ["nominator_id"], name: "fk_rails_d8d6273771", using: :btree
+  add_index "campaigns", ["nominator_id"], name: "fk_rails_a24f47bdc4", using: :btree
   add_index "campaigns", ["user_id"], name: "index_campaigns_on_user_id", using: :btree
 
   create_table "categories", force: :cascade do |t|
@@ -129,6 +130,16 @@ ActiveRecord::Schema.define(version: 20151012085311) do
 
   add_index "posts", ["campaign_id"], name: "index_posts_on_campaign_id", using: :btree
   add_index "posts", ["user_id"], name: "index_posts_on_user_id", using: :btree
+
+  create_table "reported_campaigns", force: :cascade do |t|
+    t.integer "campaign_id", limit: 4
+    t.integer "user_id",     limit: 4
+    t.integer "round",       limit: 4
+    t.boolean "nominated",   limit: 1
+  end
+
+  add_index "reported_campaigns", ["campaign_id"], name: "index_reported_campaigns_on_campaign_id", using: :btree
+  add_index "reported_campaigns", ["user_id"], name: "index_reported_campaigns_on_user_id", using: :btree
 
   create_table "round_winner_campaigns", force: :cascade do |t|
     t.integer  "roundWon",       limit: 4
