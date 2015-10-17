@@ -89,10 +89,28 @@ class AdminController < ApplicationController
 	end
 
 	def clear_campaign
+		if !isAdmin
+			redirect_to '/'
+			return
+		end
+
 		campaign = Campaign.find(params[:id])
 		campaign.reported = 0
 		campaign.reportedBy.destroy_all
 		campaign.save
+
+		@reportedCampaigns = Campaign.where("reported > 0").order("reported DESC").first(20)
+		render partial: "reported_campaigns"
+	end
+
+	def delete_campaign
+		if !isAdmin
+			redirect_to '/'
+			return
+		end
+		
+		campaign = Campaign.find(params[:id])
+		campaign.destroy
 
 		@reportedCampaigns = Campaign.where("reported > 0").order("reported DESC").first(20)
 		render partial: "reported_campaigns"

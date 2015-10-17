@@ -8,7 +8,7 @@ class Campaign < ActiveRecord::Base
 	belongs_to :nominator, class_name: "User"
 	belongs_to :category
 	belongs_to :crowdfunding_site
-	has_many :stars, class_name: "StaredCampaign"
+	has_many :stars, class_name: "StaredCampaign", :dependent => :delete_all
 	has_many :staredBy, class_name: "User", through: "stars", source: "user"
 	has_many :reports, class_name: "ReportedCampaign", :dependent => :delete_all
 	has_many :reportedBy, class_name: "User", through: "reports", source: "user"
@@ -16,6 +16,12 @@ class Campaign < ActiveRecord::Base
 	has_many :votes, class_name: "CampaignVote", :dependent => :delete_all
 	has_many :usersVoted, class_name: "User", through: "votes", source: "user"
 	has_many :roundsWon, class_name: "RoundWinnerCampaign", :dependent => :delete_all
+
+	before_destroy { |record|
+		nominator.additionsThisRound -= 1
+		nominator.save
+		true
+	}
 
 	#Callbacks
 	after_initialize :init

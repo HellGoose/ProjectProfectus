@@ -564,7 +564,6 @@ class CampaignsController < ApplicationController
 				notification = PointsHistory.new(description: 'Campaign was not nominated! Something went wrong.', points_received: 0)
 				user = current_user.lock!
 				user.pointsHistories << notification
-				user.additionsThisRound -= 1
 				user.save
 				@campaign.destroy
 			end
