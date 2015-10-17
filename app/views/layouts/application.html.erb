@@ -53,8 +53,8 @@
     <![endif]-->
     <script>
       // set the date we're counting down to
-      var target_date = new Date('<%= Round.first.endTime %>').getTime(); //new Date('Jan, 31, 2017').getTime(); <% Round.first.endTime.year %>, <% Round.first.endTime.month %>, <% Round.first.endTime.day %>, <% Round.first.endTime.hour %>, <% Round.first.endTime.min %>, <% Round.first.endTime.sec %>
-       
+      var target_date = (new Date('<%= Round.first.endTime.to_formatted_s(:iso8601) %>')).getTime();
+
       // variables for time units
       var days, hours, minutes, seconds;
        
