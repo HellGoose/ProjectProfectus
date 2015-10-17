@@ -371,6 +371,13 @@ class CampaignsController < ApplicationController
 			return
 		end
 
+		if current_user.additionsThisRound >= Round.first.maxAdditionsPerUser
+			respond_to do |format|
+				format.json { render json: { 'User' => 'too many campaigns' } }
+			end
+			return
+		end
+
 		@campaign.nominated = true
 		@campaign.nominator_id = current_user.id
 
