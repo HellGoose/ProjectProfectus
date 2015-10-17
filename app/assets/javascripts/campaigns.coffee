@@ -194,7 +194,6 @@ $(document).ready ->
 
   else
     $('#nominate').on 'click', ->
-      console.log "test"
       $.getJSON window.location.pathname + '/nominate', (data, status) ->
         $.each data, (key, val) ->
           switch key
@@ -205,6 +204,12 @@ $(document).ready ->
                   check_for_notifications()
                 else
                   break
+            when 'User'
+             switch val
+              when 'too many campaigns'
+                display_notification('<h3>You have already nominated your 3 campaigns for today!</h3>')
+              else
+                break
             else
               break
           return
