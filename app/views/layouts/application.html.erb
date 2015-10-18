@@ -78,7 +78,7 @@
         minutes = parseInt(seconds_left / 60);
         seconds = parseInt(seconds_left % 60);
 
-        if (hours <= 0 && minutes <= 0 && seconds < 0) {
+        if (days <= 0 && hours <= 0 && minutes <= 0 && seconds < 0) {
           document.getElementById("counter").innerHTML = '<span>A new round has started!</span>';
         } else {
           if (hours < 10) {
@@ -91,20 +91,46 @@
             seconds = "0" + seconds;
           }
           // format countdown string + set tag value
-          document.getElementById("counter").innerHTML = 
-          // '<span class="days">' + days + ' Days </span>' 
-          '<span class="hours">' + hours + '</span>' + //' Hours </span>'
-          ' : <span class="minutes">' + minutes + '</span>' + //' Minutes. </span>' 
-          ' : <span class="seconds">' + seconds + '</span> '//' Seconds </span>'
-          ;
+          if (days > 0) {
+            document.getElementById("counter").innerHTML = 
+          '<b><span class="days">' + days + ' Days </span></b>'; 
+          } else {
+            document.getElementById("counter").innerHTML = 
+            '<b><span class="hours">' + hours + '</span>' + //' Hours </span>'
+            ' : <span class="minutes">' + minutes + '</span>' + //' Minutes. </span>' 
+            ' : <span class="seconds">' + seconds + '</span></b> '//' Seconds </span>'
+            ;
+          }
         }
       }, 1000);
     </script>
   </head>
   <body>
+        <!-- Modal -->
+        <div id="myModal" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Time is running out! WHAT DO I DO!?</h4>
+              </div>
+              <div class="modal-body">
+                <p>Relax. Take deep breaths. This little clock here is simply an indicator for when the all the votes will be counted, and new winners will step unto the podium. If you wonder about the purpose of this site, then please head over to our 'About' page.</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
     <div class="navbar navbar-default navbar-static-top navbar-xs" id="header" role="navigation">
       <div class="row text-center" id="navbar-counter">
-        <a href='#' id="counter"></a> <!-- Counter -->
+        <a href='#' id="counter" data-toggle="modal" data-target="#myModal"></a> <!-- Counter -->
+
       </div>
       <div class="container">
         <div class="navbar-header">

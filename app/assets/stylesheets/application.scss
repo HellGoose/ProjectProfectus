@@ -28,6 +28,10 @@ html, body{
 	height:100%;
 }
 
+img {
+  max-width: 100%;
+}
+
 .disabled {
   cursor: default !important;
 }
@@ -70,6 +74,9 @@ html, body{
 
 #content {
   padding: 0px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  // overflow-y: scroll;
   // margin-bottom: 100px;
   // min-height: 600px;
   // border-bottom-style: solid;
@@ -218,11 +225,14 @@ html, body{
 }
 
 #navbar-counter {
-  width: 100%;
+  width: 10%;
   position: absolute;
   padding-top: 15px;
   height: 50px;
-  z-index: -1;
+  // z-index: -1;
+  margin-right: 45%;
+  margin-left: 45%;
+
 }
 
 #counter {

@@ -15,12 +15,14 @@ function hideButton(buttonElement){
 <div class="row start-voting-row">
 	<div class="text-center">
 		<% if current_user != nil %>
-			<% if current_user.isOnStep > 0 %>
-				<button type="button" id="start-voting" class="btn btn-lg orange">START</button>
+			<% if current_user.isOnStep > 0 and current_user.isOnStep < 4%>
+				<button type="button" id="start-voting" class="btn btn-lg orange">CONTINUE</button>
+			<% elsif current_user.isOnStep == 4 %>
+				<button type="button" id="start-voting" class="btn btn-lg orange">Your votes</button>
 			<% else %>
 				<div class="container">
 				  <!-- Trigger the modal with a button -->
-				  <h2 id="vote-message" style="margin-bottom: 30px;">Have your say on today's nominations!</h2>
+				  <h2 id="vote-message" style="margin-bottom: 30px;">Have your say on this week's nominations!</h2>
 				  
 				  <!-- Start button -->
 				  <button type="button" id="pledge-btn" data-toggle="modal" data-target="#pledge-modal"

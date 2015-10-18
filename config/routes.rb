@@ -49,7 +49,7 @@ Rails.application.routes.draw do
 
 	# Root
 	root 'home#index'
-	get 'home/landing'
+	get 'landing', to: 'home#landing'
 
 	resources :stat_dump, only: [:show]
 	resources :pledge, only: [:index]
