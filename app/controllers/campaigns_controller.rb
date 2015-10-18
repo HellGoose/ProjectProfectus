@@ -1,5 +1,5 @@
 class CampaignsController < ApplicationController
-	before_action :set_campaign, only: [:show, :edit, :update, :destroy, :star]
+	before_action :set_campaign, only: [:show, :edit, :update, :destroy, :star, :report, :nominate_campaign]
 	skip_before_action :verify_authenticity_token
 
 	# Public: Prepares variables for campaign#index.
@@ -339,6 +339,66 @@ class CampaignsController < ApplicationController
 		redirect_to "/campaigns/#{@campaign.id}"
 	end
 
+	def report
+		if !current_user
+			redirect_to '/'
+			return
+		end
+
+		if !current_user.reports.exists?(campaign_id: @campaign.id)
+			current_user.reports.create(
+				user_id: current_user.id,
+				campaign_id: @campaign.id,
+				round: current_round + 1,
+				nominated: @campaign.nominated
+				)
+			@campaign.reported += 1
+			@campaign.save
+		end
+
+		redirect_to "/campaigns/#{@campaign.id}"
+	end
+
+	def nominate_campaign
+		if !current_user
+			return
+		end
+
+		if @campaign.nominated
+			respond_to do |format|
+				format.json { render json: { 'Campaign' => 'already nominated' } }
+			end
+			return
+		end
+
+		if current_user.additionsThisRound >= Round.first.maxAdditionsPerUser
+			respond_to do |format|
+				format.json { render json: { 'User' => 'too many campaigns' } }
+			end
+			return
+		end
+
+		@campaign.nominated = true
+		@campaign.nominator_id = current_user.id
+
+		if @campaign.save
+			notification = PointsHistory.new(description: 'You successfully made a nomination!', points_received: 5)
+
+			current_user.pointsHistories << notification
+			current_user.points += 5
+			current_user.additionsThisRound += 1
+			current_user.save
+
+			respond_to do |format|
+				format.json { render json: { 'Campaign' => 'nominated: true' } }
+			end
+		else
+			respond_to do |format|
+				format.json { render json: { 'Campaign' => 'unable to nominate' } }
+			end
+		end
+	end
+
 	private
 
 	# Private: Checks if the current user owns the given campaign.
@@ -544,7 +604,6 @@ class CampaignsController < ApplicationController
 				notification = PointsHistory.new(description: 'Campaign was not nominated! Something went wrong.', points_received: 0)
 				user = current_user.lock!
 				user.pointsHistories << notification
-				user.additionsThisRound -= 1
 				user.save
 				@campaign.destroy
 			end

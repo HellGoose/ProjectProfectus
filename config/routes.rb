@@ -29,17 +29,21 @@ Rails.application.routes.draw do
 	get '/news/page/:page/:interval', to: 'news#page'
 	get '/notifications', to: 'home#notifications'
 
-	# Campaigns belonging to a user
+	# Campaigns
 	get '/users/:id/campaigns/:page/:interval', to: 'users#campaignPage'
 	get '/campaigns/checkIfCanAdd/:title', to: 'campaigns#check_if_can_add'
 	get '/campaigns/log/:website', to: 'campaigns#log_unsupported_site', :website => /.*/
 	post '/campaigns/star/:id', to: 'campaigns#star'
+	post '/campaigns/:id/report', to: 'campaigns#report'
+	get '/campaigns/:id/nominate', to: 'campaigns#nominate_campaign'
 
-	# Round administrating
+	# Admin
 	post '/admin/round/:type/:val', to: 'admin#round'
 	post '/admin/clear_all_nominations/', to: 'admin#clear_all_nominations'
 	post '/admin/nominate_all', to: 'admin#nominate_all'
 	post '/admin/reset_voting', to: 'admin#reset_voting'
+	get '/admin/clear_campaign/:id', to: 'admin#clear_campaign'
+	get '/admin/delete_campaign/:id', to: 'admin#delete_campaign'
 
 	#Leaderboard
 	get '/leaderboard/:page/:interval', to: 'users#page'

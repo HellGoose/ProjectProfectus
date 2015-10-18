@@ -25,18 +25,30 @@ window.setTimeout((function() {
 	});
 }), 3000);
 
+
 var check_for_notifications = function() {
 	$.get('/notifications', function(data) {
 		if (data) {
-			$('#notifications').html(data);
-			$('#notifications').fadeIn('slow');
-			window.setTimeout((function() {
-				$('#notifications').fadeOut('slow');
-			}), 5000);
+			display_notification(data);
 		}
 	});
 };
 
+var timeout;
+
+var display_notification = function(data) {
+	$('#notifications').html(data);
+	$('#notifications').fadeIn('slow');
+	if (timeout) {
+		clearTimeout(timeout);
+		timeout = null;
+	}
+	timeout = setTimeout((function() {
+		$('#notifications').fadeOut('slow');
+	}), 5000);
+};
+
 $(document).ready(function() {
+	check_for_notifications();
 	setInterval(check_for_notifications, 10000);
 });

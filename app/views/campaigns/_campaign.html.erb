@@ -55,20 +55,7 @@
 				</div>
 			</div>
 			<div class="col-xs-2" id="nominate-button">
-				<%= button_to "Nominate", 
-					{controller: "campaigns",
-					action: "create",
-					campaign: 
-						{title: @campaign.title, 
-						description: @campaign.description, 
-						image: @campaign.image, 
-						link: @campaign.link, 
-						category_id: @campaign.category_id}
-					},
-				class: "btn btn-primary", 
-				id: "nominate", 
-				disabled: @campaign.nominated
-				%>
+				<a class="btn btn-primary" id="nominate" <%= "disabled" if @campaign.nominated %>>Nominate<a>
 			</div>
 			<div class= "col-xs-2" style="padding-top: 20px;">
 				<% if current_user && @campaign.nominated%>
@@ -92,7 +79,11 @@
 				<% end %>
 			</div>
  			<div class="col-xs-5" id="edit">
-				<div class="edit">
+ 				<div id="report_link">
+ 					<a href="#" onclick="javascript.void(0);" id="report_campaign">Report</a>
+					<!--<%= link_to "Report", "/campaigns/#{@campaign.id}/report", :method => :post, data: {confirm: "Are you sure?"} %>--> 
+				</div>
+				<div id="edit_link">
 					<% if @campaign.user_id == session[:user_id] || isAdmin %>
 						<%= link_to "Edit", edit_campaign_path(@campaign)%> 
 						<!--<%= link_to "Delete", @campaign, method: :delete, data: {confirm: "Are you sure?"} %>-->

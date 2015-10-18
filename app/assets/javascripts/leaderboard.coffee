@@ -64,7 +64,10 @@ changePage = (dir) ->
 			if page == 0
 				$('#prev').attr('disabled', true)
 		else
-			$('#prev').attr('disabled', false)
+			if page <= 0
+				$('#prev').attr('disabled', true)
+			else
+				$('#prev').attr('disabled', false)
 			if size > interval
 				$('#next').attr('disabled', false)
 	else

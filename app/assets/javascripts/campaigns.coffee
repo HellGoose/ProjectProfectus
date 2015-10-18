@@ -153,11 +153,7 @@ $(document).ready ->
       if new RegExp(kickstarter).test(campaign)
         splitSlashes = campaign.split('/')
         if splitSlashes.length <= 3 || !splitSlashes[1].includes('projects')
-          $('#notice').html('<span class="alert alert-warning">Unsupported site/campaign.</span>')
-          $('#notice').slideUp 0
-          $('#notice').slideToggle 400
-          $('#notice').delay(2000)
-          $('#notice').slideToggle 400
+          display_notification('<h3>Unsupported site/campaign.</h3>')
           return
 
         removeParams = splitSlashes[3].split('[?#]')
@@ -176,11 +172,7 @@ $(document).ready ->
       if new RegExp(indiegogo).test(campaign)
         splitSlashes = campaign.split('/')
         if splitSlashes.length <= 2 || !splitSlashes[1].includes('projects')
-          $('#notice').html('<span class="alert alert-warning">Unsupported site/campaign.</span>')
-          $('#notice').slideUp 0
-          $('#notice').slideToggle 400
-          $('#notice').delay(2000)
-          $('#notice').slideToggle 400
+          display_notification('<h3>Unsupported site/campaign.</h3>')
           return
 
         removeParams = splitSlashes[2].split('[?#]')
@@ -199,6 +191,38 @@ $(document).ready ->
       $.get '/campaigns/log/' + campaign, (data) ->
         return
       return
+
+  else
+    $('#nominate').on 'click', ->
+      $.getJSON window.location.pathname + '/nominate', (data, status) ->
+        $.each data, (key, val) ->
+          switch key
+            when 'Campaign'
+              switch val
+                when 'nominated: true'
+                  $('#nominate').attr('disabled', true)
+                  check_for_notifications()
+                else
+                  break
+            when 'User'
+             switch val
+              when 'too many campaigns'
+                display_notification('<h3>You have already nominated your 3 campaigns for today!</h3>')
+              else
+                break
+            else
+              break
+          return
+        return
+      return
+
+    $('#report_campaign').on 'click', ->
+      r = confirm "Are you sure?"
+      if r == true
+        $.post window.location.pathname + '/report', (data, status) ->
+          display_notification('<h3>Campaign was reported!</h3>')
+          return
+      return
   return
 
 checkCampaignStatus = (title) ->
@@ -208,11 +232,7 @@ checkCampaignStatus = (title) ->
         when 'Campaign'
           switch val
             when 'nominated: true'
-              $('#notice').html('<span class="alert alert-warning">Campaign is already nominated.</span>')
-              $('#notice').slideUp 0
-              $('#notice').slideToggle 400
-              $('#notice').delay(2000)
-              $('#notice').slideToggle 400
+              display_notification('<h3>Campaign is already nominated!</h3>')
             when 'nominated: false'
               $('#submitButton').attr('disabled', false)
             when 'was not found'

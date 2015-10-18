@@ -20,7 +20,7 @@ class AdminController < ApplicationController
 		if !StatDump.all.empty?
 			@statDumps = StatDump.order("created_at DESC")
 		end
-		#@flagged = Project.all.where("flagged > 0")
+		@reportedCampaigns = Campaign.where("reported > 0").order("reported DESC").first(20)
 	end
 
 	# Handles requests for administrating round variables.
@@ -44,13 +44,13 @@ class AdminController < ApplicationController
 			round.duration = params[:val].to_i
 			durationInWords = view_context.distance_of_time_in_words(round.duration)
 			respond_to do |format|
-				msg = "<span class=\"alert alert-success\">Duration updated to #{durationInWords}</span>"
+				msg = "Duration updated to #{durationInWords}"
 				format.json { render json: { status: "ok", message: msg } }
 			end
 		when "force"
 			round.forceNewRound = true
 			respond_to do |format|
-				msg = "<span class=\"alert alert-success\">Forcing new round!</span>"
+				msg = "Forcing new round!"
 				format.json { render json: { status: "ok", message: msg } }
 			end
 		end
@@ -86,5 +86,33 @@ class AdminController < ApplicationController
 		Campaign.update_all(timesShownInVoting: 0, roundScore: 0)
 		User.update_all(isOnStep: 0)
 		redirect_to "/admin/"
+	end
+
+	def clear_campaign
+		if !isAdmin
+			redirect_to '/'
+			return
+		end
+
+		campaign = Campaign.find(params[:id])
+		campaign.reported = 0
+		campaign.reportedBy.destroy_all
+		campaign.save
+
+		@reportedCampaigns = Campaign.where("reported > 0").order("reported DESC").first(20)
+		render partial: "reported_campaigns"
+	end
+
+	def delete_campaign
+		if !isAdmin
+			redirect_to '/'
+			return
+		end
+		
+		campaign = Campaign.find(params[:id])
+		campaign.destroy
+
+		@reportedCampaigns = Campaign.where("reported > 0").order("reported DESC").first(20)
+		render partial: "reported_campaigns"
 	end
 end
