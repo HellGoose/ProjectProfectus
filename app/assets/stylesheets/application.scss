@@ -84,6 +84,12 @@ img {
   // border-bottom-width: 5px;
 }
 
+// @media (min-height: 1000px) {
+//   #content{
+//     height: 1000px;
+//   }
+// }
+
 #footer {
   border-radius: 0px;
 }
@@ -103,14 +109,14 @@ img {
   top: 50px;
 }
 
-.notification-container > #notifications {
+#notifications {
   border: 1px solid #ddd;
   // width: 500px;
   // height: 70px;
   background-color: #d6e9c6;
   overflow: hidden;
-  margin-left: auto;
-  margin-right: auto;
+  // margin-left: auto;
+  // margin-right: auto;
 }
 
 .profile-pic {

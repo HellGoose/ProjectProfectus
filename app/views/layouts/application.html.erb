@@ -104,6 +104,19 @@
         }
       }, 1000);
     </script>
+
+ <script>
+  $(document).ready(function() {
+
+   var docHeight = $(window).height();
+   var footerHeight = $('#footer').height();
+   var footerTop = $('#footer').position().top + footerHeight;
+
+   if (footerTop < docHeight) {
+    $('#footer').css('margin-top', 10+ (docHeight - footerTop) + 'px');
+   }
+  });
+ </script>
   </head>
   <body>
         <!-- Modal -->
@@ -187,7 +200,7 @@
 	  </div> <!-- End navbar -->
 
     <div class="container-fluid" id="content">
-      <div class="notification-container"><div class="text-center" id="notifications" style="display:none"></div></div>
+      <div class="notification-container text-center" id="notifications" style="display:none"></div>
       <%= yield %>
     </div><!-- End content -->
 
