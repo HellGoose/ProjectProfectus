@@ -93,18 +93,20 @@ img {
 }
 
 .notification-container {
+  width: 40%;
+  margin-left: 30%;
+  margin-right: 30%;
   height: 75px;
   padding: 2px;
   z-index: 3;
   position: absolute;
   top: 50px;
-  left: 31%;
 }
 
 .notification-container > #notifications {
   border: 1px solid #ddd;
-  width: 500px;
-  height: 70px;
+  // width: 500px;
+  // height: 70px;
   background-color: #d6e9c6;
   overflow: hidden;
   margin-left: auto;
