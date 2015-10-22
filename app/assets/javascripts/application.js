@@ -11,6 +11,7 @@
 // about supported directives.
 //
 //= require jquery
+//= require jquery.turbolinks
 //= require jquery_ujs
 //= require turbolinks
 //= require bootstrap-sprockets
@@ -18,19 +19,60 @@
 //= require tinymce
 //= require global
 
-// Makes notice messages disappear after a couple of seconds
-window.setTimeout((function() {
-	$('#notice').fadeTo(500, 0).slideUp(500, function() {
-		$(this).remove();
-	});
-}), 3000);
-
-
 var check_for_notifications = function() {
-	$.get('/notifications', function(data) {
-		if (data) {
-			display_notification(data);
-		}
+	var offset = $('#notification-data').data('notification-offset');
+	$.getJSON('/notifications/' + offset, function(data) {
+		$.each(data, function(key, val) {
+			switch (key) {
+				case 'size':
+				$('#notification-data').data('notification-offset', offset + val);
+				break;
+
+				case 'notifications':
+				$.each(val, function(index, element) {
+					var img = 'https://cloud.githubusercontent.com/assets/690017/4317652/8946bb80-3f15-11e4-8b1b-961d47232979.png';
+					if (element.icon != '') {
+						img = element.icon;
+					}
+
+					if (element.points > 0) {
+						display_notification(
+							'<h4>' + element.notification + '</h4>' + 
+							'<h5>You received ' + element.points + ' points</h5>');
+
+						if (!element.popup) {
+							$('#notification-container').prepend(
+								'<div class="user-notification notification-link" id="' + element.link + '">' +
+								'<div id="icon">' +
+								'<img src="' + img + '" />' +
+								'</div>' +
+
+								'<div id="text">' +
+								'<h4>' + element.notification + '</h4>' +
+								'<h5>You received: ' + element.points +' points</h5>' +
+								'</div>' +
+								'</div>');
+						}
+					} else {
+						display_notification('<h3>' + element.notification + '</h3>');
+
+						if (!element.popup) {
+							$('#notification-container').prepend(
+								'<div class="user-notification notification-link" id="' + element.link + '">' +
+								'<div id="icon">' +
+								'<img src="' + img + '" />' +
+								'</div>' +
+
+								'<div id="text">' +
+								'<h4>' + element.notification + '</h4>' +
+								'</div>' +
+								'</div>');
+						}
+					}
+				});
+				break;
+			}
+		});
 	});
 };
 
@@ -48,7 +90,23 @@ var display_notification = function(data) {
 	}), 5000);
 };
 
-$(document).ready(function() {
-	check_for_notifications();
-	setInterval(check_for_notifications, 10000);
-});
+var interval;
+
+var ready = function() {
+	setTimeout(check_for_notifications(), 1000);
+	if (interval) {
+		clearInterval(interval);
+		interval = null;
+	}
+	interval = setInterval(check_for_notifications, 10000);
+
+	$('body').on('click', '#nav-notifications', function() {
+		$('#user-notifications').fadeToggle(400);
+	});
+
+	$('body').on('click', '.notification-link', function() {
+		window.location = this.id;
+	});
+};
+
+$(document).ready(ready);

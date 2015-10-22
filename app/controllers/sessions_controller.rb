@@ -18,21 +18,18 @@ class SessionsController < ApplicationController
 		referer = User.find_by(id: params['referer'].to_i)
 
 		if !user_tmp && user
-			notification = PointsHistory.new(description: 'You logged in for the first time!', points_received: 25)
-			user.pointsHistories << notification
+			send_notification_user(user, 25, 'You logged in for the first time!', '', '', true)
 			user.hasLoggedInThisRound = true
 			user.save
 		elsif !user.hasLoggedInThisRound
-			notification = PointsHistory.new(description: 'You logged in this round!', points_received: 1)
+			send_notification_user(user, 1, 'You logged in this round!', '', '', true)
 			user.points += 1
 			user.hasLoggedInThisRound = true
-			user.pointsHistories << notification
 			user.save
 		end
 
 		if user_tmp == nil && referer != nil && user.uid != referer.uid 
-			notification = PointsHistory.new(description: 'You refered ' + user.name + '!', points_received: 5)
-			referer.pointsHistory << notification
+			send_notification_user(referer, 5, 'You refered ' + user.name + '!', '', '', true)
 			referer.points += 5
 			referer.save
 		end
