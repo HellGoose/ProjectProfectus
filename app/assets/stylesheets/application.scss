@@ -239,3 +239,49 @@ img {
   color: #ecf0f1 !important;
   text-decoration: none !important;
 }
+
+#user-notifications {
+  position: absolute;
+  z-index: 2;
+  left: -50px;
+  margin: 1px;
+  height: 400px;
+  width: 400px;
+  display: none;
+  overflow: auto;
+  background-color: white;
+  border: 1px solid #385559;
+}
+
+#notification-container {
+  width: 375px;
+}
+
+.user-notification {
+  border-top: 1px solid #385559;
+  height: 50px;
+}
+
+.user-notification > #icon {
+  height: 40px;
+  width: 40px;
+  margin: 5px;
+  float: left;
+}
+
+.user-notification > #icon > img {
+  height: 100%;
+  width: 100%;
+}
+
+.user-notification > #text > h5 {
+  margin-top: 2px;
+}
+
+.notification-link {
+  cursor: pointer;
+}
+
+#nav-notifications {
+  cursor: pointer;
+}

@@ -15,6 +15,12 @@ def databaseInit
 	end
 end
 
+def send_notification_user(user, points, notification, link, icon, popup)
+	notification = Notification.new(notification: notification, points: points, link: link, icon: icon, popup: popup)
+	user.notifications << notification
+	user.save
+end
+
 def roundScript
 	runScript = true
 	ActiveSupport.on_load(:after_initialize) do
@@ -66,8 +72,11 @@ def runNewRound (decayRate)
 	if !campaigns.first.nil? && campaigns.first.roundScore > 0
 		winnerCampaigns = campaigns.first(3)
 		winnerUsers = []
+		i=0
 		winnerCampaigns.each do |wc|
 			winnerUsers << wc.nominator
+			send_notification_user(wc.nominator, usersOfTheRoundPoints[i], 'A nominee of yours have won the round!', '/campaigns/' + wc.id.to_s, wc.image, false)
+			i+=1
 		end
 	
 
@@ -81,8 +90,6 @@ def runNewRound (decayRate)
 		details += "</br><b>WinnerUsers:</b> "
 		winnerUsers.each do |wu|
 			details += "#{wu.name}, "
-			notification = PointsHistory.new(description: 'A nominee of yours have won the round!', points_received: usersOfTheRoundPoints[i])
-			wu.pointsHistories << notification
 			wu.points += usersOfTheRoundPoints[i]
 			wu.save
 			i+=1
@@ -110,12 +117,11 @@ def runNewRound (decayRate)
 			c.globalScore = (c.globalScore * decayRate + c.roundScore).to_i
 			details += "<tr><td>#{c.title}</td><td>#{c.roundScore}</td><td>#{c.timesShownInVoting}</td></tr>"
 			if (c.roundScore*percentageOfRoundScore).to_i > 0
-				notification = PointsHistory.new(description: 'Your nominee received ' + c.roundScore.to_s + ' round points!', points_received: (c.roundScore*percentageOfRoundScore).to_i)
-				c.user.pointsHistories << notification
+				send_notification_user(c.user, (c.roundScore*percentageOfRoundScore).to_i, 'Your nominee received ' + c.roundScore.to_s + ' round points!', '/campaigns/' + c.id.to_s, c.image, false)
 				c.user.points += (c.roundScore*percentageOfRoundScore).to_i
 				c.user.save
 				if c.user_id != c.nominator_id
-					c.nominator.pointsHistories << notification
+					send_notification_user(c.nominator, (c.roundScore*percentageOfRoundScore).to_i, 'Your nominee received ' + c.roundScore.to_s + ' round points!', '/campaigns/' + c.id.to_s, c.image, false)
 					c.nominator.points += (c.roundScore*percentageOfRoundScore).to_i
 					c.nominator.save
 				end
@@ -131,8 +137,7 @@ def runNewRound (decayRate)
 				case cv.campaign.id
 				when winnerCampaigns[0].id, winnerCampaigns[1].id, winnerCampaigns[2].id
 					placing = RoundWinnerCampaign.find_by(roundWon: round.currentRound, campaign_id: cv.campaign_id).placing
-					notification = PointsHistory.new(description: 'A nominee you voted for won the round!', points_received: (usersOfTheRoundPoints[placing]/5).to_i)
-					cv.user.pointsHistories << notification
+					send_notification_user(cv.user, (usersOfTheRoundPoints[placing]/5).to_i, 'A nominee you voted for won the round!', '/campaigns/' + cv.campaign_id.to_s, Campaign.find(cv.campaign_id).image, false)
 					cv.user.points += (usersOfTheRoundPoints[placing]/5).to_i
 					cv.user.save
 				end
@@ -168,11 +173,11 @@ def runNewRound (decayRate)
 end
 
 def cleanupDatabase
-	PointsHistory.all.each do |ph|
-		if ph.seen
-			ph.destroy
-		end
-	end
+	#PointsHistory.all.each do |ph|
+	#	if ph.seen
+	#		ph.destroy
+	#	end
+	#end
 end
 
 def initRound

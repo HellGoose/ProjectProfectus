@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
 	has_many :posts
 	has_many :campaigns
 	has_many :nominations, class_name: "Campaign", foreign_key: :nominator_id
-	has_many :pointsHistories
+	has_many :notifications
 	has_many :badges, class_name: "UserBadge"
 	has_many :postVotes, class_name: "PostVote"
 	has_many :campaignVotes, class_name: "CampaignVote"

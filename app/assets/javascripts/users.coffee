@@ -18,8 +18,4 @@ $(document).ready ->
 		if page >= (Math.ceil(size/interval))
 			$('#more_campaigns').hide()
 		return
-
-	$('body').on 'click', '#show_notifications', ->
-		$('.user-notifications2').slideToggle 400
-		return
 	return

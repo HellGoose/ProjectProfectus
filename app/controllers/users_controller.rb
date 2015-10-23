@@ -11,10 +11,6 @@ class UsersController < ApplicationController
 	#
 	# Renders user#show.
 	def show
-		@notifications = []
-		if current_user == @user
-			@notifications = @user.pointsHistories.order('created_at DESC').first(10)
-		end
 		@userCampaigns = @user.campaigns.where(status: "ready").order('created_at DESC')
 		@userNominations = @user.nominations.where(nominated: true, status: "ready").order('created_at DESC')
 		@campaignsInterval = 16

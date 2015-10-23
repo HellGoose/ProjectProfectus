@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
 	protect_from_forgery with: :exception
-	helper_method :current_user, :isAdmin, :getFacebookPicURL, :current_round
+	helper_method :current_user, :isAdmin, :getFacebookPicURL, :current_round, :get_notifications
 	
 	# Public: Makes the current user globally accessible.
 	#
@@ -40,8 +40,33 @@ class ApplicationController < ActionController::Base
 		end
 	end
 
+	def get_notifications
+		if !current_user
+			return nil
+		end
+		round = Round.first
+		notifications = current_user
+				.notifications
+				.where(created_at: Time.at(round.endTime.to_i - round.duration * 2)
+				.to_datetime..Time.now)
+				.order('created_at DESC')
+		return notifications
+	end
+
 	def current_round
 		Round.maximum(:currentRound)
+	end
+
+	def send_notification(points, notification, link, icon, popup)
+		notification = Notification.new(notification: notification, points: points, link: link, icon: icon, popup: popup)
+		current_user.notifications << notification
+		current_user.save
+	end
+
+	def send_notification_user(user, points, notification, link, icon, popup)
+		notification = Notification.new(notification: notification, points: points, link: link, icon: icon, popup: popup)
+		user.notifications << notification
+		user.save
 	end
 
 	# printable ASCII chars (between 32 and 126) without 0..9, A..Z, a..z

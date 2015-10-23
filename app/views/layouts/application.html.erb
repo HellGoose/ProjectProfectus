@@ -106,6 +106,7 @@
     </script>
   </head>
   <body>
+
         <!-- Modal -->
         <div id="myModal" class="modal fade" role="dialog">
           <div class="modal-dialog">
@@ -153,9 +154,51 @@
         	</ul>
           <ul class="nav navbar-nav navbar-right">
               <% if current_user %>
+
+                <li>
+                  <div id='notification-data' data-notification-offset='<%= get_notifications.size %>' style="display:none;"></div>
+
+                  <a id="nav-notifications">
+                    <i class="glyphicon glyphicon-globe"></i>
+                  </a>
+
+                  <div id="user-notifications">
+                    <div class="text-center" id="user-notifications-text">
+                      <h5>Notifications:</h5>
+                    </div>
+
+                    <div id="notification-container">
+                      <% get_notifications.each do |n| %>
+                        <% if n.popup %>
+                          <% next %>
+                        <% end %>
+                        <div class="user-notification notification-link" id="<%= n.link %>">
+                          <div id="icon">
+                            <% if n.icon != '' %>
+                              <img src="<%= n.icon %>" />
+                            <% else %>
+                              <img src="https://cloud.githubusercontent.com/assets/690017/4317652/8946bb80-3f15-11e4-8b1b-961d47232979.png" />
+                            <% end %>
+                          </div>
+
+                          <div id="text">
+                            <h4><%= n.notification %></h4>
+                            <% if n.points > 0 %>
+                              <h5>You received: <%= n.points %> points</h5>
+                            <% end %>
+                          </div>
+                        </div>
+                      <% end %>
+                    </div>
+
+                    <div class="user-notification">
+                    </div>
+                  </div>
+                </li>
+
                 <li><a style="padding-right: 5px;" href="<%= user_path(current_user) %>"> <i class="fa fa-file-text-o"></i> <%=current_user.additionsThisRound%>/<%=Round.first.maxAdditionsPerUser%> </a></li><!-- style="color: gold;" Submissions-->
                 <% if current_user.additionsThisRound == Round.first.maxAdditionsPerUser %>
-                    <li><a style="padding-left: 0px;" href="<%= user_path(current_user) %>"> <i class="fa fa-check-square-o"></i></a></li>
+                    <li><a style="padding-left: 0px;" href="#" onclick="display_notification('<h3>You have already nominated <%= current_user.additionsThisRound %> campaigns this round!</h3>')"> <i class="fa fa-check-square-o"></i></a></li>
                 <% else %>
                     <li><a style="padding-left: 0px;" href="/campaigns/new"> <i class="fa fa-plus"></i></a></li>
                 <% end %>
