@@ -1,8 +1,6 @@
 <%= javascript_include_tag "campaigns" %>
 <%= javascript_include_tag "posts" %>
 
-<div class="text-center" id="notice"><%= sanitize notice %></div>
-
 <div id="data" data-page="1" data-interval=<%= @postsInterval %> data-size=<%= @posts.size() %> data-campaign=<%= @campaign.id %>></div>
 
 <div id="campaign">

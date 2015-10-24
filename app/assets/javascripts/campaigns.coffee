@@ -145,6 +145,7 @@ $(document).ready ->
       urlregex = new RegExp('^(http|https)://([a-zA-Z0-9.-]+(:[a-zA-Z0-9.&amp;%$-]+)*@)*(([a-zA-Z0-9-]+.)*[a-zA-Z0-9-]+.(com|net|org|[a-zA-Z]{2}))')
       
       if !urlregex.test(campaign)
+        display_notification('<h3>This is not a valid url.</h3>')
         return
 
       campaign = campaign.replace('https://', '');
@@ -161,6 +162,7 @@ $(document).ready ->
         if title.length
           checkCampaignStatus(title)
 
+        display_notification('<h3>Please wait, generating preview!</h3>')
         $.embedly.extract('https://' + campaign, key: '0eef325249694df490605b1fd29147f5').progress (data) ->
           if data.title?
             renderCampaignPreview(data)
@@ -180,6 +182,7 @@ $(document).ready ->
         if title.length > 0
           checkCampaignStatus(title)
 
+        display_notification('<h3>Please wait, generating preview!</h3>')
         $.embedly.extract('https://' + campaign, key: '0eef325249694df490605b1fd29147f5').progress (data) ->
           if data.title?
             renderCampaignPreview(data)
@@ -188,6 +191,7 @@ $(document).ready ->
           return
         return
 
+      display_notification('<h3>Unsupported site.</h3>')
       $.get '/campaigns/log/' + campaign, (data) ->
         return
       return

@@ -29,8 +29,7 @@ class CampaignsController < ApplicationController
 			@campaign = Campaign.new
 		else
 			respond_to do |format|
-				msg = "<span class=\"alert alert-warning\">You have exceeded your submission limit for this round.</span>"
-				format.html { redirect_to current_user, notice: msg }
+				format.html { redirect_to current_user }
 				format.json { render :show, location: current_user }
 			end
 		end
@@ -382,9 +381,8 @@ class CampaignsController < ApplicationController
 		@campaign.nominator_id = current_user.id
 
 		if @campaign.save
-			notification = PointsHistory.new(description: 'You successfully made a nomination!', points_received: 5)
+			send_notification(5, 'You successfully made a nomination!', '/campaigns/' + @campaign.id.to_s, @campaign.image, false)
 
-			current_user.pointsHistories << notification
 			current_user.points += 5
 			current_user.additionsThisRound += 1
 			current_user.save
@@ -465,9 +463,8 @@ class CampaignsController < ApplicationController
 		end
 
 		if @campaign.save
-			notification = PointsHistory.new(description: 'You successfully made a nomination!', points_received: 5)
+			send_notification(5, 'You successfully made a nomination!', '/campaigns/' + @campaign.id.to_s, @campaign.image, false)
 
-			current_user.pointsHistories << notification
 			current_user.points +=5
 			current_user.additionsThisRound += 1
 			current_user.save
@@ -496,9 +493,9 @@ class CampaignsController < ApplicationController
 			current_user.additionsThisRound += 1
 			current_user.save
 			threaded_diffbot_add(@campaign, provider)
+			send_notification(0, 'Your campaign is beeing added. This may take some time.', '', '', true)
 			respond_to do |format|
-				msg = "<span class=\"alert alert-success\">Your campaign is beeing added. This may take some time.</span>"
-				format.html { redirect_to current_user, notice: msg }
+				format.html { redirect_to current_user }
 				format.json { render :show, location: current_user }
 			end
 		else
@@ -529,9 +526,8 @@ class CampaignsController < ApplicationController
 			if j['error'] || !j['objects'] || !j['objects'][0]
 				p 'ERROR.THREAD: Diffbot could not fetch the objects'
 				p (j['error'] or "An unkown error with Diffbot occured.")
-				notification = PointsHistory.new(description: 'Campaign was not nominated! Something went wrong.', points_received: 0)
+				send_notification(0, 'Campaign was not nominated! Something went wrong.', '', '', false)
 				user = current_user.lock!
-				user.pointsHistories << notification
 				user.additionsThisRound -= 1
 				user.save
 				@campaign.destroy
@@ -593,17 +589,15 @@ class CampaignsController < ApplicationController
 			campaign.status = "ready"
 			if campaign.title.present? && campaign.content.present? && campaign.image.present? && campaign.save
 				p "Campaign saved!"
-				notification = PointsHistory.new(description: 'Campaign successfully nominated!', points_received: 5)
+				send_notification(5, 'Campaign successfully nominated!', '/campaigns/' + @campaign.id.to_s, @campaign.image, false)
 				user = current_user.lock!
-				user.pointsHistories << notification
 				user.points +=5
 				user.save
 			else
 				p 'ERROR.THREAD: Could not save the campaign'
 				p campaign.errors
-				notification = PointsHistory.new(description: 'Campaign was not nominated! Something went wrong.', points_received: 0)
+				send_notification(0, 'Campaign was not nominated! Something went wrong.', '', '', false)
 				user = current_user.lock!
-				user.pointsHistories << notification
 				user.save
 				@campaign.destroy
 			end
@@ -639,13 +633,17 @@ class CampaignsController < ApplicationController
 			campaignVotes[campaign_id].campaign.roundScore += 10
 			campaignVotes[campaign_id].campaign.save
 
-			notification = PointsHistory.new(description: 'Someone voted for your nominee!', points_received: 1)
-			campaignVotes[campaign_id].campaign.user.pointsHistories << notification
+			send_notification_user(
+					campaignVotes[campaign_id].campaign.user, 
+					1, 
+					'Someone voted for your nominee!', 
+					'/campaigns/' + campaignVotes[campaign_id].campaign.id.to_s, 
+					campaignVotes[campaign_id].campaign.image, 
+					false)
 			campaignVotes[campaign_id].campaign.user.points += 1
 			campaignVotes[campaign_id].campaign.user.save
 
-			notification = PointsHistory.new(description: 'You successfully voted this round!', points_received: 1)
-			current_user.pointsHistories << notification
+			send_notification(1, 'You successfully voted this round!', '', '', false)
 			current_user.points += 1
 			current_user.save
 			current_user.campaignVotes.where(voteType: 1).each do |v|

@@ -31,34 +31,27 @@ class HomeController < ApplicationController
 		end
 	end
 
-
-	# Public: Renders a partial view containing a notification.
-	# Route: GET root/notifications
-	#
-	# unreadNotifications	- The PointsHistory of the user where they are not seen and sorted by oldest first.
-	#
-	# Renders home#notifications in a notification div on the front-end.
-	# Renders nothing if user is not logged in or the user has no unseen notifications.
 	def notifications
 		if !current_user
 			respond_to do |format|
-				format.html { render nothing: true }
+				format.html { render json: { 'User' => 'not logged in' } }
 			end
 			return
 		end
-		unreadNotifications = current_user.pointsHistories.where(seen: false).order('created_at ASC')
 
-		if (unreadNotifications != [])
-			@notification = unreadNotifications.first
-			@notification.seen = true
-			@notification.save
-			respond_to do |format|
-				format.html { render partial: 'notifications' }
-			end
-		else
-			respond_to do |format|
-				format.html { render nothing: true }
-			end
+		offset = params[:offset].to_i
+
+		round = Round.first
+		notifications = current_user
+				.notifications
+				.where(created_at: Time.at(round.endTime.to_i - round.duration * 2)
+				.to_datetime..Time.now)
+				.order('created_at ASC')
+		notifications = notifications.slice(offset..offset)
+
+		response = { :size => notifications.size, :notifications => notifications }
+		respond_to do |format|
+			format.json { render json: response }
 		end
 	end
 end

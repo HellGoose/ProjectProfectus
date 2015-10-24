@@ -27,7 +27,7 @@ Rails.application.routes.draw do
 
 	# News
 	get '/news/page/:page/:interval', to: 'news#page'
-	get '/notifications', to: 'home#notifications'
+	get '/notifications/:offset', to: 'home#notifications'
 
 	# Campaigns
 	get '/users/:id/campaigns/:page/:interval', to: 'users#campaignPage'
