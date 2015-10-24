@@ -52,6 +52,14 @@ class User < ActiveRecord::Base
 			self.additionsThisRound ||= 0 if self.has_attribute? :additionsThisRound
 		end
 
+		#Subscribe user to mailing list after created user
+		# after_create :subscribe_user_to_mailing_list 
+
+		#Mailing list subscription job (in app/jobs)
+		def subscribe_user_to_mailing_list
+			SubscribeUserToMailingListJob.perform_later(self)
+		end
+
 		#Update level
 		def lvlUp
 			self.level = (self.points/1000).floor + 1
