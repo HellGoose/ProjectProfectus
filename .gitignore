@@ -14,5 +14,8 @@
 .DS_Store
 /pids/*
 
+# Ignore environment files
+.env
+
 #Ignore Ruby Suff
 Gemfile.lock
