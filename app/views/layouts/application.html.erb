@@ -246,6 +246,10 @@
         if (footerTop < docHeight) {
           if (window.location.href.indexOf("/landing") > -1) {
             $('#content').css('height', '+='+(10+docHeight-footerTop)+'px');
+            $('#content').css('padding-top', '0');
+            $('#content').css('padding-bottom', '0');
+            $('#footer').css('margin-top', '-30px');
+            $('#footer').css('padding-top', '30px');
           } else {
             $('#footer').css('margin-top', 10+ (docHeight - footerTop) + 'px');
           }
