@@ -47,10 +47,14 @@ end
 
 private
 def runNewRound (decayRate)
-	if Campaign.where(nominated: true).count < 30
-		puts "Failed to start new round! Not enough nominated campaigns for the next round."
-		return
+	numberOfNominatedCampaigns = Campaign.where(nominated: true).count
+	if numberOfNominatedCampaigns < 30
+		puts "Not enough nominated campaigns. Nominating more."
+		Campaign.where(nominated: false).sample(31 - numberOfNominatedCampaigns).each do |c|
+			c.update(nominated: true)
+		end
 	end
+
 	round = Round.first
 	campaigns = Campaign.where(votable: true).order('roundScore DESC')
 	users = User.all.order('points DESC')
