@@ -527,10 +527,7 @@ class CampaignsController < ApplicationController
 				p 'ERROR.THREAD: Diffbot could not fetch the objects'
 				p (j['error'] or "An unkown error with Diffbot occured.")
 				send_notification(0, 'Campaign was not nominated! Something went wrong.', '', '', false)
-				user = current_user.lock!
-				user.additionsThisRound -= 1
-				user.save
-				@campaign.destroy
+				campaign.destroy
 				return
 			end
 
@@ -597,9 +594,7 @@ class CampaignsController < ApplicationController
 				p 'ERROR.THREAD: Could not save the campaign'
 				p campaign.errors
 				send_notification(0, 'Campaign was not nominated! Something went wrong.', '', '', false)
-				user = current_user.lock!
-				user.save
-				@campaign.destroy
+				campaign.destroy
 			end
 			ActiveRecord::Base.connection.close
 		}
