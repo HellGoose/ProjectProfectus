@@ -32,8 +32,8 @@ def roundScript
 				puts ('Starting a new Round!')
 				runNewRound(round.decayRate)
 				if Time.now.to_i >= round.endTime.to_i
-					puts "Extending the current round."
 					round.endTime = Time.at(round.endTime.to_i + round.duration).to_datetime
+					puts "Round ends at: #{round.endTime}"
 				end
 				round.forceNewRound = false
 				round.save
@@ -48,9 +48,10 @@ end
 private
 def runNewRound (decayRate)
 	numberOfNominatedCampaigns = Campaign.where(nominated: true).count
-	if numberOfNominatedCampaigns < 30
+	if numberOfNominatedCampaigns < 50
+		sampleAmount = [Campaign.count - numberOfNominatedCampaigns, 50 - numberOfNominatedCampaigns].min
 		puts "Not enough nominated campaigns. Nominating more."
-		Campaign.where(nominated: false).sample(31 - numberOfNominatedCampaigns).each do |c|
+		Campaign.where(nominated: false).sample(sampleAmount).each do |c|
 			c.update(nominated: true)
 		end
 	end
