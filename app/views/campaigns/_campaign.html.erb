@@ -38,13 +38,18 @@
 					<h4><small>Times Shown</small></h4><b><%= @campaign.timesShownInVoting %></b></div> -->
 
 				<div class="col-xs-2" id="campaign-info-box">
-					<h4><small>Pledged</small></h4><b><%= if @campaign.pledged >= 0 then @campaign.pledged else "Funding" end %></b></div>
+					<h4><small>Pledged</small></h4><b><%= if @campaign.pledged.delete('^0-9').to_i >= 0 then @campaign.pledged else "Funding" end %></b></div>
 
 				<div class="col-xs-2" id="campaign-info-box">
-					<h4><small>Goal</small></h4><b><%= if @campaign.goal >= 0 then @campaign.goal else "Complete" end %></b></div>
+					<h4><small>Goal</small></h4><b><%= if @campaign.goal.delete('^0-9').to_i >= 0 then @campaign.goal else "Complete" end %></b></div>
 
 				<div class="col-xs-2" id="campaign-info-box">
 					<h4><small>Backers</small></h4><b><%= @campaign.backers %></b></div>
+
+				<div class="col-xs-2" id="campaign-info-box">
+					<h4><small>Time left</small></h4>
+					<b><%= @campaign.time_left %></b>
+				</div>
 			</div>
 		</div>
 		<div class="row col-xs-7">
@@ -106,7 +111,6 @@
 			<p id="campaign-description" >- "<%= @campaign.description %>"</p>
 		</div>
 	</div>
-	<!-- <h5>end_time <%= @campaign.end_time %></h5> -->
 	<div class="container" id="external-content">
 		<%= if @campaign.content != nil 
 			render inline: @campaign.content 
