@@ -40,5 +40,12 @@ class Campaign < ActiveRecord::Base
 		self.votable = false if self.has_attribute? :votable && self.votable.nil?
 		self.status ||= "ready" if self.has_attribute? :status
 		self.reported ||= 0 if self.has_attribute? :reported
+
+		self.content ||= "No content" if self.has_attribute? :content
+		self.backers ||= 0 if self.has_attribute? :backers
+		self.pledged ||= "$0" if self.has_attribute? :pledged
+		self.goal ||= "$0" if self.has_attribute? :goal
+		self.author ||= "No author" if self.has_attribute? :author
+		self.time_left ||= "" if self.has_attribute? :time_left
 	end
 end

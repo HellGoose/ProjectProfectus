@@ -207,12 +207,12 @@ class CampaignsController < ApplicationController
 	# renders an error if the user is not logged in or there are not enough 
 	# campaigns in the database.
 	def vote
-		if Campaign.where(votable: true)where.not(nominator_id: current_user.id).where.not(user_id: current_user.id).count < 15
+		if Campaign.where(votable: true).where.not(nominator_id: current_user.id).where.not(user_id: current_user.id).count < 15
 			respond_to do |format|
 				format.js { render partial: "home/not_enough_campaigns"}
 			end
-		elsif current_user and current_user.isOnStep <= 4
-			if params[:id].to_i >= 0 and current_user.isOnStep < 4
+		elsif current_user && current_user.isOnStep <= 4
+			if params[:id].to_i >= 0 && current_user.isOnStep < 4
 				processVote(params[:id].to_i)
 				current_user.isOnStep += 1
 				current_user.save
@@ -492,7 +492,7 @@ class CampaignsController < ApplicationController
 		if @campaign.save
 			current_user.additionsThisRound += 1
 			current_user.save
-			threaded_diffbot_add(@campaign, provider)
+			threaded_scraper_add(@campaign, provider)
 			send_notification(0, 'Your campaign is beeing added. This may take some time.', '', '', true)
 			respond_to do |format|
 				format.html { redirect_to current_user }
@@ -505,6 +505,47 @@ class CampaignsController < ApplicationController
 			end
 			return
 		end
+	end
+
+	def threaded_scraper_add(campaign, provider)
+		t = Thread.new {
+			begin
+				require File.expand_path('../../modules/scraper.rb', __FILE__)
+				t1 = Time.now
+
+				scraper = Scraper.new
+				json = scraper.scrape(campaign.link)
+
+				campaign.lock!
+				campaign.title = json[:title]
+				campaign.content = json[:content]
+				campaign.backers = json[:backers]
+				campaign.pledged = json[:pledged]
+				campaign.goal = json[:goal]
+				campaign.author = json[:author]
+				campaign.image = json[:image]
+				campaign.time_left = json[:time]
+
+				p "Scraper: " + (Time.now - t1).to_s
+				campaign.status = "ready"
+				if campaign.title.present? && campaign.content.present? && campaign.image.present? && campaign.save
+					p "Campaign saved!"
+					send_notification(5, 'Campaign successfully nominated!', '/campaigns/' + @campaign.id.to_s, @campaign.image, false)
+					user = current_user.lock!
+					user.points +=5
+					user.save
+				else
+					p 'ERROR.THREAD: Could not save the campaign'
+					p campaign.errors
+					send_notification(0, 'Campaign was not nominated! Something went wrong.', '', '', false)
+					campaign.destroy
+				end
+				ActiveRecord::Base.connection.close
+			rescue
+				pp $!
+			end
+		}
+		at_exit {t.join}
 	end
 
 	def threaded_diffbot_add(campaign, provider)

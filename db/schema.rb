@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151022180353) do
+ActiveRecord::Schema.define(version: 20151106224950) do
 
   create_table "badges", force: :cascade do |t|
     t.string   "name",        limit: 255
@@ -48,16 +48,16 @@ ActiveRecord::Schema.define(version: 20151022180353) do
     t.integer  "timesShownInVoting",   limit: 4
     t.integer  "nominator_id",         limit: 4
     t.text     "content",              limit: 65535
-    t.integer  "pledged",              limit: 4
-    t.integer  "goal",                 limit: 4
+    t.string   "pledged",              limit: 255
+    t.string   "goal",                 limit: 255
     t.string   "author",               limit: 255
     t.integer  "backers",              limit: 4
-    t.date     "end_time"
     t.boolean  "nominated",            limit: 1
     t.boolean  "votable",              limit: 1
     t.integer  "crowdfunding_site_id", limit: 4
     t.string   "status",               limit: 255
     t.integer  "reported",             limit: 4
+    t.string   "time_left",            limit: 255
   end
 
   add_index "campaigns", ["category_id"], name: "index_campaigns_on_category_id", using: :btree
