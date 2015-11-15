@@ -510,21 +510,29 @@ class CampaignsController < ApplicationController
 	def threaded_scraper_add(campaign, provider)
 		t = Thread.new {
 			begin
-				require File.expand_path('../../modules/scraper.rb', __FILE__)
 				t1 = Time.now
 
-				scraper = Scraper.new
-				json = scraper.scrape(campaign.link)
+				api_key = 'c4d15c313dabc9019df63f0a12a0e72a36359d1d8d054a4e2df78814de96c449'
+
+				url = URI.parse('http://54.229.192.90:3495/api/v1/' + api_key + '/' + campaign.link)
+				req = Net::HTTP::Get.new(url.to_s)
+				res = Net::HTTP.start(url.host, url.port) {|http|
+					http.request(req)
+				}
+
+				j = JSON.parse res.body
+
+				p "Podium Scraper: " + (Time.now - t1).to_s
 
 				campaign.lock!
-				campaign.title = json[:title]
-				campaign.content = json[:content]
-				campaign.backers = json[:backers]
-				campaign.pledged = json[:pledged]
-				campaign.goal = json[:goal]
-				campaign.author = json[:author]
-				campaign.image = json[:image]
-				campaign.time_left = json[:time]
+				campaign.title = j['title']
+				campaign.content = j['content']
+				campaign.backers = j['backers']
+				campaign.pledged = j['pledged']
+				campaign.goal = j['goal']
+				campaign.author = j['author']
+				campaign.image = j['image']
+				campaign.time_left = j['time']
 
 				p "Scraper: " + (Time.now - t1).to_s
 				campaign.status = "ready"
