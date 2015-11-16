@@ -514,7 +514,7 @@ class CampaignsController < ApplicationController
 
 				api_key = 'c4d15c313dabc9019df63f0a12a0e72a36359d1d8d054a4e2df78814de96c449'
 
-				url = URI.parse('http://54.229.192.90:3495/api/v1/' + api_key + '/' + campaign.link)
+				url = URI.parse('http://54.229.206.13:3495/api/v1/' + api_key + '/' + campaign.link)
 				req = Net::HTTP::Get.new(url.to_s)
 				res = Net::HTTP.start(url.host, url.port) {|http|
 					http.request(req)
@@ -523,6 +523,14 @@ class CampaignsController < ApplicationController
 				j = JSON.parse res.body
 
 				p "Podium Scraper: " + (Time.now - t1).to_s
+
+				if j['error'] || !j['content']
+					p 'ERROR.THREAD: Diffbot could not fetch the objects'
+					p (j['error'] or "An unkown error with Podium Scraper occured.")
+					send_notification(0, 'Campaign was not nominated! Something went wrong.', '', '', false)
+					campaign.destroy
+					return
+				end
 
 				campaign.lock!
 				campaign.title = j['title']
@@ -551,6 +559,10 @@ class CampaignsController < ApplicationController
 				ActiveRecord::Base.connection.close
 			rescue
 				pp $!
+				p 'ERROR.THREAD: Could not save the campaign'
+				p campaign.errors
+				send_notification(0, 'Campaign was not nominated! Something went wrong.', '', '', false)
+				campaign.destroy
 			end
 		}
 		at_exit {t.join}
