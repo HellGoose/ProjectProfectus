@@ -120,4 +120,16 @@ class ApplicationController < ActionController::Base
 			'~'   => '%7E'
 		))
 	end
+
+	def currentUserCanUseAbility(ability_id)
+		currentUserHasAbility && currentUsersHasChargesLeftOnAbility
+	end
+
+	def currentUserHasAbility(ability_id)
+		Ability.find(ability_id).reqLevel <= current_user.level
+	end
+
+	def currentUsersHasChargesLeftOnAbility(ability_id)
+		current_user.abilities.find_by(ability_id: ability_id).charges > 0 or false
+	end
 end

@@ -166,6 +166,7 @@ def runNewRound (decayRate)
 	round.currentRound += 1
 	round.numberOfVotersLastRound = CampaignVote.where(voteType: 2).select(:user_id).count
 	round.save
+	rechargeAbilities
 	Campaign.update_all(timesShownInVoting: 0, votable: false)
 	Campaign.where(nominated: true).update_all(nominated: false, votable: true)
 	CampaignVote.destroy_all
@@ -175,6 +176,17 @@ def runNewRound (decayRate)
 		puts "Stats dumped!"
 	end
 	puts "Done! New Round Started."
+end
+
+def rechargeAbilities
+	t = Thread.new {
+		Abilities_Users.all.each do |au|
+			next if au.ability.maxCharges == -1
+			au.update(charges: [au.charges + au.ability.rechargeRate, au.ability.maxCharges].min)
+		end
+	}
+	at_exit {t.join}
+	
 end
 
 def cleanupDatabase
