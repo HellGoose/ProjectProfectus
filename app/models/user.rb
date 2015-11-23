@@ -18,6 +18,7 @@ class User < ActiveRecord::Base
 	has_many :staredCampaigns, class_name: "Campaign", through: "stars", source: "campaign"
 	has_many :reports, class_name: "ReportedCampaign"
 	has_many :reportedCampaigns, class_name: "Campaign", through: "reports", source: "campaign"
+	has_and_belongs_to_many :abilities
 
 	#Authentication
 	def self.from_omniauth(auth)
