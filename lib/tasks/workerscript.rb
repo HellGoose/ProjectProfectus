@@ -180,7 +180,7 @@ end
 
 def rechargeAbilities
 	t = Thread.new {
-		Abilities_Users.all.each do |au|
+		AbilitiesUser.all.each do |au|
 			next if au.ability.maxCharges == -1
 			au.update(charges: [au.charges + au.ability.rechargeRate, au.ability.maxCharges].min)
 		end

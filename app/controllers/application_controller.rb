@@ -132,4 +132,14 @@ class ApplicationController < ActionController::Base
 	def currentUsersHasChargesLeftOnAbility(ability_id)
 		current_user.abilities.find_by(ability_id: ability_id).charges > 0 or false
 	end
+
+	def currentUserUseAbility(ability_id)
+		if currentUserCanUseAbility
+			current_user.ability.find_by(ability_id: ability_id).charges -= 1
+			current_user.ability.find_by(ability_id: ability_id).save
+			true
+		else
+			false
+		end
+	end
 end
