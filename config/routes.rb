@@ -37,7 +37,7 @@ Rails.application.routes.draw do
 
 	# Abilities
 	post '/campaigns/star/:id', to: 'abilities#star'
-	post '/campaigns/:id/report', to: 'abilitiesaaa#report'
+	post '/campaigns/:id/report', to: 'abilities#fav_boost'
 
 	# Admin
 	post '/admin/round/:type/:val', to: 'admin#round'
