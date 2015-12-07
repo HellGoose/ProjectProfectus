@@ -207,7 +207,7 @@ class CampaignsController < ApplicationController
 	# renders an error if the user is not logged in or there are not enough 
 	# campaigns in the database.
 	def vote
-		if Campaign.where(votable: true).where.not(nominator_id: current_user.id).where.not(user_id: current_user.id).count < 15
+		if Campaign.where(votable: true).count < 15
 			respond_to do |format|
 				format.js { render partial: "home/not_enough_campaigns"}
 			end
@@ -333,26 +333,6 @@ class CampaignsController < ApplicationController
 				)
 		elsif allreadyStared
 			current_user.stars.find_by(round: current_round + 1, campaign_id: @campaign.id).destroy
-		end
-
-		redirect_to "/campaigns/#{@campaign.id}"
-	end
-
-	def report
-		if !current_user
-			redirect_to '/'
-			return
-		end
-
-		if !current_user.reports.exists?(campaign_id: @campaign.id)
-			current_user.reports.create(
-				user_id: current_user.id,
-				campaign_id: @campaign.id,
-				round: current_round + 1,
-				nominated: @campaign.nominated
-				)
-			@campaign.reported += 1
-			@campaign.save
 		end
 
 		redirect_to "/campaigns/#{@campaign.id}"
@@ -760,6 +740,9 @@ class CampaignsController < ApplicationController
 		campaignVotes.where(step: current_user.isOnStep).each{ |cv| cv.destroy}
 
 		genedCampaigns = ((genedCampaigns | staredCampaigns) - votedCampaigns).sample(3)
+		if genedCampaigns.count != 3
+			genedCampaigns += (Campaign.all - votedCampaigns - genedCampaigns).sample(3 - genedCampaigns.count)
+		end
 		genedCampaigns.each do |gc|
 			campaignVotes.create(
 				user_id: current_user.id, 

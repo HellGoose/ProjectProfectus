@@ -12,6 +12,9 @@ def databaseInit
 		if Crowdfunding_site.all.empty?
 			initCrowdfunding_sites()
 		end
+		if Ability.all.empty?
+			initAbilities()
+		end
 	end
 end
 
@@ -186,7 +189,6 @@ def rechargeAbilities
 		end
 	}
 	at_exit {t.join}
-	
 end
 
 def cleanupDatabase
@@ -233,4 +235,42 @@ def initCrowdfunding_sites
 		logo: 'https://g1.iggcdn.com/assets/site/brand/IGG_Logo_Frame_GOgenta_RGB-2-f8565fa188a9dd16fb6c67321150b94e.png',
 		link: 'https://www.indiegogo.com',
 		domain: 'www.indiegogo.com')
+end
+
+def initAbilities
+	Ability.create(
+		name: "Report",
+		description: "Report bad campaigns.",
+		reqLevel: 2,
+		maxCharges: 5,
+		rechargeRate: 5,
+		target: "campaign")
+	Ability.create(
+		name: "Comment",
+		description: "Comment and discuss campaigns.",
+		reqLevel: 1,
+		maxCharges: -1,
+		rechargeRate: -1,
+		target: "campaign")
+	Ability.create(
+		name: "FavBoost",
+		description: "Boost 3 of your favorite campaigns to increase the chance of getting it in your voting pool.",
+		reqLevel: 4,
+		maxCharges: 3,
+		rechargeRate: 3,
+		target: "campaign")
+	Ability.create(
+		name: "ExtraNominations",
+		description: "Increase maximum nominations by 1 for each level.",
+		reqLevel: 3,
+		maxCharges: -1,
+		rechargeRate: -1,
+		target: "passive")
+	Ability.create(
+		name: "XPBoost",
+		description: "Select 1 campaigns to recieve extra XP points from votes.",
+		reqLevel: 5,
+		maxCharges: 1,
+		rechargeRate: 1,
+		target: "campaign")
 end
