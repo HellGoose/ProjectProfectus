@@ -122,7 +122,7 @@ class ApplicationController < ActionController::Base
 	end
 
 	def currentUserCanUseAbility(ability_id)
-		currentUserHasAbility && currentUsersHasChargesLeftOnAbility
+		currentUserHasAbility(ability_id) && currentUsersHasChargesLeftOnAbility(ability_id)
 	end
 
 	def currentUserHasAbility(ability_id)

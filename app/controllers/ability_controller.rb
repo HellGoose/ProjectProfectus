@@ -1,6 +1,6 @@
 class AbilityController < ApplicationController
 	def report
-		if !current_user || !currentUserHasAbility
+		if !current_user || !currentUserHasAbility(1)
 			redirect_to '/'
 			return
 		end
@@ -21,7 +21,7 @@ class AbilityController < ApplicationController
 	end
 
 	def star
-		if !current_user || !currentUserHasAbility
+		if !current_user || !currentUserHasAbility(3)
 			redirect_to "/campaigns/#{@campaign.id}"
 			return
 		end
@@ -42,4 +42,19 @@ class AbilityController < ApplicationController
 
 		redirect_to "/campaigns/#{@campaign.id}"
 	end
+
+	def vote_again
+		if !current_user || current_user.isOnStep != 4 || !currentUserCanUseAbility(6)
+			redirect_to "/"
+		end
+
+		current_user.campaignVotes.destroy_all
+		current_user.update(isOnStep: 0)
+
+		redirect_to "/"
+	end
+
+
+
+
 end

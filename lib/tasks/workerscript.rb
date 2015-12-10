@@ -273,4 +273,11 @@ def initAbilities
 		maxCharges: 1,
 		rechargeRate: 1,
 		target: "campaign")
+	Ability.create(
+		name: "ExtraVotes",
+		description: "Vote again after completing the voting prosess.",
+		reqLevel: 3,
+		maxCharges: 2,
+		rechargeRate: 2,
+		target: "votes")
 end
