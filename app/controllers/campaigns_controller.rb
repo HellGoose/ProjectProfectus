@@ -100,7 +100,7 @@ class CampaignsController < ApplicationController
 			redirect_to '/'
 			return
 		end
-		if current_user.additionsThisRound >= Round.first.maxAdditionsPerUser
+		if current_user.additionsThisRound >= Round.first.maxAdditionsPerUser + current_user.abilities.find_by(ability_id: 4).charges
 			respond_to do |format|
 				msg = "<span class=\"alert alert-warning\">You have exceeded your submission limit for this round.</span>"
 				format.html { redirect_to current_user, notice: msg }
@@ -328,7 +328,7 @@ class CampaignsController < ApplicationController
 			return
 		end
 
-		if current_user.additionsThisRound >= Round.first.maxAdditionsPerUser
+		if current_user.additionsThisRound >= Round.first.maxAdditionsPerUser + current_user.abilities.find_by(ability_id: 4).charges
 			respond_to do |format|
 				format.json { render json: { 'User' => 'too many campaigns' } }
 			end

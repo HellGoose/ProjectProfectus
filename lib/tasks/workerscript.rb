@@ -263,8 +263,8 @@ def initAbilities
 		name: "ExtraNominations",
 		description: "Increase maximum nominations by 1 for each level.",
 		reqLevel: 3,
-		maxCharges: -1,
-		rechargeRate: -1,
+		maxCharges: 3,
+		rechargeRate: 0,
 		target: "passive")
 	Ability.create(
 		name: "XPBoost",
