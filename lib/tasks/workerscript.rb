@@ -280,4 +280,14 @@ def initAbilities
 		maxCharges: 2,
 		rechargeRate: 2,
 		target: "votes")
+
+	User.all.each do |u|
+		Ability.all.each do |a|
+			u.abilities.create(
+				user_id: u.id,
+				ability_id: a.id,
+				charges: a.maxCharges
+				)
+		end
+	end
 end

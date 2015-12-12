@@ -51,6 +51,14 @@ class User < ActiveRecord::Base
 			self.isOnStep ||= 0 if self.has_attribute? :isOnStep
 			self.hasLoggedInThisRound = true if (self.has_attribute? :hasLoggedInThisRound) && self.hasLoggedInThisRound.nil?
 			self.additionsThisRound ||= 0 if self.has_attribute? :additionsThisRound
+
+			Ability.all.each do |a|
+				self.abilities.create(
+					user_id: self.id,
+					ability_id: a.id,
+					charges: a.maxCharges
+					)
+			end
 		end
 
 		#Subscribe user to mailing list after created user
@@ -63,7 +71,10 @@ class User < ActiveRecord::Base
 
 		#Update level
 		def lvlUp
-			self.level = (self.points/1000).floor + 1
+			#45*((x-1)^1.2) = xp required for level x
+			#1/45*(45+3^(1/3)*5^(1/6)*x^(5/6)) = level at x xp (Wolfram Alpha <3)
+			#Simplified aproximation:
+			self.level = (0.02*(45+1.89*(self.points^(5/6))).floor
 		end
 
 		#Update badges
