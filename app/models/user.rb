@@ -35,6 +35,7 @@ class User < ActiveRecord::Base
 
 	#Callbacks
 	after_initialize :init
+	after_create :setUpAbilities
 	before_update :lvlUp
 
 	private
@@ -51,13 +52,17 @@ class User < ActiveRecord::Base
 			self.isOnStep ||= 0 if self.has_attribute? :isOnStep
 			self.hasLoggedInThisRound = true if (self.has_attribute? :hasLoggedInThisRound) && self.hasLoggedInThisRound.nil?
 			self.additionsThisRound ||= 0 if self.has_attribute? :additionsThisRound
+		end
 
-			Ability.all.each do |a|
-				self.abilities.create(
-					user_id: self.id,
-					ability_id: a.id,
-					charges: a.maxCharges
-					)
+		def setUpAbilities
+			if self.abilities.all.empty?
+				Ability.all.each do |a|
+					self.abilities.create(
+						user_id: self.id,
+						ability_id: a.id,
+						charges: a.maxCharges
+						)
+				end
 			end
 		end
 
@@ -74,7 +79,7 @@ class User < ActiveRecord::Base
 			#45*((x-1)^1.2) = xp required for level x
 			#1/45*(45+3^(1/3)*5^(1/6)*x^(5/6)) = level at x xp (Wolfram Alpha <3)
 			#Simplified aproximation:
-			self.level = (0.02*(45+1.89*(self.points^(5/6))).floor
+			self.level = (0.02*(45+1.89*(self.points^(5/6)))).floor
 		end
 
 		#Update badges
