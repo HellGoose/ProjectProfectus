@@ -53,7 +53,9 @@
 			        	<h4 class="modal-title">Abilities</h4>
 			        </div>
 			        <div class="modal-body">
-			        	ABILITIES
+			        	<% Ability.all.order(:reqLevel).each do |a| %>
+			        		<%= image_tag "ability_#{a.name}.png", size: "64x64", title: a.description %>
+			        	<% end %>
 			        </div>
 			        <div class="modal-footer">
 			        	<button type="button" id="start-voting" class="btn btn-default orange" data-dismiss="modal">Close</button>
