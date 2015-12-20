@@ -57,17 +57,17 @@ ActiveRecord::Schema.define(version: 20151119125352) do
   create_table "campaigns", force: :cascade do |t|
     t.string   "title",                limit: 255
     t.string   "link",                 limit: 255
-    t.text     "description",          limit: 65535
+    t.text     "description",          limit: 16777215
     t.integer  "user_id",              limit: 4
     t.integer  "category_id",          limit: 4
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
     t.string   "image",                limit: 255
     t.integer  "roundScore",           limit: 4
     t.integer  "globalScore",          limit: 4
     t.integer  "timesShownInVoting",   limit: 4
     t.integer  "nominator_id",         limit: 4
-    t.text     "content",              limit: 65535
+    t.text     "content",              limit: 16777215
     t.string   "pledged",              limit: 255
     t.string   "goal",                 limit: 255
     t.string   "author",               limit: 255
@@ -82,7 +82,7 @@ ActiveRecord::Schema.define(version: 20151119125352) do
 
   add_index "campaigns", ["category_id"], name: "index_campaigns_on_category_id", using: :btree
   add_index "campaigns", ["crowdfunding_site_id"], name: "index_campaigns_on_crowdfunding_site_id", using: :btree
-  add_index "campaigns", ["nominator_id"], name: "fk_rails_d8d6273771", using: :btree
+  add_index "campaigns", ["nominator_id"], name: "fk_rails_3ea12c1987", using: :btree
   add_index "campaigns", ["user_id"], name: "index_campaigns_on_user_id", using: :btree
 
   create_table "categories", force: :cascade do |t|
@@ -257,5 +257,6 @@ ActiveRecord::Schema.define(version: 20151119125352) do
   end
 
   add_foreign_key "campaigns", "users", column: "nominator_id"
+  add_foreign_key "campaigns", "users", name: "nominator_id"
   add_foreign_key "notifications", "users"
 end
