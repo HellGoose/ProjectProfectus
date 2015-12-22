@@ -18,4 +18,9 @@ $(document).ready ->
 		if page >= (Math.ceil(size/interval))
 			$('#more_campaigns').hide()
 		return
+
+	$('.ability').click ->
+		$('#ability_name').html($(this).data('name'))
+		$('#ability_description').html($(this).data('description'))
+		$('#ability_charges').html($(this).data('charges') + '/' + $(this).data('max'))
 	return
