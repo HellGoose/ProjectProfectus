@@ -56,7 +56,9 @@
 			        	<table border="1">
 			        		<tr>
 					        	<% Ability.all.order(:reqLevel).each do |a| %>
-					        		<th class="ability" data-id=<%= a.id %> data-name=<%= a.name %> data-description="<%= a.description %>" data-charges=<%= a.userAbilities.find_by(user_id: @user.id).charges %> data-max=<%= a.maxCharges %>><%= image_tag "ability_#{a.name}.png", size: "64x64", title: a.description %></th>
+					        		<th class="ability" data-id=<%= a.id %> data-name=<%= a.name %> data-description="<%= a.description %>" data-charges=<%= a.userAbilities.find_by(user_id: @user.id).charges %> data-max=<%= a.maxCharges %> data-target=<%= a.target %>>
+					        			<%= image_tag "ability_#{a.name}.png", size: "64x64", title: a.description %>
+					        		</th>
 					        	<% end %>
 				        	</tr>
 				        </table>
@@ -64,6 +66,7 @@
 			        <div class="modal-footer">
 			        	<p align="left">Name: <span id="ability_name"></span></p>
 			        	<p align="left">Charges: <span id="ability_charges"></span></p>
+			        	<p align="left">Target: <span id="ability_target"></span></p>
 			        	<p align="left">Description: <span id="ability_description"></span></p>
 			        	<div>
 			        	<button type="button" id="start-voting" class="btn btn-default orange" data-dismiss="modal">Close</button>
