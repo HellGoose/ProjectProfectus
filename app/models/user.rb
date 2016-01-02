@@ -76,10 +76,15 @@ class User < ActiveRecord::Base
 
 		#Update level
 		def lvlUp
+			oldLevel = self.level
+
 			#45*((x-1)^1.2) = xp required for level x
 			#1/45*(45+3^(1/3)*5^(1/6)*x^(5/6)) = level at x xp (Wolfram Alpha <3)
 			#Simplified aproximation:
 			self.level = (0.02*(45+1.89*(self.points^(5/6)))).floor
+			if oldLevel < self.level
+				send_notification_user(self, -1, "You leveled UP!", "/users/#{self.id}?target=abilities", self.image, false)
+			end
 		end
 
 		#Update badges

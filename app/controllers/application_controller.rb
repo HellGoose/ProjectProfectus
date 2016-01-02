@@ -54,7 +54,7 @@ class ApplicationController < ActionController::Base
 	end
 
 	def current_round
-		Round.maximum(:currentRound)
+		Round.last(:currentRound)
 	end
 
 	def send_notification(points, notification, link, icon, popup)
