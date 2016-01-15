@@ -5,9 +5,6 @@
 
 # Runs the code after the document is ready
 $(document).ready ->
-	if $(document).getElementById('target').value == 'abilities'
-		$('#abilities').modal('show')
-
 	# Loads more campaigns when the user clicks on the Show More button.
 	# The code sends a GET request to the webserver and the controller
 	# returns the correct campaigns to be displayed. The data returned is 
