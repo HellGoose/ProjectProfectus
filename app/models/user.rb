@@ -82,9 +82,12 @@ class User < ActiveRecord::Base
 			#1/45*(45+3^(1/3)*5^(1/6)*x^(5/6)) = level at x xp (Wolfram Alpha <3)
 			#Simplified aproximation:
 			self.level = (0.02*(45+1.89*(self.points^(5/6)))).floor
-			if oldLevel < self.level
-				send_notification_user(self, -1, "You leveled UP!", "/users/#{self.id}?target=abilities", self.image, false)
-			end
+			send_lvlUp_notification if oldLevel < self.level
+		end
+
+		def send_lvlUp_notification
+			notification = Notification.new(notification: "You leveled UP!", points: 0, link: "/users/#{self.id}", icon: self.image, popup: false)
+			self.notifications << notification
 		end
 
 		#Update badges
