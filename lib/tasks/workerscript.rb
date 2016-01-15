@@ -12,6 +12,9 @@ def databaseInit
 		if Crowdfunding_site.all.empty?
 			initCrowdfunding_sites()
 		end
+		if Ability.all.empty?
+			initAbilities()
+		end
 	end
 end
 
@@ -166,6 +169,7 @@ def runNewRound (decayRate)
 	round.currentRound += 1
 	round.numberOfVotersLastRound = CampaignVote.where(voteType: 2).select(:user_id).count
 	round.save
+	rechargeAbilities
 	Campaign.update_all(timesShownInVoting: 0, votable: false)
 	Campaign.where(nominated: true).update_all(nominated: false, votable: true)
 	CampaignVote.destroy_all
@@ -175,6 +179,16 @@ def runNewRound (decayRate)
 		puts "Stats dumped!"
 	end
 	puts "Done! New Round Started."
+end
+
+def rechargeAbilities
+	t = Thread.new {
+		AbilitiesUser.all.each do |au|
+			next if au.ability.maxCharges == -1
+			au.update(charges: [au.charges + au.ability.rechargeRate, au.ability.maxCharges].min)
+		end
+	}
+	at_exit {t.join}
 end
 
 def cleanupDatabase
@@ -221,4 +235,59 @@ def initCrowdfunding_sites
 		logo: 'https://g1.iggcdn.com/assets/site/brand/IGG_Logo_Frame_GOgenta_RGB-2-f8565fa188a9dd16fb6c67321150b94e.png',
 		link: 'https://www.indiegogo.com',
 		domain: 'www.indiegogo.com')
+end
+
+def initAbilities
+	Ability.create(
+		name: "Report",
+		description: "Report bad campaigns.",
+		reqLevel: 2,
+		maxCharges: 5,
+		rechargeRate: 5,
+		target: "campaign")
+	Ability.create(
+		name: "Comment",
+		description: "Comment and discuss campaigns.",
+		reqLevel: 1,
+		maxCharges: -1,
+		rechargeRate: -1,
+		target: "campaign")
+	Ability.create(
+		name: "FavBoost",
+		description: "Boost 3 of your favorite campaigns to increase the chance of getting it in your voting pool.",
+		reqLevel: 4,
+		maxCharges: 3,
+		rechargeRate: 3,
+		target: "campaign")
+	Ability.create(
+		name: "ExtraNominations",
+		description: "Increase maximum nominations by 1 for each level.",
+		reqLevel: 3,
+		maxCharges: 3,
+		rechargeRate: 0,
+		target: "passive")
+	Ability.create(
+		name: "XPBoost",
+		description: "Select 1 campaigns to recieve extra XP points from votes.",
+		reqLevel: 5,
+		maxCharges: 1,
+		rechargeRate: 1,
+		target: "campaign")
+	Ability.create(
+		name: "ExtraVotes",
+		description: "Vote again after completing the voting prosess.",
+		reqLevel: 3,
+		maxCharges: 2,
+		rechargeRate: 2,
+		target: "votes")
+
+	User.all.each do |u|
+		Ability.all.each do |a|
+			u.abilities.create(
+				user_id: u.id,
+				ability_id: a.id,
+				charges: a.maxCharges
+				)
+		end
+	end
 end

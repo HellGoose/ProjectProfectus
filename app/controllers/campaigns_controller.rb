@@ -100,7 +100,7 @@ class CampaignsController < ApplicationController
 			redirect_to '/'
 			return
 		end
-		if current_user.additionsThisRound >= Round.first.maxAdditionsPerUser
+		if current_user.additionsThisRound >= Round.first.maxAdditionsPerUser + current_user.abilities.find_by(ability_id: 4).charges
 			respond_to do |format|
 				msg = "<span class=\"alert alert-warning\">You have exceeded your submission limit for this round.</span>"
 				format.html { redirect_to current_user, notice: msg }
@@ -207,7 +207,7 @@ class CampaignsController < ApplicationController
 	# renders an error if the user is not logged in or there are not enough 
 	# campaigns in the database.
 	def vote
-		if Campaign.where(votable: true).where.not(nominator_id: current_user.id).where.not(user_id: current_user.id).count < 15
+		if Campaign.where(votable: true).count < 15
 			respond_to do |format|
 				format.js { render partial: "home/not_enough_campaigns"}
 			end
@@ -316,48 +316,6 @@ class CampaignsController < ApplicationController
 		end
 	end
 
-	def star
-		if !current_user
-			redirect_to "/campaigns/#{@campaign.id}"
-			return
-		end
-
-		allreadyStared = current_user.stars.exists?(round: current_round + 1, campaign_id: @campaign.id)
-		haveStarSlotsLeft = current_user.stars.where(round: current_round+1).count < 3
-
-		if  !allreadyStared && haveStarSlotsLeft
-			current_user.stars.create(
-				user_id: current_user.id,
-				campaign_id: @campaign.id,
-				round: current_round + 1
-				)
-		elsif allreadyStared
-			current_user.stars.find_by(round: current_round + 1, campaign_id: @campaign.id).destroy
-		end
-
-		redirect_to "/campaigns/#{@campaign.id}"
-	end
-
-	def report
-		if !current_user
-			redirect_to '/'
-			return
-		end
-
-		if !current_user.reports.exists?(campaign_id: @campaign.id)
-			current_user.reports.create(
-				user_id: current_user.id,
-				campaign_id: @campaign.id,
-				round: current_round + 1,
-				nominated: @campaign.nominated
-				)
-			@campaign.reported += 1
-			@campaign.save
-		end
-
-		redirect_to "/campaigns/#{@campaign.id}"
-	end
-
 	def nominate_campaign
 		if !current_user
 			return
@@ -370,7 +328,7 @@ class CampaignsController < ApplicationController
 			return
 		end
 
-		if current_user.additionsThisRound >= Round.first.maxAdditionsPerUser
+		if current_user.additionsThisRound >= Round.first.maxAdditionsPerUser + current_user.abilities.find_by(ability_id: 4).charges
 			respond_to do |format|
 				format.json { render json: { 'User' => 'too many campaigns' } }
 			end
@@ -514,7 +472,7 @@ class CampaignsController < ApplicationController
 
 				api_key = 'c4d15c313dabc9019df63f0a12a0e72a36359d1d8d054a4e2df78814de96c449'
 
-				url = URI.parse('http://scraper.thepodium.io/api/v1/' + api_key + '/' + campaign.link)
+				url = URI.parse('http://54.229.206.13:3495/api/v1/' + api_key + '/' + campaign.link)
 				req = Net::HTTP::Get.new(url.to_s)
 				res = Net::HTTP.start(url.host, url.port) {|http|
 					http.request(req)
@@ -676,16 +634,13 @@ class CampaignsController < ApplicationController
 			campaignVotes = current_user.campaignVotes.where(step: current_user.isOnStep)
 			(0..2).each do |i|
 				next if campaignVotes[i].nil?
-				campaignVotes[i].voteType = 0
-				campaignVotes[i].save
+				campaignVotes[i].update(voteType: 0)
 			end
-			campaignVotes[campaign_id].voteType = 1
-			campaignVotes[campaign_id].save
+			campaignVotes[campaign_id].update(voteType: 1)
 		when 3
 			campaignVotes = current_user.campaignVotes.where.not(voteType: 0)
 
-			campaignVotes[campaign_id].voteType = 2
-			campaignVotes[campaign_id].save
+			campaignVotes[campaign_id].update(voteType: 2)
 			campaignVotes[campaign_id].campaign.roundScore += 10
 			campaignVotes[campaign_id].campaign.save
 
@@ -760,6 +715,9 @@ class CampaignsController < ApplicationController
 		campaignVotes.where(step: current_user.isOnStep).each{ |cv| cv.destroy}
 
 		genedCampaigns = ((genedCampaigns | staredCampaigns) - votedCampaigns).sample(3)
+		if genedCampaigns.count != 3
+			genedCampaigns += (Campaign.all - votedCampaigns - genedCampaigns).sample(3 - genedCampaigns.count)
+		end
 		genedCampaigns.each do |gc|
 			campaignVotes.create(
 				user_id: current_user.id, 

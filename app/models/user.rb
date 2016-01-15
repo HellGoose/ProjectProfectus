@@ -18,6 +18,7 @@ class User < ActiveRecord::Base
 	has_many :staredCampaigns, class_name: "Campaign", through: "stars", source: "campaign"
 	has_many :reports, class_name: "ReportedCampaign"
 	has_many :reportedCampaigns, class_name: "Campaign", through: "reports", source: "campaign"
+	has_many :abilities, class_name: "AbilitiesUser"
 
 	#Authentication
 	def self.from_omniauth(auth)
@@ -34,6 +35,7 @@ class User < ActiveRecord::Base
 
 	#Callbacks
 	after_initialize :init
+	after_create :setUpAbilities
 	before_update :lvlUp
 
 	private
@@ -52,6 +54,18 @@ class User < ActiveRecord::Base
 			self.additionsThisRound ||= 0 if self.has_attribute? :additionsThisRound
 		end
 
+		def setUpAbilities
+			if self.abilities.all.empty?
+				Ability.all.each do |a|
+					self.abilities.create(
+						user_id: self.id,
+						ability_id: a.id,
+						charges: a.maxCharges
+						)
+				end
+			end
+		end
+
 		#Subscribe user to mailing list after created user
 		# after_create :subscribe_user_to_mailing_list 
 
@@ -62,7 +76,18 @@ class User < ActiveRecord::Base
 
 		#Update level
 		def lvlUp
-			self.level = (self.points/1000).floor + 1
+			oldLevel = self.level
+
+			#45*((x-1)^1.2) = xp required for level x
+			#1/45*(45+3^(1/3)*5^(1/6)*x^(5/6)) = level at x xp (Wolfram Alpha <3)
+			#Simplified aproximation:
+			self.level = (0.02*(45+1.89*(self.points^(5/6)))).floor
+			send_lvlUp_notification if oldLevel < self.level
+		end
+
+		def send_lvlUp_notification
+			notification = Notification.new(notification: "You leveled UP!", points: 0, link: "/users/#{self.id}", icon: self.image, popup: false)
+			self.notifications << notification
 		end
 
 		#Update badges
