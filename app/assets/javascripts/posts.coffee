@@ -30,17 +30,6 @@ $(document).ready ->
 			return
 		return
 
-	# Loads / unloads a reply textfield when the user click the reply button.
-	# To load the texfield a GET request is sent and the data returned is
-	# placed dynamically after the reply button.
-	$('body').on 'click', '.answer', ->
-		button_id = @id
-		if $('#answer' + button_id).html() != ""
-			$('#answer' + button_id).html("")
-		else
-			$('#answer' + button_id).load('/posts/answer/' + $('#data').data('campaign') + '/' + button_id)
-		return
-
 	# Loads more posts when the user clicks on the Show More button.
 	# The code sends a GET request to the webserver and the controller
 	# returns the correct posts to be displayed. The data returned is 
@@ -70,6 +59,17 @@ $(document).ready ->
 		$('#' + button_id + '.data').data 'page', page
 		if page >= Math.ceil(size / interval)
 			$(this).hide()
+		return
+
+	# Loads / unloads a reply textfield when the user click the reply button.
+	# To load the texfield a GET request is sent and the data returned is
+	# placed dynamically after the reply button.
+	$('body').on 'click', '.answer', ->
+		button_id = @id
+		if $('#answer' + button_id).html() != ""
+			$('#answer' + button_id).html("")
+		else
+			$('#answer' + button_id).load('/posts/answer/' + $('#data').data('campaign') + '/' + button_id)
 		return
 
 	# Removes the reply textfield when the user clicks the Cancel button.

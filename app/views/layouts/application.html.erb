@@ -245,13 +245,13 @@
 
         if (footerTop < docHeight) {
           if (window.location.href.indexOf("/landing") > -1) {
-            $('#content').css('height', '+='+(10+docHeight-footerTop)+'px');
+            $('#content').css('height', '+='+((docHeight-footerTop)-12)+'px');
             $('#content').css('padding-top', '0');
             $('#content').css('padding-bottom', '0');
             $('#footer').css('margin-top', '-30px');
             $('#footer').css('padding-top', '30px');
           } else {
-            $('#footer').css('margin-top', 10+ (docHeight - footerTop) + 'px');
+            $('#footer').css('margin-top', (docHeight - footerTop)-2 + 'px');
           }
         }
       });
@@ -261,7 +261,7 @@
         <div class="navbar-text pull-left">
           <p> 2015 Podium </p>
         </div>
-        <div class="navbar-text pull-right">
+        <div class="navbar-text pull-right footer-share">
           <a href="#"><i class="fa fa-facebook-square fa-2x"></i></a>
           <a href="#"><i class="fa fa-twitter fa-2x"></i></a>
           <a href="#"><i class="fa fa-google-plus fa-2x"></i></a>

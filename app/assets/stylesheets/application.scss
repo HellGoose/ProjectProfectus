@@ -12,12 +12,23 @@
  *
  *= require_self
  *= require social-share-button
- *= require_tree .
+ * require bootstrap-material-design
+ * require_tree . removed because of bourbon, instead import all -> see below
  */
+
 
 // "bootstrap-sprockets" must be imported before "bootstrap" and "bootstrap/variables"
 @import "bootstrap-sprockets";
 @import "bootstrap";
+
+// @import "compass";
+@import "bourbon";
+@import "home";
+@import "users";
+@import "campaigns";
+@import "admin";
+@import "about";
+@import "posts";
 
 // Global color variables
 $gray: #F7F7F7;
@@ -26,10 +37,16 @@ $orange: #F05000;
 
 html, body{ 
 	height:100%;
+  margin: 0px;
 }
 
 img {
   max-width: 100%;
+}
+
+hr {
+  padding: 0;
+  margin: 0;
 }
 
 .disabled {
@@ -108,8 +125,8 @@ img {
   border-radius: 0px;
 }
 
-#footer > div {
-  margin-top: 70px;
+.footer-share {
+  margin-top: 30px;
 }
 
 .notification-container {

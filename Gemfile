@@ -3,11 +3,17 @@ source 'https://rubygems.org'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.0'
 # Use mysql as the database for Active Record
-gem 'mysql2'
+gem 'mysql2', '~> 0.3.18'
 # Use SCSS for stylesheets
-gem 'sass-rails', '~> 5.0'
+gem 'sass-rails'
+# Use Compass for stylesheets
+#gem "compass-rails", github: "Compass/compass-rails", branch: "master"
+# Use Bourbon for Sass
+gem 'bourbon'
 # Use Bootstrap for stylesheets
 gem 'bootstrap-sass', '~> 3.3.3'
+# Use Material Design
+# gem 'bootstrap-material-design'
 # Use Omniauth for Facebook Login
 gem 'omniauth-facebook', '~> 1.4.1'
 # Use Uglifier as compressor for JavaScript assets
