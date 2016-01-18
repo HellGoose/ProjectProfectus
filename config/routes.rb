@@ -36,9 +36,9 @@ Rails.application.routes.draw do
 	get '/campaigns/:id/nominate', to: 'campaigns#nominate_campaign'
 
 	# Abilities
-	post '/campaigns/star/:id', to: 'abilities#star'
-	post '/campaigns/:id/report', to: 'abilities#report'
-	post '/ability/vote_again', to: 'abilities#vote_again'
+	post '/campaigns/star/:id', to: 'ability#star'
+	post '/campaigns/:campaign_id/report', to: 'ability#report'
+	post '/ability/vote_again', to: 'ability#vote_again'
 
 	# Admin
 	post '/admin/round/:type/:val', to: 'admin#round'
