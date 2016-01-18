@@ -18,4 +18,10 @@ $(document).ready ->
 		if page >= (Math.ceil(size/interval))
 			$('#more_campaigns').hide()
 		return
+	# Loads more info about the ability clicked
+	$('.ability').click ->
+		$('#ability_name').html($(this).data('name'))
+		$('#ability_target').html($(this).data('target'))
+		$('#ability_description').html($(this).data('description'))
+		$('#ability_charges').html($(this).data('charges') + '/' + $(this).data('max'))
 	return

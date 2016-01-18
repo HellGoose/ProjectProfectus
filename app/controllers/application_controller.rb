@@ -54,7 +54,7 @@ class ApplicationController < ActionController::Base
 	end
 
 	def current_round
-		Round.maximum(:currentRound)
+		Round.last().currentRound
 	end
 
 	def send_notification(points, notification, link, icon, popup)
@@ -119,5 +119,27 @@ class ApplicationController < ActionController::Base
 			'%20' => '+',    '!' => '%21',  "'" => '%27',  '(' => '%28',  ')' => '%29',  '*' => '%2A',
 			'~'   => '%7E'
 		))
+	end
+
+	def currentUserCanUseAbility(ability_id)
+		currentUserHasAbility(ability_id) && currentUsersHasChargesLeftOnAbility(ability_id)
+	end
+
+	def currentUserHasAbility(ability_id)
+		Ability.find(ability_id).reqLevel <= current_user.level
+	end
+
+	def currentUsersHasChargesLeftOnAbility(ability_id)
+		current_user.abilities.find_by(ability_id: ability_id).charges > 0 or false
+	end
+
+	def currentUserUseAbility(ability_id)
+		if currentUserCanUseAbility
+			current_user.ability.find_by(ability_id: ability_id).charges -= 1
+			current_user.ability.find_by(ability_id: ability_id).save
+			true
+		else
+			false
+		end
 	end
 end

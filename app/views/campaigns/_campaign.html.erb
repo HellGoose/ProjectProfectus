@@ -12,6 +12,7 @@
 		                       html.clientHeight, html.scrollHeight, html.offsetHeight );
 		$(".sheets").css("height", height-55-82);
 
+// <<<<<<< HEAD
 		if (window.location.href.indexOf("#comment-section") != -1) {
 			$("#content-section").css('display', 'none');
 		} else {
@@ -57,6 +58,52 @@
 					%>
 				<% else %>
 					<% @campaign_site_logo = Crowdfunding_site.all[@campaign.crowdfunding_site_id-1].logo %>
+<!-- ======= -->
+				<div class="col-xs-2" id="campaign-info-box">
+					<h4><small>Pledged</small></h4><b><%= if @campaign.pledged.delete('^0-9').to_i >= 0 then @campaign.pledged else "Funding" end %></b></div>
+
+				<div class="col-xs-2" id="campaign-info-box">
+					<h4><small>Goal</small></h4><b><%= if @campaign.goal.delete('^0-9').to_i >= 0 then @campaign.goal else "Complete" end %></b></div>
+
+				<div class="col-xs-2" id="campaign-info-box">
+					<h4><small>Backers</small></h4><b><%= @campaign.backers %></b></div>
+
+				<div class="col-xs-2" id="campaign-info-box">
+					<h4><small>Time left</small></h4>
+					<b><%= @campaign.time_left %></b>
+				</div>
+			</div>
+		</div>
+		<div class="row col-xs-7">
+			<div class="col-xs-3" id="goto-site-button">
+				<p><%= link_to "Go to Campaign Site", @campaign.link, class: "btn btn-primary", id: "campaign-link", target: "_blank" %></p>
+				<div id="social_media">
+					<%= social_share_button_tag(@campaign.title, :popup => "true", :image => @campaign.image, desc: @campaign.description) %>
+				</div>
+			</div>
+			<div class="col-xs-2" id="nominate-button">
+				<a class="btn btn-primary" id="nominate" <%= "disabled" if !current_user || @campaign.nominated || current_user.additionsThisRound >=Round.first.maxAdditionsPerUser %>>Nominate<a>
+			</div>
+			<div class= "col-xs-2" style="padding-top: 20px;">
+				<% if current_user && @campaign.nominated%>
+					<% if !current_user.stars.exists?(round: current_round + 1, campaign_id: @campaign.id) && current_user.stars.where(round: current_round+1).count < 3%>
+					<%= link_to("", "/campaigns/star/#{@campaign.id}", 
+						class: "fa fa-heart-o fa-2x btn btn-default", 
+						id: "star", 
+						method: "post",
+						title: "Fav this campaign to increase the chances of getting it in your next voting pool.") %>
+					<% else %>
+						<% if current_user.stars.exists?(round: current_round + 1, campaign_id: @campaign.id) %>
+							<%= link_to("", "/campaigns/star/#{@campaign.id}", 
+								class: "fa fa-heart fa-2x btn btn-default", 
+								id: "star", 
+								method: "post",
+								title: "Remove from favourites.") %>
+						<% else %>
+							<i title="You have allready favourited 3 campaigns this round." class="fa fa-heart-o fa-2x"></i>
+						<% end %>
+					<% end %>
+<!-- >>>>>>> origin -->
 				<% end %>
 				<a href="<%= @campaign.link %>">
 					<img class="crowdfunding-site-logo"  src="<%=@campaign_site_logo%>">
@@ -183,6 +230,7 @@
 		<hr style="margin:0;">
 			<p class="row" id="campaign-description" ><%= @campaign.description %></p>
 	</div>
+<!-- <<<<<<< HEAD -->
 	<!-- <h5>end_time <%= @campaign.end_time %></h5> -->
 
 	<div id="comment-content-switcher" style="position:absolute; z-index: 5px; display:block; height:40px; width:307px; cursor:pointer;"></div>
@@ -201,6 +249,9 @@
 			<h2 id="campaign-title-main"><%= @campaign.title %></h2>
 			<h5>By <b><%= @campaign_author_split %></b></h5>
 		</div>
+<!-- =======
+	<div class="container" id="external-content">
+>>>>>>> origin -->
 		<%= if @campaign.content != nil 
 			render inline: @campaign.content 
 		end %>

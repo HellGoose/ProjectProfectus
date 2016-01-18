@@ -1,0 +1,2 @@
+module AbilityHelper
+end

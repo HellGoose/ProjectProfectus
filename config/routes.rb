@@ -33,9 +33,12 @@ Rails.application.routes.draw do
 	get '/users/:id/campaigns/:page/:interval', to: 'users#campaignPage'
 	get '/campaigns/checkIfCanAdd/:title', to: 'campaigns#check_if_can_add'
 	get '/campaigns/log/:website', to: 'campaigns#log_unsupported_site', :website => /.*/
-	post '/campaigns/star/:id', to: 'campaigns#star'
-	post '/campaigns/:id/report', to: 'campaigns#report'
 	get '/campaigns/:id/nominate', to: 'campaigns#nominate_campaign'
+
+	# Abilities
+	post '/campaigns/star/:id', to: 'ability#star'
+	post '/campaigns/:campaign_id/report', to: 'ability#report'
+	post '/ability/vote_again', to: 'ability#vote_again'
 
 	# Admin
 	post '/admin/round/:type/:val', to: 'admin#round'

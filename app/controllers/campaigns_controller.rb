@@ -100,7 +100,7 @@ class CampaignsController < ApplicationController
 			redirect_to '/'
 			return
 		end
-		if current_user.additionsThisRound >= Round.first.maxAdditionsPerUser
+		if current_user.additionsThisRound >= Round.first.maxAdditionsPerUser + current_user.abilities.find_by(ability_id: 4).charges
 			respond_to do |format|
 				msg = "<span class=\"alert alert-warning\">You have exceeded your submission limit for this round.</span>"
 				format.html { redirect_to current_user, notice: msg }
@@ -211,8 +211,8 @@ class CampaignsController < ApplicationController
 			respond_to do |format|
 				format.js { render partial: "home/not_enough_campaigns"}
 			end
-		elsif current_user and current_user.isOnStep <= 4
-			if params[:id].to_i >= 0 and current_user.isOnStep < 4
+		elsif current_user && current_user.isOnStep <= 4
+			if params[:id].to_i >= 0 && current_user.isOnStep < 4
 				processVote(params[:id].to_i)
 				current_user.isOnStep += 1
 				current_user.save
@@ -316,48 +316,6 @@ class CampaignsController < ApplicationController
 		end
 	end
 
-	def star
-		if !current_user
-			redirect_to "/campaigns/#{@campaign.id}"
-			return
-		end
-
-		allreadyStared = current_user.stars.exists?(round: current_round + 1, campaign_id: @campaign.id)
-		haveStarSlotsLeft = current_user.stars.where(round: current_round+1).count < 3
-
-		if  !allreadyStared && haveStarSlotsLeft
-			current_user.stars.create(
-				user_id: current_user.id,
-				campaign_id: @campaign.id,
-				round: current_round + 1
-				)
-		elsif allreadyStared
-			current_user.stars.find_by(round: current_round + 1, campaign_id: @campaign.id).destroy
-		end
-
-		redirect_to "/campaigns/#{@campaign.id}"
-	end
-
-	def report
-		if !current_user
-			redirect_to '/'
-			return
-		end
-
-		if !current_user.reports.exists?(campaign_id: @campaign.id)
-			current_user.reports.create(
-				user_id: current_user.id,
-				campaign_id: @campaign.id,
-				round: current_round + 1,
-				nominated: @campaign.nominated
-				)
-			@campaign.reported += 1
-			@campaign.save
-		end
-
-		redirect_to "/campaigns/#{@campaign.id}"
-	end
-
 	def nominate_campaign
 		if !current_user
 			return
@@ -370,7 +328,7 @@ class CampaignsController < ApplicationController
 			return
 		end
 
-		if current_user.additionsThisRound >= Round.first.maxAdditionsPerUser
+		if current_user.additionsThisRound >= Round.first.maxAdditionsPerUser + current_user.abilities.find_by(ability_id: 4).charges
 			respond_to do |format|
 				format.json { render json: { 'User' => 'too many campaigns' } }
 			end
@@ -492,7 +450,7 @@ class CampaignsController < ApplicationController
 		if @campaign.save
 			current_user.additionsThisRound += 1
 			current_user.save
-			threaded_diffbot_add(@campaign, provider)
+			threaded_scraper_add(@campaign, provider)
 			send_notification(0, 'Your campaign is beeing added. This may take some time.', '', '', true)
 			respond_to do |format|
 				format.html { redirect_to current_user }
@@ -505,6 +463,67 @@ class CampaignsController < ApplicationController
 			end
 			return
 		end
+	end
+
+	def threaded_scraper_add(campaign, provider)
+		t = Thread.new {
+			begin
+				t1 = Time.now
+
+				api_key = 'c4d15c313dabc9019df63f0a12a0e72a36359d1d8d054a4e2df78814de96c449'
+
+				url = URI.parse('http://54.229.206.13:3495/api/v1/' + api_key + '/' + campaign.link)
+				req = Net::HTTP::Get.new(url.to_s)
+				res = Net::HTTP.start(url.host, url.port) {|http|
+					http.request(req)
+				}
+
+				j = JSON.parse res.body
+
+				p "Podium Scraper: " + (Time.now - t1).to_s
+
+				if j['error'] || !j['content']
+					p 'ERROR.THREAD: Diffbot could not fetch the objects'
+					p (j['error'] or "An unkown error with Podium Scraper occured.")
+					send_notification(0, 'Campaign was not nominated! Something went wrong.', '', '', false)
+					campaign.destroy
+					return
+				end
+
+				campaign.lock!
+				campaign.title = j['title']
+				campaign.content = j['content']
+				campaign.backers = j['backers']
+				campaign.pledged = j['pledged']
+				campaign.goal = j['goal']
+				campaign.author = j['author']
+				campaign.image = j['image']
+				campaign.time_left = j['time']
+
+				p "Scraper: " + (Time.now - t1).to_s
+				campaign.status = "ready"
+				if campaign.title.present? && campaign.content.present? && campaign.image.present? && campaign.save
+					p "Campaign saved!"
+					send_notification(5, 'Campaign successfully nominated!', '/campaigns/' + @campaign.id.to_s, @campaign.image, false)
+					user = current_user.lock!
+					user.points +=5
+					user.save
+				else
+					p 'ERROR.THREAD: Could not save the campaign'
+					p campaign.errors
+					send_notification(0, 'Campaign was not nominated! Something went wrong.', '', '', false)
+					campaign.destroy
+				end
+				ActiveRecord::Base.connection.close
+			rescue
+				pp $!
+				p 'ERROR.THREAD: Could not save the campaign'
+				p campaign.errors
+				send_notification(0, 'Campaign was not nominated! Something went wrong.', '', '', false)
+				campaign.destroy
+			end
+		}
+		at_exit {t.join}
 	end
 
 	def threaded_diffbot_add(campaign, provider)
@@ -527,10 +546,7 @@ class CampaignsController < ApplicationController
 				p 'ERROR.THREAD: Diffbot could not fetch the objects'
 				p (j['error'] or "An unkown error with Diffbot occured.")
 				send_notification(0, 'Campaign was not nominated! Something went wrong.', '', '', false)
-				user = current_user.lock!
-				user.additionsThisRound -= 1
-				user.save
-				@campaign.destroy
+				campaign.destroy
 				return
 			end
 
@@ -597,9 +613,7 @@ class CampaignsController < ApplicationController
 				p 'ERROR.THREAD: Could not save the campaign'
 				p campaign.errors
 				send_notification(0, 'Campaign was not nominated! Something went wrong.', '', '', false)
-				user = current_user.lock!
-				user.save
-				@campaign.destroy
+				campaign.destroy
 			end
 			ActiveRecord::Base.connection.close
 		}
@@ -620,16 +634,13 @@ class CampaignsController < ApplicationController
 			campaignVotes = current_user.campaignVotes.where(step: current_user.isOnStep)
 			(0..2).each do |i|
 				next if campaignVotes[i].nil?
-				campaignVotes[i].voteType = 0
-				campaignVotes[i].save
+				campaignVotes[i].update(voteType: 0)
 			end
-			campaignVotes[campaign_id].voteType = 1
-			campaignVotes[campaign_id].save
+			campaignVotes[campaign_id].update(voteType: 1)
 		when 3
 			campaignVotes = current_user.campaignVotes.where.not(voteType: 0)
 
-			campaignVotes[campaign_id].voteType = 2
-			campaignVotes[campaign_id].save
+			campaignVotes[campaign_id].update(voteType: 2)
 			campaignVotes[campaign_id].campaign.roundScore += 10
 			campaignVotes[campaign_id].campaign.save
 
@@ -684,7 +695,7 @@ class CampaignsController < ApplicationController
 	#
 	# Returns the campaigns corresponding to the current step.
 	def genCampaignsForVoting(step)
-		campaigns = Campaign.where(votable: true).order("timesShownInVoting DESC")
+		campaigns = Campaign.where(votable: true).where.not(nominator_id: current_user.id).where.not(user_id: current_user.id).order("timesShownInVoting DESC")
 		genedCampaigns = []
 		case step
 		when (-1) #refresh
@@ -704,6 +715,9 @@ class CampaignsController < ApplicationController
 		campaignVotes.where(step: current_user.isOnStep).each{ |cv| cv.destroy}
 
 		genedCampaigns = ((genedCampaigns | staredCampaigns) - votedCampaigns).sample(3)
+		if genedCampaigns.count != 3
+			genedCampaigns += (Campaign.all - votedCampaigns - genedCampaigns).sample(3 - genedCampaigns.count)
+		end
 		genedCampaigns.each do |gc|
 			campaignVotes.create(
 				user_id: current_user.id, 
