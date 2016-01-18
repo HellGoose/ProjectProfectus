@@ -5,8 +5,8 @@ class AbilityController < ApplicationController
 			return
 		end
 
-		if !current_user.reports.exists?(campaign_id: session[:campaign_id])
-			campaign = Campaign.find(session[:campaign_id])
+		campaign = Campaign.find(params[:campaign_id])
+		if !current_user.reports.exists?(campaign_id: campaign.id)
 			current_user.reports.create(
 				user_id: current_user.id,
 				campaign_id: campaign.id,
@@ -17,7 +17,7 @@ class AbilityController < ApplicationController
 			campaign.save
 		end
 
-		redirect_to "/campaigns/#{@campaign.id}"
+		redirect_to "/campaigns/#{campaign.id}"
 	end
 
 	def star
