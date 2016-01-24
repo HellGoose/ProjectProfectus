@@ -134,9 +134,10 @@ class ApplicationController < ActionController::Base
 	end
 
 	def currentUserUseAbility(ability_id)
-		if currentUserCanUseAbility
-			current_user.ability.find_by(ability_id: ability_id).charges -= 1
-			current_user.ability.find_by(ability_id: ability_id).save
+		if currentUserCanUseAbility(ability_id)
+			ability = current_user.abilities.find_by(ability_id: ability_id)
+			ability.charges -= 1
+			ability.save
 			true
 		else
 			false
