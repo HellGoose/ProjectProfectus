@@ -8,11 +8,11 @@ $(document).ready ->
 	# button id to the controller through a POST request.
 	# The POST request returns the amount of votes the post has gotten.
 	# Also disables the upvote button and enables the downvote button.
-	$('body').on 'click', '.post_up_vote', ->
+	$('body').on 'click', '.btn-upvote', ->
 		button_id = @id
 		$.post '/vote/post/' + button_id + '/up', (data, status) ->
-			$('#'+button_id+'.post_down_vote').attr('disabled', false)
-			$('#'+button_id+'.post_up_vote').attr('disabled', true)
+			$('#'+button_id+'.btn-downvote').attr('disabled', false)
+			$('#'+button_id+'.btn-upvote').attr('disabled', true)
 			$('#post_votes_' + button_id).html(data.message)
 			return
 		return
@@ -21,11 +21,11 @@ $(document).ready ->
 	# button id to the controller through a POST request.
 	# The POST request returns the amount of votes the post has gotten.
 	# Also disables the downpvote button and enables the upvote button.
-	$('body').on 'click', '.post_down_vote', ->
+	$('body').on 'click', '.btn-downvote', ->
 		button_id = @id
 		$.post '/vote/post/' + button_id + '/down', (data, status) ->
-			$('#'+button_id+'.post_down_vote').attr('disabled', true)
-			$('#'+button_id+'.post_up_vote').attr('disabled', false)
+			$('#'+button_id+'.btn-downvote').attr('disabled', true)
+			$('#'+button_id+'.btn-upvote').attr('disabled', false)
 			$('#post_votes_' + button_id).html(data.message)
 			return
 		return

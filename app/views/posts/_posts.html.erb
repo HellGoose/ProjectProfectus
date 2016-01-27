@@ -49,7 +49,7 @@
 				<!-- </div> -->
 			<div style="padding:0;"class="col-xs-2 pull-right text-right">
 				<% if session[:user_id] %>
-					<!-- <a class="btn btn-default answer" id="<%= p.id.to_s %>">Reply</a> -->
+					<a class="btn btn-default answer" id="<%= p.id.to_s %>">Reply</a>
 				<% end %>
 			</div>
 		</div>
@@ -84,8 +84,9 @@
 		<!-- <div class="topic-card-end"> -->
 			<%= render partial: 'posts/comments', locals: { page: 1, postsPerPage: postsPerPage, comments: p.comments } %>
 		<!-- </div> -->
-		<!-- <div class="answer_div" id="<%= "answer" + p.id.to_s %>"></div> -->
-		<%= render partial:'posts/postForm', locals: {} %>
+		<div class="answer_div" id="<%= "answer" + p.id.to_s %>">
+			<!-- <%= render partial:'posts/postForm', locals: {}%> -->
+		</div>
 
 			<div class="row collapse-bar">
 				<a class="col-xs-12 text-center" style="height: 100%; width: 100%;" data-toggle="collapse" href="#thread-<%= @topic_counter %>" aria-controls="collapse<%= @topic_counter %>" onclick="$('div#topic-expander-<%= @topic_counter %>').delay(300).slideToggle(); $('div#topic-expander-<%= @topic_counter %>').child.delay(300).slideToggle();"><i class="fa fa-angle-double-up"></i></a>
@@ -93,7 +94,7 @@
 
 	</div>
 
-	<div id="topic-expander-<%= @topic_counter %>" class="topic-expander row" onclick="$(this).hide(); jQuery(this).find('#slideupper').slideUp(1000);"> <!-- $(a#<%= p.id.to_s%>).click();  -->
+	<div id="topic-expander-<%= @topic_counter %>" class="topic-expander row answer" onclick="$(this).hide(); jQuery(this).find('#slideupper').slideUp(1000);"> <!-- $(a#<%= p.id.to_s%>).click();  -->
 		<!-- <div id="slideupper" style="height: 100%; width: 100%;"> -->
 			<div id="kake-<%= @topic_counter %>" class="dark-overlay" >
 				<a data-toggle="collapse" href="#thread-<%= @topic_counter %>" aria-expanded="false" aria-controls="collapse<%= @topic_counter %>"></a>
@@ -103,7 +104,7 @@
 			<div id="comment-scroller-<%= @topic_counter %>" class="row comment-scroller"></div>
 			<hr>
 			<div class="post-form-parent row" style="pointer-events:none;">
-				<div class="post-form-child">
+				<div class="post-form-child"> <!-- The following form is just a dummy to preview the reply field -->
 					<form class="row">
 						<div class="col-xs-1 post-user-img">
 							<img class="img-circle text-center" style="margin-left:auto;margin-right:auto;" src=<%=getFacebookPicURL(current_user)%>>
