@@ -49,6 +49,31 @@ hr {
   margin: 0;
 }
 
+// div { // for debugging
+//   border: dashed 1px red;
+// }
+
+.help-border {
+  border: dashed 1px red;
+}
+
+// Same height boostrap columns
+// .row{
+//     overflow: hidden; 
+// }
+// [class*="col-"]{
+//     margin-bottom: -99999px;
+//     padding-bottom: 99999px;
+// }
+
+.no-padding {
+  padding: 0 !important;
+}
+
+.no-margin {
+  margin: 0 !important;
+}
+
 .disabled {
   cursor: default !important;
 }
