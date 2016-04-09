@@ -28,8 +28,10 @@ function hideButton(buttonElement){
 	<div class="text-center">
 		<% if current_user != nil %>
 			<% if current_user.isOnStep > 0 and current_user.isOnStep < 4%>
-				<button type="button" id="start-voting" class="btn btn-lg orange">CONTINUE</button>
+				<h2 id="vote-message" style="margin-bottom: 30px;">You are currently on step <%= current_user.isOnStep %> of the voting procedure.</h2>
+				<button type="button" id="start-voting" class="btn btn-lg orange">Resume voting</button>
 			<% elsif current_user.isOnStep == 4 %>
+				<h2 id="vote-message" style="margin-bottom: 30px;">You have made the world a little better today. :)</h2>
 				<button type="button" id="start-voting" class="btn btn-lg orange">Your votes</button>
 			<% else %>
 				<div class="container">
@@ -44,7 +46,7 @@ function hideButton(buttonElement){
 				  	disabled 
 				  <% else %> 
 				  	class="btn btn-lg orange" 
-				  <% end %>>START</button>
+				  <% end %>>Let's vote!</button>
 				  <!-- Start button end -->
 
 				  <!-- Modal -->

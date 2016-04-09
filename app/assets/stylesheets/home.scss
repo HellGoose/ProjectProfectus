@@ -4,6 +4,14 @@
 
 // @import "compass";
 
+// Global color variables
+$gray: #F7F7F7;
+$green: #385559;
+$green-light: #58878d;
+$orange: #F05000;
+$orange-light: #ff884d;
+$orange-dark: #CB4400;
+
 //Header
 
 .header {
@@ -44,6 +52,10 @@
 
 #pledge-btn {
 	margin-bottom: 20px;
+	// border-radius: 40px;
+	// background: transparent;
+	// border: $orange 1px solid;
+	// color: $orange-dark;
 }
 
 #start-voting {

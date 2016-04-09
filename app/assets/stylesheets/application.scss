@@ -33,7 +33,10 @@
 // Global color variables
 $gray: #F7F7F7;
 $green: #385559;
+$green-light: #58878d;
 $orange: #F05000;
+$orange-light: #ff884d;
+$orange-dark: #CB4400;
 
 html, body{ 
 	height:100%;
@@ -175,6 +178,36 @@ hr {
   // margin-right: auto;
 }
 
+.addition-main {
+  margin-bottom: 0;
+  color:$gray;
+  max-height: 21px;
+  font-size: 20px;
+  padding: 0 !important;
+  a {
+    color: $gray;
+  }
+}
+
+.addition-circle {
+  margin-top: 2px !important;
+  font-size: 9px;
+  color: $gray;
+}
+
+.nav-user {
+  a {
+    padding:0 !important;
+    margin-top: 15px;
+  }
+}
+
+.navbar{
+  .col-xs-4 {
+    width: 33% !important;
+  }
+}
+
 .profile-pic {
   // display: block;
   max-width: 30px !important;
@@ -200,6 +233,13 @@ hr {
 }
 
 // Navbar
+
+// .navbar {
+//   display: inline-block;
+//   * {
+//     float:left;
+//   }
+// }
 
 .navbar-text > a {
   color: inherit;
@@ -255,7 +295,8 @@ hr {
   background-color: #273638;
 }
 .navbar-default .navbar-toggle {
-  border-color: #ecf0f1;//#273638;
+  border:none;
+  color: white;
 }
 .navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
   background-color: #273638;
@@ -291,17 +332,24 @@ hr {
 #navbar-counter {
   width: 17%;
   position: absolute;
-  padding-top: 15px;
+  padding-top: 5px;
   height: 50px;
   // z-index: -1;
   margin-right: 41.5%;
   margin-left: 41.5%;
+}
 
+#navbar-counter2 {
+  padding-top: 5px;
+  height: 50px;
 }
 
 #counter {
   color: #ecf0f1 !important;
   text-decoration: none !important;
+  h5 small {
+    color:white;
+  }
 }
 
 #user-notifications {

@@ -15,26 +15,27 @@
 	<%= render partial: 'categories'%>
 </div> -->
 
-<div class="container" id="searchBar">
-	<div class="col-xs-6">
-		<div class="col-xs-6">
-			<input type="text" id="searchText" class="form-control" placeholder="Search"></input>
-		</div>
-		<button id="searchButton" class="btn btn-success">Search</button>
+<div class="jumbotron" id="searchBar">
+	<div class="col-xs-7 minimal-textfield-container">
+		<input type="text" id="searchText" class=" minimal-textfield" placeholder="Find a campaign"></input>
 	</div>
-	<div class="col-xs-6">
-		<div class="col-xs-6" style="float: right">
-			<select name="sortBy" id="sortBy" class="form-control">
+	<div class="col-xs-4 sort-by">
+			<h3>Ordered by
+			<select name="sortBy" id="sortBy" class="">
 				<option value="created_at DESC">Newest</option>
 				<option value="title ASC">Title</option>
-				<option value='pledged DESC'>Pledged</option>
-				<option value='goal DESC'>Goal</option>
-				<option value='backers DESC'>Backers</option>
-				<option value='end_time ASC'>Time Left</option>
-				<option value='nominated DESC'>Nominated</option>
-				<option value='votable DESC'>Votable</option>
+				<option value='pledged DESC'>Pledged Amount</option>
+				<option value='goal DESC'>Goal Amount</option>
+				<option value='backers DESC'># of Backers</option>
+				<option value='end_time ASC'>Remaining time</option>
+				<option value='nominated DESC'>Nominees</option>
+				<option value='votable DESC'>Up for Voting</option>
 			</select>
+			</h3>
 		</div>
+			<div class="col-xs-pull-1">	
+		<button id="searchButton" class="btn"><i class="fa fa-search"></i></button>
+	</div>
 	</div>
 </div>
 

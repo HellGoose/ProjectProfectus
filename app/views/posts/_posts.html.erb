@@ -102,7 +102,7 @@
 				<div class="post-form-child"> <!-- The following form is just a dummy to preview the reply field -->
 					<form class="row">
 						<div class="col-xs-1 post-user-img">
-							<img class="img-circle text-center" style="margin-left:auto;margin-right:auto;" src=<%=getFacebookPicURL(current_user)%>>
+							<img class="img-circle text-center" style="margin-left:auto;margin-right:auto;" src=<%=getFacebookPicURL(current_user) if !current_user.nil?%>>
 						</div>
 						<div class="col-xs-9">
 							<input class="form-control minimal-text-field" type="text" placeholder="Reply ..." >
