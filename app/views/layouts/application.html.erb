@@ -233,7 +233,7 @@
               <li class="col-xs-2 no-padding nav-user"><a href="<%= user_path(current_user) %>">
                 <img class="img-circle profile-pic" id="navbar-pic" src="<%= getFacebookPicURL(current_user) %>"> <%= current_user.name.split(' ', 2).first %></a></li>
             <% else %>
-              <li><a href="/auth/facebook">Login</a></li>
+              <li class="col-xs-4"><a href="/auth/facebook">Login</a></li>
             <% end %>
           <% if current_user %>
             <li class="col-xs-2 dropdown">
