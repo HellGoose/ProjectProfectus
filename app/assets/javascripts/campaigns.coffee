@@ -87,9 +87,9 @@ $(document).ready ->
     return
 
   $ ->
-    $(window).scroll sticky_relocate
-    sticky_relocate()
-    return
+    if $('.topic-container')[0]
+      $(window).scroll sticky_relocate
+      sticky_relocate()
 
   # Recognizes which path the user is on.
   if (window.location.pathname == '/campaigns' || window.location.pathname == '/campaigns/')

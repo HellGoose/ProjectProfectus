@@ -73,6 +73,10 @@ $orange-dark: #CB4400;
 #news_container {
 }
 
+#vote-message {
+	font-family: 'Bitter', sans-serif;
+}
+
 //Campaign voting
 
 .btn {
@@ -106,11 +110,7 @@ $orange-dark: #CB4400;
 }
 
 #vote-campaigns {
-	height: 375px;
-	// margin-bottom: 100px;
-	// border-bottom-style: solid; 
-	// border-bottom-width: 3px;
-	// border-bottom-color: #385559;
+	height: 415px;
 }
 
 @media (max-width: 400px) {
@@ -119,26 +119,6 @@ $orange-dark: #CB4400;
 	}
 }
 
-#voting {
-  // margin-top: -110px;
-  // box-shadow: inset 0 15px 15px -15px black;
-}
-
-/*#campaigns-news > hr {
-	border-color: #385559;
-	border-width: 3px;
-	margin-top: 2px;
-	margin-bottom: 2px;
-}*/
-
-// #leaderboards-title {
-// 	margin-top: 75px;
-// }
-
-// .styled-title {
-// 	padding-left: 5px;
-// 	padding-top: 3px;
-// }
 .leaderboards {
 	margin-top: 15px;
 }
@@ -159,22 +139,6 @@ $orange-dark: #CB4400;
 	margin-top: 2px;
 	margin-bottom: 2px;
 }
-
-// .campaigns-news-rule {
-// 	border-color: #385559;
-// 	border-width: 3px;
-// 	margin-top: 2px;
-// 	margin-bottom: 2px;
-// }
-
-// #winner_container {
-// 	padding-left: 150px;
-// 	padding-right: 150px;
-// }
-
-// #winner_container > h3 {
-// 	background: #F7F7F7;
-// }
 
 //News
 

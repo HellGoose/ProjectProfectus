@@ -94,24 +94,29 @@
           if (days > 0) {
             if (days == 1) {
               document.getElementById("counter").innerHTML = 
-                '<b><span class="days">' + days + 'd </span>' +
-                '<span class="hours">' + hours + 'h </span></b>'
+                '<h5 class="no-margin"><small>Votes counted in</small></h5>' +
+                '<b><span class="days">' + days + 'day and </span>' +
+                '<span class="hours">' + hours + 'hours</span></b>'
                 ; 
             } else {
               document.getElementById("counter").innerHTML = 
-                '<b><span class="days">' + days + 'd </span></b>'; 
+                '<h5 class="no-margin"><small>Votes counted in</small></h5>' +
+                '<b><span class="days">' + days + 'days </span></b>'; 
             }
           } else {
             if (hours < 1) {
               document.getElementById("counter").innerHTML = 
               '<h5 class="no-margin"><small>Votes counted in</small></h5>' +
-              '<b><span class="minutes">' + minutes + ' minutes, </span>' + 
-              '<span class="seconds">' + seconds + ' seconds!</span></b> '
+              //'<b><span class="minutes">' + minutes + ' minutes, </span>' + 
+              //'<span class="seconds">' + seconds + ' seconds!</span></b> '
+              '<b><span class="minutes">' + minutes + '</span>' + 
+              ' : <span class="seconds">' + seconds + '</span></b>'
               ;
             } else {
               document.getElementById("counter").innerHTML = 
-              '<b><span class="hours">' + hours + ' hours, </span>' +
-              '<span class="minutes">' + minutes + ' minutes.</span></b>'
+              '<h5 class="no-margin"><small>Votes counted in</small></h5>' +
+              '<b><span class="hours">' + hours + '</span>' +
+              ' : <span class="minutes">' + minutes + '</span></b>'
               ;
             }
           }
@@ -143,32 +148,33 @@
         </div>
 
     <div class="navbar navbar-default navbar-static-top navbar-xs" id="header" role="navigation"> <!-- Navbar -->
-    <div class="col-xs-4 pull-left"> <!-- Left -->
-      <a class="navbar-brand" href="/">
-        <ul><img src="https://cloud.githubusercontent.com/assets/690017/4317652/8946bb80-3f15-11e4-8b1b-961d47232979.png" width="25px" align="middle"> Podium</ul>
-      </a>
-      <ul class="nav navbar-nav navbar-left">
-        <li class="<%= 'active' if params[:controller] == 'campaigns' %>">
-          <a href="/campaigns">Browse Campaigns</a>
-        </li>
-        <li class="<%= 'active' if params[:controller] == 'about' %>">
-          <a href="/about/index">About</a>
-        </li>
-      </ul>
-    </div>
-      
-      <div class="col-xs-4 text-center" id="navbar-counter2"> <!-- Mid -->
-        <a href='#' id="counter" data-toggle="modal" data-target="#myModal"></a> <!-- Counter -->
-      </div>
 
       <div class="navbar-header"> <!-- Collapsed -->
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-          <span class="sr-only">Toggle navigation</span>
-          <i class="fa fa-bars"></i></b>
-        </button>
+        
+        <a class="navbar-brand" href="/">
+          <ul><img src="https://cloud.githubusercontent.com/assets/690017/4317652/8946bb80-3f15-11e4-8b1b-961d47232979.png" width="25px" align="middle"> Podium</ul>
+        </a>
+
+        <div class=" col-xs-4 text-center" id="navbar-counter2"> <!-- Mid -->
+          <a href='#' id="counter" data-toggle="modal" data-target="#myModal"></a> <!-- Counter -->
+        </div>
+
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <i class="fa fa-bars"></i></b>
+          </button>
       </div>
-      <div class="col-xs-4 navbar-collapse collapse">
-        <div class="col-xs-12 nav navbar-nav text-right">
+      <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav navbar-left">
+          <li class="nav-browse <%= 'active' if params[:controller] == 'campaigns' %>">
+            <a href="/campaigns">Browse Campaigns</a>
+          </li>
+          <li class="nav-about <%= 'active' if params[:controller] == 'about' %>">
+            <a href="/about/index">About</a>
+          </li>
+        </ul>
+
+        <div class="nav navbar-nav navbar-right">
             <% if current_user %>
               <li class="col-xs-1 no-padding">
                 <div id='notification-data' data-notification-offset='<%= get_notifications.size %>' style="display:none;"></div>
@@ -215,15 +221,15 @@
                 <% end %>
                 </p>
 
-                <a href="/campaigns/new" class="addition-main" title="Add new campaign">
                 <% if current_user.additionsThisRound == Round.first.maxAdditionsPerUser %>
-                  <a href="#" onclick="display_notification('<h3>You have already nominated <%= current_user.additionsThisRound %> campaigns this round!</h3>')"> <i class="fa fa-check-square-o"></i>
+                  <a href="#" title="Done!" class="addition-main" onclick="display_notification('<h3>You have already nominated <%= current_user.additionsThisRound %> campaigns this round!</h3>')"> <i class="fa fa-check-square-o"></i>
                 <% else %>
+                <a href="/campaigns/new" class="addition-main" title="Add new campaign">
                 <i class="fa fa-plus-square"></i>
                 <% end %>
                 </a>
               </li>
-              <li class="col-xs-3 no-padding"><a href="/users/"><i class="fa fa-star" style="color: gold;"></i> <%= current_user.points %></a></li>
+              <li class="col-xs-3 no-padding"><a href="/users/" class="nav-score"><i class="fa fa-star" style="color: gold;"></i> <%= current_user.points %></a></li>
               <li class="col-xs-2 no-padding nav-user"><a href="<%= user_path(current_user) %>">
                 <img class="img-circle profile-pic" id="navbar-pic" src="<%= getFacebookPicURL(current_user) %>"> <%= current_user.name.split(' ', 2).first %></a></li>
             <% else %>

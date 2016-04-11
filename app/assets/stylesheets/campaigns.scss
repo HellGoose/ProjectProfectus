@@ -56,9 +56,7 @@ $orange-dark: #CB4400;
 	background: #F7F7F7;
 }
 
-.campaign-list {
 
-}
 
 
 //Causes the category sites with no projects to have a similar look to those who have it.
@@ -94,6 +92,17 @@ $orange-dark: #CB4400;
 }
 
 .minimal-textfield-container {
+}
+
+@media screen and (max-width: 700px) {
+	.minimal-textfield {
+		font-size: 22px;
+	}
+	#searchButton {
+		margin-top: 0 !important;
+		border:none !important;
+		width: 100%;	
+	}
 }
 
 #searchButton {
@@ -245,7 +254,7 @@ $orange-dark: #CB4400;
 	max-width: 250px;
 	height: 316px;
 	vertical-align: top;
-	@include shadow(1);
+	//@include shadow(1);
 }
 
 .campaign-container {
@@ -270,24 +279,21 @@ $orange-dark: #CB4400;
 .continue-button {
 	padding-top: 2px;
 	position: absolute;
-  margin-right: auto;
-  margin-left: auto;
   width: 200px;
   height: 40px;
-  top: 60%;
-  left: 25px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   z-index: 2;
+
 }
 
 .campaign-vote {
-	border: 0px;
-	width: 250px;
-	cursor: hand;
-	cursor: pointer;
-	min-width: 250px;
-  max-width: 250px;
-  height: 316px;
-  margin-top: 10px;
+	//@include shadow(1);
+	.campaign-box {
+		margin-left: auto;
+		margin-right: auto;
+	}
 }
 
 /*#winners > div:nth-child(even) > div.campaign > div{
@@ -312,10 +318,8 @@ $orange-dark: #CB4400;
 	background-color: #fcfcfc;
 	width: 250px;
 	height: 316px;
-	-webkit-transition: all 0.5s ease;
-	-moz-transition: all 0.5s ease;
-	-o-transition: all 0.5s ease;
-	transition: all 0.5s ease;
+	@include shadow(1);
+	text-align: center;
 }
 
 .box-content-pitch {
@@ -481,11 +485,7 @@ $orange-dark: #CB4400;
   padding-right: 10px;
 }
 
-#star {
-	padding-top: 2px;
-	border-width: 0px;
-	max-height: 34px;
-}
+
 
 #edit {
 	margin-top: 20px;
@@ -542,20 +542,12 @@ $orange-dark: #CB4400;
 .reroll-close {
 	margin-left: auto;
 	margin-right: auto;
-	width: 63%;	
+	height: 30px;
 	font-size: large;
 }
 
 .close-voting {
 	text-align: right;
-}
-
-.step-indicator {
-	// margin-top: 5px;
-	// margin-right: auto;
-	// margin-left: auto;
-	// float: none;
-	// width: 63%;
 }
 
 .row-centered {
@@ -569,6 +561,10 @@ $orange-dark: #CB4400;
     text-align:center;
     /* inline-block space fix */
     margin-right:-4px;
+}
+
+.step-indicator-done {
+	display: inline-block;
 }
 
 div.start-step,
@@ -609,8 +605,6 @@ div.step,
 div.end-step {
   background-color: $gray;
   color: black;
-  margin-left: 25px;
-  margin-right: 25px;
 }
 
 div.current-start-step,
@@ -628,8 +622,6 @@ div.current-step {
   background-color: $green;
   color: white;
   margin-top: 0px;
-  margin-left: 36px;
-  margin-right: 36px;
   line-height: 38px;
 }
 
@@ -706,9 +698,6 @@ div.end-step:after {
 div.current-start-step {
   background-color: $green;
   color: white;
-  margin-top: 0px;
-  margin-left: 0px;
-  margin-right: 44px;
   line-height: 38px;
 }
 
@@ -730,15 +719,12 @@ div.current-start-step:after {
 // --------------------------------
 
 .end-step {
-	margin-right: 0px !important;
+	//margin-right: 0px !important;
 }
 
 div.current-end-step {
   background-color: $green;
   color: white;
-  margin-top: 0px;
-  margin-left: 44px;
-  margin-right: 0px;
   line-height: 38px;
 }
 
@@ -764,7 +750,9 @@ div.current-end-step:after {
 	background: $gray;
 	//padding: 15px 0;
 	//width: 200px;
+	//border:1px dashed $green;
 	text-align: center;
+	@include shadow(2);
 }
 .down-arrow:after {
 	content: '';
@@ -775,7 +763,7 @@ div.current-end-step:after {
 	top: 90%;
 	width: 0;
 	height: 0;
-	border-top: 50px solid $gray;
+	border-top: 50px solid gray;
 	border-right: 100px solid transparent;
 	border-bottom: 0 solid transparent;
 	border-left: 100px solid transparent;
@@ -783,9 +771,8 @@ div.current-end-step:after {
 
 // Vote star
 .vote-star {
-	width: 250px;
-	margin-bottom: 10px;
-	margin-bottom: 10px;
+	margin-top: 5px;
+	margin-bottom: 5px;
 }
 
 .vote-star-button {
@@ -851,11 +838,67 @@ div.current-end-step:after {
 	color: #F05000;
 }
 
-.campaign-display-all{
-	padding-top: 130px;
+.campaign-display-all {
+	@include shadow(2);
+	background:$gray;
+	margin-top: 30px;
+	padding-top: 20px;
+	.campaign-background {
+		display:none;
+	}
+
+	#campaign-content {
+		display: inline-block;
+
+	}
+
+	.left-column {
+		display:inline-block;
+		//float: left;
+		overflow: visible;
+		max-height: none !important;
+		:not(img) {
+			box-shadow: none;
+			max-width: 100% !important;
+		}
+		.adder-container {
+			width: 100% !important;
+		}
+		@media screen and (max-width: 990px) {
+			.main-campaign-image {
+				display:none;
+			}
+		}
+	}
+
+	.right-column {
+		position: relative;
+		top: 0;
+		left: 0;
+		//float: left;
+		overflow: visible;
+		max-width: 100%;
+		max-height: none !important;
+		.section {
+			margin-top: 0;
+			margin-left: 0 !important;
+			max-width: 100% !important;
+		}
+		* {
+				box-shadow: none;
+		}
+	}
 }
 
-//Campaign-view 3.0
+@media screen and (max-width: 990px) {
+	.step-indicator, .step-indicator-done {
+		* {
+			& > div {
+				width: 60px;
+			}
+		}
+	}
+}
 
 #external-content {
 	max-width: 800px;
@@ -878,7 +921,10 @@ a {
 }
 
 .adder-img {
-	max-width: 40px;
+	max-width: 40px !important;
+	img {
+		max-width: 40px !important;
+	}
 }
 
 .content-switcher-container {
@@ -889,6 +935,7 @@ a {
 	#campaign-content {
 		width: 100%;
 	}
+
 } 
 
 @media screen and (min-width: 990px) {
@@ -898,11 +945,15 @@ a {
 
 	.right-column {
 		padding-right: 9%;
+		.section {
+			max-width: 100% !important;
+		}
 	}
 }
 @media screen and (max-width: 990px) {
 	#campaign-content {
 		display: inline-block;
+		width: 100%;
 	}
 
 	.left-column {
@@ -910,6 +961,7 @@ a {
 		//float: left;
 		overflow: visible;
 		max-height: none !important;
+		width: 100%;
 	}
 
 	.right-column {
@@ -1021,6 +1073,38 @@ a {
 	overflow: auto;
 }
 
+.campaign-btn-group {
+	width: 100%;
+	font-size: 20px;
+	@include shadow(1);
+	margin-bottom: 20px;
+	background: #f4f4f4;
+	a {
+		color: black;
+	}
+}
+
+.share-dropdown {
+	min-width: 0;
+	width: 25px;
+	padding: 3px;
+	left: 20px;
+	border-radius: 2px;
+	background: #f4f4f4;
+}
+
+.edit-dropdown {
+	min-width: 0;
+	width: 50px;
+	padding: 3px;
+	left: 20px;
+	border-radius: 2px;
+	background: #f4f4f4;
+	& > li > a {
+		padding: 0;
+	}
+}
+
 .adder-top-right {
 	padding-right: 0;
 }
@@ -1107,3 +1191,4 @@ div:target {
     background: #bcbdbc;
   }
 }
+

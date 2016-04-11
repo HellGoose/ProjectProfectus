@@ -18,6 +18,7 @@
 
 
 // "bootstrap-sprockets" must be imported before "bootstrap" and "bootstrap/variables"
+$grid-float-breakpoint : 1000px;
 @import "bootstrap-sprockets";
 @import "bootstrap";
 
@@ -178,6 +179,10 @@ hr {
   // margin-right: auto;
 }
 
+.addition {
+  min-width: 60px;
+}
+
 .addition-main {
   margin-bottom: 0;
   color:$gray;
@@ -195,8 +200,15 @@ hr {
   color: $gray;
 }
 
+.nav-score {
+  min-width: 90px;
+  padding-right: 8px;
+  padding-left: 8px;
+}
+
 .nav-user {
   a {
+    min-width: 100px;
     padding:0 !important;
     margin-top: 15px;
   }
@@ -327,6 +339,26 @@ hr {
     color: #f7f7f7;
     background-color: #273638;
   }
+
+
+}
+
+@media screen and (max-width: 1000px) {
+  .navbar-left {
+    display: inline-block;
+    width: 100%;
+  }
+
+  .nav-browse {
+    float: left;
+    width: 50% !important;
+  }
+
+  .nav-about {
+    float: left;
+    width: 50% !important;
+  }
+
 }
 
 #navbar-counter {
@@ -340,8 +372,15 @@ hr {
 }
 
 #navbar-counter2 {
+  width: 33%;
   padding-top: 5px;
   height: 50px;
+  position: absolute;
+  left: 33%;
+}
+
+#navbar-toggle {
+  margin-right: 0;
 }
 
 #counter {

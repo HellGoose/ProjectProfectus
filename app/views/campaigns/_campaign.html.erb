@@ -40,7 +40,7 @@
 
 
 </script>
-<div style="overflow: hidden;"><div class="text-center" id="background-blur" ></div><div id="bottom-block"></div></div> <!-- style="background-image:url(<%=@campaign.image%>);" -->
+<div class="campaign-background" style="overflow: hidden;"><div class="text-center" id="background-blur" ></div><div id="bottom-block"></div></div> <!-- style="background-image:url(<%=@campaign.image%>);" -->
 <div class="container" id="campaign-content"><!-- main-campaign"> -->
 	<div class="col-md-3 left-column" id="leftCol">
 		<div class="main-campaign-image">
@@ -65,6 +65,41 @@
 			</div>
 			<%= image_tag @campaign.image, class: "logo img-responsive"%>
 		</div>
+		<% if !@posts.nil? %>
+			<div class="row btn-group campaign-btn-group">
+				<a class="btn col-xs-3" id="nominate" title="Nominate" <%= "disabled" if !current_user || @campaign.nominated || current_user.additionsThisRound >=Round.first.maxAdditionsPerUser %>>
+				  <i class="fa fa-plus"></i>
+				</a>
+
+				<a href="/campaigns/star/<%=@campaign.id%>" class="btn col-xs-3 disabled" id="star" disabled><i class="fa fa-heart-o"></i></a>
+
+				<div class="dropdown col-xs-3">
+				  <div class="btn" title="Share" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					  <i class="fa fa-share"></i>		  	
+				  </div>
+				  <ul class="dropdown-menu share-dropdown">
+				  	<li><%= social_share_button_tag(@campaign.title, :popup => "true", :image => @campaign.image, desc: @campaign.description) %></li>
+				  </ul>
+				</div>
+
+				<div class="dropdown col-xs-3">
+					<div class="btn" title="Edit" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					  <i class="fa fa-gear"></i>
+					</div>
+				  <ul class="dropdown-menu edit-dropdown">
+			  		<li class="report_link"><a class="btn <%= 'disabled' if !current_user%>" id="report_campaign" <%= "disabled" if !current_user%>>
+			  			<i class="fa fa-flag" title="Report this campaign"></i></a>
+			  		</li>
+			  		<li>
+				  		<% if @campaign.user_id == session[:user_id] || isAdmin %>
+				  			<%= link_to "", edit_campaign_path(@campaign), class:"btn fa fa-edit", title:"Edit"%>
+				  		<% end %>
+		  			</li>
+			  	</ul>
+				</div>
+			</div>
+		<% end %>
+
 		<div class="row card" id="box-group">
 			<div class="col-xs-4" id="campaign-info-box">
 				<h4><small>Pledged</small></h4><b><%= if @campaign.pledged.to_i >= 0 then number_to_currency(@campaign.pledged, :precision => 0) else "Funding" end %></b>
@@ -100,17 +135,19 @@
 			</div>
 
 			<!-- <div id="content-switcher"></div> -->
-			<div class="row campaign-info card topic-container">
-				<div class="row">
-					
-					<div class="col-xs-3 no-padding content-switcher-container">
-					  <input type="checkbox" id="content-switcher" class="cbx hidden"/>
-					  <label for="content-switcher" class="lbl"></label>    
+			<% if !@posts.nil? %>
+				<div class="row campaign-info card topic-container">
+					<div class="row">
+						
+						<div class="col-xs-3 no-padding content-switcher-container">
+						  <input type="checkbox" id="content-switcher" class="cbx hidden"/>
+						  <label for="content-switcher" class="lbl"></label>    
+						</div>
+						<h4 class="col-xs-9">Discussion</h4> 
 					</div>
-					<h4 class="col-xs-9">Discussion</h4> 
+					<p class="row" id="comment-collapsed-box" >There are no topics to highlight yet. They will show up here once they exist. Click here to see discussion, or start a thread yourself.</p>
 				</div>
-				<p class="row" id="comment-collapsed-box" >There are no topics to highlight yet. They will show up here once they exist. Click here to see discussion, or start a thread yourself.</p>
-			</div>
+			<% end %>
 		</div>
 	</div>
 
@@ -133,14 +170,16 @@
 			</div>
 			<% end %>
 
-			<div class="posts">
-				<%= render partial: "posts/posts", locals: { page: 1, postsPerPage: @postsInterval } %>
-			</div>
-
-			<% if @posts.size > @postsInterval %>
-				<div class="text-center">
-					<a class="btn btn-primary" id="more_posts">Show More</a>
+			<% if !@posts.nil? %>
+				<div class="posts">
+					<%= render partial: "posts/posts", locals: { page: 1, postsPerPage: @postsInterval } %>
 				</div>
+
+				<% if @posts.size > @postsInterval %>
+					<div class="text-center">
+						<a class="btn btn-primary" id="more_posts">Show More</a>
+					</div>
+				<% end %>
 			<% end %>
 		</div>
 	</div>

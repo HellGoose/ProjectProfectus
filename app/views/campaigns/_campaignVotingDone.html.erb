@@ -1,22 +1,32 @@
 <script>$('#campaign').data('step', <%= current_user.isOnStep %>);</script>
 
-<div class="row container reroll-close">
+<div class="reroll-close">
   <div class="col-xs-1 pull-right close-voting"><i type="button" id="back-voting-small" class="btn fa fa-times-circle" title="Close" onclick="$('#pledge-btn').show();"></i></div>
 </div>
 
-<div class="row row-centered text-center step-indicator">
-    <div class="col-xs-3 col-centered start-step">Step 1</div>
-    <div class="col-xs-2 col-centered step">Step 2</div>
-    <div class="col-xs-2 col-centered step">Step 3</div>
-    <div class="col-xs-2 col-centered step">Final Vote</div>
-    <div class="col-xs-3 col-centered current-end-step">Finished!</div>
+<div class="col-xs-12 text-center step-indicator-done">
+    <div class="col-xs-2 col-centered ">
+      <div class="<%=if @step==1 then "current-" end%>start-step">Step 1</div>
+    </div>
+    <div class="col-xs-2 col-centered">
+      <div class="<%=if @step==2 then "current-" end%>step">Step 2</div>
+    </div>
+    <div class="col-xs-2 col-centered">
+      <div class="<%=if @step==3 then "current-" end%>step">Step 3</div>
+    </div>
+    <div class="col-xs-2 col-centered">
+      <div class="<%=if @step==4 then "current-" end%>step">Final</div>
+    </div>
+    <div class="col-xs-2 col-centered">
+      <div class="<%=if @step==5 then "current-" end%>end-step">Finished!</div>
+    </div>
 </div>
 
 <!-- Vote-campaigns -->
-<div class="row row-centered" id="vote-campaigns">
+<div class="row" id="vote-campaigns">
 	<% i = 0 %>
 	<% @campaignVoting.each do |c| %>
-		<div class="col-xs-4 col-centered campaign">
+		<div class="col-xs-4">
 			<div class="text-center vote-star" id="<%= i %>">
 					<% if c == @votedFor[0].campaign %>
 						<span class="fa fa-star star-finished-win" style="font-size: xx-large;" aria-hidden="true"></span>
