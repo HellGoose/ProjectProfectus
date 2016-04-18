@@ -18,20 +18,3 @@
 <div id="campaign">
 	<%= render partial: "campaign" %>
 </div>
-<div class="container">
-	<% if current_user %>
-	<div id="post">
-		<%= render partial: "posts/postForm" %>
-	</div>
-	<% end %>
-
-	<div class="posts">
-		<%= render partial: "posts/posts", locals: { page: 1, postsPerPage: @postsInterval } %>
-	</div>
-
-	<% if @posts.size > @postsInterval %>
-		<div class="text-center">
-			<a class="btn btn-primary" id="more_posts">Show More</a>
-		</div>
-	<% end %>
-</div>

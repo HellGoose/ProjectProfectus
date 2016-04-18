@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <link href='https://fonts.googleapis.com/css?family=Bitter' rel='stylesheet' type='text/css'>
     <!-- Hotjar Tracking Code for thepodium.io -->
     <script>
         (function(h,o,t,j,a,r){
@@ -77,8 +78,8 @@
         minutes = parseInt(seconds_left / 60);
         seconds = parseInt(seconds_left % 60);
 
-        if (days <= 0 && hours <= 0 && minutes <= 0 && seconds < 0) {
-          document.getElementById("counter").innerHTML = '<span>A new round has started!</span>';
+        if (days <= 0 && hours <= 0 && minutes <= 0 && seconds <= 0) {
+          document.getElementById("counter").innerHTML = '<span style="margin-top: 15px;">A new round has started!</span>';
         } else {
           if (hours < 10) {
             hours = "0" + hours;
@@ -93,17 +94,31 @@
           if (days > 0) {
             if (days == 1) {
               document.getElementById("counter").innerHTML = 
-                '<b><span class="days">' + days + ' Day </span></b>'; 
+                '<h5 class="no-margin"><small>Votes counted in</small></h5>' +
+                '<b><span class="days">' + days + 'day and </span>' +
+                '<span class="hours">' + hours + 'hours</span></b>'
+                ; 
             } else {
               document.getElementById("counter").innerHTML = 
-                '<b><span class="days">' + days + ' Days </span></b>'; 
+                '<h5 class="no-margin"><small>Votes counted in</small></h5>' +
+                '<b><span class="days">' + days + 'days </span></b>'; 
             }
           } else {
-            document.getElementById("counter").innerHTML = 
-            '<b><span class="hours">' + hours + '</span>' + //' Hours </span>'
-            ' : <span class="minutes">' + minutes + '</span>' + //' Minutes. </span>' 
-            ' : <span class="seconds">' + seconds + '</span></b> '//' Seconds </span>'
-            ;
+            if (hours < 1) {
+              document.getElementById("counter").innerHTML = 
+              '<h5 class="no-margin"><small>Votes counted in</small></h5>' +
+              //'<b><span class="minutes">' + minutes + ' minutes, </span>' + 
+              //'<span class="seconds">' + seconds + ' seconds!</span></b> '
+              '<b><span class="minutes">' + minutes + '</span>' + 
+              ' : <span class="seconds">' + seconds + '</span></b>'
+              ;
+            } else {
+              document.getElementById("counter").innerHTML = 
+              '<h5 class="no-margin"><small>Votes counted in</small></h5>' +
+              '<b><span class="hours">' + hours + '</span>' +
+              ' : <span class="minutes">' + minutes + '</span></b>'
+              ;
+            }
           }
         }
       }, 1000);
@@ -119,10 +134,10 @@
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Time is running out! WHAT DO I DO!?</h4>
+                <h4 class="modal-title">Time is running out!</h4>
               </div>
               <div class="modal-body">
-                <p>Relax. Take deep breaths. This little clock here is simply an indicator for when all the votes will be counted, and new winners will step unto the podium. If you wonder about the purpose of this site, then please head over to our 'About' page.</p>
+                <p>This little clock here is an indicator for when all the votes will be counted, and new winners will step unto the podium. If you wonder about the purpose of this site, then please head over to our 'About' page.</p>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -132,103 +147,110 @@
           </div>
         </div>
 
-    <div class="navbar navbar-default navbar-static-top navbar-xs" id="header" role="navigation">
-      <div class="row text-center" id="navbar-counter">
-        <a href='#' id="counter" data-toggle="modal" data-target="#myModal"></a> <!-- Counter -->
+    <div class="navbar navbar-default navbar-static-top navbar-xs" id="header" role="navigation"> <!-- Navbar -->
 
-      </div>
-      <div class="container">
-        <div class="navbar-header">
+      <div class="navbar-header"> <!-- Collapsed -->
+        
+        <a class="navbar-brand" href="/">
+          <ul><img src="https://cloud.githubusercontent.com/assets/690017/4317652/8946bb80-3f15-11e4-8b1b-961d47232979.png" width="25px" align="middle"> Podium</ul>
+        </a>
+
+        <div class=" col-xs-4 text-center" id="navbar-counter2"> <!-- Mid -->
+          <a href='#' id="counter" data-toggle="modal" data-target="#myModal"></a> <!-- Counter -->
+        </div>
+
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="sr-only">Toggle navigation</span>
-            Menu <b class="caret"></b>
+            <i class="fa fa-bars"></i></b>
           </button>
-          <a class="navbar-brand" href="/">
-            <ul><img src="https://cloud.githubusercontent.com/assets/690017/4317652/8946bb80-3f15-11e4-8b1b-961d47232979.png" width="25px" align="middle"> Podium</ul>
-          </a>
-        </div> <!-- End navbar-header -->
-        <div class="navbar-collapse collapse">
-        	<ul class="nav navbar-nav navbar-left">
-        		<li class="<%= 'active' if params[:controller] == 'campaigns' %>">
-              <a href="/campaigns">Browse Campaigns</a>
-            </li>
-        		<li class="<%= 'active' if params[:controller] == 'about' %>">
-              <a href="/about/index">About</a>
-            </li>
-        	</ul>
-          <ul class="nav navbar-nav navbar-right">
-              <% if current_user %>
+      </div>
+      <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav navbar-left">
+          <li class="nav-browse <%= 'active' if params[:controller] == 'campaigns' %>">
+            <a href="/campaigns">Browse Campaigns</a>
+          </li>
+          <li class="nav-about <%= 'active' if params[:controller] == 'about' %>">
+            <a href="/about/index">About</a>
+          </li>
+        </ul>
 
-                <li>
-                  <div id='notification-data' data-notification-offset='<%= get_notifications.size %>' style="display:none;"></div>
-
-                  <a id="nav-notifications">
-                    <i class="glyphicon glyphicon-globe"></i>
-                  </a>
-
-                  <div id="user-notifications">
-                    <div class="text-center" id="user-notifications-text">
-                      <h5>Notifications:</h5>
-                    </div>
-
-                    <div id="notification-container">
-                      <% get_notifications.each do |n| %>
-                        <% if n.popup %>
-                          <% next %>
-                        <% end %>
-                        <div class="user-notification notification-link" id="<%= n.link %>">
-                          <div id="icon">
-                            <% if n.icon != '' %>
-                              <img src="<%= n.icon %>" />
-                            <% else %>
-                              <img src="https://cloud.githubusercontent.com/assets/690017/4317652/8946bb80-3f15-11e4-8b1b-961d47232979.png" />
-                            <% end %>
-                          </div>
-
-                          <div id="text">
-                            <h4><%= n.notification %></h4>
-                            <% if n.points > 0 %>
-                              <h5>You received: <%= n.points %> points</h5>
-                            <% end %>
-                          </div>
-                        </div>
-                      <% end %>
-                    </div>
-
-                    <div class="user-notification">
-                    </div>
-                  </div>
-                </li>
-
-                <li><a style="padding-right: 5px;" href="<%= user_path(current_user) %>"> <i class="fa fa-file-text-o"></i> <%=current_user.additionsThisRound%>/<%=Round.first.maxAdditionsPerUser%> </a></li><!-- style="color: gold;" Submissions-->
-                <% if current_user.additionsThisRound == Round.first.maxAdditionsPerUser %>
-                    <li><a style="padding-left: 0px;" href="#" onclick="display_notification('<h3>You have already nominated <%= current_user.additionsThisRound %> campaigns this round!</h3>')"> <i class="fa fa-check-square-o"></i></a></li>
-                <% else %>
-                    <li><a style="padding-left: 0px;" href="/campaigns/new"> <i class="fa fa-plus"></i></a></li>
-                <% end %>
-                <li><a href="/users/"><i class="fa fa-star" style="color: gold;"></i> <%= current_user.points %></a></li>
-                <li><a href="<%= user_path(current_user) %>">
-                  <img class="img-circle profile-pic" id="navbar-pic" src="<%= getFacebookPicURL(current_user) %>"> <%= current_user.name.split(' ', 2).first %></a></li>
-              <% else %>
-                <li><a href="/auth/facebook">Login</a></li>
-              <% end %>
+        <div class="nav navbar-nav navbar-right">
             <% if current_user %>
-              <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bars"></i></a>
-              <ul class="dropdown-menu">
-                <li class="dropdown-header"></li>
-                  <% if isAdmin %>
-                    <li><a href="/admin/">Admin Page</a></li>
-                  <% end %>
-                  <li><a href="/campaigns/new">Add Campaign (<%= current_user.additionsThisRound %>/<%= Round.first.maxAdditionsPerUser %>)</a></li>
-                  <li><a href='/users/'>Leaderboard</a></li>
-                  <li><a href='#' id='refer-a-friend' onclick="return false;">Refer-a-friend</a></li>
-                  <li class="divider"></li>
-                  <li> <a href="/signout">Log out</a></li>
-              </ul>
-              <% end %>
-            </li>
-          </ul>
+              <li class="col-xs-1 no-padding">
+                <div id='notification-data' data-notification-offset='<%= get_notifications.size %>' style="display:none;"></div>
+                <a id="nav-notifications">
+                  <i class="fa fa-bell"></i>
+                </a>
+                <div id="user-notifications">
+                  <div class="text-center" id="user-notifications-text">
+                    <h5>Notifications:</h5>
+                  </div>
+                  <div id="notification-container">
+                    <% get_notifications.each do |n| %>
+                      <% if n.popup %>
+                        <% next %>
+                      <% end %>
+                      <div class="user-notification notification-link" id="<%= n.link %>">
+                        <div id="icon">
+                          <% if n.icon != '' %>
+                            <img src="<%= n.icon %>" />
+                          <% else %>
+                            <img src="https://cloud.githubusercontent.com/assets/690017/4317652/8946bb80-3f15-11e4-8b1b-961d47232979.png" />
+                          <% end %>
+                        </div>
+                        <div id="text">
+                          <h4><%= n.notification %></h4>
+                          <% if n.points > 0 %>
+                            <h5>You received: <%= n.points %> points</h5>
+                          <% end %>
+                        </div>
+                      </div>
+                    <% end %>
+                  </div>
+                  <div class="user-notification">
+                  </div>
+                </div>
+              </li>
+              <li class="col-xs-2 text-center addition">
+                <p class="addition-circle no-margin">
+                <% (1..current_user.additionsThisRound).each do |i| %>
+                  <small><i class="fa fa-dot-circle-o"></i></small>
+                <% end %>
+                <% (current_user.additionsThisRound...Round.first.maxAdditionsPerUser).each do |i|%>
+                  <small><i class="fa fa-circle-o"></i></small>
+                <% end %>
+                </p>
+
+                <% if current_user.additionsThisRound == Round.first.maxAdditionsPerUser %>
+                  <a href="#" title="Done!" class="addition-main" onclick="display_notification('<h3>You have already nominated <%= current_user.additionsThisRound %> campaigns this round!</h3>')"> <i class="fa fa-check-square-o"></i>
+                <% else %>
+                <a href="/campaigns/new" class="addition-main" title="Add new campaign">
+                <i class="fa fa-plus-square"></i>
+                <% end %>
+                </a>
+              </li>
+              <li class="col-xs-3 no-padding"><a href="/users/" class="nav-score"><i class="fa fa-star" style="color: gold;"></i> <%= current_user.points %></a></li>
+              <li class="col-xs-2 no-padding nav-user"><a href="<%= user_path(current_user) %>">
+                <img class="img-circle profile-pic" id="navbar-pic" src="<%= getFacebookPicURL(current_user) %>"> <%= current_user.name.split(' ', 2).first %></a></li>
+            <% else %>
+              <li class="col-xs-4"><a href="/auth/facebook">Login</a></li>
+            <% end %>
+          <% if current_user %>
+            <li class="col-xs-2 dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bars"></i></a>
+            <ul class="dropdown-menu">
+              <li class="dropdown-header"></li>
+                <% if isAdmin %>
+                  <li><a href="/admin/">Admin Page</a></li>
+                <% end %>
+                <li><a href="/campaigns/new">Add Campaign (<%= current_user.additionsThisRound %>/<%= Round.first.maxAdditionsPerUser %>)</a></li>
+                <li><a href='/users/'>Leaderboard</a></li>
+                <li><a href='#' id='refer-a-friend' onclick="return false;">Refer-a-friend</a></li>
+                <li class="divider"></li>
+                <li> <a href="/signout">Log out</a></li>
+            </ul>
+            <% end %>
+          </li>
         </div>
       </div> <!-- End container -->
 	  </div> <!-- End navbar -->
@@ -245,13 +267,13 @@
 
         if (footerTop < docHeight) {
           if (window.location.href.indexOf("/landing") > -1) {
-            $('#content').css('height', '+='+(10+docHeight-footerTop)+'px');
+            $('#content').css('height', '+='+((docHeight-footerTop)-12)+'px');
             $('#content').css('padding-top', '0');
             $('#content').css('padding-bottom', '0');
             $('#footer').css('margin-top', '-30px');
             $('#footer').css('padding-top', '30px');
           } else {
-            $('#footer').css('margin-top', 10+ (docHeight - footerTop) + 'px');
+            $('#footer').css('margin-top', (docHeight - footerTop)-2 + 'px');
           }
         }
       });
@@ -261,7 +283,7 @@
         <div class="navbar-text pull-left">
           <p> 2015 Podium </p>
         </div>
-        <div class="navbar-text pull-right">
+        <div class="navbar-text pull-right footer-share">
           <a href="#"><i class="fa fa-facebook-square fa-2x"></i></a>
           <a href="#"><i class="fa fa-twitter fa-2x"></i></a>
           <a href="#"><i class="fa fa-google-plus fa-2x"></i></a>

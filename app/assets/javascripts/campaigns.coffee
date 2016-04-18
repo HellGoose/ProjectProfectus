@@ -65,8 +65,35 @@ search = ->
 
 # Runs the code after the document is ready
 $(document).ready ->
+  oldRst = 0;
+  $('#rightCol').on 'scroll', ->
+    l = $('#leftCol')
+    lst = l.scrollTop()
+    rst = $(this).scrollTop()
+    l.scrollTop lst + rst - oldRst
+    oldRst = rst
+    return
+
+  sticky_relocate = ->
+    window_top = $(window).scrollTop()
+    div_top = $('#sticky-anchor').offset().top
+    if window_top > div_top
+      $('#sticky').addClass 'stick'
+      $('#sticky-anchor').height $('#sticky').outerHeight()
+      $('#sticky-anchor').width 0
+    else
+      $('#sticky').removeClass 'stick'
+      $('#sticky-anchor').height 0
+    return
+
+  $ ->
+    if $('.topic-container')[0]
+      $(window).scroll sticky_relocate
+      sticky_relocate()
+
   # Recognizes which path the user is on.
   if (window.location.pathname == '/campaigns' || window.location.pathname == '/campaigns/')
+
     page = $('#data').data('page')
     size = $('#data').data('size')
     interval = $('#data').data('interval')
@@ -285,3 +312,5 @@ renderNoPreview = ->
   $('#campaign-title').html('')
   $('#campaign-description').html('<h2>We could not get you a preview. Sorry :(</h2><p>But you can still nominate the campaign :)</p>')
   return
+
+# Synchronises scrollbars on the campaign page

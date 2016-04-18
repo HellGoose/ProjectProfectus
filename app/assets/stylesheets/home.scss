@@ -2,6 +2,16 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+// @import "compass";
+
+// Global color variables
+$gray: #F7F7F7;
+$green: #385559;
+$green-light: #58878d;
+$orange: #F05000;
+$orange-light: #ff884d;
+$orange-dark: #CB4400;
+
 //Header
 
 .header {
@@ -42,6 +52,10 @@
 
 #pledge-btn {
 	margin-bottom: 20px;
+	// border-radius: 40px;
+	// background: transparent;
+	// border: $orange 1px solid;
+	// color: $orange-dark;
 }
 
 #start-voting {
@@ -57,6 +71,10 @@
 }
 
 #news_container {
+}
+
+#vote-message {
+	font-family: 'Bitter', sans-serif;
 }
 
 //Campaign voting
@@ -92,11 +110,7 @@
 }
 
 #vote-campaigns {
-	height: 375px;
-	// margin-bottom: 100px;
-	// border-bottom-style: solid; 
-	// border-bottom-width: 3px;
-	// border-bottom-color: #385559;
+	height: 415px;
 }
 
 @media (max-width: 400px) {
@@ -105,26 +119,6 @@
 	}
 }
 
-#voting {
-  // margin-top: -110px;
-  // box-shadow: inset 0 15px 15px -15px black;
-}
-
-/*#campaigns-news > hr {
-	border-color: #385559;
-	border-width: 3px;
-	margin-top: 2px;
-	margin-bottom: 2px;
-}*/
-
-// #leaderboards-title {
-// 	margin-top: 75px;
-// }
-
-// .styled-title {
-// 	padding-left: 5px;
-// 	padding-top: 3px;
-// }
 .leaderboards {
 	margin-top: 15px;
 }
@@ -145,22 +139,6 @@
 	margin-top: 2px;
 	margin-bottom: 2px;
 }
-
-// .campaigns-news-rule {
-// 	border-color: #385559;
-// 	border-width: 3px;
-// 	margin-top: 2px;
-// 	margin-bottom: 2px;
-// }
-
-// #winner_container {
-// 	padding-left: 150px;
-// 	padding-right: 150px;
-// }
-
-// #winner_container > h3 {
-// 	background: #F7F7F7;
-// }
 
 //News
 

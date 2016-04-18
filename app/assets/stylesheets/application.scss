@@ -12,24 +12,70 @@
  *
  *= require_self
  *= require social-share-button
- *= require_tree .
+ * require bootstrap-material-design
+ * require_tree . removed because of bourbon, instead import all -> see below
  */
 
+
 // "bootstrap-sprockets" must be imported before "bootstrap" and "bootstrap/variables"
+$grid-float-breakpoint : 1000px;
 @import "bootstrap-sprockets";
 @import "bootstrap";
+
+// @import "compass";
+@import "bourbon";
+@import "home";
+@import "users";
+@import "campaigns";
+@import "admin";
+@import "about";
+@import "posts";
 
 // Global color variables
 $gray: #F7F7F7;
 $green: #385559;
+$green-light: #58878d;
 $orange: #F05000;
+$orange-light: #ff884d;
+$orange-dark: #CB4400;
 
 html, body{ 
 	height:100%;
+  margin: 0px;
 }
 
 img {
   max-width: 100%;
+}
+
+hr {
+  padding: 0;
+  margin: 0;
+}
+
+// div { // for debugging
+//   border: dashed 1px red;
+// }
+
+.help-border {
+  border: dashed 1px red;
+}
+
+// Same height boostrap columns
+// .row{
+//     overflow: hidden; 
+// }
+// [class*="col-"]{
+//     margin-bottom: -99999px;
+//     padding-bottom: 99999px;
+// }
+
+.no-padding {
+  padding: 0 !important;
+}
+
+.no-margin {
+  margin: 0 !important;
 }
 
 .disabled {
@@ -108,8 +154,8 @@ img {
   border-radius: 0px;
 }
 
-#footer > div {
-  margin-top: 70px;
+.footer-share {
+  margin-top: 30px;
 }
 
 .notification-container {
@@ -131,6 +177,47 @@ img {
   overflow: hidden;
   // margin-left: auto;
   // margin-right: auto;
+}
+
+.addition {
+  min-width: 60px;
+}
+
+.addition-main {
+  margin-bottom: 0;
+  color:$gray;
+  max-height: 21px;
+  font-size: 20px;
+  padding: 0 !important;
+  a {
+    color: $gray;
+  }
+}
+
+.addition-circle {
+  margin-top: 2px !important;
+  font-size: 9px;
+  color: $gray;
+}
+
+.nav-score {
+  min-width: 90px;
+  padding-right: 8px;
+  padding-left: 8px;
+}
+
+.nav-user {
+  a {
+    min-width: 100px;
+    padding:0 !important;
+    margin-top: 15px;
+  }
+}
+
+.navbar{
+  .col-xs-4 {
+    width: 33% !important;
+  }
 }
 
 .profile-pic {
@@ -158,6 +245,13 @@ img {
 }
 
 // Navbar
+
+// .navbar {
+//   display: inline-block;
+//   * {
+//     float:left;
+//   }
+// }
 
 .navbar-text > a {
   color: inherit;
@@ -213,7 +307,8 @@ img {
   background-color: #273638;
 }
 .navbar-default .navbar-toggle {
-  border-color: #ecf0f1;//#273638;
+  border:none;
+  color: white;
 }
 .navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
   background-color: #273638;
@@ -244,22 +339,60 @@ img {
     color: #f7f7f7;
     background-color: #273638;
   }
+
+
+}
+
+@media screen and (max-width: 1000px) {
+  .navbar-left {
+    display: inline-block;
+    width: 100%;
+  }
+
+  .nav-browse {
+    float: left;
+    width: 50% !important;
+  }
+
+  .nav-about {
+    float: left;
+    width: 50% !important;
+  }
+
+}
+
+.navbar-right {
+  margin-right: 0 !important;
 }
 
 #navbar-counter {
   width: 17%;
   position: absolute;
-  padding-top: 15px;
+  padding-top: 5px;
   height: 50px;
   // z-index: -1;
   margin-right: 41.5%;
   margin-left: 41.5%;
+}
 
+#navbar-counter2 {
+  width: 33%;
+  padding-top: 5px;
+  height: 50px;
+  position: absolute;
+  left: 33%;
+}
+
+#navbar-toggle {
+  margin-right: 0;
 }
 
 #counter {
   color: #ecf0f1 !important;
   text-decoration: none !important;
+  h5 small {
+    color:white;
+  }
 }
 
 #user-notifications {

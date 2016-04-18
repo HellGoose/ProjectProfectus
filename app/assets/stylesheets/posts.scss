@@ -2,13 +2,17 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-.post {
-	margin: 10px 0px 10px 0px;
-	background-color: #fcfcfc;
-	border: 1px solid #ddd;
-	border-radius: 10px;
-	width: 100%;
-}
+// .post {
+// 	margin: 10px 0px 10px 0px;
+// 	background-color: #fcfcfc;
+// 	border: 1px solid #ddd;
+// 	border-radius: 2px;
+// 	width: 100%;
+// }
+
+// .post:nth-child(2n+1) {
+// 	background-color: red;
+// }
 
 .vote_container {
 	width: 75px;
@@ -52,7 +56,7 @@
 .text_container .edit {
 	float: right;
 	position: relative;
-	top: -20px;
+	// top: -20px;
 }
 
 h1, h2, h3, h4 {
@@ -60,12 +64,420 @@ h1, h2, h3, h4 {
 	margin-top: 5px;
 }
 
-.text_container #created_by {
-	margin-top: -5px;
+// .text_container #created_by {
+// 	margin-top: -5px;
+// }
+
+// .bar {
+// 	position: relative;
+// 	left: -10px;
+// 	bottom: -20px;
+// }
+
+// .post {
+// 	// margin: 10px;
+// 	// background-color: #fcfcfc;
+// 	// border: 1px solid #ddd;
+// 	// border-radius: 2px;
+// 	margin: 0;
+// 	padding: 10px;
+// }
+
+.post {
+	margin: 10px;
+	background-color: #fcfcfc;
+	border-left: 1px solid #ddd;
+	border-top: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-left: 10px;
+	padding-right: 0px;
 }
 
-.bar {
-	position: relative;
-	left: -10px;
-	bottom: -20px;
+.pushed {
+	padding-left: 20px;
+}
+
+.comment-background {
+	background-color: #fcfcfc;
+	border-left: 1px solid #ddd;
+	border-top: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+	padding: 0;
+}
+
+.comment-row {
+	margin: 10px !important;
+	overflow: hidden;
+}
+
+.comment-column {
+	// position: relative;
+	width: 40px;
+	// height: 99999px;
+}
+
+.comment-user-image {
+	height: 40px;
+	width: 40px;
+	padding: 0;
+	margin: 0;
+}
+
+.comment-name {
+	height: 40px;
+	h4 {
+		line-height: 40px;
+		margin: 0;
+
+	}
+}
+
+.comment-date {
+	margin: 0;
+	padding: 0;
+	color: gray;
+}
+
+.comment-user-menu {
+	margin-top: -7px;
+	height: 30px;
+	width: 30px;
+	button {
+		background-color: transparent;
+		padding: 6px 6px;
+		i {
+			color: gray;
+		}
+	}
+}
+
+.vertical-comment-bar {
+	height: 100% !important;
+	left: 50%;
+	// overflow: hidden;
+	background-color: #DDD;
+	// margin-left: auto;
+	// margin-right: auto;
+}
+
+.comment-top {
+	height: 40px;
+}
+
+.comment-content {
+	margin-left: 20px !important;
+	border-left: solid 1px #DDD;
+	padding-left: 20px;
+}
+
+.comment-bottom {
+	height: 20px;
+	border-radius: 5px;
+	background-color: #f0f0f0;
+	width: 100%;
+	a {
+		padding-top: 0;
+		padding-bottom: 0;
+	}
+}
+
+// .comments {
+// 	margin: 10px;
+// 	background-color: #fcfcfc;
+// 	border: 1px solid #ddd;
+// 	border-radius: 2px;
+// 	padding-top: 10px;
+// 	padding-bottom: 10px;
+// 	padding-left: 0px;
+// 	padding-right: 0px;
+// }
+
+.initial-comments {
+	// background-color: #ddd;
+	margin-top: -3px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-bottom: 20px;
+	margin-left: -11px;
+	margin-right: -10px;
+	// -moz-box-shadow:    inset 0 0 10px #000000;
+	// -webkit-box-shadow: inset 0 0 10px #000000;
+	// box-shadow:         inset 0 0 10px #000000;
+}
+
+.vote-container {
+	padding: 0;
+}
+
+.vote-container button{
+	width: 30px;
+	height:20px;
+	padding: 0;
+	margin-left: 15px;
+	margin-right: 15px;
+}
+
+.vote-container p{
+	width: 30px;
+	height: 20px;
+	margin-top: 0;
+	margin-bottom: 0;
+	margin-left: auto !important;
+	margin-right: auto !important;
+	padding: 0;
+}
+
+.post-user {
+	margin: 0;
+	padding: 0;
+}
+
+.post-user-date {
+	margin: 0;
+	padding: 0;
+	color: gray;
+}
+
+.post-user-img {
+	height: 40px;
+	width: 40px;
+	padding: 0;
+	margin: 0;
+}
+
+.post-comment-options {
+	height: 24px;
+	// border: solid # 1px;
+}
+
+
+.post-comment-options a {
+	margin: 0;
+	padding: 0;
+}
+
+.topic {
+	margin-top: 20px;
+	margin-bottom: 20px;
+  background: #f4f4f4;
+  padding:1rem;
+  @include transition(all 250ms);
+  // @include shadow(1);
+
+}
+
+.topic-card-start {
+	@include shadow(1);
+}
+.topic-card-end {
+	@include shadow(1);
+}
+
+// .vote-number-container:hover {
+// 	color: white !important;
+// }
+
+// .vote-number {
+// 	position: absolute;
+// 	z-index: 3;
+// 	top: 23%;
+// 	left: 48%;
+// 	margin: auto;
+// }
+
+.vote-label{
+	width: 100%;
+}
+
+.btn-upvote {
+	// border-left: solid 1px green;
+	// border-top: solid 1px green;
+	// border-bottom: solid 1px green;
+	// border-right: 0;
+	background-color: transparent;
+	width: 100%;
+	&:hover {
+		// background-color: #5cb85c;//green;
+	  color: green;//#fff;
+	  border-color: #4cae4c;
+	}
+	&:active {
+		color: white;
+		background-color: #5cb85c;
+	}
+}
+.glyphicon-menu-up:before {
+	float:left;
+}
+
+.btn-downvote {
+	// border-right: solid 1px red;
+	// border-top: solid 1px red;
+	// border-bottom: solid 1px red;
+	// border-left: 0;
+	background-color: transparent;
+	width: 100%;
+	&:hover {
+		// background-color: #d9534f;//red;
+		color: red;//#fff;
+		border-color: #d43f3a;
+	}
+	&:active {
+		color: white;
+		background-color: #d9534f;
+	}
+}
+.glyphicon-menu-down:before {
+	float:right;
+}
+
+.post-form-parent {
+	// position: relative;
+	border-top: solid #ddd;
+	padding: 20px;
+
+	height: 100px;
+}
+
+.post-form-child {
+	// width: 700px;
+	// position: absolute;
+	// top: 50%;
+	// left: 50%;
+	// transform: translate(-50%, -50%);
+}
+
+.minimal-text-field {
+	border: none;
+	margin-top: 4px;
+	// border-bottom: solid 1px #ddd;
+	background-color: white;//transparent;
+	box-shadow: none;
+	max-width: 100%;
+}
+
+.minimal-orange-button {
+	border: none;
+	background-color: transparent;
+	color: #F05000;
+	margin-top: 3px;
+	&:hover {
+	  color: #F05000;
+	}
+	&:active {
+	 	background-color: #CB4400 !important;
+	  border-color: #BA3E00;
+	  color: #FFF !important;
+	}
+	&:focus {
+		background-color: transparent;
+		color: #F05000;
+	}
+}
+
+.cancel {
+	color: #555;
+	border: none;
+	padding-left: 3px;
+	padding-right: 3px;
+	background-color: transparent;
+	margin-top: 3px;
+}
+
+.topic-expander {
+	height: 200px;
+  @include transition(all 250ms);
+  overflow: hidden;
+
+	&:link {
+		color: black;
+		text-decoration: none;
+	}
+
+	&:visited {
+		color: black;
+		text-decoration: none;
+	}
+
+	&:hover {
+		color: black;
+		text-decoration: none;
+	}
+
+	&:active {
+		color: black;
+    text-decoration: none;
+  }
+
+	// &:hover {
+	// 	// make gray with "+" or reply, expand topic
+	// 	-webkit-filter: grayscale(100%);
+	// 	-moz-filter: grayscale(100%);
+	// 	-o-filter: grayscale(100%);
+	// 	-ms-filter: grayscale(100%);
+	// 	filter: grayscale(100%); 
+
+	// 	filter: contrast(30%);
+	// }
+}
+
+.comment-scroller {
+	height: 100px;
+  @include transition(all 250ms);
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.dark-overlay {
+
+	color: #337ab7; //<a>-blue
+	height: 200px;
+	width: 93%;
+	position: absolute;
+	z-index: 5;
+	opacity: .2;
+  @include transition(all 250ms);
+  cursor: pointer;
+
+	&:hover {
+		// z-index: 5;
+		background-color: black;
+		-webkit-box-shadow: 0 0 10px 10px black;
+    box-shadow: 0 0 10px 10px black;
+	}
+}
+
+.dark-overlay:hover > h1 {
+	pointer-events:none;
+	display: block !important;
+}
+
+.dark-overlay > a {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	z-index: 6;
+}
+
+.collapse-bar {
+	height:20px;
+	width: 100%;
+	background-color: #f0f0f0;
+	border-radius: 5px;
+	&:hover {
+		background-color: #ddd;
+	}
+	a {
+		color: black;
+	}
+}
+
+.topic-bottom-bar {
+	margin-bottom: 5px; 
+	margin-left: -11px; 
+	margin-right: -10px;
+	background-color:#f0f0f0; 
+	border-radius: 5px;
 }

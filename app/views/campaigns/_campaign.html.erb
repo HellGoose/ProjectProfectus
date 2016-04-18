@@ -2,118 +2,186 @@
 <%	@campaign_author_split = @campaign.author.split(" ")[0..1].join(" ") %> <!-- Fix plz, wrong for authors over/under 2 words -->
 <% 	@campaign_link_split = @campaign.link.split("https://www.").join.split(".com").first %>
 <% end %>
-<div style="overflow: hidden;"><div class="text-center" id="background-blur" ></div><div id="bottom-block"></div></div> <!-- style="background-image:url(<%=@campaign.image%>);" -->
+
+<script type="text/javascript">
+	$( document ).ready(function() {
+		var body = document.body,
+		    html = document.documentElement;
+
+		var height = Math.max( body.scrollHeight, body.offsetHeight, 
+		                       html.clientHeight, html.scrollHeight, html.offsetHeight );
+		$(".sheets").css("height", height-55-82);
+
+		if (window.location.href.indexOf("#comment-section") != -1) {
+			$("#external-content").css('display', 'none');
+		} else {
+			$("#comment-section").css('display', 'none');
+		}
+		// $("#content-switcher").click(function(){
+		// 	console.log("sgskjhgskjdh");
+		// 	if ($("#comment-section").css('display')=='none') {
+		// 		$("#comment-section").css('display', 'block');
+		// 		$("#external-content").css('display', 'none');
+		// 	} else if($("#external-content").css('display')=='none') {
+		// 		$("#external-content").css('display', 'block');
+		// 		$("#comment-section").css('display', 'none');
+		// 	};
+		// });
+		$("#content-switcher").click(function(){
+			if ($("#comment-section").css('display')=='none') {
+				$("#comment-section").fadeIn(250);
+				$("#external-content").fadeOut(1000);
+			} else if($("#external-content").css('display')=='none') {
+				$("#external-content").fadeIn(250);
+				$("#comment-section").fadeOut(1000);
+			};
+		});
+	});
+
+
+</script>
+<div class="campaign-background" style="overflow: hidden;"><div class="text-center" id="background-blur" ></div><div id="bottom-block"></div></div> <!-- style="background-image:url(<%=@campaign.image%>);" -->
 <div class="container" id="campaign-content"><!-- main-campaign"> -->
-	<div class="row">
-		<%= image_tag @campaign.image, class: "col-xs-5 main-campaign-image logo img-responsive" %>
-		
-		<div class="container col-xs-2 pull-right">
-		<% if @campaign.crowdfunding_site_id.nil? %>
-			<%  
-			case @campaign_link_split
-				when "kickstarter"
-			  	@campaign_site_logo = Crowdfunding_site.all[0].logo
-				when "indiegogo"
-			  	@campaign_site_logo = Crowdfunding_site.all[1].logo
-				else
-			end
-			%>
-		<% else %>
-			<% @campaign_site_logo = Crowdfunding_site.all[@campaign.crowdfunding_site_id-1].logo %>
-		<% end %>
-		<a href="<%= @campaign.link %>">
-		<img class="crowdfunding-site-logo"  src="<%=@campaign_site_logo%>">
-		</a>
-		</div>
+	<div class="col-md-3 left-column" id="leftCol">
+		<div class="main-campaign-image">
+			<div class="" style="padding:5px; position:absolute; z-index:6;">
+				<% if @campaign.crowdfunding_site_id.nil? %>
+					<%  
+					case @campaign_link_split
+						when "kickstarter"
+					  	@campaign_site_logo = Crowdfunding_site.all[0].logo
+						when "indiegogo"
+					  	@campaign_site_logo = Crowdfunding_site.all[1].logo
+						else
+					end
+					%>
+				<% else %>
+					<% @campaign_site_logo = Crowdfunding_site.all[@campaign.crowdfunding_site_id-1].logo %>
 
-		<div id="info-box-group">
-			<div class="row col-xs-7">
-<!-- 				<div class="col-xs-2" id="campaign-info-box" title="The amassed score in all rounds">
-					<h4><small>Global Score</small></h4><b><%= @campaign.globalScore %></b></div>
-
-				<div class="col-xs-2" id="campaign-info-box" title="The amassed score in the current round">
-					<h4><small>Round Score</small></h4><b><%= @campaign.roundScore %></b></div>
-
-				<div class="col-xs-2" id="campaign-info-box" title="Times seen by a user in voting in the current round">
-					<h4><small>Times Shown</small></h4><b><%= @campaign.timesShownInVoting %></b></div> -->
-
-				<div class="col-xs-2" id="campaign-info-box">
-					<h4><small>Pledged</small></h4><b><%= if @campaign.pledged.delete('^0-9').to_i >= 0 then @campaign.pledged else "Funding" end %></b></div>
-
-				<div class="col-xs-2" id="campaign-info-box">
-					<h4><small>Goal</small></h4><b><%= if @campaign.goal.delete('^0-9').to_i >= 0 then @campaign.goal else "Complete" end %></b></div>
-
-				<div class="col-xs-2" id="campaign-info-box">
-					<h4><small>Backers</small></h4><b><%= @campaign.backers %></b></div>
-
-				<div class="col-xs-2" id="campaign-info-box">
-					<h4><small>Time left</small></h4>
-					<b><%= @campaign.time_left %></b>
-				</div>
-			</div>
-		</div>
-		<div class="row col-xs-7">
-			<div class="col-xs-3" id="goto-site-button">
-				<p><%= link_to "Go to Campaign Site", @campaign.link, class: "btn btn-primary", id: "campaign-link", target: "_blank" %></p>
-				<div id="social_media">
-					<%= social_share_button_tag(@campaign.title, :popup => "true", :image => @campaign.image, desc: @campaign.description) %>
-				</div>
-			</div>
-			<div class="col-xs-2" id="nominate-button">
-				<a class="btn btn-primary" id="nominate" <%= "disabled" if !current_user || @campaign.nominated || current_user.additionsThisRound >=Round.first.maxAdditionsPerUser %>>Nominate<a>
-			</div>
-			<div class= "col-xs-2" style="padding-top: 20px;">
-				<% if current_user && @campaign.nominated%>
-					<% if !current_user.stars.exists?(round: current_round + 1, campaign_id: @campaign.id) && current_user.stars.where(round: current_round+1).count < 3%>
-					<%= link_to("", "/campaigns/star/#{@campaign.id}", 
-						class: "fa fa-heart-o fa-2x btn btn-default", 
-						id: "star", 
-						method: "post",
-						title: "Fav this campaign to increase the chances of getting it in your next voting pool.") %>
-					<% else %>
-						<% if current_user.stars.exists?(round: current_round + 1, campaign_id: @campaign.id) %>
-							<%= link_to("", "/campaigns/star/#{@campaign.id}", 
-								class: "fa fa-heart fa-2x btn btn-default", 
-								id: "star", 
-								method: "post",
-								title: "Remove from favourites.") %>
-						<% else %>
-							<i title="You have allready favourited 3 campaigns this round." class="fa fa-heart-o fa-2x"></i>
-						<% end %>
-					<% end %>
 				<% end %>
+				<a href="<%= @campaign.link %>">
+					<img class="crowdfunding-site-logo"  src="<%=@campaign_site_logo%>">
+				</a>
 			</div>
- 			<div class="col-xs-5" id="edit">
- 				<div id="report_link">
- 					<% if current_user %>
- 						<a style="cursor: pointer;" id="report_campaign">Report</a>
-					<% end %>
-				</div>
-				<div id="edit_link">
-					<% if @campaign.user_id == session[:user_id] || isAdmin %>
-						<%= link_to "Edit", edit_campaign_path(@campaign)%> 
-						<!--<%= link_to "Delete", @campaign, method: :delete, data: {confirm: "Are you sure?"} %>-->
-					<% end %>
-				</div>
-			</div>
+			<%= image_tag @campaign.image, class: "logo img-responsive"%>
 		</div>
-	</div>
-	<h2 id="campaign-title-main"><%= @campaign.title %></h2>
-	<h5>By <b><%= @campaign_author_split %></b></h5>
+		<% if !@posts.nil? %>
+			<div class="row btn-group campaign-btn-group">
+				<a class="btn col-xs-3" id="nominate" title="Nominate" <%= "disabled" if !current_user || @campaign.nominated || current_user.additionsThisRound >=Round.first.maxAdditionsPerUser %>>
+				  <i class="fa fa-plus"></i>
+				</a>
 
-	<div class="campaign-info">
-		<div class="row">
-			<h5>
-				Added by <%= link_to User.find(@campaign.user_id).name, user_path(User.find(@campaign.user_id))%>
-				<% if !@campaign_link_split.nil? then %> from <a href="%=@campaign.link%>"><%= @campaign_link_split.capitalize %></a> <% end %>
-				<%= distance_of_time_in_words(DateTime.now, @campaign.created_at) %> ago.
-			</h5>
-			<p id="campaign-description" >- "<%= @campaign.description %>"</p>
+				<a href="/campaigns/star/<%=@campaign.id%>" class="btn col-xs-3 disabled" id="star" disabled><i class="fa fa-heart-o"></i></a>
+
+				<div class="dropdown col-xs-3">
+				  <div class="btn" title="Share" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					  <i class="fa fa-share"></i>		  	
+				  </div>
+				  <ul class="dropdown-menu share-dropdown">
+				  	<li><%= social_share_button_tag(@campaign.title, :popup => "true", :image => @campaign.image, desc: @campaign.description) %></li>
+				  </ul>
+				</div>
+
+				<div class="dropdown col-xs-3">
+					<div class="btn" title="Edit" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					  <i class="fa fa-gear"></i>
+					</div>
+				  <ul class="dropdown-menu edit-dropdown">
+			  		<li class="report_link"><a class="btn <%= 'disabled' if !current_user%>" id="report_campaign" <%= "disabled" if !current_user%>>
+			  			<i class="fa fa-flag" title="Report this campaign"></i></a>
+			  		</li>
+			  		<li>
+				  		<% if @campaign.user_id == session[:user_id] || isAdmin %>
+				  			<%= link_to "", edit_campaign_path(@campaign), class:"btn fa fa-edit", title:"Edit"%>
+				  		<% end %>
+		  			</li>
+			  	</ul>
+				</div>
+			</div>
+		<% end %>
+
+		<div class="row card" id="box-group">
+			<div class="col-xs-4" id="campaign-info-box">
+				<h4><small>Pledged</small></h4><b><%= if @campaign.pledged.to_i >= 0 then number_to_currency(@campaign.pledged, :precision => 0) else "Funding" end %></b>
+			</div>
+
+			<div class="col-xs-4" id="campaign-info-box">
+				<h4><small>Goal</small></h4><b><%= if @campaign.goal.to_i >= 0 then number_to_currency(@campaign.goal, :precision => 0) else "Complete" end %></b>
+			</div>
+
+			<div class="col-xs-4" id="campaign-info-box">
+				<h4><small>Backers</small></h4><b><%= @campaign.backers %></b
+			></div>
+		</div>
+
+		<div class="restrictor"><div id="sticky-anchor"></div></div>
+
+		<div id="sticky">
+			<div class="row campaign-info card adder-container">
+				<div class="row campaign-adder-top">
+					<div class="col-xs-2 no-padding adder-img"><img class="img-circle text-center" style="margin-left:auto;margin-right:auto;" 
+					src= <%= getFacebookPicURL(@campaign.user)%> > </div>
+					<h5 class="col-xs-10 adder-top-right">
+						<%= link_to User.find(@campaign.user_id).name, user_path(User.find(@campaign.user_id))%>
+						<small class="row">
+							<% if !@campaign_link_split.nil? then %> 
+								Source: <a href="<%=@campaign.link%>"><%= @campaign_link_split.capitalize %></a>,
+							<% end %>
+							<%= @campaign.created_at.strftime("%d. %b %Y") %>
+						</small>
+					</h5>
+				</div>
+				<p class="row" id="campaign-description" ><%= @campaign.description %></p>
+			</div>
+
+			<!-- <div id="content-switcher"></div> -->
+			<% if !@posts.nil? %>
+				<div class="row campaign-info card topic-container">
+					<div class="row">
+						
+						<div class="col-xs-3 no-padding content-switcher-container">
+						  <input type="checkbox" id="content-switcher" class="cbx hidden"/>
+						  <label for="content-switcher" class="lbl"></label>    
+						</div>
+						<h4 class="col-xs-9">Discussion</h4> 
+					</div>
+					<p class="row" id="comment-collapsed-box" >There are no topics to highlight yet. They will show up here once they exist. Click here to see discussion, or start a thread yourself.</p>
+				</div>
+			<% end %>
 		</div>
 	</div>
-	<div class="container" id="external-content">
-		<%= if @campaign.content != nil 
-			render inline: @campaign.content 
-		end %>
+
+
+	<div class="col-md-9 right-column" id="rightCol">
+		<div class="container card section" id="external-content">
+			<div class="container campaign-header-field" style="margin-bottom:30px; background:white; max-width:100%; border-radius:3px;">
+				<h2 id="campaign-title-main"><%= @campaign.title %></h2>
+				<h5>By <b><%= @campaign_author_split %></b></h5>
+			</div>
+			<%= if @campaign.content != nil 
+				render inline: @campaign.content 
+			end %>
+		</div>
+
+		<div id="comment-section" class="section"> <!-- sheet2 -->
+			<% if current_user %>
+			<div id="post">
+				<%= render partial: "posts/postForm" %>
+			</div>
+			<% end %>
+
+			<% if !@posts.nil? %>
+				<div class="posts">
+					<%= render partial: "posts/posts", locals: { page: 1, postsPerPage: @postsInterval } %>
+				</div>
+
+				<% if @posts.size > @postsInterval %>
+					<div class="text-center">
+						<a class="btn btn-primary" id="more_posts">Show More</a>
+					</div>
+				<% end %>
+			<% end %>
+		</div>
 	</div>
+
 </div>

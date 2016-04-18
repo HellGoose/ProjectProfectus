@@ -17,6 +17,7 @@
 //= require social-share-button
 //= require tinymce
 //= require global
+//require bootstrap-material-design
 
 var check_for_notifications = function() {
 	var offset = $('#notification-data').data('notification-offset');

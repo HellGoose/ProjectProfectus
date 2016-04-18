@@ -5,8 +5,8 @@
 <% end %>
 
 <% comments.order('voteCount DESC').last(last).first(postsPerPage.to_i).each do |p| %>
-	<div class="col-xs-12 post">
-		<div class="vote_container">
+	<!-- POST -->
+	<!-- 	<div class="col-xs-1 vote-container">
 			<% userVote = p.votes.find_by(user_id: session[:user_id], post_id: p.id)
 
 			opacity = 1
@@ -14,52 +14,64 @@
 				opacity = 0.5
 			end %>
 
-			<button id=<%= p.id.to_s %> class="glyphicon glyphicon-menu-up post_up_vote" aria-hidden="true"	style="opacity:<%= opacity %>" 
+			<button id=<%= p.id.to_s %> class="row-fluid glyphicon glyphicon-menu-up post_up_vote" aria-hidden="true"	style="opacity:<%= opacity %>" 
 				<% if !session[:user_id] or (userVote != nil and !userVote.isDownvote)%>
 					disabled
 				<%end%>>
 			</button>
 
-			<p><span id=<%= "post_votes_" + p.id.to_s %>><%= p.voteCount %></span></p>
+			<p class="row text-center"><span id=<%= "post_votes_" + p.id.to_s %>><%= p.voteCount %></span></p>
 
-			<button id=<%=  p.id.to_s %> class="glyphicon glyphicon-menu-down post_down_vote" aria-hidden="true" style="opacity:<%= opacity %>" 
+			<button id=<%=  p.id.to_s %> class="row-fluid glyphicon glyphicon-menu-down post_down_vote" aria-hidden="true" style="opacity:<%= opacity %>" 
 				<% if !session[:user_id] or (userVote != nil and userVote.isDownvote)%>
 					disabled
 				<%end%>>
 			</button>
-		</div>
-
-		<div class="text_container">
-			<p class="user"><%= User.find(p.user_id).name + " - " + p.created_at.to_s %></p>
-
-			<div class="edit">
-				<% if p.user_id == session[:user_id] || isAdmin %>
-					<%= link_to 'Edit |', edit_post_path(p)%> 
-					<%= link_to 'Delete', p, method: :delete, data: {confirm: "Are you sure?"} %>
-				<% end %>
+		</div> -->
+	<div class="topic-<%= @topic_counter %>-child row comment-row">
+		<div class="row comment-top"><!-- Bilde, bruker, tid, edit/delete -->
+			<div class="col-xs-1 comment-user-image">
+				<img class="img-circle text-center" style="margin-left:auto;margin-right:auto;" src=<%=getFacebookPicURL(p.user)%>>
 			</div>
-
-			<p class="content"><%= p.content %></p>
-
-			<div class="bar">
+			<div class="col-xs-7 comment-name">
+				<h4><%= User.find(p.user_id).name%></h4>
+			</div>
+			<% if p.user_id == session[:user_id] || isAdmin %>
+				<div class="col-xs-1 pull-right no-padding comment-user-menu ">
+					<button class="btn dropdown-toggle" type="button" id="comment-edit" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cog"></i></button>
+				  <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="comment-edit">
+						<li><%= link_to 'Edit', edit_post_path(p)%></li>
+						<li><%= link_to 'Delete', p, method: :delete, data: {confirm: "Are you sure?"} %></li>
+					</ul>
+				</div>
+			<% end %>
+			<div class="col-xs-push-3 pull-right text-right">
+				<small class="comment-date text-right"><%=time_ago_in_words(p.created_at).gsub('about','')%> ago.</small>
+			</div>
+		</div>
+		<div class="row comment-content">
+			<p><%= p.content %></p>
+			<div class="row comment-bottom">
 				<% if session[:user_id] %>
-					<a class="btn answer" id="<%= p.id.to_s %>">Reply</a>
+					<a class="col-xs-1 btn minimal-orange-button pull-right answer" title="Reply to this comment" id="<%= p.id.to_s %>"><i class="fa fa-reply"></i></a>
 				<% end %>
 			</div>
 		</div>
-
-		<div class="answer_div" id="<%= "answer" + p.id.to_s %>"></div>
-
-		<div id="comments">
-			<%= render partial: 'posts/comments', locals: { page: 1, postsPerPage: postsPerPage, comments: p.comments } %>
-		</div>
-
-		<div class="data" id="<%= p.id.to_s %>" data-page='1' data-size=<%= p.comments.size %>></div>
-
-		<% if p.comments.size > postsPerPage.to_i %>
-			<div class="text-center">
-				<a class="btn btn-default more_comments" id="<%= p.id.to_s %>">Show More</a>
-			</div>
-		<% end %>
 	</div>
+	<!-- <hr style="width:100%;"> -->
+	
+
+	<div class="answer_div" id="<%= "answer" + p.id.to_s %>"></div>
+
+	<div class="row pushed" id="comments">
+		<%= render partial: 'posts/comments', locals: { page: 1, postsPerPage: postsPerPage, comments: p.comments } %>
+	</div>
+
+	<div class="data" id="<%= p.id.to_s %>" data-page='1' data-size=<%= p.comments.size %>></div>
+
+	<% if p.comments.size > postsPerPage.to_i %>
+		<div class="text-center">
+			<a class="btn btn-default more_comments" id="<%= p.id.to_s %>">Show More</a>
+		</div>
+	<% end %>
 <% end %>
