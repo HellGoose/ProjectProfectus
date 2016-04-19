@@ -16,4 +16,11 @@ namespace :runscript do
 		databaseInit()
 		roundScript()
 	end	
+
+	desc "BotTest"
+	task :botTest => :environment do
+		APP_ROOT = File.expand_path(File.dirname(File.dirname(__FILE__)))
+		require APP_ROOT + '/tasks/bottest.rb'
+		botScript()
+	end
 end

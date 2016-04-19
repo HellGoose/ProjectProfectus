@@ -51,6 +51,9 @@ Rails.application.routes.draw do
 	#Leaderboard
 	get '/leaderboard/:page/:interval', to: 'users#page'
 
+	#Bots
+	
+
 	# Pledge
 	# get '/pledge', to: 'pledge#index'
 
