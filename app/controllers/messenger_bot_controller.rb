@@ -1,4 +1,5 @@
 class MessengerBotController < ActionController::Base
+  force_ssl
   def message(event, sender)
     # profile = sender.get_profile
     sender.reply({ text: "Reply: #{event['message']['text']}" })
