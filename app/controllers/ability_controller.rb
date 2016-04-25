@@ -5,9 +5,7 @@ class AbilityController < ApplicationController
 			redirect_to '/'
 			return
 		end
-		puts '1'
 		campaign = Campaign.find(params[:campaign_id])
-		puts '1'
 		if !current_user.reports.exists?(campaign_id: campaign.id)
 			current_user.reports.create(
 				user_id: current_user.id,
@@ -18,7 +16,6 @@ class AbilityController < ApplicationController
 			campaign.reported += 1
 			campaign.save
 		end
-		puts 'here'
 		currentUserUseAbility(1)
 		redirect_to "/campaigns/#{campaign.id}"
 	end
