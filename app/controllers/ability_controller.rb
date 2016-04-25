@@ -1,10 +1,10 @@
 class AbilityController < ApplicationController
 	def report
+		puts 'report'
 		if !current_user || !currentUserHasAbility(1)
 			redirect_to '/'
 			return
 		end
-
 		campaign = Campaign.find(params[:campaign_id])
 		if !current_user.reports.exists?(campaign_id: campaign.id)
 			current_user.reports.create(
@@ -16,7 +16,7 @@ class AbilityController < ApplicationController
 			campaign.reported += 1
 			campaign.save
 		end
-
+		currentUserUseAbility(1)
 		redirect_to "/campaigns/#{campaign.id}"
 	end
 
@@ -40,6 +40,7 @@ class AbilityController < ApplicationController
 			current_user.stars.find_by(round: current_round + 1, campaign_id: campaign.id).destroy
 		end
 
+		currentUserUseAbility(3)
 		redirect_to "/campaigns/#{@campaign.id}"
 	end
 
@@ -51,6 +52,7 @@ class AbilityController < ApplicationController
 		current_user.campaignVotes.destroy_all
 		current_user.update(isOnStep: 0)
 
+		currentUserUseAbility(6)
 		redirect_to "/"
 	end
 

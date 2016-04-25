@@ -526,6 +526,7 @@ class CampaignsController < ApplicationController
 		at_exit {t.join}
 	end
 
+	#old
 	def threaded_diffbot_add(campaign, provider)
 		t = Thread.new {
 			t1 = Time.now
