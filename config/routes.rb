@@ -52,7 +52,7 @@ Rails.application.routes.draw do
 	get '/leaderboard/:page/:interval', to: 'users#page'
 
 	#Bots
-	
+	post '/bot/message', to: 'bot#recive'
 
 	# Pledge
 	# get '/pledge', to: 'pledge#index'
