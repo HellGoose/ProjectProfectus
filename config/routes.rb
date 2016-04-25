@@ -52,7 +52,7 @@ Rails.application.routes.draw do
 	get '/leaderboard/:page/:interval', to: 'users#page'
 
 	#Bots
-	get '/bot/message', to: 'bot#recive'
+	get '/bot/message', to: 'bot#recive', constraints: {protocol: /https/}
 
 	# Pledge
 	# get '/pledge', to: 'pledge#index'
