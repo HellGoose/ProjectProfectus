@@ -17,10 +17,10 @@ namespace :runscript do
 		roundScript()
 	end	
 
-	desc "BotTest"
-	task :botTest => :environment do
-		APP_ROOT = File.expand_path(File.dirname(File.dirname(__FILE__)))
-		require APP_ROOT + '/tasks/bottest.rb'
-		botScript()
-	end
+	#desc "BotTest"
+	#task :botTest => :environment do
+	#	APP_ROOT = File.expand_path(File.dirname(File.dirname(__FILE__)))
+	#	require APP_ROOT + '/tasks/bottest.rb'
+	#	botScript()
+	#end
 end
