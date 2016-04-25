@@ -77,6 +77,9 @@ gem 'rspec-rails'#, '~> 3.0'
 # Use Gibbon for interfacing with MailChimp API
 gem 'gibbon'
 
+# Facebook messenger request handler
+gem 'messenger-bot'
+
 # Dotenv for storing api-keys in environment variables instead of in directly in code
 gem 'dotenv-rails', :groups => [:development]
 
