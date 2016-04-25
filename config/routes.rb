@@ -53,7 +53,7 @@ Rails.application.routes.draw do
 
 	#Bots
 	#get '/bot/message', to: 'bot#recive', constraints: {protocol: /https/}
-	mount Messenger::Bot::Space => "/bot/message"
+	mount Messenger::Bot::Space => '/bot/message'
 
 	# Pledge
 	# get '/pledge', to: 'pledge#index'
