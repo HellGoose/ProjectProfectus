@@ -261,7 +261,7 @@ DEPENDENCIES
   jbuilder (~> 2.0)
   jquery-rails
   jquery-turbolinks
-  messenger-bot
+  messenger-bot (= 1.0.0)
   mysql2 (~> 0.3.18)
   omniauth-facebook (~> 1.4.1)
   poltergeist
