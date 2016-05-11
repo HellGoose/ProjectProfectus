@@ -78,7 +78,7 @@ gem 'rspec-rails'#, '~> 3.0'
 gem 'gibbon'
 
 # Facebook messenger request handler
-gem 'messenger-bot'
+gem 'messenger-bot', '1.0.1'
 
 # Dotenv for storing api-keys in environment variables instead of in directly in code
 gem 'dotenv-rails', :groups => [:development]
