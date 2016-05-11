@@ -4,6 +4,7 @@ class MessengerBotController < ActionController::Base
     puts "message"
     puts "#{event}"
     puts "#{sender}"
+    
     # profile = sender.get_profile
     sender.reply({ text: "Reply: #{event['message']['text']}" })
   end
@@ -12,13 +13,18 @@ class MessengerBotController < ActionController::Base
     puts "delivery"
     puts "#{event}"
     puts "#{sender}"
-    #BlahBlah
+    
   end
 
   def postback(event, sender)
     puts "postback"
     puts "#{event}"
     puts "#{sender}"
-    #BlahBlah
+    
+    payload = event["postback"]["payload"]
+    case payload
+    when :something
+      #ex) process sender.reply({text: "button click event!"})
+    end
   end
 end
