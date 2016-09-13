@@ -696,7 +696,7 @@ class CampaignsController < ApplicationController
 	#
 	# Returns the campaigns corresponding to the current step.
 	def genCampaignsForVoting(step)
-		campaigns = Campaign.where(votable: true).where.not(nominator_id: current_user.id).where.not(user_id: current_user.id).order("timesShownInVoting DESC")
+		campaigns = Campaign.where(votable: true).order("timesShownInVoting DESC")
 		genedCampaigns = []
 		case step
 		when (-1) #refresh

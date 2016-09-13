@@ -51,8 +51,8 @@ end
 private
 def runNewRound (decayRate)
 	numberOfNominatedCampaigns = Campaign.where(nominated: true).count
-	if numberOfNominatedCampaigns < 50
-		sampleAmount = [Campaign.count - numberOfNominatedCampaigns, 50 - numberOfNominatedCampaigns].min
+	if numberOfNominatedCampaigns < 20
+		sampleAmount = [Campaign.count - numberOfNominatedCampaigns, 20 - numberOfNominatedCampaigns].min
 		puts "Not enough nominated campaigns. Nominating more."
 		Campaign.where(nominated: false).sample(sampleAmount).each do |c|
 			c.update(nominated: true)
