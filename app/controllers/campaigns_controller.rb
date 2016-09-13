@@ -470,9 +470,9 @@ class CampaignsController < ApplicationController
 			begin
 				t1 = Time.now
 
-				api_key = 'c4d15c313dabc9019df63f0a12a0e72a36359d1d8d054a4e2df78814de96c449'
+				api_key = '775f7c0cd8f7517827d3fee36e5bb371af4ca5840892644fb5ba99a1dfae50a6'
 
-				url = URI.parse('http://54.229.206.13:3495/api/v1/' + api_key + '/' + campaign.link)
+				url = URI.parse('http://scraper.thepodium.io/api/v1/' + api_key + '/' + campaign.link)
 				req = Net::HTTP::Get.new(url.to_s)
 				res = Net::HTTP.start(url.host, url.port) {|http|
 					http.request(req)
